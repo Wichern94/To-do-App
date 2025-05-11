@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="css/forget.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/utils.css">
+</head>
+<body class="app dark-theme">
+    <!-- EKRAN LOGOWANIA: -->
+    <section id = "login-screen" class="screen">
+    <header>
+        <h1>Witamy, w ToDoo</h1>
+    </header>
+    <main>
+        <section class="login" aria-labelledby="login-section">
+            <h2 id= "login-section"> Zaloguj się</h2>
+            <form  class="login-form" action="#" method="POST">
+                <div class = "input-container">
+                    <label for="username"> Nazwa Użytkownika</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class = "input-container">
+                    <label for="password">Hasło</label>
+                    <input type ="password" id = "password" name = "password" required>
+                </div>
+                <button class="login-btn btn" type="submit">Zaloguj się</button> 
+            </form>
+        </section>
+
+        <section class="forget-password" aria-labelledby="forgot-password-section">
+            <h2 id ="forgot-password-section">Nie pamiętasz hasła</h2>
+            <p>
+                <a class="forget-link" href="#">Kliknij tutaj, aby zresetować hasło</a>
+            </p>
+        </section>
+        <section class="register" aria-labelledby="register-account-section">
+            <h2 id ="register-account-section">Nie masz konta? </h2>
+            <p>
+                <a class="register-link" href="#">Kliknij tutaj,aby się zarejestrować</a>
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Coded by Mateusz.Kabaja. Wszelkie prawa zastrzeżone</p>
+    </footer>
+
+</section>
+<!-- APLIKACJA WŁASCIWA -->
+<section id ="todo-screen" class="screen hidden">
+
+</section>
+
+<!-- EKRAN REJSETRACJI -->
+ <section id ="register-screen" class = "screen hidden">
+    <header>
+        <h1>Rejestracja</h1>
+    </header>
+    <main>
+        <section class="register-form" aria-labelledby="register-section">
+            <h2 id = "register-section"> Załóż Konto</h2>
+            <form id="register-form" action="#" method="POST">
+                <div class="input-container">
+                    <label for="register-username"> Nazwa Użytkownika</label>
+                    <input type="text" id = "register-username" name = "username" required>
+                </div>
+                <div class="input-container">
+                    <label for="register-email"> E-mail</label>
+                    <input type="text" id = "register-email" name = "email" required>
+                </div>
+                <div class ="input-container">
+                    <label for="register-password">Hasło</label>
+                    <input type="password" id="register-password" name = "password" required>
+                </div>
+                <div class="input-container">
+                    <label for="confirm-password">Potwierdź Hasło</label>
+                    <input type="password" id ="confirm-password" name="confirm-password" required>
+                </div>
+                <button class="btn" type="submit"> Zarejestruj się</button>
+                <button class="btn back-btn" >Wróć do logowania</button>
+            </form>
+                
+        </section>
+    </main>
+ </section>
+
+ <!-- EKRAN ODZYSKIWANIA HASŁA -->
+  <section id ="forget-screen" class = "screen hidden">
+    <header>
+        <h1>Odzyskiwanie Hasła</h1>
+    </header>
+    <main>
+        <section class="forget-password-form" aria-labelledby="forget-section">
+            <h2 id="forget-section">Odzyskaj hasło</h2>
+            <form  id="forget-form" action="#" method="GET">
+                <div class="input-container">
+                    <label for="forget-username"> Nazwa Użytkownika lub E-mail</label>
+                    <input type="text" id = "forget-username" name = "username" required>
+                </div>
+                <button class="btn" type="submit">Wyslij link do resetowania Hasła</button>
+                <button class="btn back-btn" >Wróć do logowania</button>
+            </form>
+        </section>
+    </main>
+  </section>
+
+
+</body>
+</html>

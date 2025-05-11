@@ -1,0 +1,50 @@
+/* Reset styli przeglądarki */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Usuwanie domyślnych stylów dla tekstu */
+body {
+  line-height: 1.5;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  color: #000;
+}
+
+/* Usunięcie listy stylów */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Usunięcie domyślnych stylów linków */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Formularze i przyciski */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+/* Button jako pointer */
+button {
+  cursor: pointer;
+}
+
+/* Obrazki nie wychodzą poza kontener */
+img {
+  max-width: 100%;
+  display: block;
+}
