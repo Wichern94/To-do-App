@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/utils.css">
+    <script type="module" src="js/main.js" defer></script>
 </head>
 <body class="app dark-theme">
     <!-- EKRAN LOGOWANIA: -->
@@ -38,15 +39,15 @@
         </section>
 
         <section class="forget-password" aria-labelledby="forgot-password-section">
-            <h2 id ="forgot-password-section">Nie pamiętasz hasła</h2>
+            <h2 id ="forgot-password-section">Nie pamiętasz hasła ?</h2>
             <p>
-                <a class="forget-link" href="#">Kliknij tutaj, aby zresetować hasło</a>
+                <button class="forget-link btn" >Kliknij tutaj, aby zresetować hasło</button>
             </p>
         </section>
         <section class="register" aria-labelledby="register-account-section">
-            <h2 id ="register-account-section">Nie masz konta? </h2>
+            <h2 id ="register-account-section">Nie masz konta ? </h2>
             <p>
-                <a class="register-link" href="#">Kliknij tutaj,aby się zarejestrować</a>
+                <button class="register-link btn" >Kliknij tutaj,aby się zarejestrować</button>
             </p>
         </section>
     </main>
@@ -72,22 +73,22 @@
             <form id="register-form" action="#" method="POST">
                 <div class="input-container">
                     <label for="register-username"> Nazwa Użytkownika</label>
-                    <input type="text" id = "register-username" name = "username" required>
+                    <input type="text" id = "register-username" name = "username" autocomplete="new-user" required>
                 </div>
                 <div class="input-container">
                     <label for="register-email"> E-mail</label>
-                    <input type="text" id = "register-email" name = "email" required>
+                    <input type="text" id = "register-email" name = "email" autocomplete="new-email" required>
                 </div>
                 <div class ="input-container">
                     <label for="register-password">Hasło</label>
-                    <input type="password" id="register-password" name = "password" required>
+                    <input type="password" id="register-password" name = "password" autocomplete="new-password"required>
                 </div>
                 <div class="input-container">
                     <label for="confirm-password">Potwierdź Hasło</label>
-                    <input type="password" id ="confirm-password" name="confirm-password" required>
+                    <input type="password" id ="confirm-password" name="confirm-password"  required>
                 </div>
                 <button class="btn" type="submit"> Zarejestruj się</button>
-                <button class="btn back-btn" >Wróć do logowania</button>
+                <button class="btn log-back-btn" >Wróć do logowania</button>
             </form>
                 
         </section>
@@ -107,8 +108,8 @@
                     <label for="forget-username"> Nazwa Użytkownika lub E-mail</label>
                     <input type="text" id = "forget-username" name = "username" required>
                 </div>
-                <button class="btn" type="submit">Wyslij link do resetowania Hasła</button>
-                <button class="btn back-btn" >Wróć do logowania</button>
+                <button class="btn submit-btn" type="submit">Wyslij link do resetowania Hasła</button>
+                <button class="btn log-back-btn" >Wróć do logowania</button>
             </form>
         </section>
     </main>

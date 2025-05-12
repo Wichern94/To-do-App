@@ -28,7 +28,7 @@ a {
 }
 
 /* Formularze i przyciski */
-input,
+/* input,
 button,
 textarea,
 select {
@@ -36,7 +36,7 @@ select {
   border: none;
   outline: none;
   background: none;
-}
+} */
 
 /* Button jako pointer */
 button {
