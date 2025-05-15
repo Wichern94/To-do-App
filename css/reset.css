@@ -10,9 +10,8 @@
 /* Usuwanie domyślnych stylów dla tekstu */
 body {
   line-height: 1.5;
-  font-family: Arial, sans-serif;
-  background-color: #fff;
-  color: #000;
+  
+  
 }
 
 /* Usunięcie listy stylów */
@@ -27,8 +26,8 @@ a {
   color: inherit;
 }
 
-/* Formularze i przyciski */
-/* input,
+/* Formularze i przyciski */ */
+input,
 button,
 textarea,
 select {
@@ -36,7 +35,8 @@ select {
   border: none;
   outline: none;
   background: none;
-} */
+  line-height: 1.5;
+}
 
 /* Button jako pointer */
 button {

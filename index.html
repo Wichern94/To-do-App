@@ -27,28 +27,28 @@
             <h2 id= "login-section"> Zaloguj się</h2>
             <form  class="login-form" action="#" method="POST">
                 <div class = "input-container">
-                    <label for="username"> Nazwa Użytkownika</label>
-                    <input type="text" id="username" name="username" required>
+                    <input class="log-input" type="text" id="username" name="username" autocomplete="off" required>
+                    <label for="username" class="log-label labs"> Login:</label>
                 </div>
                 <div class = "input-container">
-                    <label for="password">Hasło</label>
-                    <input type ="password" id = "password" name = "password" required>
+                    <input class="pass-input" type ="password" id = "password" name = "password" autocomplete="off" required>
+                    <label for="password" class="pass-label labs">Hasło:</label>
                 </div>
                 <button class="login-btn btn" type="submit">Zaloguj się</button> 
             </form>
         </section>
 
         <section class="forget-password" aria-labelledby="forgot-password-section">
-            <h2 id ="forgot-password-section">Nie pamiętasz hasła ?</h2>
-            <p>
-                <button class="forget-link btn" >Kliknij tutaj, aby zresetować hasło</button>
-            </p>
+            <p class ="log-q" id ="forgot-password-section">Nie pamiętasz hasła ?</p>
+            <h5>
+                <button class="forget-link btn" ><b>Kliknij tutaj</b></button>
+            </h5>
         </section>
         <section class="register" aria-labelledby="register-account-section">
-            <h2 id ="register-account-section">Nie masz konta ? </h2>
-            <p>
-                <button class="register-link btn" >Kliknij tutaj,aby się zarejestrować</button>
-            </p>
+            <p class ="log-q" id ="register-account-section">Nie masz konta ? </p>
+            <h5>
+                <button class="register-link btn" ><b>Kliknij tutaj</b></button>
+            </h5>
         </section>
     </main>
 
@@ -73,19 +73,19 @@
             <form id="register-form" action="#" method="POST">
                 <div class="input-container">
                     <label for="register-username"> Nazwa Użytkownika</label>
-                    <input type="text" id = "register-username" name = "username" autocomplete="new-user" required>
+                    <input type="text" id = "register-username" name = "username" autocomplete="off" required>
                 </div>
                 <div class="input-container">
                     <label for="register-email"> E-mail</label>
-                    <input type="text" id = "register-email" name = "email" autocomplete="new-email" required>
+                    <input type="text" id = "register-email" name = "email" autocomplete="off" required>
                 </div>
                 <div class ="input-container">
                     <label for="register-password">Hasło</label>
-                    <input type="password" id="register-password" name = "password" autocomplete="new-password"required>
+                    <input type="password" id="register-password" name = "password" autocomplete="off"required>
                 </div>
                 <div class="input-container">
                     <label for="confirm-password">Potwierdź Hasło</label>
-                    <input type="password" id ="confirm-password" name="confirm-password"  required>
+                    <input type="password" id ="confirm-password" name="confirm-password"  autocomplete="off" required>
                 </div>
                 <button class="btn" type="submit"> Zarejestruj się</button>
                 <button class="btn log-back-btn" >Wróć do logowania</button>
