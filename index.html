@@ -17,6 +17,9 @@
     <script type="module" src="js/main.js" defer></script>
 </head>
 <body class="app dark-theme">
+
+    
+
     <!-- EKRAN LOGOWANIA: -->
     <section id = "login-screen" class="screen">
     <header>
@@ -24,6 +27,7 @@
     </header>
     <main>
         <section class="login" aria-labelledby="login-section">
+            <img  src="assets/profile-boy-icon.svg" class="user-image" alt="user icon"/>
             <h2 id= "login-section"> Zaloguj się</h2>
             <form  class="login-form" action="#" method="POST">
                 <div class = "input-container">
@@ -102,11 +106,14 @@
     </header>
     <main>
         <section class="forget-password-form" aria-labelledby="forget-section">
+            <img  src="assets/forgot-password.svg" class="frgt-image" alt="Forget Password icon"/>
             <h2 id="forget-section">Odzyskaj hasło</h2>
-            <form  id="forget-form" action="#" method="GET">
-                <div class="input-container">
-                    <label  for="forget-username">E-mail</label>
-                    <input type="text" id = "forget-username" name = "username" required>
+            
+            <form class="frgt-form" id="forget-form" action="#" method="GET">
+                <div class="input-container forget-container">
+                    <input  class ="forget-input" type="email" id = "forget-username" name = "useremail" autocomplete="off"  placeholder="" >
+                    <!-- <img  class ="mail-icon"src="assets/mail.svg" alt="Ikonka Maila"> -->
+                    <label class="forget-label" for="forget-username">E-mail</label>
                 </div>
                 <button class="btn submit-btn" type="submit">Wyslij link do resetowania Hasła</button>
                 <button class="btn log-back-btn" >Wróć do logowania</button>

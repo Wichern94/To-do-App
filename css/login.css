@@ -21,8 +21,8 @@
   --btn-accent: #38BDF8;
   --btn-danger: #EF4444;
 
-
 }
+
 .screen{
     display: flex;
     position: relative;
@@ -170,6 +170,15 @@ footer{
     top: 32rem;
     color: var(--text-muted);
 }
+ .user-image{
+    max-width: 100%;
+    display: block;
+    position: relative;
+    height: 50px;
+    width: 50px;
+    
+    margin-bottom: .5rem;
+ }
 
 
 
