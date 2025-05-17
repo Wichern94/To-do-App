@@ -1,0 +1,31 @@
+:root {
+  /* TŁA */
+  --bg-gradient: linear-gradient(135deg, #0F172A, #1E293B); /* ciemny granat z odcieniem granatowo-niebieskim */
+  --bg-solid: #0F172A; /* fallback */
+
+  /* GLASS */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+
+  /* TEKST */
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-inverted: #0F172A;
+
+  /* PRZYCISKI */
+  --btn-bg: rgba(255, 255, 255, 0.08);
+  --btn-hover: rgba(255, 255, 255, 0.15);
+  --btn-accent: #38BDF8;
+  --btn-danger: #EF4444;
+
+  /* AKCENTY */
+  --accent-blue: #38BDF8;
+  --accent-cyan: #22D3EE;
+  --accent-yellow: #FACC15;
+  --accent-red: #EF4444;
+
+  /* NOISE */
+  --noise-opacity: 0.015;
+}

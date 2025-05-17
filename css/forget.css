@@ -1,0 +1,14 @@
+#forget-screen{
+    
+    align-content: flex-start;
+    justify-content: center;
+}
+.input-container{
+    align-items: center;
+}
+#forget-username{
+    margin: 1rem 0 1rem 0;
+}
+.forget-label{
+    
+}

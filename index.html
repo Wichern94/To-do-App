@@ -28,7 +28,7 @@
             <form  class="login-form" action="#" method="POST">
                 <div class = "input-container">
                     <input class="log-input" type="text" id="username" name="username" autocomplete="off" required>
-                    <label for="username" class="log-label labs"> Login:</label>
+                    <label for="username" class="log-label labs"> E-mail:</label>
                 </div>
                 <div class = "input-container">
                     <input class="pass-input" type ="password" id = "password" name = "password" autocomplete="off" required>
@@ -63,7 +63,7 @@
 </section>
 
 <!-- EKRAN REJSETRACJI -->
- <section id ="register-screen" class = "screen hidden">
+ <section id ="register-screen" class = "screen hidden register-tab">
     <header>
         <h1>Rejestracja</h1>
     </header>
@@ -96,7 +96,7 @@
  </section>
 
  <!-- EKRAN ODZYSKIWANIA HASŁA -->
-  <section id ="forget-screen" class = "screen hidden">
+  <section id ="forget-screen" class = "screen hidden forget-tab">
     <header>
         <h1>Odzyskiwanie Hasła</h1>
     </header>
@@ -105,7 +105,7 @@
             <h2 id="forget-section">Odzyskaj hasło</h2>
             <form  id="forget-form" action="#" method="GET">
                 <div class="input-container">
-                    <label for="forget-username"> Nazwa Użytkownika lub E-mail</label>
+                    <label  for="forget-username">E-mail</label>
                     <input type="text" id = "forget-username" name = "username" required>
                 </div>
                 <button class="btn submit-btn" type="submit">Wyslij link do resetowania Hasła</button>
