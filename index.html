@@ -27,7 +27,7 @@
     </header>
     <main>
         <section class="login" aria-labelledby="login-section">
-            <img  src="assets/profile-boy-icon.svg" class="user-image" alt="user icon"/>
+            <img  src="assets/user-shield-alt-1-svgrepo-com.svg" class="user-image" alt="user icon"/>
             <h2 id= "login-section"> Zaloguj się</h2>
             <form  class="login-form" action="#" method="POST">
                 <div class = "input-container">
@@ -73,26 +73,31 @@
     </header>
     <main>
         <section class="register-form" aria-labelledby="register-section">
-            <h2 id = "register-section"> Załóż Konto</h2>
-            <form id="register-form" action="#" method="POST">
+            <img  src="assets/user-plus-alt-1-svgrepo-com.svg" class="reg-book" alt="register icon"/>
+            <h2 id = "register-section" class="reg-head"> Załóż Konto</h2>
+            <form id="register-form" class = "reg-form"action="#" method="POST">
                 <div class="input-container">
-                    <label for="register-username"> Nazwa Użytkownika</label>
-                    <input type="text" id = "register-username" name = "username" autocomplete="off" required>
+                    <input class ="reg-inputs"type="text" id = "register-username" name = "username" autocomplete="off" required>
+                    <label for="register-username" class="labs reg-username"> Nazwa </label>
                 </div>
-                <div class="input-container">
-                    <label for="register-email"> E-mail</label>
-                    <input type="text" id = "register-email" name = "email" autocomplete="off" required>
+                    
+                <div class="input-container reg-divs">
+                    <input class ="reg-inputs" type="text" id = "register-email" name = "email" autocomplete="off" required>
+                    <label for="register-email" class=" reg-email labs "> E-mail</label>
                 </div>
-                <div class ="input-container">
-                    <label for="register-password">Hasło</label>
-                    <input type="password" id="register-password" name = "password" autocomplete="off"required>
+                    
+                <div class ="input-container reg-divs">
+                    <input class ="reg-inputs" type="password" id="register-password" name = "password" autocomplete="off"required>
+                    <label for="register-password" class="reg-pass labs">Hasło</label>
                 </div>
-                <div class="input-container">
-                    <label for="confirm-password">Potwierdź Hasło</label>
-                    <input type="password" id ="confirm-password" name="confirm-password"  autocomplete="off" required>
+                    
+                <div class="input-container reg-divs">
+                    <input class ="reg-inputs" type="password" id ="confirm-password" name="confirm-password"  autocomplete="off" required>
+                    <label for="confirm-password" class=" reg-pass labs">Potwierdź hasło</label>
                 </div>
-                <button class="btn" type="submit"> Zarejestruj się</button>
-                <button class="btn log-back-btn" >Wróć do logowania</button>
+                    
+                <button class="btn reg-btn" type="submit"> Zarejestruj się</button>
+                <button class="btn log-back-btn reg-back-btn" >Wróć do logowania</button>
             </form>
                 
         </section>
