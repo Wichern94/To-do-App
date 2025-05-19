@@ -31,7 +31,7 @@
         <section class="login" aria-labelledby="login-section">
             <img  src="assets/user-shield-alt-1-svgrepo-com.svg" class="user-image" alt="user icon"/>
             <h2 id= "login-section"> Zaloguj się</h2>
-            <form  class="login-form" action="#" method="POST">
+            <form  id="lgn-from" class="login-form" action="#" method="POST">
                 <div class = "input-container">
                     <input class="log-input" type="text" id="username" name="username" autocomplete="off" required>
                     <label for="username" class="log-label labs"> E-mail:</label>
@@ -65,7 +65,36 @@
 
 </section>
 <!-- APLIKACJA WŁASCIWA -->
-<section id ="todo-screen" class="screen hidden">
+<section id ="todo-screen" class="screen hidden" aria-labelledby="Main-app-section">
+    <main  id ="main-app"class="app-screen">
+        <section  id="bg" class="background" aria-labelledby="user-stuff-section">
+            <div  id="usr-stf" class="user-stuff">
+                <button class="menu-toggle" aria-label="open menu"></button>
+                <h1 id="Main-app-section" class="wlcm-msg">Twoje rzeczy</h1>
+                <small class="date">Data:</small>
+            </div>
+            <section  id="li-sctn" class="list-section" aria-labelledby="tasks-section">
+                <div class="list-box">
+                    <h4 id="tasks-section" class="tasks">Zadania:</h4>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <span class="task-text">Title</span>
+                            <small class="task-date">Data dodania </small>
+                            <button class="start-btn list-btns" aria-label="task start"></button>
+                            <button class="stop-btn list-btns" aria-label="task stop"></button>
+                            <button class="pause-btn list-btns" aria-label="task pause"></button>
+                            <button class="delete-btn list-btns" aria-label="delete task"></button>
+                        </li>
+                    </ul>
+                    <small class="comp">COMPLETED:</small>
+                    <button id="ad-tsk" class="add-task"></button>
+                </div>
+        </section>
+
+
+        </section>
+
+    </main>
 
 </section>
 
