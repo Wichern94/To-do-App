@@ -26,7 +26,7 @@ export class AuthUIController {
             btns.addEventListener('click',(e) => this.showLogIn(e)));
         
         // dodaje nasłuchiwanie na przycisk logowania
-        logInBtn.addEventListener('click', (e) => this.logInApp(e));
+        this.handler.onSubmit((values) => this.logInApp(values));
 
         
 
@@ -52,15 +52,15 @@ export class AuthUIController {
         this.viewManager.showView('login-screen');
     }
     //Metoda Logowania Użytkownika
-    logInApp(){
-        this.handler.onSubmit((values)=> {
-            console.log('wartosci z inputów:', values);
-            
-        })
-    }
+    logInApp(values){
+        console.log('wartosci z inputów:', values);
+        
+        }
+    //Metoda Błędów logowania
+}
     
         
-}
+
         
        
     

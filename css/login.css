@@ -29,17 +29,25 @@
     flex-wrap: wrap;
     justify-content: center;
     width: 22rem;
-    height: 22rem;
+    min-height: 22rem;
     border-radius: 12px;
     background-color: var(--glass-border);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     text-align: center;
-    overflow: hidden;
-    
     border: solid 0.5px var(--glass-border);
     animation: glow 15s ease-in-out infinite;
 }
+.err-msg{
+    color: var(--btn-danger);
+    font-size: 10px;
+    position: absolute;
+    left: 6rem;
+    top: -0.5rem;
+    display: none;
+}
+    
+    
 
 
 @keyframes glow {
@@ -104,12 +112,12 @@ input{
     color: var(--text-secondary);
 }
 .log-input:focus + .log-label,
-.log-input:valid + .log-label{
+.log-input:not(:placeholder-shown) + .log-label{
 transform: translateX(5rem);
 opacity: 0;
 }
 .pass-input:focus + .pass-label,
-.pass-input:valid + .pass-label{
+.pass-input:not(:placeholder-shown) + .pass-label{
 transform: translateX(5rem);
 opacity: 0;
 }
