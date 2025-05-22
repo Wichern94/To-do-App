@@ -1,10 +1,14 @@
-import{ LoginFormHandler } from './login.js'
+import{ LoginFormHandler } from './login.js' ;
+import { FormErrors } from './uiErrorHandler.js';
 
 export class AuthUIController {
     constructor (viewManager) {
         this.viewManager = viewManager;
-        this.bindEvents();
         this.handler = new LoginFormHandler('lgn-from');
+        this.LoginErrorHandler = new FormErrors('lgn-from')
+        this.bindEvents();
+        this.setupErrorClearing()
+        
     }
 
     bindEvents() {
@@ -53,11 +57,46 @@ export class AuthUIController {
     }
     //Metoda Logowania Użytkownika
     logInApp(values){
+        this.LoginErrorHandler.clearAllErrors()
         console.log('wartosci z inputów:', values);
-        
+        if(this.loginErrors(values)) return
+        this.viewManager.showView('todo-screen') 
+    }
+    // Metoda Błędów logowania
+    loginErrors(values) {
+        let hasError = false;
+        if(values.email === '') {
+           this.LoginErrorHandler.showError('email','Uzupełnij pola!'); 
+           hasError = true;
         }
-    //Metoda Błędów logowania
-}
+        if (values.password ==='') {
+            this.LoginErrorHandler.showError('password','Uzupełnij pola!');
+            hasError = true;
+        }
+        return hasError
+    }
+    // kasowanie błedów
+    setupErrorClearing() {
+        const inputs = this.handler.form.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                this.LoginErrorHandler.clearError(input.name)
+            }) 
+        })
+    }
+}   
+        
+
+        
+
+        
+        
+   
+        
+        
+        
+ 
+
     
         
 

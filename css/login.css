@@ -44,7 +44,7 @@
     position: absolute;
     left: 6rem;
     top: -0.5rem;
-    display: none;
+    
 }
     
     
@@ -99,6 +99,9 @@ input{
     outline: none;
     width: 10.8rem;
     line-height: 1.5rem;
+}
+.input-error {
+  border-bottom: 0.5px solid var(--btn-danger);
 }
 .labs:hover{
     transform: scale(1.1);

@@ -1,24 +1,58 @@
 export class FormErrors {
     constructor (formSelector){
-        this.form = document.getElementById(formSelector);
-        this.inputs = this.form.querySelectorAll('input');
-        this.errorContainer = this.form.querySelectorAll('.err-msg')
+        this.form = document.getElementById(formSelector); // łapie formularz
+        this.inputs = this.form.querySelectorAll('input');  // łapie input z tego formularza
+        this.errorElement = this.form.querySelectorAll('.err-msg'); //łapie paragrafy z błedami
+        
     }
+       
+    //  Metoda pokazujaca bład
     showError(rightInput,errMessage) {
-        const errorElement = this.form.querySelector(
-            `.err-msg[data-for='${rightInput}']`);
-            if(errorElement){
-                errorElement.textContent = errMessage;
-                errorElement.style.display = 'block';
-            }
-            const inputElement = this.form.querySelector(`[name='${rightInput}']`);
-            if(inputElement) {
-                inputElement.style.borderBottom = '.5px solid var(--btn-danger)'
-            }
-               
+        const targetError = Array.from(this.errorElement).find( //robie tablice z node listy querySelectorAll('.err-msg');
+            el => el.dataset.for === rightInput //znajduje paragraf nalezacy  do inputa
+        );
+        const inputElement = this.form.querySelector(`[name='${rightInput}']`); //znajduje input po name
+
+        if(targetError){ //jesli jest
+            targetError.textContent = errMessage; // podaje treść wiadomosci
+            targetError.classList.remove('hidden'); //pokazuje usuwajac klase hidden
+        }
+        
+        if(inputElement) {
+            inputElement.classList.add('input-error'); //dodaje klase z czerwonym borderem
+        }
+    }  
+           
+    // Metoda usuwajacy błąd
+    clearError(rightInput) {
+       const inputElement = this.form.querySelector(`[name='${rightInput}']`);
+       const targetError = Array.from(this.errorElement).find(
+            el => el.dataset.for === rightInput
+       );
+       if(targetError) {
+            targetError.textContent = '';
+            targetError.classList.add('hidden');
+            console.log('usunieto jeden bład');
             
-      }  
-    clearError(rightInput){
-        const deleteErr = this.showError.prgphs
+            }
+        if(inputElement) {
+            inputElement.classList.remove('input-error');
+            console.log('usunieto czerwonyborder');
+            
+        }
+    }
+    clearAllErrors() {
+         this.errorElement.forEach( err => {
+            err.textContent = '';
+            err.classList.add('hidden');
+            console.log('usunieto wszystkie błędy');
+            
+         }
+        ) 
+         this.inputs.forEach(inpt =>{
+            inpt.classList.remove('input-error')
+            console.log('usunieto wszystkie czerwone inputy');
+            }
+        );
     }
 }

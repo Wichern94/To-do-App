@@ -33,13 +33,13 @@
             <h2 id= "login-section"> Zaloguj się</h2>
             <form  id="lgn-from" class="login-form" action="#" method="POST">
                 <div class = "input-container">
-                    <p class="err-msg" data-for="email"></p>
+                    <p class="err-msg hidden" data-for="email"></p>
                     <input class="log-input" type="text" id="username" name="email" autocomplete="off" placeholder=" " >
                     <label for="email" class="log-label labs"> E-mail:</label>
                     
                 </div>
                 <div class = "input-container">
-                    <p class="err-msg" data-for="password"></p>
+                    <p class="err-msg hidden" data-for="password"></p>
                     <input class="pass-input" type ="password" id = "password" name = "password" autocomplete="off" placeholder=" ">
                     <label for="password" class="pass-label labs">Hasło:</label>
                 </div>
@@ -91,6 +91,7 @@
                     </ul>
                     <small class="comp">COMPLETED:</small>
                     <button id="ad-tsk" class="add-task"></button>
+                    <button class="btn log-back-btn reg-back-btn" >wyloguj</button>
                 </div>
         </section>
 
@@ -112,25 +113,25 @@
             <h2 id = "register-section" class="reg-head"> Załóż Konto</h2>
             <form id="register-form" class = "reg-form"action="#" method="POST">
                 <div class="input-container">
-                    <p class="err-msg" data-for="username">pole jest wymagane</p>
+                    <p class="err-msg hidden" data-for="username">pole jest wymagane</p>
                     <input class ="reg-inputs"type="text" id = "register-username" name = "username" autocomplete="off" required>
                     <label for="register-username" class="labs reg-username"> Nazwa </label>
                 </div>
                     
                 <div class="input-container reg-divs">
-                    <p class="err-msg" data-for="email">pole jest wymagane</p>
+                    <p class="err-msg hidden" data-for="email">pole jest wymagane</p>
                     <input class ="reg-inputs" type="text" id = "register-email" name = "email" autocomplete="off" required>
                     <label for="register-email" class=" reg-email labs "> E-mail</label>
                 </div>
                     
                 <div class ="input-container reg-divs">
-                    <p class="err-msg" data-for="password">pole jest wymagane</p>
+                    <p class="err-msg hidden" data-for="password">pole jest wymagane</p>
                     <input class ="reg-inputs" type="password" id="register-password" name = "password" autocomplete="off"required>
                     <label for="register-password" class="reg-pass labs">Hasło</label>
                 </div>
                     
                 <div class="input-container reg-divs">
-                    <p class="err-msg" data-for="confirm-password">pole jest wymagane</p>
+                    <p class="err-msg hidden" data-for="confirm-password">pole jest wymagane</p>
                     <input class ="reg-inputs" type="password" id ="confirm-password" name="confirm-password"  autocomplete="off" required>
                     <label for="confirm-password" class=" reg-pass labs">Potwierdź hasło</label>
                 </div>
@@ -155,7 +156,7 @@
             
             <form class="frgt-form" id="forget-form" action="#" method="GET">
                 <div class="input-container forget-container">
-                    <p class="err-msg"></p>
+                    <p class="err-msg hidden"></p>
                     <input  class ="forget-input" type="email" id = "forget-username" name = "useremail" autocomplete="off"  placeholder="" >
                     <label class="forget-label" for="forget-username">E-mail</label>
                 </div>
