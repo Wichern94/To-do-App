@@ -113,27 +113,23 @@
             <img  src="assets/user-plus-alt-1-svgrepo-com.svg" class="reg-book" alt="register icon"/>
             <h2 id = "register-section" class="reg-head"> Załóż Konto</h2>
             <form id="register-form" class = "reg-form"action="#" method="POST">
-                <div class="input-container">
-                    <p class="err-msg hidden" data-for="username">pole jest wymagane</p>
-                    <input class ="reg-inputs"type="text" id = "register-username" name = "username" autocomplete="off" required>
-                    <label for="register-username" class="labs reg-username"> Nazwa </label>
-                </div>
+               
                     
                 <div class="input-container reg-divs">
-                    <p class="err-msg hidden" data-for="email">pole jest wymagane</p>
-                    <input class ="reg-inputs" type="text" id = "register-email" name = "email" autocomplete="off" required>
+                    <p class="err-msg hidden" data-for="email-reg"></p>
+                    <input class ="reg-inputs" type="text" id = "register-email" name = "email-reg" autocomplete="off" placeholder=" ">
                     <label for="register-email" class=" reg-email labs "> E-mail</label>
                 </div>
                     
                 <div class ="input-container reg-divs">
-                    <p class="err-msg hidden" data-for="password">pole jest wymagane</p>
-                    <input class ="reg-inputs" type="password" id="register-password" name = "password" autocomplete="off"required>
+                    <p class="err-msg hidden" data-for="password-reg"></p>
+                    <input class ="reg-inputs" type="password" id="register-password" name = "password-reg" autocomplete="off" placeholder=" ">
                     <label for="register-password" class="reg-pass labs">Hasło</label>
                 </div>
                     
                 <div class="input-container reg-divs">
-                    <p class="err-msg hidden" data-for="confirm-password">pole jest wymagane</p>
-                    <input class ="reg-inputs" type="password" id ="confirm-password" name="confirm-password"  autocomplete="off" required>
+                    <p class="err-msg hidden" data-for="confirm-password"></p>
+                    <input class ="reg-inputs" type="password" id ="confirm-password" name="confirm-password"  autocomplete="off" placeholder=" ">
                     <label for="confirm-password" class=" reg-pass labs">Potwierdź hasło</label>
                 </div>
                     
@@ -158,7 +154,7 @@
             <form class="frgt-form" id="forget-form" action="#" method="GET">
                 <div class="input-container forget-container">
                     <p class="err-msg hidden"></p>
-                    <input  class ="forget-input" type="email" id = "forget-username" name = "useremail" autocomplete="off"  placeholder="" >
+                    <input  class ="forget-input" type="email" id = "forget-username" name = "useremail" autocomplete="off"  placeholder=" " >
                     <label class="forget-label" for="forget-username">E-mail</label>
                 </div>
                 <button class="btn submit-btn" type="submit">Wyslij link do resetowania Hasła</button>

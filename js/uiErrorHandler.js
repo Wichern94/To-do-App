@@ -14,6 +14,8 @@ export class FormErrors {
         const inputElement = this.form.querySelector(`[name='${rightInput}']`); //znajduje input po name
 
         if(targetError){ //jesli jest
+            console.log( 'paragraf znaleziony:', targetError);
+            
             targetError.textContent = errMessage; // podaje treść wiadomosci
             targetError.classList.remove('hidden'); //pokazuje usuwajac klase hidden
         }

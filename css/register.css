@@ -38,7 +38,7 @@
 }
 
 .reg-inputs:focus + .labs,
-.reg-inputs:valid + .labs{
+.reg-inputs:not(:placeholder-shown) + .labs{
 transform: translateX(5rem);
 opacity: 0;
 }
