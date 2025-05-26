@@ -1,20 +1,58 @@
 export class LoginFormHandler {
-    constructor(formSelector) { //jako argument selektor of forumalrza
-        this.form = document.getElementById(formSelector);
-        this.inputs = this.form.querySelectorAll('input'); // pobeiramy inputy z forumlarza
+    constructor(authUI) { //jako argument selektor of formualrza
+        this.authUI = authUI;
+        this.logForm = document.getElementById('lgn-from');
+        this.emailInput = this.logForm.querySelector('input[name="email"]')
+        this.passwordInput = this.logForm.querySelector('input[name="password"]')
+        
+        this.setupFormListeners()
+
+        this.setupErrorClearing()
     }
-    getInputValues() {
-        const values = {};
-        this.inputs.forEach(input => { //przchodze przez imputy
-        values[input.name || input.id] = input.value;
-        });
-        return values;
-    }
-        //nasłuchiwanie na  submit
-    onSubmit(callback) {
-        this.form.addEventListener('submit', (e) => {
+  
+
+
+ setupFormListeners() {
+        console.log('auth ui controler',  this.authUI.LoginErrorHandler);
+        
+        this.logForm.addEventListener('submit',(e) => { 
             e.preventDefault();
-            callback(this.getInputValues());
-        });
+            this.authUI.LoginErrorHandler.clearAllErrors();
+            const email = this.emailInput.value.trim();
+            const password = this.passwordInput.value.trim();
+            let hasError = false;
+         if(email === '') {
+            this.authUI.LoginErrorHandler.showError('email','Uzupełnij pola!'); 
+           hasError = true;
+        }
+         if (password === '') {
+            this.authUI.LoginErrorHandler.showError('password','Uzupełnij pola!');
+             hasError = true;
+        } if(!hasError) 
+            {
+                const values = { email, password };
+                document.dispatchEvent(new CustomEvent('auth:login', { detail: values }));
+          }
+
+            });
+
+        
+        }
+    
+        // kasowanie błedów
+        setupErrorClearing() {
+            this.emailInput.addEventListener('focus', () => {
+                this.authUI.LoginErrorHandler.clearError('email');
+            });
+            this.passwordInput.addEventListener('focus', () => {
+                this.authUI.LoginErrorHandler.clearError('password');
+            }); 
+
+        }
+                
     }
-}
+               
+                    
+            
+    
+    

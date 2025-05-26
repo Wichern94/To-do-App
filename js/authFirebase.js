@@ -7,6 +7,7 @@ export class AuthService { //klasa do exportu
     constructor(authInstance){ //konstruktor w ktorym podamy const auth gdy bedziemy powolywac instacje
         this.auth = authInstance; //auth
     }
+    //metoda rejestracji uzytkownika
    async  registerUser (email,password) { //e mail i haslo jako argumenty
     try {
        const registerData = await createUserWithEmailAndPassword(this.auth, email ,password); // metoda od fire base
@@ -18,7 +19,21 @@ export class AuthService { //klasa do exportu
         console.error('błąd rejestracji:', error.code, error.message);
         throw error
     }
+}
+//metoda Logowania uzytkownika
+async loginUser( email,password) {
+    try {
+        const logindData = await signInWithEmailAndPassword(this.auth, email,password);
+        const user = logindData.user;
+        console.log('zalogowano użytkownika', user.email, user.uid);
+        return user;
+    } catch (error) {
+        console.error('błąd rejestracji:', error.code,error.message);
+        throw error
+    }
+        
+}
+
        
 
-    }
 }

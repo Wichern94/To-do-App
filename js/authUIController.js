@@ -7,11 +7,11 @@ import { fireApp } from './firebase-init.js';
 export class AuthUIController {
     constructor (viewManager) {
         this.viewManager = viewManager;
-        this.handler = new LoginFormHandler('lgn-from');
+        
         this.LoginErrorHandler = new FormErrors('lgn-from');
         this.regErrorHandler = new FormErrors('register-form')
         this.bindScreenEvents();
-        this.setupFormListeners();
+        
         this.setupRegisterFormListener()
     }
         
@@ -56,18 +56,12 @@ export class AuthUIController {
                 this.viewManager.showView('login-screen');
             }
 
-    // metoda wsylki logowania
-    setupFormListeners() {
-        const logForm = document.getElementById('lgn-from');
+    
 
-        this.handler.onSubmit(values => {
-            document.dispatchEvent(new CustomEvent('auth:login', { detail: values }));
-            });
 
-        logForm.addEventListener('submit',(e) => { 
-                e.preventDefault();
-        });
-        }
+
+
+
 
         //metoda wysylki rejstracji
     setupRegisterFormListener() {

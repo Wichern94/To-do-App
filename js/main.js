@@ -8,6 +8,8 @@ import { ViewManager } from './viewManager.js';
 // AuthControler
 import {AuthController} from './AuthController.js'
 import { AuthUIController } from './authUIController.js';
+//logowanie
+import {LoginFormHandler} from './login.js'
 // Powołuje Instacje klass
 class App {
     constructor() {
@@ -15,6 +17,7 @@ class App {
         this.authUi = new AuthUIController(this.viewManager); 
         this.authService = new AuthService(getAuth(fireApp))
         this.authController = new AuthController(this.viewManager,this.authService,this.authUi)
+        this.loginHandler = new LoginFormHandler(this.authUi)
     }
 }
 const app = new App()
