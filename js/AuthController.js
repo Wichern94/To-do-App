@@ -1,4 +1,4 @@
-import{ LoginFormHandler } from './login.js' ;
+import{ LoginFormHandler } from './formHandlers.js' ;
 import { FormErrors } from './uiErrorHandler.js';
 import { AuthService} from './authFirebase.js'
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
@@ -9,13 +9,14 @@ export class AuthController{
         this.viewManger = viewManger;
         this.authService =authService;
         this.authUI = authUI;
+        
         this.init();
         
         //inicjalizacja eventów formularzy
     }
     init() {
         document.addEventListener('auth:login', e => this.handleLogin(e.detail));
-        this.regListener = document.addEventListener('auth:register', e =>
+        document.addEventListener('auth:register', e =>
             this.handleRegister(e.detail))
     }
       //metoda rejestracji uzytkownika  

@@ -8,21 +8,22 @@ import { ViewManager } from './viewManager.js';
 // AuthControler
 import {AuthController} from './AuthController.js'
 import { AuthUIController } from './authUIController.js';
-//logowanie
-import {LoginFormHandler} from './login.js'
+//logowanie/ rejestracja
+import {LoginFormHandler} from './formHandlers.js'
+import {RegisterFormHandler} from './formHandlers.js'
 // Powołuje Instacje klass
 class App {
     constructor() {
         this.viewManager = new ViewManager();
         this.authUi = new AuthUIController(this.viewManager); 
-        this.authService = new AuthService(getAuth(fireApp))
-        this.authController = new AuthController(this.viewManager,this.authService,this.authUi)
-        this.loginHandler = new LoginFormHandler(this.authUi)
+        this.authService = new AuthService(getAuth(fireApp));
+        this.authController = new AuthController(this.viewManager,this.authService,this.authUi);
+        this.loginHandler = new LoginFormHandler(this.authUi, 'lgn-from','email','password');
+        this.registerHandler = new RegisterFormHandler(
+            this.authUi, 'register-form','email-reg','password-reg','confirm-password');
     }
 }
 const app = new App()
-// const viewManager = new ViewManager();
-// const authUi = new AuthUIController(viewManager)
 
     
 
