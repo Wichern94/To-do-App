@@ -8,9 +8,10 @@ import { ViewManager } from './viewManager.js';
 // AuthControler
 import {AuthController} from './AuthController.js'
 import { AuthUIController } from './authUIController.js';
-//logowanie/ rejestracja
+//logowanie/ rejestracja/forget
 import {LoginFormHandler} from './formHandlers.js'
 import {RegisterFormHandler} from './formHandlers.js'
+import {ResetFormHandler} from './formHandlers.js'
 // Powołuje Instacje klass
 class App {
     constructor() {
@@ -21,6 +22,7 @@ class App {
         this.loginHandler = new LoginFormHandler(this.authUi, 'lgn-from','email','password');
         this.registerHandler = new RegisterFormHandler(
             this.authUi, 'register-form','email-reg','password-reg','confirm-password');
+            this.ResetHandler = new ResetFormHandler( this.authUi,'forget-form','useremail');
     }
 }
 const app = new App()

@@ -8,7 +8,8 @@ export class AuthUIController {
     constructor (viewManager) {
         this.viewManager = viewManager;
         this.LoginErrorHandler = new FormErrors('lgn-from');
-        this.regErrorHandler = new FormErrors('register-form')
+        this.regErrorHandler = new FormErrors('register-form');
+        this.forgetErrorHandler = new FormErrors('forget-form');
         this.bindScreenEvents();
     }
     

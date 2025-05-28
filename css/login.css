@@ -20,6 +20,7 @@
   --btn-hover: rgba(255, 255, 255, 0.15);
   --btn-accent: #38BDF8;
   --btn-danger: #EF4444;
+  --btn-possitive: #0ea70e;
 
 }
 
@@ -44,6 +45,9 @@
     left: 6rem;
     top: -0.5rem;
     
+}
+.greenTxt {
+    color: var(--btn-possitive);
 }
     
     
@@ -72,6 +76,9 @@ input{
 }
 .input-error {
   border-bottom: 0.5px solid var(--btn-danger);
+}
+.input-possitive {
+  border-bottom: 0.5px solid var(--btn-possitive);
 }
 .labs:hover{
     transform: scale(1.1);

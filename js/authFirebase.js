@@ -4,8 +4,9 @@ import { fireApp } from './firebase-init.js';  //  plik z inicjalizacją Firebas
 const auth =  getAuth(fireApp);
 // klasa  obslugi firebase
 export class AuthService { //klasa do exportu
-    constructor(authInstance){ //konstruktor w ktorym podamy const auth gdy bedziemy powolywac instacje
+    constructor(authInstance ){ //konstruktor w ktorym podamy const auth gdy bedziemy powolywac instacje
         this.auth = authInstance; //auth
+        
     }
     //metoda rejestracji uzytkownika
    async  registerUser (email,password) { //e mail i haslo jako argumenty
@@ -33,7 +34,21 @@ async loginUser( email,password) {
     }
         
 }
+//metoda Resetowania Hasła
+async resetPassword(email) {
+    try {
+        const resetPswrd = await sendPasswordResetEmail(this.auth, email);
+        console.log('wysłano maila na:', email);
+        return {succes:true, email } 
+        
+    } catch (error) {
+        
+        console.error('Błąd zapytania:', error.code,error.message);
+        throw error
+        
+        }
+    }
+}
+        
 
        
-
-}
