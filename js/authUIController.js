@@ -11,6 +11,7 @@ export class AuthUIController {
         this.regErrorHandler = new FormErrors('register-form');
         this.forgetErrorHandler = new FormErrors('forget-form');
         this.bindScreenEvents();
+        this.getActiveView();
     }
     
     //Metoda obsługi zmiany widoków
@@ -48,6 +49,19 @@ export class AuthUIController {
         console.log("kliknieto w logback");
         this.viewManager.showView('login-screen');
     }
+    getActiveView() {
+        if (document.getElementById('login-screen')?.offsetParent !== null) {
+            return 'login';
+        }
+        if (document.getElementById('register-screen')?.offsetParent !== null) {
+            return 'register';
+        }
+        if (document.getElementById('forget-screen')?.offsetParent !== null) {
+            return 'reset';
+        }
+        return null;
+    }
+}
     
     
         
@@ -65,7 +79,6 @@ export class AuthUIController {
 
 
       
-}
                 
        
        

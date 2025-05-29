@@ -92,7 +92,7 @@
                     </ul>
                     <small class="comp">COMPLETED:</small>
                     <button id="ad-tsk" class="add-task"></button>
-                    <button class="btn log-back-btn reg-back-btn" >wyloguj</button>
+                    <button  id = "logout-btn"class="btn log-out-btn reg-back-btn" >wyloguj</button>
                 </div>
         </section>
 
@@ -153,7 +153,7 @@
             
             <form class="frgt-form" id="forget-form" action="#" method="GET">
                 <div class="input-container forget-container">
-                    <p class="err-msg hidden"></p>
+                    <p class="err-msg hidden" data-for="useremail"></p>
                     <input  class ="forget-input" type="email" id = "forget-username" name = "useremail" autocomplete="off"  placeholder=" " >
                     <label class="forget-label" for="forget-username">E-mail</label>
                 </div>

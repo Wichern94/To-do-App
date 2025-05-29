@@ -3,6 +3,7 @@ import { FormErrors } from './uiErrorHandler.js';
 import { AuthService} from './authFirebase.js'
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 import { fireApp } from './firebase-init.js';
+import {LogoutButtonHandler} from './todo.js'
 
 export class AuthController{
     constructor(viewManger,authService,authUI) {
@@ -15,11 +16,20 @@ export class AuthController{
         //inicjalizacja eventów formularzy
     }
     init() {
-        document.addEventListener('auth:login', e => this.handleLogin(e.detail));
+        document.addEventListener('auth:login', e => 
+            this.handleLogin(e.detail));
+
         document.addEventListener('auth:register', e =>
-            this.handleRegister(e.detail))
+            this.handleRegister(e.detail));
+
+        document.addEventListener('auth:reset-password', e => 
+            this.handlePswrdReset(e.detail))
+        
+        document.addEventListener('auth:logout', e => 
+            this.handleLogout());
+        
     }
-      //metoda rejestracji uzytkownika  
+      //metoda odbierajaca event rejestracji uzytkownika  
         
     async handleRegister(values) {
          try{
@@ -44,12 +54,14 @@ export class AuthController{
          }
          
      }
+     //Metoda odbierajaca event Logowania
     async handleLogin(values) {
         try {
             const {email,password } = values;
             const user = await this.authService.loginUser(email,password);
             console.log('zalogowano:', user);
             this.viewManger.showView('todo-screen');
+            const logoutBtn = new LogoutButtonHandler('logout-btn')
             alert('ZALOGOWANO!')
         } catch (err) {
             switch(err.code) {
@@ -73,6 +85,37 @@ export class AuthController{
             }
         }
     }
+    //Metoda odbierajace event resetu hasła
+    async handlePswrdReset({email}) {
+        try {
+            const resetPswrd = await this.authService.resetPassword(email);
+            alert('wysłano maila ', email);
+            
+        } catch (err) {
+            switch(err.code) {
+                case 'auth/user-not-found':
+                    this.authUI.forgetErrorHandler.showError('useremail','Nie znaleziono użytkownika');
+                    break;
+                case 'auth/invalid-email':
+                    this.authUI.forgetErrorHandler.showError('useremail','Nieprawidłowy format');
+                    break;
+                case 'auth/too-many-requests':
+                    this.authUI.forgetErrorHandler.showError('useremail','Zbyt wiele prób');
+                    break;
+                    default:
+                    console.error('błąd logowania:', err.code);
+            }
+        }
+    }
+    async handleLogout(){
+        try {
+            await this.authService.logOut()
+            alert('Wylogowano!')
+            this.authUI.showLogIn();
+        } catch (error) {
+            console.error('błąd wylogowania', error.code, error.message);
+        }
+    }
 }
             
             
@@ -85,26 +128,5 @@ export class AuthController{
 
 
 
-//   // Metoda Błędów logowania
-//     loginErrors(values) {
-//         let hasError = false;
-//         if(values.email === '') {
-//            this.LoginErrorHandler.showError('email','Uzupełnij pola!'); 
-//            hasError = true;
-//         }
-//         if (values.password ==='') {
-//             this.LoginErrorHandler.showError('password','Uzupełnij pola!');
-//             hasError = true;
-//         }
-//         return hasError
-//     }
-//     // kasowanie błedów
-//     setupErrorClearing() {
-//         const inputs = this.handler.form.querySelectorAll('input');
-//         inputs.forEach(input => {
-//             input.addEventListener('focus', () => {
-//                 this.LoginErrorHandler.clearError(input.name)
-//             }) 
-//         })
-//     }
+
    

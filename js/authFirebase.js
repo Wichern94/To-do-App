@@ -39,6 +39,7 @@ async resetPassword(email) {
     try {
         const resetPswrd = await sendPasswordResetEmail(this.auth, email);
         console.log('wysłano maila na:', email);
+        
         return {succes:true, email } 
         
     } catch (error) {
@@ -46,6 +47,14 @@ async resetPassword(email) {
         console.error('Błąd zapytania:', error.code,error.message);
         throw error
         
+        }
+    }
+    async logOut() {
+        try {
+          await auth.signOut() 
+        } catch (error) {
+            console.error('błąd wylogowania:',error.code,error.message);
+            throw error
         }
     }
 }

@@ -19,15 +19,69 @@ class App {
         this.authUi = new AuthUIController(this.viewManager); 
         this.authService = new AuthService(getAuth(fireApp));
         this.authController = new AuthController(this.viewManager,this.authService,this.authUi);
-        this.loginHandler = new LoginFormHandler(this.authUi, 'lgn-from','email','password');
-        this.registerHandler = new RegisterFormHandler(
-            this.authUi, 'register-form','email-reg','password-reg','confirm-password');
-            this.ResetHandler = new ResetFormHandler( this.authUi,'forget-form','useremail');
+        this.activeHandler = null;
+        this.initializeForm()
+        this.formChecker()
+    }
+    //metoda nasluchujaca na custom event zmiany widoku
+    initializeForm() {
+        document.addEventListener('view:changed',() =>
+            this.formChecker());
+      }  
+        
+    
+        
+    //Metoda uruchamiająca odpowiedni formularz
+    formChecker(){ 
+        // 1. Jeśli jest aktywny handler i ma metodę destroy – zniszcz go
+        if (this.activeHandler?.destroy) {
+            this.activeHandler.destroy();
+        }
+        this.activeHandler = null;
+        // 2. Sprawdź, jaki formularz jest aktualnie widoczny
+        const activeView  = this.authUi.getActiveView()
+        // 3. W zależności od widoku, uruchom odpowiedni handler
+        switch(activeView) {
+
+            case 'login':
+                console.log('Włączono logowanie!');
+                this.loginHandler = new LoginFormHandler(
+                    this.authUi, 'lgn-from','email','password');
+            this.activeHandler = this.loginHandler;
+
+            break;
+                
+
+            case 'register':
+                console.log('Włączono rejestracje!');
+                this.registerHandler = new RegisterFormHandler(
+                    this.authUi, 'register-form','email-reg','password-reg','confirm-password');
+            this.activeHandler = this.registerHandler;
+
+            break;
+
+            case 'reset':
+                console.log('Włączono resetowanie!');
+                this.resetHandler = new ResetFormHandler(
+                    this.authUi,'forget-form','useremail'); 
+            this.activeHandler = this.resetHandler;
+            
+            break;
+            default:
+                console.warn('Brak aktywnego widoku')
+        }
     }
 }
-const app = new App()
-
     
+const app = new App()
+        
+    
+
+        
+        
+            
+
+
 
 
 

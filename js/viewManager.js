@@ -13,6 +13,7 @@ export class ViewManager {
         const view = document.getElementById(viewId);
         if(view) {
             view.classList.remove('hidden');
+            document.dispatchEvent(new CustomEvent('view:changed'));
         } else {
             console.error(`View with id "${viewId}" not found.`)
         }
