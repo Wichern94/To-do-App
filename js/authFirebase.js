@@ -40,7 +40,7 @@ async resetPassword(email) {
         const resetPswrd = await sendPasswordResetEmail(this.auth, email);
         console.log('wysłano maila na:', email);
         
-        return {succes:true, email } 
+        return  
         
     } catch (error) {
         

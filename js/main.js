@@ -20,6 +20,7 @@ class App {
         this.authService = new AuthService(getAuth(fireApp));
         this.authController = new AuthController(this.viewManager,this.authService,this.authUi);
         this.activeHandler = null;
+        this.cleanUpInactiveViews()
         this.initializeForm()
         this.formChecker()
     }
@@ -27,7 +28,20 @@ class App {
     initializeForm() {
         document.addEventListener('view:changed',() =>
             this.formChecker());
-      }  
+      }
+      cleanUpInactiveViews() {
+        const inactiveViews = [
+            new RegisterFormHandler(
+                    this.authUi, 'register-form','email-reg','password-reg','confirm-password'),
+            new ResetFormHandler(
+                    this.authUi,'forget-form','useremail')
+        ];
+        inactiveViews.forEach(handler => {
+            if(handler.destroy) {
+            handler.destroy();
+            }
+        });
+      } 
         
     
         

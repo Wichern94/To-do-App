@@ -9,13 +9,14 @@ export class ResetFormHandler  {
         this.emailInput = this.credentialsForm.querySelector(
             `input[name="${formEmail}"]`);
        ;
-        this.credentialsForm.addEventListener('submit',this.setupForgetFormListener);
-        this.setupForgetFormListener = this.setupForgetFormListener.bind(this)
-        this.setupResetErrorClearing()
+        this.handleSubmit = this.setupForgetForm.bind(this);
+        this.credentialsForm.addEventListener('submit', this.handleSubmit);
+
+        this.setupResetErrorClearing();
         
         
     }
-    setupForgetFormListener() {
+    setupForgetForm(e) {
         
         e.preventDefault();
         this.formErrors.clearAllErrors(); //<- czyszcze błedy
@@ -34,7 +35,11 @@ export class ResetFormHandler  {
         
     }
     destroy() {
-        this.credentialsForm.removeEventListener('submit',this.submitHandler);
+        console.log('zniszczono ResetFormHandler');
+        
+        this.credentialsForm.removeEventListener('submit',this.handleSubmit);
+        console.log('usunieto event z:', this.credentialsForm);
+        
     }
 //metoda pomocnicza do sprawdzenia emaila
 isValidEmail(email) {
@@ -62,12 +67,14 @@ export class LoginFormHandler extends ResetFormHandler {
         this.formPassName = formPass;
         this.passwordInput = this.credentialsForm.querySelector(
         `input[name="${formPass}"]`);
-        this.#setupFormListeners();
+        this.handleSubmit = this.setupFormLogin.bind(this);
+        this.credentialsForm.addEventListener('submit', this.handleSubmit);
+        
         this.setupErrorClearing()
     }
     //logika logowania
-     #setupFormListeners() {
-         this.credentialsForm.addEventListener('submit',(e) => { 
+     setupFormLogin(e) {
+         
              e.preventDefault(); //zapobiegam przeładowaniu strony
              this.formErrors.clearAllErrors(); //<-najpierw usuwamy błedy
              const email = this.emailInput.value.trim();
@@ -85,8 +92,14 @@ export class LoginFormHandler extends ResetFormHandler {
                  const values = { email, password }; // przekazuje e mail i haslo do nowego eventu
                  document.dispatchEvent(new CustomEvent('auth:login', { detail: values }));
             }
-        });
+        };
+    destroy() {
+    console.log('Znieszczono LoginFormHandler');
+        
+    this.credentialsForm.removeEventListener('submit', this.handleSubmit);
+    super.destroy(); 
     }
+    
     // kasowanie błedów
     setupErrorClearing() {
         
@@ -108,14 +121,16 @@ export class LoginFormHandler extends ResetFormHandler {
         this.confirmPswrd = formConfirmPass;
         this.passwordInput = this.credentialsForm.querySelector(
             `input[name="${formPass}"]`);
+        this.handleSubmit = this.setupRegisterForm.bind(this);
+        this.credentialsForm.addEventListener('submit', this.handleSubmit);
     
-        this.#setupRegisterFormListener();
+        
         this.setupErrorClearing()
     }
 
     //metoda wysylki rejstracji
-    #setupRegisterFormListener() {
-        this.credentialsForm.addEventListener('submit', (e) => {
+    setupRegisterForm(e) {
+        
             e.preventDefault();
             this.formErrors.clearAllErrors(); //<- czyszcze błedy
         
@@ -149,9 +164,16 @@ export class LoginFormHandler extends ResetFormHandler {
             const values = {email, password };
             document.dispatchEvent(new CustomEvent('auth:register',{detail: values}));
                     }
-                }   
-            )  
-        }
+                } 
+            
+        destroy() {
+        console.log('Zniszczono RegisterFormHandler');
+            
+        this.credentialsForm.removeEventListener('submit', this.handleSubmit);
+        super.destroy(); 
+        }  
+             
+        
         // kasowanie błedów
         setupErrorClearing() {
             
