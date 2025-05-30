@@ -61,7 +61,7 @@ export class AuthController{
             const user = await this.authService.loginUser(email,password);
             console.log('zalogowano:', user);
             this.viewManger.showView('todo-screen');
-            const logoutBtn = new LogoutButtonHandler('logout-btn')
+            
             alert('ZALOGOWANO!')
         } catch (err) {
             switch(err.code) {
@@ -111,7 +111,7 @@ export class AuthController{
         try {
             await this.authService.logOut()
             alert('Wylogowano!')
-            this.authUI.showLogIn();
+            this.authUI.logout();
         } catch (error) {
             console.error('błąd wylogowania', error.code, error.message);
         }

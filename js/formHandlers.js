@@ -8,13 +8,16 @@ export class ResetFormHandler  {
         this.formEmailName = formEmail;
         this.emailInput = this.credentialsForm.querySelector(
             `input[name="${formEmail}"]`);
-       ;
-        this.handleSubmit = this.setupForgetForm.bind(this);
-        this.credentialsForm.addEventListener('submit', this.handleSubmit);
+       
+        
 
         this.setupResetErrorClearing();
         
         
+    }
+    init(){
+         this.handleSubmit = this.setupForgetForm.bind(this);
+        this.credentialsForm.addEventListener('submit', this.handleSubmit);
     }
     setupForgetForm(e) {
         

@@ -51,7 +51,7 @@ async resetPassword(email) {
     }
     async logOut() {
         try {
-          await auth.signOut() 
+          await this.auth.signOut(); 
         } catch (error) {
             console.error('błąd wylogowania:',error.code,error.message);
             throw error

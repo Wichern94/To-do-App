@@ -34,21 +34,27 @@ export class AuthUIController {
     // Metoda pokazujaca forget
     showFrgt(e) {
         e.preventDefault();
-        console.log("kliknieto w forget");
+        console.log('kliknieto w forget');
         this.viewManager.showView('forget-screen');
     }
     // Metoda pokazująca  rejstracje 
     showRgstr(e){
         e.preventDefault();
-        console.log("kliknieto w register");
+        console.log('kliknieto w register');
         this.viewManager.showView('register-screen');
     }
     // Metoda powrotu do Logowania
     showLogIn(e) {
         e.preventDefault();
-        console.log("kliknieto w logback");
+        console.log('kliknieto w logback');
         this.viewManager.showView('login-screen');
     }
+    //metoda do zmiany widoku po wylogowaniu sie
+    logout() {
+        console.log('wylogowano');
+        this.viewManager.showView('login-screen');
+    }
+    //sprawdzamy i okreslamy aktualny widok
     getActiveView() {
         if (document.getElementById('login-screen')?.offsetParent !== null) {
             return 'login';
@@ -59,10 +65,13 @@ export class AuthUIController {
         if (document.getElementById('forget-screen')?.offsetParent !== null) {
             return 'reset';
         }
+        if (document.getElementById('todo-screen')?.offsetParent !== null) {
+            return 'apk';
+         }   
         return null;
+    
     }
 }
-    
     
         
         

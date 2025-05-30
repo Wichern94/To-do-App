@@ -2,7 +2,7 @@
 //firebase
 import { fireApp } from './firebase-init.js';
 import {AuthService} from './authFirebase.js'
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 // viewManager
 import { ViewManager } from './viewManager.js';
 // AuthControler
@@ -12,6 +12,8 @@ import { AuthUIController } from './authUIController.js';
 import {LoginFormHandler} from './formHandlers.js'
 import {RegisterFormHandler} from './formHandlers.js'
 import {ResetFormHandler} from './formHandlers.js'
+// przycisk wylogowania sie
+import{LogoutButtonHandler} from './todo.js'
 // Powołuje Instacje klass
 class App {
     constructor() {
@@ -26,9 +28,15 @@ class App {
     }
     //metoda nasluchujaca na custom event zmiany widoku
     initializeForm() {
-        document.addEventListener('view:changed',() =>
+        document.addEventListener('view:changed',() => 
             this.formChecker());
-      }
+            
+                
+                
+            }
+        
+        
+      
       cleanUpInactiveViews() {
         const inactiveViews = [
             new RegisterFormHandler(
@@ -79,15 +87,41 @@ class App {
                 this.resetHandler = new ResetFormHandler(
                     this.authUi,'forget-form','useremail'); 
             this.activeHandler = this.resetHandler;
+            this.resetHandler.init()
             
             break;
-            default:
-                console.warn('Brak aktywnego widoku')
+            case 'apk':
+                 this.LogoutButtonHandler = new LogoutButtonHandler('logout-btn')
+                 if(this.LogoutButtonHandler) {
+                    console.log('button podpiety!');
+                    
+                 }
+                console.log('Aplikacja własciwa');
+            
         }
     }
 }
     
-const app = new App()
+const auth = getAuth(fireApp);
+
+onAuthStateChanged(auth,(user) => {
+    if(user) {
+        console.log('Uzytkownik zalogowany:', user.email);
+        const appBody = document.getElementById('app');
+        appBody.classList.remove('hidden');
+        const app = new App();
+        
+        
+        
+        
+         app.viewManager.showView('todo-screen');
+    } else {
+        console.log('brak zalogowanego uzytkownika');
+        const app = new App();
+        
+    }
+        
+});
         
     
 
