@@ -80,6 +80,9 @@ export class AuthController{
                 case 'auth/too-many-requests':
                     this.authUI.LoginErrorHandler.showError('email','za duzo prób logowania');
                     break;
+                case 'auth/invalid-credential':
+                    this.authUI.LoginErrorHandler.showError('email','Nieprawidłowe hasło lub email');
+                    break;
                     default:
                     console.error('błąd logowania:', err.code);
             }

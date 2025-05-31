@@ -17,7 +17,7 @@
     <script type="module" src="js/main.js" defer></script>
  
 </head>
-<body  id="app" class="dark-theme hidden">
+<body  id="app" class="dark-theme  ">
 
     
 
@@ -69,14 +69,79 @@
 
 </section>
 <!-- APLIKACJA WŁASCIWA -->
-<section id ="todo-screen" class="screen hidden" aria-labelledby="Main-app-section">
+<section id ="todo-screen" class="apk-screen hidden" aria-labelledby="Main-app-section">
     <main  id ="main-app"class="app-screen">
         <section  id="bg" class="background" aria-labelledby="user-stuff-section">
-            <div  id="usr-stf" class="user-stuff">
-                <button class="menu-toggle" aria-label="open menu"></button>
-                <h1 id="Main-app-section" class="wlcm-msg">Twoje rzeczy</h1>
-                <small class="date">Data:</small>
+            <div class="user-menu">
+                <button class = "menu-toggle apk-ui-btn" aria-label="open menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                    </svg>
+                </button>
+                <ul class="dropdown hidden" >
+                    <button class="dropdown-exit-btn ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+
+                    </button>
+                    <li><button class="dropdown-btn">Ustawienia</button></li>
+                    <li><button class="dropdown-btn">Zmień hasło</button></li>
+                    <li><button class="dropdown-btn">logout</button></li>
+                </ul>
+
+                <div class="search-wrapper">
+                <button class="search-toggle apk-ui-btn" aria-label="Open searching">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                </button>
+
+                <input type="text" class = "search-input hidden " placeholder = "szukaj...">
             </div>
+        </div>
+
+        <div  id="usr-stf" class="user-stuff">
+            <h1 id="Main-app-section" class="wlcm-msg">Witaj </h1>
+        </div>     
+            <div class="date-filter-sort">
+                <small class="date">Data:</small>
+                <div class="toggle-filter">
+                    <button class = "filter-toggle apk-ui-btn" aria-label="open filter">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                        </svg>
+
+                    </button>
+                    <ul class="dropdown hidden" >
+                        <li class="filter-item">
+                            <label><input type="checkbox" name="status" value="completed"> Wykonane</label>
+                        </li>
+                        <li class="filter-item">
+                            <label><input type="checkbox" name="status" value="completed"> W trakcie</label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="toggle-sort">
+                    <button class = "sort-toggle apk-ui-btn" aria-label="open sort">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z" />
+                        </svg>
+                    </button>
+                    <ul class="dropdown hidden" >
+                        <li class="sort-item">
+                            <label><input type="checkbox" name="sorted" value="A-Z-sort-method"> A-Z</label>
+                        </li>
+                        <li class="sort-item">
+                            <label><input type="checkbox" name="sorted" value="Z-A-sort-method"> Z-A</label>
+                        </li>
+                    </ul>
+                </div>
+                
+                
+
+            
+            </section>
             <section  id="li-sctn" class="list-section" aria-labelledby="tasks-section">
                 <div class="list-box">
                     <h4 id="tasks-section" class="tasks">Zadania:</h4>
@@ -97,7 +162,7 @@
         </section>
 
 
-        </section>
+        
 
     </main>
 
