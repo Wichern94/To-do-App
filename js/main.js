@@ -103,22 +103,18 @@ class App {
 }
     
 const auth = getAuth(fireApp);
-
+ const app = new App();
 onAuthStateChanged(auth,(user) => {
     if(user) {
         console.log('Uzytkownik zalogowany:', user.email);
         const appBody = document.getElementById('app');
         appBody.classList.remove('hidden');
-        const app = new App();
+       
         
         
         
         
          app.viewManager.showView('todo-screen');
-    } else {
-        console.log('brak zalogowanego uzytkownika');
-        const app = new App();
-        
     }
         
 });

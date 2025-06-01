@@ -53,6 +53,7 @@ export class AuthUIController {
     logout() {
         console.log('wylogowano');
         this.viewManager.showView('login-screen');
+        
     }
     //sprawdzamy i okreslamy aktualny widok
     getActiveView() {
