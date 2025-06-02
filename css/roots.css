@@ -31,3 +31,31 @@
   /* NOISE */
   --noise-opacity: 0.015;
 }
+
+:root {
+  /*  Podstawowe kolory */
+  --color-bg: #0d0d0d; /* Tło główne */
+  --color-bg-soft: #161616; /* Karty, modale */
+  --color-glass-bg: rgba(22, 22, 22, 0.6); /* Glassmorphic okna */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #aaaaaa;
+  --color-divider: rgba(255, 255, 255, 0.07);
+
+  /*  Akcenty */
+  --color-accent: #6BCDCE;
+  --color-accent-light: #9BE5EC;
+
+  /*  Statusy */
+  --color-done: #5ef3a3;
+  --color-danger: #ff5f5f;
+  --color-warning: #ffc857;
+
+  /*  Elementy UI */
+  --color-button-hover: rgba(255, 255, 255, 0.05);
+  --color-input-border: rgba(255, 255, 255, 0.15);
+  --color-scrollbar: rgba(255, 255, 255, 0.1);
+
+  /*  Efekt glass */
+  --glass-blur: blur(16px);
+  --glass-radius: 12px;
+}
