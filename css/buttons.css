@@ -1,0 +1,104 @@
+/* przyciski gornej skecji */
+
+.apk-ui-btn {
+    background-image: url(To-do-App/assets/hamburger-menu.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: transparent;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--text-secondary);
+    outline: none;
+    border: none;
+    margin-left: .3rem;
+    cursor: pointer;
+    position: relative;
+}
+#user-menu-btn{
+    width: 1rem;
+    height: 1rem;
+}
+.search-toggle{
+    margin-top: .3rem;
+}
+.user-menu{
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+    height: auto;
+    width: 4rem;
+    margin: .5rem;
+    background: var(--color-bg-soft);
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    align-self:self-start ;
+    
+}
+.menu-btns{
+    display: flex;
+    margin: .5rem .2rem 0 .2rem;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.filter-sort{
+    display: flex;
+    align-items: flex-end;
+    height: auto;
+    width: 4rem;
+    margin: .5rem;
+    background: var(--color-bg-soft);
+    border-radius: 5px;
+}
+    
+.filter-toggle{
+    margin-top: .3rem;
+    width: 1.5rem;
+    height: 1rem;
+}
+.toggle-filter{
+    height: auto;
+}
+.user-settings{
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+    height: auto;
+    width: 4rem;
+    margin: .5rem;
+    background: var(--color-bg-soft);
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    align-self:self-start ;
+}
+.user-icon{
+     color: var(--text-secondary);
+}
+
+
+.dropdown-btn{
+    color: var(--background-dot);
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-size: 12px;
+    margin: .2rem .5rem .2rem .5rem;
+}
+.dropdown-exit-btn {
+    width: 1rem;
+    height: 1rem;
+    color: var(--background-dot);
+    outline: none;
+    border: none;
+    margin: .2rem;
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    align-self:self-end ;
+    height: auto;
+}
+   
+    
+    
