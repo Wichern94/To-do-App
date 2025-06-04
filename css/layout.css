@@ -52,7 +52,7 @@ body{
     text-align: center;
     border: solid 0.5px var(--glass-border);
 }
- #view-standard{
+ #view-header{
     display: flex;
     width: 100vw;
     flex-wrap: wrap;
@@ -61,7 +61,40 @@ body{
     flex-direction: row-reverse;
     justify-content: space-between;
 }
-   
+.separator{
+    position: absolute;
+    top: 12rem;
+
+}
+
+
+/*karuzela*/
+.carousel-wrapper {
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* pllynie dziala na ios */
+    scroll-snap-type: x mandatory;  /*snap na itemy */
+    padding-inline: 16px;
+    align-items: flex-end;
+    width: 7rem;
+    
+}
+.carousel{
+    display: flex;
+    
+    gap: 12px;
+    min-width: max-content; /*wymusza przewijanie */
+}
+.carousel-item {
+    height: auto;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
     
     
     
@@ -87,8 +120,9 @@ body{
     
 .search-input{
     position:absolute;
-    left: 28%;
+    right: 5.8rem;
     margin-top: .3rem;
+    line-height: normal;
 }
 .dropdown{
     position:absolute;
@@ -101,6 +135,7 @@ body{
     flex-direction: column;
     align-items: flex-end;
     top: 2rem;
+    left: .2rem;
 }
 
 .list-section, .task-list {
@@ -111,14 +146,19 @@ body{
     position: relative;
     right: .15rem;
 }
+.tasks{
+    margin-bottom: 1rem;
+}
+.list-section {
+    margin-top: 5rem;
+}
+    
 .task-item {
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: .5px solid var(--glass-border);
+    background: var(--color-bg-soft);
+    border: .5px solid var(--color-accent-light);
     border-radius: 8px;
     width: 20rem;
-    height: 5rem;
+    min-height: 2rem;
     display: flex;
     justify-content: space-around;
     align-content: center;
@@ -128,44 +168,91 @@ body{
    
 }
 .list-btns {
-    align-self:center ;
-    height: 1rem;
-    width: 1rem;
+    
+    height: .8rem;
+    width: .8rem;
     color: var(--text-secondary);
     outline: none;
     border: none;
     background-color: transparent;
-    margin-left: .5rem;
+    margin: 0 .5rem .5rem 0;
     cursor: pointer;
+    justify-self:right;
+    
 }
 .task-text {
     align-self:center ;
     height: auto;
     display: flex;
 }
-.task-date {
-     align-self:center ;
-    height: auto;
-    font-size: 10px;
-}
-.item-btn-container{
-    display: flex;
-    height: 100%;
-    width: 30%;
-    position: relative;
-    justify-content: flex-end;
-}
-.delete-btn{
-    margin-top: .5rem;
-    align-self:self-start
-}
-.title-and-date{
-    margin: .5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+.task-group::after{
+    content: "";
+    border-right: solid .5px var(--color-accent);
+    height: 80%;
+    margin-left: .4rem;
+    margin-right: .4rem;
 }
 
+.task-date {
+    margin-top: 1rem;
+    color: var(--color-warning);
+    font-size: 10px;
+}
+.task-date::after{
+    content: "";
+    border-right: solid .5px var(--color-accent);
+    height: 80%;
+    margin-left: .4rem;
+    margin-right: .2rem;
+}
+.task-group{
+     margin-top: 1rem;
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+.item-container{
+    display: flex;
+    margin: 0 1rem 0 1rem;
+    flex-direction: column;
+    position: relative;
+}
+.item-container::after{
+    content: "";
+    border-bottom: solid .5px var(--color-accent);
+    width: 100%;
+    margin-top: .5rem;
+    
+}
+ 
+.delete-btn{
+    margin-top: .5rem;
+    
+}
+.title-and-acrdon{
+    margin: .8rem .5rem .5rem 1.5rem;
+    display: flex;
+    
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.task-details{
+    font-size: 10px;
+}
+.task-btn-container{
+    display: flex;
+    justify-content: center;
+    
+    width: 100%;
+}
+    
+    
+    
+    
+.summary{
+    width: auto;
+}
     
 
     

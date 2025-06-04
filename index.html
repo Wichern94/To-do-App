@@ -71,7 +71,8 @@
 <!-- APLIKACJA WŁASCIWA -->
 <section id ="todo-screen" class="apk-screen hidden" aria-labelledby="Main-app-section">
     <main  id ="main-app"class="app-screen">
-        <section  id="view-standard" class="background" aria-labelledby="user-stuff-section">
+    <section  id="view-standard">
+        <section  id="view-header" class="background" aria-labelledby="user-stuff-section">
             
             <div class="menu-btns">
                 <div class="user-menu">
@@ -80,17 +81,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
                         </svg>
                     </button>
-                    <ul class="dropdown hidden" >
-                        <button class="dropdown-exit-btn ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-
-                        </button>
-                        <li><button class="dropdown-btn">Ustawienia</button></li>
-                        <li><button class="dropdown-btn">Zmień hasło</button></li>
-                        <li><button class="dropdown-btn">logout</button></li>
-                    </ul>
+                    
 
                     <div class="search-wrapper">
                     <button class="search-toggle apk-ui-btn" aria-label="Open searching">
@@ -99,7 +90,7 @@
                         </svg>
                     </button>
 
-                    <input type="text" class = "search-input hidden " placeholder = "szukaj...">
+                    <input type="text" class = "search-input  " placeholder = "szukaj...">
                 </div>
             </div>
             <div class="filter-sort">
@@ -137,6 +128,45 @@
                 </div>
             </div> 
         </div>
+        <nav class="carousel-wrapper" aria-label="Tryb widoku">
+            <ul class="carousel">
+                
+                <li class="carousel-item">
+                    <button class="carusel-btn">
+                        <svg  class="svg-modes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="110" height="110" fill="#6BCDCE">
+                            <!-- Mapa -->
+                            <path d="M10 20 L10 50 L25 40 L39 50 L54 40 L54 10 L39 20 L25 10 Z" fill="none" stroke="#6BCDCE" stroke-width="2"/>
+                            <!-- Trasa -->
+                            <path d="M12 48 Q18 36 25 40 T35 42 T50 32" fill="none" stroke="#6BCDCE" stroke-width="2" stroke-dasharray="3,3"/>
+                            
+                            <!-- Bug -->
+                            
+  
+                                <!-- Pinezka -->
+                                <circle cx="16" cy="34" r="3" fill="#6BCDCE"/>
+                                <circle cx="16" cy="34" r="1.2" fill="white"/>
+                            </svg>
+
+                        Roadmapa</button>
+                </li>
+                <li class="carousel-item">
+                    <button class="carusel-btn">
+                        <svg class="svg-modes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="110" height="110" fill="#6BCDCE">
+                            <!-- Kalendarz -->
+                            <rect x="10" y="16" width="44" height="36" rx="2" ry="2" fill="none" stroke="#6BCDCE" stroke-width="2"/>
+                            
+                            <!-- Siatka dni -->
+                            <g stroke="#6BCDCE" stroke-width="1.5">
+                                <line x1="10" y1="26" x2="54" y2="26"/>
+                                <line x1="20" y1="16" x2="20" y2="52"/>
+                                <line x1="30" y1="16" x2="30" y2="52"/>
+                                <line x1="40" y1="16" x2="40" y2="52"/>
+                            </g>
+                            </svg>
+                    Kalendarz</button>
+                </li>
+            </ul>
+        </nav>
         <div class="user-settings">
                 <div class="user-icon ">
                     <button class="apk-ui-btn user-btn" id="user-menu-btn">
@@ -144,126 +174,169 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                         </svg>
                     </button>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <ul class="dropdown hidden " >
+                        <button class="dropdown-exit-btn ">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+
+                        </button>
+                        <li><button class="dropdown-btn">Ustawienia</button></li>
+                        <li><button class="dropdown-btn">Zmień hasło</button></li>
+                        <li><button class="dropdown-btn">logout</button></li>
+                    </ul>
+                    <svg class="user-portrait" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                     
 
                 </div>
             </div>
+            <div class="separator">
+                <svg viewBox="0 0 1440 40" width="80%" height="20" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                    <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                    </filter>
+                </defs>
+                    <path d="M0,10 Q720,-20 1440,10"
+                    fill="none"
+                    stroke="#9BE5EC" 
+                    stroke-width="3.5"
+                    filter="url(#glow)"
+                    stroke-linecap="round"/>
+                </svg>
+
+            </div>
+        </section>
         
             
                 
 
             
-            </section>
             <section  id="li-sctn" class="list-section" aria-labelledby="tasks-section">
                 <div class="list-box">
                     <h4 id="tasks-section" class="tasks">Zadania:</h4>
                     <ul class="task-list">
                         <li class="task-item">
-                            <div class="title-and-date">
+                            <div class="title-and-acrdon">
                                 <span class="task-text">Title</span>
-                                <small class="task-date">Data dodania </small>
-                            </div>
-                            <div class="item-btn-container">
-                                <button class="start-btn list-btns" aria-label="task start">
+                                 <button class="task-acc-btn" id="task-accordeon-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                                    </svg>
-                                </button>
-
-                                <button class="stop-btn list-btns" aria-label="task stop">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
-                                    </svg>
-                                </button>
-
-                                <button class="pause-btn list-btns" aria-label="task pause">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                     </svg>
                                 </button>
                             </div>
-                                <button class="delete-btn list-btns" aria-label="delete task">
+                            <div class="item-container">
+                                <p class="task-details">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, pariatur.
+                                </p>
+                                
+                            </div>
+                            <div class="task-btn-container">
+                               <div class="summary">
+                                    <small class="task-date">Kiedy</small>
+                                    <small class ="task-group">Praca</small>
+                                </div>
+                                  <button class="delete-btn list-btns" aria-label="delete task">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                     </svg>
                                 </button>
-
-                            
+                            </div>
                         </li>
                         <li class="task-item">
-                            <div class="title-and-date">
+                            <div class="title-and-acrdon">
                                 <span class="task-text">Title</span>
-                                <small class="task-date">Data dodania </small>
-                            </div>
-                            <div class="item-btn-container">
-                                <button class="start-btn list-btns" aria-label="task start">
+                                 <button class="task-acc-btn" id="task-accordeon-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                                    </svg>
-                                </button>
-
-                                <button class="stop-btn list-btns" aria-label="task stop">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
-                                    </svg>
-                                </button>
-
-                                <button class="pause-btn list-btns" aria-label="task pause">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                     </svg>
                                 </button>
                             </div>
-                                <button class="delete-btn list-btns" aria-label="delete task">
+                            <div class="item-container">
+                                <p class="task-details">
+                                    
+                                </p>
+                                
+                            </div>
+                            <div class="task-btn-container">
+                               <div class="summary">
+                                    <small class="task-date">Kiedy</small>
+                                    <small class ="task-group">Praca</small>
+                                </div>
+                                  <button class="delete-btn list-btns" aria-label="delete task">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                     </svg>
                                 </button>
-
-                            
+                            </div>
                         </li>
                         <li class="task-item">
-                            <div class="title-and-date">
+                            <div class="title-and-acrdon">
                                 <span class="task-text">Title</span>
-                                <small class="task-date">Data dodania </small>
-                            </div>
-                            <div class="item-btn-container">
-                                <button class="start-btn list-btns" aria-label="task start">
+                                 <button class="task-acc-btn" id="task-accordeon-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                                    </svg>
-                                </button>
-
-                                <button class="stop-btn list-btns" aria-label="task stop">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
-                                    </svg>
-                                </button>
-
-                                <button class="pause-btn list-btns" aria-label="task pause">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                     </svg>
                                 </button>
                             </div>
-                                <button class="delete-btn list-btns" aria-label="delete task">
+                            <div class="item-container">
+                                <p class="task-details">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis cum possimus rerum molestias doloribus dignissimos quidem exercitationem debitis reprehenderit repellendus.
+                                </p>
+                                
+                            </div>
+                            <div class="task-btn-container">
+                               <div class="summary">
+                                    <small class="task-date">Kiedy</small>
+                                    <small class ="task-group">Praca</small>
+                                </div>
+                                  <button class="delete-btn list-btns" aria-label="delete task">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                     </svg>
                                 </button>
+                            </div>
+                        </li>
+                          
+                                
+
+                                
+
+                                
+                            
+                                
+                            
+                        
+                                
+
+                                
+
+                                
+                            
+                            
+                        
+                        
+                                
+
+                                
+
+                           
 
                             
-                        </li>
-                    </ul>
+                      
                     
                     
                     <button id="ad-tsk" class="add-task"></button>
                     <button  id = "logout-btn"class="btn log-out-btn reg-back-btn" type = "button">wyloguj</button>
                 </div>
         </section>
+    </section>
 
 
         
