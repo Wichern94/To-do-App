@@ -1,19 +1,31 @@
 /* przyciski gornej skecji */
 
 .apk-ui-btn {
-    background-image: url(To-do-App/assets/hamburger-menu.svg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+   
     background-color: transparent;
     width: 1.5rem;
     height: 1.5rem;
     color: var(--text-secondary);
     outline: none;
     border: none;
-    margin-left: .3rem;
+    opacity: .7;
     cursor: pointer;
     position: relative;
+}
+.add-task{
+    outline: none;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    bottom: 8rem;
+    right: 5rem;
+    background-color: var(--color-bg-soft);
+    backdrop-filter: blur(5px);
+    border-radius: 5px;
+    padding: 2px;
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 999;
+    
 }
 .carusel-btn{
     outline: none;
@@ -22,6 +34,8 @@
     color: var(--text-secondary);
     display: flex;
     flex-direction: column;
+    font-size: 20px;
+    font-weight: 600;
 }
 .task-acc-btn{
     background-color: transparent;
@@ -33,10 +47,8 @@
 }
 
     
-#user-menu-btn{
-    width: 1rem;
-    height: 1rem;
-}
+
+
 .search-toggle{
     margin-top: .3rem;
 }
@@ -44,51 +56,32 @@
     display: flex;
     flex-direction: row-reverse;
     position: relative;
-    height: auto;
-    width: 4rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
     margin: .5rem;
-    background: var(--color-bg-soft);
+    background: var(--color-btns);
     align-items: center;
     justify-content: center;
     border-radius: 5px;
     align-self:self-start ;
     
 }
-.menu-btns{
-    display: flex;
-    margin: 0 1rem 0 .5rem;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.filter-sort{
-    display: flex;
-    align-items: flex-end;
-    height: auto;
-    width: 4rem;
-    margin: .5rem;
-    background: var(--color-bg-soft);
-    border-radius: 5px;
-}
+
+
     
-.filter-toggle{
-    margin-top: .3rem;
-    width: 1.5rem;
-    height: 1rem;
-}
-.toggle-filter{
-    height: auto;
-}
+
 .user-settings{
     display: flex;
     flex-direction: row-reverse;
     position: relative;
-    height: auto;
-    width: 4rem;
-    margin: .5rem 0 0 .5rem;
-    background: var(--color-bg-soft);
+    right: .8rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
+    margin: .5rem ;
+    background: var(--color-btns);
     align-items: center;
     justify-content: center;
-    padding: .3rem 0 .3rem 0;
+    
     border-radius: 5px;
     align-self:self-start ;
 }
