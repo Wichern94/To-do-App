@@ -63,20 +63,27 @@ body{
     display: flex;
     position: absolute;
     flex-wrap: wrap;
-    height: 100vh;
-    width: 100vh;
+    height: 100%;
+    width: 100%;
     background: #0E0E0E;
     background-color: var(--glass-border);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     flex-direction: column;
     text-align: initial;
-    
-    
     scrollbar-width: none;           
     -ms-overflow-style: none; 
     z-index: 3;
 }
+.sidebar-container{
+    display: flex;
+    height: 90%;
+    width: 80%;
+    border-radius: 10px;
+    border: solid 0.5px var(--glass-border);
+}
+    
+    
 .search-bar{
     display: flex;
     width: 80%;
