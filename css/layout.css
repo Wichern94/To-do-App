@@ -1,15 +1,20 @@
 :root {
   /*  Podstawowe kolory */
   --color-bg: #0d0d0d; /* Tło główne */
-  --color-bg-soft: #1C1C1E; /* Karty, modale */
+  --color-bg-soft: #1c1c1e; /* Karty, modale */
   --color-glass-bg: rgba(22, 22, 22, 0.6); /* Glassmorphic okna */
   --color-text-primary: #ffffff;
   --color-text-secondary: #aaaaaa;
   --color-divider: rgba(117, 112, 112, 0.404);
-  --color-cards-bg: linear-gradient(120deg,rgba(26, 31, 41, 1) 64%, rgba(107, 205, 206, 1) 95%, rgba(107, 205, 206, 1) 86%);
+  --color-cards-bg: linear-gradient(
+    120deg,
+    rgba(26, 31, 41, 1) 64%,
+    rgba(107, 205, 206, 1) 95%,
+    rgba(107, 205, 206, 1) 86%
+  );
   /*  Akcenty */
-  --color-accent: #6BCDCE;
-  --color-accent-light: #9BE5EC;
+  --color-accent: #6bcdce;
+  --color-accent-light: #9be5ec;
   --color-border-task: rgba(107, 106, 106, 0.1);
 
   /*  Statusy */
@@ -18,390 +23,387 @@
   --color-warning: #ffc857;
 
   /*  Elementy UI */
-  --color-hamburger:#1c1c1e96;
+  --color-hamburger: #1c1c1e96;
   --color-button-hover: rgba(255, 255, 255, 0.05);
   --color-input-border: rgba(255, 255, 255, 0.15);
   --color-scrollbar: rgba(255, 255, 255, 0.1);
-  --color-btns:#2A2A2C;
+  --color-btns: #2a2a2c;
 
   /*  Efekt glass */
   --glass-blur: blur(16px);
   --glass-radius: 12px;
 }
 
-html{
-    height: 100%;
+html {
+  height: 100%;
 }
-body{
-    display: flex;
-    min-width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: #000000;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%23000000' stroke-width='.5' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cuse fill='%23242424' href='%23s' y='2'/%3E%3Cuse fill='%23242424' href='%23s' x='1' y='2'/%3E%3Cuse fill='%23333333' href='%23s' x='2' y='2'/%3E%3Cuse fill='%23333333' href='%23s'/%3E%3Cuse fill='%233e3e3e' href='%23s' x='2'/%3E%3Cuse fill='%233e3e3e' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23484848'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23484848'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23515151'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23000000'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%23585858'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
-    background-attachment: fixed;
-    background-size: cover;
-    overflow: hidden
+body {
+  display: flex;
+  min-width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #000000;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%23000000' stroke-width='.5' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cuse fill='%23242424' href='%23s' y='2'/%3E%3Cuse fill='%23242424' href='%23s' x='1' y='2'/%3E%3Cuse fill='%23333333' href='%23s' x='2' y='2'/%3E%3Cuse fill='%23333333' href='%23s'/%3E%3Cuse fill='%233e3e3e' href='%23s' x='2'/%3E%3Cuse fill='%233e3e3e' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23484848'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23484848'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23515151'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23000000'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%23585858'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: cover;
+  overflow: hidden;
 }
-.apk-screen{
-    display: flex;
-    position: relative;
-    flex-wrap: wrap;
-    min-height: 0;
-    width: 100%;
-    height: 100%;
-    background: #0E0E0E;
-    flex-direction: column;
-    text-align: center;
-    scrollbar-width: none;           
-    -ms-overflow-style: none; 
-    z-index: 1; 
-}
-    
-.burger-menu{
-    display: flex;
-    position: absolute;
-    flex-wrap: wrap;
-    height: 100%;
-    width: 100%;
-    
-    background-color: var(--glass-border);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    
-    scrollbar-width: none;           
-    -ms-overflow-style: none; 
-    z-index: 3;
-    color: var(--color-text-secondary);
+.apk-screen {
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  background: #0e0e0e;
+  flex-direction: column;
+  text-align: center;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  z-index: 1;
 }
 
-.sidebar-container{
-    display: flex;
-    height: 90%;
-    width: 80%;
-    border-radius: 10px;
-    border: solid 0.5px var(--glass-border);
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--color-hamburger);
-    box-shadow: 2px 3px 15px var(--color-divider) ;
+.burger-menu {
+  display: flex;
+  position: absolute;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+
+  background-color: var(--glass-border);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  z-index: 3;
+  color: var(--color-text-secondary);
 }
-.exit-btn-container{
-    height: auto;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    align-items: center;
-    margin:1rem 0 .5rem 0
+
+.sidebar-container {
+  display: flex;
+  height: 90%;
+  width: 80%;
+  border-radius: 10px;
+  border: solid 0.5px var(--glass-border);
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--color-hamburger);
+  box-shadow: 2px 3px 15px var(--color-divider);
 }
-.brgr-menu{
-    margin:1rem 0 .5rem 2rem
+.exit-btn-container {
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  align-items: center;
+  margin: 1rem 0 0.5rem 0;
+}
+.brgr-menu {
+  margin: 1rem 0 0.5rem 2rem;
 }
 .search-bar label {
-    left: 5.5rem;
+  left: 5.5rem;
 }
-.search-bar{
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    flex-direction: row-reverse;
+.search-bar {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-direction: row-reverse;
 }
-.divider{
-    border-bottom: solid .5px var(--glass-border);
-    width: 80%;
-    margin-top: .5rem;
-    box-shadow: 2px 3px 20px var(--color-divider) ;
+.divider {
+  border-bottom: solid 0.5px var(--glass-border);
+  width: 80%;
+  margin-top: 0.5rem;
+  box-shadow: 2px 3px 20px var(--color-divider);
 }
 .nav-section {
-    display:flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: flex-start;
-    margin: .5rem 0 0 4rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  margin: 0.5rem 0 0 4rem;
 }
-.nav-section p,a {
-    margin-top: .5rem;
+.nav-section p,
+a {
+  margin-top: 0.5rem;
 }
-.bottom-action{
-    width: 100%;
-    display: flex;
-    margin-top: 1rem;
-    justify-content: center;
-    align-items: center;
-}
-    
-    
-
-    
-    
-.apk-screen::-webkit-scrollbar{
-    display: none;
-}
- #view-header{
-    display: flex;
-    width: 100vw;
-    height: 10rem;
-    text-align: center;
-    flex-direction: row-reverse;
-    justify-content: space-around;
-    background-color: #0D0D0D;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%230D0D0D' stroke-width='0.8' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cuse fill='%23262626' href='%23s' y='2'/%3E%3Cuse fill='%23262626' href='%23s' x='1' y='2'/%3E%3Cuse fill='%23353535' href='%23s' x='2' y='2'/%3E%3Cuse fill='%23353535' href='%23s'/%3E%3Cuse fill='%23404040' href='%23s' x='2'/%3E%3Cuse fill='%23404040' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23494949'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23494949'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23525252'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%230D0D0D'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%23595959'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
-    background-attachment: fixed;
-    background-size: cover;
-}
-   
-.separator{
-    position: absolute;
-    top: 11rem;
-    
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
+.bottom-action {
+  width: 100%;
+  display: flex;
+  margin-top: 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
+.apk-screen::-webkit-scrollbar {
+  display: none;
+}
+#view-header {
+  display: flex;
+  width: 100vw;
+  height: 10rem;
+  text-align: center;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  background-color: #0d0d0d;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%230D0D0D' stroke-width='0.8' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cuse fill='%23262626' href='%23s' y='2'/%3E%3Cuse fill='%23262626' href='%23s' x='1' y='2'/%3E%3Cuse fill='%23353535' href='%23s' x='2' y='2'/%3E%3Cuse fill='%23353535' href='%23s'/%3E%3Cuse fill='%23404040' href='%23s' x='2'/%3E%3Cuse fill='%23404040' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23494949'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23494949'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23525252'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%230D0D0D'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%23595959'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.separator {
+  position: absolute;
+  top: 11rem;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
 /*karuzela*/
 .carousel-wrapper {
-    position: relative;
-    display: flex;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* pllynie dziala na ios */
-    scroll-snap-type: x mandatory;  /*snap na itemy */
-    padding-inline: 16px;
-    align-items: flex-end;
-    width: 7rem;
-    scrollbar-width: none;
+  position: relative;
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* pllynie dziala na ios */
+  scroll-snap-type: x mandatory; /*snap na itemy */
+  padding-inline: 16px;
+  align-items: flex-end;
+  width: 7rem;
+  scrollbar-width: none;
 }
 .carousel-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-.carousel{
-    display: flex;
-    
-    gap: 12px;
-    min-width: max-content; /*wymusza przewijanie */
+.carousel {
+  display: flex;
+
+  gap: 12px;
+  min-width: max-content; /*wymusza przewijanie */
 }
 .carousel-item {
-    height: auto;
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: auto;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-stuff {
+  position: absolute;
+  align-self: flex-start;
+  height: auto;
+  top: 5%;
+  left: 45%;
+  z-index: 5;
+}
+.dropdown {
+  display: flex;
+  position: absolute;
+  background-color: var(--glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: 0.5px solid var(--glass-border);
+  z-index: 3;
+  color: var(--color-text-secondary);
+  bottom: -6.4rem;
+  left: 0rem;
+  width: 8rem;
+  height: 9rem;
+}
+.dropdown-container {
+  display: flex;
+  height: 80%;
+  width: 95%;
+  border-radius: 10px;
+
+  flex-direction: column;
+  align-items: center;
+  background-color: transparent;
 }
 
-    
-    
-    
-    
-    
-    
-
-
-
-.user-stuff{
-    position: absolute;
-    align-self: flex-start;
-    height: auto;
-    top: 5%;
-    left: 45%;
-    z-index: 5;  
-}
-
-
-    
-   
-    
-    
-
-.dropdown{
-    position:absolute;
-    background-color: var(--glass-border);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    border-radius: 5px;
-    scrollbar-width: none;           
-    -ms-overflow-style: none; 
-    z-index: 3;
-    color: var(--color-text-secondary);
-    top: 3rem;
-    width: 6rem
-   
-}
 .list-section {
   flex-grow: 1;
-  height: 100%; 
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 }
-.list-box{
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-    height: calc(100dvh - 150px);
-    overflow-y: auto;
-    scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+.list-box {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: 70dvh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
-.list-box::-webkit-scrollbar{
-    display: none;
+.list-box::-webkit-scrollbar {
+  display: none;
 }
 
-.list-section, .task-list {
-    color: var(--text-primary);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    
+.list-section,
+.task-list {
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
-.tasks{
-    margin-bottom: .5rem;
-    line-height: 1.5;
-    font-size: 18px;
-    font-weight: 600;
+.tasks {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  font-size: 18px;
+  font-weight: 600;
 }
 .list-section {
-    margin-top: 5rem;
-}
-    
-.task-item {
-    background: var(--color-bg-soft);
-    border: .5px solid var(--glass-border);
-    border-radius: 8px;
-    width: 20rem;
-    min-height: 2rem;
-    display: flex;
-    justify-content: space-around;
-    align-content: center;
-    flex-wrap: wrap;
-    position: relative;
-    margin-bottom: 1.3rem;
-    scroll-snap-align: start;
-   
-}
-.list-btns {
-    
-    height: .8rem;
-    width: .8rem;
-    color: var(--text-secondary);
-    outline: none;
-    border: none;
-    background-color: transparent;
-    margin: 0 .5rem .5rem 0;
-    cursor: pointer;
-    justify-self:right;
-    
-}
-.task-text {
-    align-self:center ;
-    height: auto;
-    display: flex;
-     font-size: 17px;
-    font-weight: 600;
+  margin-top: 5rem;
 }
 
-    
-.task-group::after{
-    content: "";
-    border-right: solid .5px var(--glass-border);
-    height: 80%;
-    margin-left: .4rem;
-    margin-right: .4rem;
+.task-item {
+  background: var(--color-bg-soft);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 8px;
+  width: 20rem;
+  min-height: 2rem;
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  margin-bottom: 1.3rem;
+  scroll-snap-align: start;
+}
+.list-btns {
+  height: 0.8rem;
+  width: 0.8rem;
+  color: var(--text-secondary);
+  outline: none;
+  border: none;
+  background-color: transparent;
+  margin: 0 0.5rem 0.5rem 0;
+  cursor: pointer;
+  justify-self: right;
+}
+.task-text {
+  align-self: center;
+  height: auto;
+  display: flex;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.task-group::after {
+  content: "";
+  border-right: solid 0.5px var(--glass-border);
+  height: 80%;
+  margin-left: 0.4rem;
+  margin-right: 0.4rem;
 }
 
 .task-date {
-    margin-top: 1rem;
-    color: var(--color-warning);
-    font-size: 10px;
-    font-weight: 400;
+  margin-top: 1rem;
+  color: var(--color-warning);
+  font-size: 10px;
+  font-weight: 400;
 }
-.task-date::after{
-    content: "";
-    border-right: solid .5px var(--glass-border);
-    height: 80%;
-    margin-left: .4rem;
-    margin-right: .2rem;
+.task-date::after {
+  content: "";
+  border-right: solid 0.5px var(--glass-border);
+  height: 80%;
+  margin-left: 0.4rem;
+  margin-right: 0.2rem;
 }
-.task-group{
-    margin-top: 1rem;
-    color: var(--text-secondary);
-    font-size: 10px;
-    font-weight: 500;
+.task-group {
+  margin-top: 1rem;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 500;
 }
-.item-container{
-    display: flex;
-    margin: 0 1rem 0 1rem;
-    flex-direction: column;
-    position: relative;
+.item-container {
+  display: flex;
+  margin: 0 1rem 0 1rem;
+  flex-direction: column;
+  position: relative;
 }
 .item-container p {
-    font-size: 12px;
-    font-weight: 400;
+  font-size: 12px;
+  font-weight: 400;
 }
-.item-container::after{
-    content: "";
-    border-bottom: solid .5px var(--glass-border);
-    width: 100%;
-    margin-top: .5rem;
-    
+.item-container::after {
+  content: "";
+  border-bottom: solid 0.5px var(--glass-border);
+  width: 100%;
+  margin-top: 0.5rem;
 }
- 
-.delete-btn{
-    margin-top: .5rem;
-    
+
+.delete-btn {
+  margin-top: 0.5rem;
 }
-.title-and-acrdon{
-    margin: .8rem .5rem .5rem 1rem;
+.title-and-acrdon {
+  margin: 0.8rem 0.5rem 0.5rem 1rem;
+  display: flex;
+
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.task-details {
+  text-align: start;
+}
+.task-btn-container {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.summary {
+  width: auto;
+}
+.task-modal{
     display: flex;
-    
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    
+    position: absolute;
+    flex-direction: column;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-glass-bg);
+    height: 20rem;
+    width: 100vw;
+    box-shadow: 2px 3px 15px var(--color-divider);
+    border-radius: 12px 12px 0 0;
+    background-color: var(--glass-border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-align: center;
+    z-index: 10;
 }
-.task-details{
-    
-    text-align: start;
-}
-.task-btn-container{
+.modal-section-form{
     display: flex;
-    justify-content: center;
+    width: 90%;
+    height: 100%;
     
-    width: 100%;
+
+
+
 }
     
     
-    
-    
-.summary{
-    width: auto;
-}
-    
-
-    
-
-
-
-        
-    
-    
-   
-     
