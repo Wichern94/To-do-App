@@ -72,13 +72,30 @@
 <section id ="todo-screen" class="apk-screen hidden" aria-labelledby="Main-app-section">
     <main  id ="main-app"class="app-screen">
     <section  id="view-standard">
-        <aside class="burger-menu">
+        <aside class="burger-menu hidden">
             <div class="sidebar-container">
+                <div class= "exit-btn-container">
+                    <h4 class = "brgr-menu">Menu</h4>
+                    <button class="exit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                        </svg>
+                    </button>
+
+                </div>
                 
                 <div class="search-bar">
+                    <button class="search-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </button>
+
                     <input class="log-input" type="text" id="username" name="search" autocomplete="off" placeholder=" " >
-                    <label for="search" class="log-label labs"> Szukaj...</label>
+                    <label for="search" class="log-label labs "> Szukaj...</label>
                 </div>
+                <div class="divider"></div>
+
             
                 <nav class="nav-section">
                     <p class="section-label">Dzisiaj</p>
@@ -99,14 +116,45 @@
 
                 <nav class="nav-section">
                     <p class="section-label">Projekty</p>
-                    <a href="#" class="nav-link"><span>#</span> Tech-Upgrade</a>
+                    <a href="#" class="nav-link"><span>#</span> Default</a>
                     <a href="#" class="nav-link"><span>#</span> New-Design</a>
                 </nav>
 
                 <div class="bottom-action">
-                    <a href="#" class="new-list-btn">➕ Nowa lista</a>
+                    <a href="#" class="new-list-btn">➕ Nowy Projekt</a>
                 </div>
             </div>
+        </aside>
+        <aside class="dropdown ">
+            <div class="sidebar-container">
+                 <div class= "goback-btn-container">
+                    <h4 class = "brgr-menu">User</h4>
+                    <button class="exit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                        </svg>
+                    </button>
+                </div>
+                <nav class="nav-section">
+                    <button class="dropdown-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="24" height="24" viewBox="0 0 24 24" 
+                        fill="none" stroke="currentColor" stroke-width="2" 
+                        stroke-linecap="round" stroke-linejoin="round" 
+                        class="lucide lucide-user-cog-icon lucide-user-cog">
+                        <path d="M10 15H6a4 4 0 0 0-4 4v2"/><path d="m14.305 16.53.923-.382"/><path d="m15.228 13.852-.923-.383"/><path d="m16.852 12.228-.383-.923"/><path d="m16.852 17.772-.383.924"/><path d="m19.148 12.228.383-.923"/><path d="m19.53 18.696-.382-.924"/><path d="m20.772 13.852.924-.383"/><path d="m20.772 16.148.924.383"/><circle cx="18" cy="15" r="3"/><circle cx="9" cy="7" r="4"/></svg>
+                    Ustawienia </button>
+                    <button class="dropdown-btn">xxxx
+
+                    </button>
+                    <button  id="logout-btn" class="dropdown-btn" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                    Wyloguj</button>
+                    
+                </nav>
+
+            
+
         </aside>
 
 
@@ -449,7 +497,7 @@
                       
                     
                     
-                    <!-- <button  id = "logout-btn"class="btn log-out-btn reg-back-btn" type = "button">wyloguj</button> -->
+                    
                 </div>
         </section>
     </section>
