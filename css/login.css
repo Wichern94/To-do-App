@@ -76,6 +76,7 @@ input{
     outline: none;
     width: 10.8rem;
     line-height: 1.5rem;
+    color: var(--color-text-secondary);
 }
 .input-error {
   border-bottom: 0.5px solid var(--btn-danger);
