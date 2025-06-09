@@ -251,7 +251,7 @@ a {
   flex-direction: column;
   align-items: center;
 
-  height: 58dvh;
+  height: 70dvh;
   overflow-y: auto;
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
@@ -383,27 +383,30 @@ a {
 }
 .task-modal{
     display: flex;
-    position: absolute;
+    position: fixed;
     flex-direction: column;
     align-content: center;
+    top: 0;
+    left: 0;
     flex-wrap: wrap;
     align-items: center;
     color: var(--color-text-secondary);
     border: 1px solid var(--color-glass-bg);
-    height: 20rem;
-    width: 100vw;
-    box-shadow: 2px 3px 15px var(--color-divider);
-    border-radius: 12px 12px 0 0;
+    height: 100dvh;
+    width: 100dvw;
     background-color: var(--glass-border);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     text-align: center;
     z-index: 10;
+    transition: opacity 0.3s, backdrop-filter 0.5s;
+    
+    
 }
 .modal-section-form{
     display: flex;
     width: 90%;
-    height: 100%;
+    height: 18rem;
     flex-direction: column;
     border-radius: 10px;
     order: solid 0.5px var(--glass-border);
@@ -418,10 +421,11 @@ a {
     flex-direction: column;
     height: 100%;
     width: 90%;
+    justify-content: center;
     align-items: center;
   }
-  .task-modal-cont span{
-    margin-top: 1rem;
+  #modal-title {
+    margin-bottom: 1rem;
   }
   .task-discription{
     width: 90%;
@@ -478,6 +482,7 @@ a {
   height: 1rem;
   display: flex;
   justify-content: center;
+  position: relative;
   
   border-radius: 5px;
   color: var(--color-btns);
@@ -492,6 +497,7 @@ a {
 .tag{
   display: flex;
   position: absolute;
+  top: 1rem;
   flex-direction: column;
   box-shadow: 2px 3px 15px var(--color-divider);
   border-radius: 5px;
@@ -500,16 +506,62 @@ a {
   -webkit-backdrop-filter: blur(20px);
   text-align: center;
   z-index: 12;
-  height: 7rem;
-  width: 5rem;
+  width: auto;
+  padding:.5rem .2rem .2rem .2rem
 }
 .task-tag{
   display: flex;
-  margin-top: .5rem;
+  justify-content: center;
   
-  width: 100%;
+  
+  width: 5rem;
 
 }
+.label-tag-element{
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin: .2rem 0 .5rem .2rem;
+  width: 100%;
+  justify-content: flex-start;
+  padding:0 .2rem 0rem .2rem;
+  font-size: 9px;
+}
+.label-first{
+  padding-top: .5rem;
+}
+.input-tag-element{
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.label-tag-element .checkmark{
+  width: 12px;
+  height: 12px;
+  background-color: transparent;
+  border: 1px solid var(--color-btns);
+  border-radius: 4px;
+  margin-right: 8px;
+  
+  transition: border-color 0.2s;
+  display: inline-block;
+  position: relative;
+}
+  .input-tag-element:checked + .checkmark{
+    border-color: var(--color-warning);
+    background-image: url("data:image/svg+xml;utf8,<svg fill='none' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'><path d='M4 8l2.5 2.5L12 5' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 12px;
+  }
+  
+.label-tag-element:has(input:checked) {
+ color: var(--color-warning)
+}
+  
+
 
 
  

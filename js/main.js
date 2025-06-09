@@ -13,7 +13,9 @@ import {LoginFormHandler} from './formHandlers.js'
 import {RegisterFormHandler} from './formHandlers.js'
 import {ResetFormHandler} from './formHandlers.js'
 // przycisk wylogowania sie
-import{LogoutButtonHandler} from './todo.js'
+
+// Widokaplikacji
+import { TodoApp } from './todo.js';
 // Powołuje Instacje klass
 class App {
     constructor() {
@@ -90,13 +92,7 @@ class App {
             this.resetHandler.init()
             
             break;
-            case 'apk':
-                 this.LogoutButtonHandler = new LogoutButtonHandler('logout-btn')
-                 if(this.LogoutButtonHandler) {
-                    console.log('button podpiety!');
-                    
-                 }
-                console.log('Aplikacja własciwa');
+            
             
         }
     }
@@ -109,12 +105,14 @@ onAuthStateChanged(auth,(user) => {
         console.log('Uzytkownik zalogowany:', user.email);
         const appBody = document.getElementById('app');
         appBody.classList.remove('hidden');
-       
+        console.log(app.viewManager);
+        app.viewManager.showView('todo-screen');
+        const todoApp = new TodoApp(user,app.viewManager);
         
         
         
         
-         app.viewManager.showView('todo-screen');
+         
     }
         
 });

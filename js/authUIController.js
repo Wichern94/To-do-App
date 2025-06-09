@@ -52,6 +52,8 @@ export class AuthUIController {
     //metoda do zmiany widoku po wylogowaniu sie
     logout() {
         console.log('wylogowano');
+        
+        this.viewManager.hideOneView('todo-screen')
         this.viewManager.showView('login-screen');
         
     }
