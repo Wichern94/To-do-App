@@ -15,6 +15,7 @@
   /*  Akcenty */
   --color-accent: #6bcdce;
   --color-accent-light: #9be5ec;
+  --color-accent-blur:#9be5ec94;
   --color-border-task: rgba(107, 106, 106, 0.1);
 
   /*  Statusy */
@@ -250,7 +251,7 @@ a {
   flex-direction: column;
   align-items: center;
 
-  height: 70dvh;
+  height: 58dvh;
   overflow-y: auto;
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
@@ -408,7 +409,7 @@ a {
     order: solid 0.5px var(--glass-border);
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-around;
+    
     background-color: var(--color-hamburger);
     box-shadow: 2px 3px 15px var(--color-divider);
   }
@@ -448,7 +449,7 @@ a {
     
   
   .task-title{
-    margin-left: 1rem;
+    margin: .5rem 0 0rem 1rem;
     color: var(--color-text-secondary);
 
   }
@@ -463,6 +464,55 @@ a {
   display: flex;
   flex-direction: row;
 }
+.element-carusel-container{
+  display: flex;
+  margin: .5rem 0 .5rem 1rem;
+  width: 90%;
+  border: none;
+  font-size: 10px;
+  justify-content: space-around;
+}
+.tag-container{
+  background: var(--color-accent);
+  width: 4rem;
+  height: 1rem;
+  display: flex;
+  justify-content: center;
+  
+  border-radius: 5px;
+  color: var(--color-btns);
+}
+.task-btns{
+  display: flex;
+  margin: .5rem 0 0 0;
+  width: 100%;
+  justify-content: space-evenly;
+  flex-direction: row-reverse;
+}
+.tag{
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  box-shadow: 2px 3px 15px var(--color-divider);
+  border-radius: 5px;
+  background-color: var(--color-accent-blur);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  text-align: center;
+  z-index: 12;
+  height: 7rem;
+  width: 5rem;
+}
+.task-tag{
+  display: flex;
+  margin-top: .5rem;
+  
+  width: 100%;
+
+}
+
+
+ 
     
 
 

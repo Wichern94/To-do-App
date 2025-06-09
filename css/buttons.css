@@ -150,5 +150,35 @@
     display: flex;
     flex-direction: column;
 }
+.tag-btn{
+     width: 5px;
+    height: 5px;
+    color: var(--color-btns);
+    outline: none;
+    border: none;
+    
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+}
+.task-handler-btn{
+    outline: none;
+    border: none;
+    display: flex;
+    width: 5rem;
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+.aprove{
+    background: var(--color-done);
+}
+.abandon{
+    background: var(--color-danger);
+}
     
     

@@ -292,18 +292,91 @@
 
                         <section class="modal-section-form">
                             <input class="task-title" type="text" id="title" name="tytuł" autocomplete="off" placeholder="Podaj Tytuł..." >
-                            
+                             <fieldset class="element-carusel-container">
+                                    <div class="tag-container">Tagi
+                                        <button class="tag-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+                                    </button>
+                                    <ul class=" tag ">
+                                        
+                                        <li class="task-tag " >
+                                            <input type="checkbox" class="input-tag-element" name="tag-praca">
+                                            <label for="tag-praca" class="label-tag-element"> #Praca</label>
+                                           </li>
+                                        <li class="task-tag">
+                                            <input type="checkbox" class="input-tag-element" name="tag-dom">
+                                            <label for="tag-dom" class="label-tag-element">#Dom </label>
+                                            </li>
+                                        <li class="task-tag">
+                                            <input type="checkbox" class="input-tag-element" name="tag-hobby">
+                                            <label for="tag-hobby" class="label-tag-element">#Hobby </label>
+                                            </li>
+                                        <li class="task-tag">
+                                            <input type="checkbox" class="input-tag-element" name="tag-nauka">
+                                            <label for="tag-nauka" class="label-tag-element">#Nauka </label>
+                                            </li>
+                                    </ul>
+                                </div>
+                                <div class="tag-container">Dzień
+                                    <button class="tag-btn">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+                                    </button>
+                                    <ul class="task-tag tag hidden">
+                                        
+                                        <li class="task-tag " >
+                                            <input type="checkbox" class="input-tag-element" name="day-today">
+                                            <label for="day-today" class="label-tag-element"> Dziś</label>
+                                           </li>
+                                        <li class="task-tag">
+                                            <input type="checkbox" class="input-tag-element" name="day-tommarow">
+                                            <label for="day-tommarow" class="label-tag-element">Jutro </label>
+                                            </li>
+                                        <li class="task-tag">
+                                            <input type="checkbox" class="input-tag-element" name="day-yesteday">
+                                            <label for="day-yesteday" class="label-tag-element">Wczoraj </label>
+                                            </li>
+                                        <li class="task-tag">
+                                            <input type="checkbox" class="input-tag-element" name="this-week">
+                                            <label for="this-week" class="label-tag-element">W tym tygodniu </label>
+                                            </li>
+                                    </ul>
+                                </div>
+                                <div class="tag-container">Piorytet
+                                    <button class="tag-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+                                    </button>
+                                    <ul class="task-tag tag hidden">
+                                        
+                                        <li class="task-tag " >
+                                            <input type="checkbox" class="input-tag-element" name="low">
+                                            <label for="low" class="label-tag-element">Mniej ważne</label>
+                                        </li>
+                                        <li class="task-tag">
+                                            <input type="checkbox" class="input-tag-element" name="medium">
+                                            <label for="medium" class="label-tag-element">Ważne</label>
+                                        </li>
+                                        <li class="task-tag">
+                                            <input type="checkbox" class="input-tag-element" name="hard">
+                                            <label for="hard" class="label-tag-element">Bardzo ważne</label>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                                
+                                    
+                            </fieldset>
 
                             <textarea id="task-desc" name="desc" class="task-discription" placeholder="Napisz opis..."></textarea>
-                            
+                            <div class="task-btns">
+                                <button class="task-handler-btn aprove">Dodaj
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                                </button>
+                                <button class="task-handler-btn abandon">Anuluj
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                                </button>
+                            </div>
                         </section>
-                            <nav class="tag-carusel-container">
-                                <ul class="tag-carusel-wrapper">
-                                    <li class="task-tag">Tag</li>
-                                    <li class="task-tag">Dzień</li>
-                                    <li class="task-tag">Ważność</li>
-                                </ul>
-                            </nav>
+                           
                         
                     </form>
                 </dialog>
