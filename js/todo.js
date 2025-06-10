@@ -1,4 +1,19 @@
-export class LogoutButtonHandler {
+export class TodoApp{
+    constructor(user, viewManager) {
+        this.user = user;
+        this.viewManger = viewManager;
+        this.mainHamburger = new MainMenuHandler(
+            'main-hamburger','main-burger-exit','main-burger-menu')
+
+        this.userSettings = new SettingsMenuHandler(
+            'user-menu-btn','user-menu-exit','open-user-settings','logout-btn')
+       
+        this.taskCreator = new CreateTaskHandler(
+            'ad-tsk','abandon-btn','create-task-menu','submit-task')
+    }
+}
+//klasa do obsługi przycisku wyloguj
+    export class LogoutButtonHandler {
     constructor(buttonID) {
         this.button = document.getElementById(buttonID)
         this.setLogoutListener();
@@ -14,65 +29,118 @@ export class LogoutButtonHandler {
     }
 }
 
-export class TodoApp{
-    constructor(user, viewManger) {
-        this.user = user;
-        this.viewManger =viewManger;
-        this.logoutBtn = new LogoutButtonHandler('logout-btn')
-        this.init();
-        
-    }
-    init() {
-        this.setupUserMenu()
-        this.setupMainBurger()
-        
-    }
-    //metoda złączajaca hamburgera usera
-    setupUserMenu(){
-        const userSettingsBtn = document.getElementById('user-menu-btn'); //<- przycisk złączajacy suer menu
-        const userSettingsExitBtn = document.getElementById('user-menu-exit');
-        const userSettings = document.getElementById('open-user-settings')
-        // event na klik na przycisk usera
-        userSettingsBtn?.addEventListener("click", (e) =>{
-            e.preventDefault();
-            userSettings.classList.remove('hidden');
-            
-        })
-        // event na klik exita
-        userSettingsExitBtn?.addEventListener("click", (e) =>{
-            e.preventDefault();
-            userSettings.classList.add('hidden');
-        })
-            
-        if(userSettings.classList.contains('hidden')) {
-            return console.log('usermenu ma klase hidden');
-        }
-            
-        if(!userSettings.classList.contains('hidden'))  {
-            this.logoutBtn.setLogoutListener();
-        }
+// szablon Okienek ktore pokazuje/ukrywam
+
+export class ToggleableMenu {
+    constructor(openBtnID,closeBtnID,mainMenuID){
+        this.openBtn = document.getElementById(openBtnID);
+        this.closeBtn = document.getElementById(closeBtnID)
+        this.menu = document.getElementById(mainMenuID)
+        this.bindEvents();
     }
 
-    // metoda załączajaca główny hamburger
-    setupMainBurger() {
-        const userMenuBtn = document.getElementById('main-hamburger'); //<- przycisk złączajacy suer menu
-        const userMenuExitBtn = document.getElementById('main-burger-exit');
-        const userMenu = document.getElementById('main-burger-menu');
-
-        userMenuBtn?.addEventListener('click', e => {
-            e.preventDefault();
-            userMenu.classList.remove('hidden');
+    //metoda łapiąca eventy
+bindEvents() {
+this.openBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    this.menu.classList.remove('hidden')
         });
-        userMenuExitBtn?.addEventListener('click', e => {
-            userMenu.classList.add('hidden');
-        })
+    
+
+this.closeBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    this.menu?.classList.add('hidden');
+        });
+    }
+    show() {
+        this.menu?.classList.remove('hidden');
+    }
+    hide() {
+        this.menu?.classList.add('hidden');
+    }
+}
+// klasa obsługi main menu dziedziczona z szablonu menu
+
+export class MainMenuHandler extends ToggleableMenu {
+    constructor(openBtnID,closeBtnID,mainMenuID) {
+        super(openBtnID,closeBtnID,mainMenuID); {
+
+        }
+    }
+}
+// to samo tylk  do Usersettingsow
+export class SettingsMenuHandler extends ToggleableMenu {
+    constructor(openBtnID,closeBtnID,mainMenuID,logoutBtnID) {
+        super(openBtnID,closeBtnID,mainMenuID); {
+            this.logoutBtn = new LogoutButtonHandler(logoutBtnID)
+        }
+    }
+}
+
+
+//klasa przycisku dodaj task
+export class CreateTaskHandler extends ToggleableMenu {
+    constructor(openBtnID,closeBtnID,mainMenuID,addBtnID,) {
+        super(openBtnID,closeBtnID,mainMenuID); {
+        this.handleNewTask = document.getElementById(addBtnID)
+        this.accordions = [];
+        this.setupAccordeons()
+       
     }
         
+    }
+   setupAccordeons() {
+    this.accordions = [
+        {
+         btn: document.getElementById('tag-toggle-btn'),
+         ul: document.getElementById('tag-body')
+        },
+        {
+         btn: document.getElementById('day-toggle-btn'),
+         ul: document.getElementById('day-body')
+        },
+        {
+         btn: document.getElementById('prio-toggle-btn'),
+         ul: document.getElementById('prio-body')
+        },
+    ];
+    this.accordions.forEach((accordeon,idx,arr) => {
+        accordeon.btn.addEventListener('click',() => {
+            arr.forEach((other,i) => {
+                if(i !==idx) {
+                    other.ul.classList.add('hidden');
+                }
+            });
+            accordeon.ul.classList.toggle('hidden');
             
             
-            
+        });
+    });
+   }
         
 
-        
         
 }
+
+
+        
+        
+        
+    
+    
+
+    
+
+    
+    
+
+
+
+        
+            
+            
+            
+        
+
+        
+        

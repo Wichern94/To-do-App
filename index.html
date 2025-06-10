@@ -284,7 +284,7 @@
             <section  id="li-sctn" class="list-section" aria-labelledby="tasks-section">
                  <h4 id="tasks-section" class="tasks">Zadania:</h4>
 
-                <dialog class="task-modal hidden " >
+                <dialog  id="create-task-menu" class="task-modal hidden " >
                     <form method="dialog" class=" task-modal-cont" aria-labbeledby ="modal-title">
                         <span class="new-task-title">
                             <h3 id="modal-title">Nowe zadanie</h2>
@@ -294,35 +294,35 @@
                             <input class="task-title" type="text" id="title" name="tytuł" autocomplete="off" placeholder="Podaj Tytuł..." >
                              <fieldset class="element-carusel-container">
                                     <div class="tag-container">Tagi
-                                        <button class="tag-btn">
+                                        <button id="tag-toggle-btn" class="tag-btn">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
                                     </button>
-                                    <ul class=" tag hidden">
+                                    <ul id="tag-body" class=" tag hidden">
                                         
                                         <li class="task-tag " >
                                             <label for="tag-praca" class="label-tag-element label-fisrt"> 
-                                                <input type="checkbox" class="input-tag-element" id="tag-praca">
+                                                <input type="radio" class="input-tag-element" id="tag-praca" name="tag-choice">
                                                 <span class="checkmark"></span>
                                                 #Praca
                                             </label>
                                            </li>
                                         <li class="task-tag">
                                             <label for="tag-dom" class="label-tag-element"> 
-                                                <input type="checkbox" class="input-tag-element" id="tag-dom">
+                                                <input type="radio" class="input-tag-element" id="tag-dom" name="tag-choice">
                                                 <span class="checkmark"></span>
                                                 #Dom
                                             </label>
                                             </li>
                                         <li class="task-tag">
                                             <label for="tag-hobby" class="label-tag-element">
-                                                <input type="checkbox" class="input-tag-element" id="tag-hobby">
+                                                <input type="radio" class="input-tag-element" id="tag-hobby" name="tag-choice">
                                                 <span class="checkmark"></span>
                                                 #Hobby 
                                             </label>
                                             </li>
                                         <li class="task-tag">
                                             <label for="tag-nauka" class="label-tag-element"> 
-                                                <input type="checkbox" class="input-tag-element" id="tag-nauka">
+                                                <input type="radio" class="input-tag-element" id="tag-nauka" name="tag-choice">
                                                 <span class="checkmark"></span>
                                                 #Nauka
                                             </label>
@@ -330,35 +330,35 @@
                                     </ul>
                                 </div>
                                 <div class="tag-container">Dzień
-                                    <button class="tag-btn">
+                                    <button  id="day-toggle-btn" class="tag-btn">
                                          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
                                     </button>
-                                    <ul class="task-tag tag hidden">
+                                    <ul  id="day-body" class="task-tag tag hidden">
                                         
                                         <li class="task-tag " >
                                             <label for="day-today" class="label-tag-element label-fisrt"> 
-                                                <input type="checkbox" class="input-tag-element" id="day-today">
+                                                <input type="radio" class="input-tag-element" id="day-today" name="day-choice">
                                                 <span class="checkmark"></span>
                                                 Dziś
                                             </label>
                                            </li>
                                         <li class="task-tag">
                                             <label for="day-tommarow" class="label-tag-element">
-                                                <input type="checkbox" class="input-tag-element" id="day-tommarow">
+                                                <input type="radio" class="input-tag-element" id="day-tommarow" name="day-choice">
                                                 <span class="checkmark"></span>
                                                 Jutro 
                                             </label>
                                             </li>
                                         <li class="task-tag">
                                             <label for="day-yesteday" class="label-tag-element"> 
-                                                <input type="checkbox" class="input-tag-element" id="day-yesteday">
+                                                <input type="radio" class="input-tag-element" id="day-yesteday" name="day-choice">
                                                 <span class="checkmark"></span>
                                                 Wczoraj
                                             </label>
                                             </li>
                                         <li class="task-tag">
                                             <label for="this-week" class="label-tag-element">
-                                                <input type="checkbox" class="input-tag-element" id="this-week">
+                                                <input type="radio" class="input-tag-element" id="this-week" name="day-choice">
                                                 <span class="checkmark"></span>
                                                 W tygodniu 
                                             </label>
@@ -366,28 +366,28 @@
                                     </ul>
                                 </div>
                                 <div class="tag-container">Piorytet
-                                    <button class="tag-btn">
+                                    <button id="prio-toggle-btn" class="tag-btn">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
                                     </button>
-                                    <ul class="task-tag tag hidden">
+                                    <ul id="prio-body" class="task-tag tag hidden">
                                         
                                         <li class="task-tag " >
                                             <label for="low" class="label-tag-element label-fisrt">
-                                                <input type="checkbox" class="input-tag-element" id="low">
+                                                <input type="radio" class="input-tag-element" id="low" name="prio-choice">
                                                 <span class="checkmark"></span>
                                                 Mały
                                             </label>
                                         </li>
                                         <li class="task-tag">
                                             <label for="medium" class="label-tag-element">
-                                                <input type="checkbox" class="input-tag-element" id="medium">
+                                                <input type="radio" class="input-tag-element" id="medium" name="prio-choice">
                                                 <span class="checkmark"></span>
                                                 Średni
                                             </label>
                                         </li>
                                         <li class="task-tag">
                                             <label for="hard" class="label-tag-element">
-                                                <input type="checkbox" class="input-tag-element" id="hard">
+                                                <input type="radio" class="input-tag-element" id="hard" name="prio-choice">
                                                 <span class="checkmark"></span>
                                                 Duży
                                             </label>
@@ -401,10 +401,10 @@
 
                             <textarea id="task-desc" name="desc" class="task-discription" placeholder="Napisz opis..."></textarea>
                             <div class="task-btns">
-                                <button class="task-handler-btn aprove">Dodaj
+                                <button id="submit-task" class="task-handler-btn aprove">Dodaj
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
                                 </button>
-                                <button class="task-handler-btn abandon">Anuluj
+                                <button id="abandon-btn" class="task-handler-btn abandon">Anuluj
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                                 </button>
                             </div>
