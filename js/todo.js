@@ -89,6 +89,7 @@ export class CreateTaskHandler extends ToggleableMenu {
         this.accordions = [];
         this.setupAccordeons();
         this.setupLabelUpdates();
+        this.testsubmitbtn()
         this.errorHandler = new FormErrors('new-task-form');
     }
         
@@ -138,6 +139,22 @@ export class CreateTaskHandler extends ToggleableMenu {
                 }
             })
         })
+    }
+    testsubmitbtn() {
+        this.handleNewTask.addEventListener('click', e =>{
+            e.preventDefault();
+            this.collectFormData();
+        })
+
+        
+    }
+
+    
+    collectFormData() {
+        const formData = {};
+        let accordeonTagData =document.querySelector('input[name="tag-choice"]:checked')
+        console.log( 'wartosc tagów to:',accordeonTagData.value);
+        
     }
                 
                 
