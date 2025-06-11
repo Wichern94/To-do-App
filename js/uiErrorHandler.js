@@ -2,7 +2,7 @@ export class FormErrors {
     constructor (formSelector){
         this.form = document.getElementById(formSelector); // łapie formularz
         this.inputs = this.form.querySelectorAll('input');  // łapie input z tego formularza
-        this.errorElement = this.form.querySelectorAll('.err-msg'); //łapie paragrafy z błedami
+        this.errorElement = this.form.querySelectorAll('.err-message'); //łapie paragrafy z błedami
         
     }
        

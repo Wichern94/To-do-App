@@ -1,7 +1,9 @@
+import { FormErrors } from './uiErrorHandler.js';
 export class TodoApp{
     constructor(user, viewManager) {
         this.user = user;
         this.viewManger = viewManager;
+        
         this.mainHamburger = new MainMenuHandler(
             'main-hamburger','main-burger-exit','main-burger-menu')
 
@@ -83,9 +85,11 @@ export class CreateTaskHandler extends ToggleableMenu {
     constructor(openBtnID,closeBtnID,mainMenuID,addBtnID,) {
         super(openBtnID,closeBtnID,mainMenuID); {
         this.handleNewTask = document.getElementById(addBtnID)
+        
         this.accordions = [];
-        this.setupAccordeons()
-       
+        this.setupAccordeons();
+        this.setupLabelUpdates();
+        this.errorHandler = new FormErrors('new-task-form');
     }
         
     }
@@ -112,11 +116,35 @@ export class CreateTaskHandler extends ToggleableMenu {
                 }
             });
             accordeon.ul.classList.toggle('hidden');
-            
-            
         });
     });
-   }
+}
+
+    setupLabelUpdates() {
+    const inputs =[
+        ...document.querySelectorAll('input[name="tag-choice"]'),
+        ...document.querySelectorAll('input[name="day-choice"]'),
+        ...document.querySelectorAll('input[name="prio-choice"]')
+        ];
+        inputs.forEach(input => {
+            input.addEventListener('change', function(event) {
+                const container= event.target.closest('.tag-container');
+                
+                const label = container.querySelector('.tag-lbl');
+                const body = container.querySelector('.tag')
+                if( label) {
+                    label.textContent = event.target.value;
+                    body.classList.add('hidden');
+                }
+            })
+        })
+    }
+                
+                
+                
+                
+            
+            
         
 
         

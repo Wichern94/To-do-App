@@ -405,6 +405,7 @@ a {
 }
 .modal-section-form{
     display: flex;
+    position: relative;
     width: 90%;
     height: 18rem;
     flex-direction: column;
@@ -470,7 +471,8 @@ a {
 }
 .element-carusel-container{
   display: flex;
-  margin: .5rem 0 .5rem 1rem;
+  position: relative;
+  margin: .5rem 0 1rem 1rem;
   width: 90%;
   border: none;
   font-size: 10px;
@@ -560,6 +562,30 @@ a {
 .label-tag-element:has(input:checked) {
  color: var(--color-warning)
 }
+.tag-errors{
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 1rem;
+  justify-content: space-around;
+  color: var(--color-danger);
+}
+.err1{
+  position: relative;
+  left:-1rem;
+}
+.err2{
+  position: relative;
+  left:2rem;
+}
+.err-msg-new-task {
+  color: var(--color-danger);
+  font-size: 12px;
+  position: absolute;
+  left: 8rem;
+  top: .5rem;
+}
+  
   
 
 

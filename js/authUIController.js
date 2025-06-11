@@ -46,6 +46,7 @@ export class AuthUIController {
     // Metoda powrotu do Logowania
     showLogIn(e) {
         e.preventDefault();
+        this.viewManager.hideOneView('forget-screen');
         console.log('kliknieto w logback');
         this.viewManager.showView('login-screen');
     }
