@@ -85,11 +85,13 @@ export class CreateTaskHandler extends ToggleableMenu {
     constructor(openBtnID,closeBtnID,mainMenuID,addBtnID,) {
         super(openBtnID,closeBtnID,mainMenuID); {
         this.handleNewTask = document.getElementById(addBtnID)
-        
+        this.form = document.getElementById('new-task-form');
         this.accordions = [];
         this.setupAccordeons();
         this.setupLabelUpdates();
+        this.setupValidation()
         this.testsubmitbtn()
+
         this.errorHandler = new FormErrors('new-task-form');
     }
         
@@ -110,12 +112,14 @@ export class CreateTaskHandler extends ToggleableMenu {
         },
     ];
     this.accordions.forEach((accordeon,idx,arr) => {
-        accordeon.btn.addEventListener('click',() => {
+        accordeon.btn.addEventListener('click',(e) => {
+
             arr.forEach((other,i) => {
                 if(i !==idx) {
                     other.ul.classList.add('hidden');
                 }
             });
+            this.errorHandler.clearError(e.target.name)
             accordeon.ul.classList.toggle('hidden');
         });
     });
@@ -141,21 +145,67 @@ export class CreateTaskHandler extends ToggleableMenu {
         })
     }
     testsubmitbtn() {
+        
+        
         this.handleNewTask.addEventListener('click', e =>{
             e.preventDefault();
-            this.collectFormData();
+            
+            const data = this.collectFormData();
+            const isvalid = this.validateFormData(data);
+            console.log(data);
+            
         })
+    }
+
+    setupValidation(){
+        this.form.querySelectorAll('input[type="text"], input[type="radio"]').forEach(el => {
+            const eventType = el.type === 'radio' ? 'change' : 'click';
+            el.addEventListener(eventType, e => {
+                const name = e.target.name;
+                this.errorHandler.clearError(name);
+            })
+        })
+    }
 
         
-    }
 
     
     collectFormData() {
         const formData = {};
-        let accordeonTagData =document.querySelector('input[name="tag-choice"]:checked')
-        console.log( 'wartosc tagów to:',accordeonTagData.value);
+       
+        const inputs = this.form.querySelectorAll('input, textarea')
+        inputs.forEach(input =>{
+            if (input.type === 'radio') {
+                if(input.checked) {
+                    formData[input.name] = input.value;
+                }
+            } else {
+                formData[input.name] = input.value;
+            }
+        })
         
+        return formData;
     }
+    validateFormData(formData){
+       let isvalid = true;
+       this.errorHandler.clearAllErrors();
+
+       if(!formData['tytuł']?.trim()) {
+        this.errorHandler.showError('tytuł','Podaj tytuł!');
+        isvalid = false;
+       }
+       if (!formData['tag-choice']) {
+        this.errorHandler.showError('tag-choice','Wybierz tag!');
+        isvalid= false;
+       }
+       if (!formData['prio-choice']) {
+        this.errorHandler.showError('prio-choice','Wybierz priorytet');
+        isvalid = false;
+       }
+       return isvalid;
+    }
+        
+        
                 
                 
                 
