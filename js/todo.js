@@ -91,10 +91,11 @@ export class CreateTaskHandler extends ToggleableMenu {
         this.setupLabelUpdates();
         this.setupValidation()
         this.testsubmitbtn()
-
         this.errorHandler = new FormErrors('new-task-form');
     }
-        
+    //1. AKORDEONY
+    //1.A) metoda  ustawiajaca akordeony
+
     }
    setupAccordeons() {
     this.accordions = [
@@ -124,7 +125,7 @@ export class CreateTaskHandler extends ToggleableMenu {
         });
     });
 }
-
+    //1.B) Tutaj ustawiam wybrany etykiete akordeonu,w zaleznosci co wybierze uzytkownik.
     setupLabelUpdates() {
     const inputs =[
         ...document.querySelectorAll('input[name="tag-choice"]'),
@@ -156,7 +157,8 @@ export class CreateTaskHandler extends ToggleableMenu {
             
         })
     }
-
+ // 2. validacja i pobieranie danych z formularzy
+ // 2.A) tutaj usuwam błedy do pustych formularzy
     setupValidation(){
         this.form.querySelectorAll('input[type="text"], input[type="radio"]').forEach(el => {
             const eventType = el.type === 'radio' ? 'change' : 'click';
@@ -169,7 +171,7 @@ export class CreateTaskHandler extends ToggleableMenu {
 
         
 
-    
+    //2.B)  pobieram wartosci z inputów
     collectFormData() {
         const formData = {};
        
@@ -186,6 +188,7 @@ export class CreateTaskHandler extends ToggleableMenu {
         
         return formData;
     }
+    //2.C) tutaj DODAJE Błedy dla pustych formularzy
     validateFormData(formData){
        let isvalid = true;
        this.errorHandler.clearAllErrors();
@@ -204,6 +207,60 @@ export class CreateTaskHandler extends ToggleableMenu {
        }
        return isvalid;
     }
+
+}
+//nowa klasa obsługujaca Dodawanie Taskow
+export class TaskManager {
+    constructor(data,ulID){
+        this.taskData = data;
+        this.taskContainer = document.getElementById(ulID)
+        this.addTasktoUI(this.taskData,this.taskContainer);
+    }
+    addTasktoUI(data,container) {
+        const li = container.createElement('li');
+        li.classList.add('task-item');
+        li.innerHTML =`
+            <div class="title-and-acrdon">
+                <span class="task-text"></span>
+                    <button class="task-acc-btn" id="task-accordeon-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                    </button>
+            </div>
+            <div class="item-container">
+                <p class="task-details">
+                                    
+                </p>
+                                
+            </div>
+            <div class="task-btn-container">
+                <div class="summary">
+                    <small class="task-date"></small>
+                    <small class ="task-group"></small>
+                </div>
+                <button class="delete-btn list-btns" aria-label="delete task">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                    </svg>
+                </button>
+            </div>`
+
+        Object.entries(data).forEach(([key,value]) => {
+            if(key ==='tytuł') {
+            li.querySelector('task-text').textContent = value;
+        } else if 
+        (key === )
+            
+        
+            
+            
+            
+
+        })
+    }
+}
+
         
         
                 
@@ -215,7 +272,6 @@ export class CreateTaskHandler extends ToggleableMenu {
         
 
         
-}
 
 
         
