@@ -1,4 +1,9 @@
 import { FormErrors } from './uiErrorHandler.js';
+import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { db } from './firebase-init.js';
+import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+
 export class TodoApp{
     constructor(user, viewManager) {
         this.user = user;
@@ -12,7 +17,7 @@ export class TodoApp{
         this.taskManager = new TaskManager('task-contener');
        
         this.taskCreator = new CreateTaskHandler(
-            'ad-tsk','abandon-btn','create-task-menu','submit-task', this.taskManager);
+            'ad-tsk','abandon-btn','create-task-menu','submit-task', this.taskManager,this.user);
     }
 }
 //klasa do obsługi przycisku wyloguj
@@ -83,9 +88,10 @@ export class SettingsMenuHandler extends ToggleableMenu {
 
 //klasa przycisku dodaj task
 export class CreateTaskHandler extends ToggleableMenu {
-    constructor(openBtnID,closeBtnID,mainMenuID,addBtnID,taskManager) {
+    constructor(openBtnID,closeBtnID,mainMenuID,addBtnID,taskManager,user) {
         super(openBtnID,closeBtnID,mainMenuID); {
         this.taskManager = taskManager;
+        this.user = user
         this.handleNewTask = document.getElementById(addBtnID);
         this.form = document.getElementById('new-task-form');
         this.accordions = [];
@@ -93,7 +99,7 @@ export class CreateTaskHandler extends ToggleableMenu {
         this.setupLabelUpdates();
         this.setupValidation()
         this.handleAddTask()
-        this.data = this.collectFormData();
+        
         
         this.errorHandler = new FormErrors('new-task-form');
         
@@ -150,23 +156,40 @@ export class CreateTaskHandler extends ToggleableMenu {
             })
         })
     }
-    handleAddTask() {
-        this.handleNewTask.addEventListener('click', e =>{
+   async handleAddTask() {
+        this.handleNewTask.addEventListener('click', async e => {
             e.preventDefault();
-            const data = this.collectFormData();
-            const isvalid = this.validateFormData(data);
+            const formData = this.collectFormData()
+            const isvalid = this.validateFormData(formData);
+            if (!isvalid) return;
+            const data = {
+            ...formData,
+            uid: this.user.uid,
+            createdAt: serverTimestamp()
+            }; 
+
+            
             
 
-            if (!isvalid) {
-                return
-            } else {
-                this.taskManager.addTaskToUI(data)
-                this.resetForm()
-                this.hide()
+            
+            
+            const firebaseID = await this.taskManager.saveTaskToFirestore(data);
 
+            if(firebaseID) {
+            this.taskManager.addTaskToUI({...data, id: firebaseID});
+            this.resetForm()
+                this.hide()
+            } else {
+                alert('Nie udało sie zapisac zadania w bazie');
             }
-        })
+        });
     }
+                
+             
+                
+                
+
+            
     resetForm() {
         this.form.reset()
     }
@@ -237,6 +260,10 @@ export class TaskManager {
     addTaskToUI(data) {
         const li = document.createElement('li');
         li.classList.add('task-item');
+        if(data.id){
+            li.dataset.id = data.id
+            // li.id = `task-${data.id}`;
+        }
         li.innerHTML =`
             <div class="title-and-acrdon">
                 <span class="task-text"></span>
@@ -283,6 +310,17 @@ export class TaskManager {
                 }
             } 
         })
+        return li
+    }
+    async saveTaskToFirestore (data) {
+        try {
+            const userTaskRef = collection(db,`users/${data.uid}/tasks`);
+            const docRef = await addDoc(userTaskRef, data);
+            return docRef.id;
+        } catch (error) {
+            console.error("błąd przy zapisie do Firestore:",error);
+            return null;
+        }
     }
                 
                     

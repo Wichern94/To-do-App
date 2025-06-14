@@ -1,9 +1,8 @@
-// Import the functions you need from the SDKs you need
+// Importuje baze danych oraz obsluge z firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+ 
+  // konfiugracja
   const firebaseConfig = {
     apiKey: "AIzaSyC76sRkTqpvvUQ8odZtdUZv_UJQGAO6yTE",
     authDomain: "pwr-tsk.firebaseapp.com",
@@ -12,6 +11,8 @@
     messagingSenderId: "938981123104",
     appId: "1:938981123104:web:823010e550cefdb9a24845"
   };
+  
 
-  // Initialize Firebase
-   export const fireApp = initializeApp(firebaseConfig);
+  // inicjalizuje firebase
+  export const fireApp = initializeApp(firebaseConfig);
+  export const db = getFirestore(fireApp);
