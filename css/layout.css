@@ -29,6 +29,8 @@
   --color-input-border: rgba(255, 255, 255, 0.15);
   --color-scrollbar: rgba(255, 255, 255, 0.1);
   --color-btns: #2a2a2c;
+  --color-border-medium:#ffa857;
+  --color-border-height:#f53434;
 
   /*  Efekt glass */
   --glass-blur: blur(16px);
@@ -293,6 +295,17 @@ a {
   position: relative;
   margin-bottom: 1.3rem;
   scroll-snap-align: start;
+}
+.prio-mały {
+  border: 0.5px solid var(--glass-border);
+}
+
+.prio-średni {
+  border: 0.5px solid var(--color-border-medium);
+}
+
+.prio-duży {
+  border: 0.5px solid var(--color-border-height);
 }
 .list-btns {
   height: 0.8rem;
