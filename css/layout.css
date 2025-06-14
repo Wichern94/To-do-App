@@ -296,16 +296,20 @@ a {
   margin-bottom: 1.3rem;
   scroll-snap-align: start;
 }
-.prio-mały {
+.prio-maly {
   border: 0.5px solid var(--glass-border);
+  position: relative;
+  
 }
 
-.prio-średni {
+.prio-sredni {
   border: 0.5px solid var(--color-border-medium);
+  position: relative;
 }
 
-.prio-duży {
+.prio-duzy {
   border: 0.5px solid var(--color-border-height);
+  position: relative;
 }
 .list-btns {
   height: 0.8rem;
@@ -353,6 +357,20 @@ a {
   font-size: 10px;
   font-weight: 500;
 }
+/* .task-prio{
+  font-size:12px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  border-radius: 0 0 5px 5px;
+  top:-0%;
+  background: var(--color-border-medium);
+  height: 2rem;
+  width: 4rem;
+  left:41% */
+/* } */
 .item-container {
   display: flex;
   margin: 0 1rem 0 1rem;
@@ -393,6 +411,7 @@ a {
 
 .summary {
   width: auto;
+  
 }
 .task-modal{
     display: flex;

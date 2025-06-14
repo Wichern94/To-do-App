@@ -92,7 +92,7 @@ export class CreateTaskHandler extends ToggleableMenu {
         this.setupAccordeons();
         this.setupLabelUpdates();
         this.setupValidation()
-        this.testsubmitbtn()
+        this.handleAddTask()
         this.data = this.collectFormData();
         
         this.errorHandler = new FormErrors('new-task-form');
@@ -155,15 +155,21 @@ export class CreateTaskHandler extends ToggleableMenu {
             e.preventDefault();
             const data = this.collectFormData();
             const isvalid = this.validateFormData(data);
+            
 
             if (!isvalid) {
                 return
             } else {
                 this.taskManager.addTaskToUI(data)
+                this.resetForm()
+                this.hide()
+
             }
         })
     }
-        
+    resetForm() {
+        this.form.reset()
+    }
             
             
             
@@ -222,12 +228,13 @@ export class CreateTaskHandler extends ToggleableMenu {
 }
 //nowa klasa obsługujaca Dodawanie Taskow
 export class TaskManager {
-    constructor(ulID){
-        
+    constructor(ulID, toggleDescBtnID,){
         this.taskContainer = document.getElementById(ulID)
-        
+        this.descBtn = toggleDescBtnID
     }
-    addTaskToUI(data,container) {
+        
+        
+    addTaskToUI(data) {
         const li = document.createElement('li');
         li.classList.add('task-item');
         li.innerHTML =`
@@ -249,7 +256,7 @@ export class TaskManager {
                 <div class="summary">
                     <small class="task-date"></small>
                     <small class ="task-group"></small>
-                    <small class ="task-prio"></small>
+                    <small class ="task-prio hidden"></small>
                 </div>
                 <button class="delete-btn list-btns" aria-label="delete task">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -257,7 +264,7 @@ export class TaskManager {
                     </svg>
                 </button>
             </div>`;
-        container.appendChild(li);
+        this.taskContainer.appendChild(li);
         const fieldMap= {
             'tytuł' : '.task-text',
             'desc' : '.task-details',
@@ -267,22 +274,27 @@ export class TaskManager {
         }
         Object.entries(data).forEach(([key,value]) => {
             const selector = fieldMap[key];
+            
             if(selector) {
              const element = li.querySelector(selector);
              if(element) element.textContent = value;
              if(key === 'prio-choice') {
                 li.classList.add(`prio-${value.toLowerCase()}`);
-             }
+                }
+            } 
+        })
+    }
+                
+                    
+                
+                
 
-        } 
             
         
             
             
             
 
-        })
-    }
 }
 
         
