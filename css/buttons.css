@@ -181,4 +181,9 @@
     background: var(--color-danger);
 }
     
-    
+.dot {
+    fill: #444;
+}
+.dot.active {
+    fill: #6BCDCE
+}

@@ -1,5 +1,5 @@
 import { FormErrors } from './uiErrorHandler.js';
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { collection, addDoc,getDocs,doc,deleteDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import { db } from './firebase-init.js';
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
@@ -14,10 +14,19 @@ export class TodoApp{
 
         this.userSettings = new SettingsMenuHandler(
             'user-menu-btn','user-menu-exit','open-user-settings','logout-btn');
-        this.taskManager = new TaskManager('task-contener');
+        this.taskManager = new TaskManager('task-contener',this.user);
        
         this.taskCreator = new CreateTaskHandler(
             'ad-tsk','abandon-btn','create-task-menu','submit-task', this.taskManager,this.user);
+        this.loadAndRenderUserTasks();
+    }
+  async  loadAndRenderUserTasks(){
+        try {
+        const storagedTasks =await this.taskManager.loadUserTasks(this.user.uid);
+        storagedTasks.forEach(task => this.taskManager.addTaskToUI(task));
+        } catch (error) {
+            console.error('błąd przy ładowaniu i renderowaniu zadań:', error)
+        }
     }
 }
 //klasa do obsługi przycisku wyloguj
@@ -32,6 +41,7 @@ export class TodoApp{
             this.button.addEventListener('click', (e) => {
                 e.preventDefault();
                 document.dispatchEvent(new CustomEvent ('auth:logout'));
+                window.location.reload();
             })
         }
     }
@@ -91,7 +101,7 @@ export class CreateTaskHandler extends ToggleableMenu {
     constructor(openBtnID,closeBtnID,mainMenuID,addBtnID,taskManager,user) {
         super(openBtnID,closeBtnID,mainMenuID); {
         this.taskManager = taskManager;
-        this.user = user
+        this.user = user;
         this.handleNewTask = document.getElementById(addBtnID);
         this.form = document.getElementById('new-task-form');
         this.accordions = [];
@@ -99,6 +109,7 @@ export class CreateTaskHandler extends ToggleableMenu {
         this.setupLabelUpdates();
         this.setupValidation()
         this.handleAddTask()
+        this.taskdata = this.taskManager.loadUserTasks(this.user.uid)
         
         
         this.errorHandler = new FormErrors('new-task-form');
@@ -251,18 +262,20 @@ export class CreateTaskHandler extends ToggleableMenu {
 }
 //nowa klasa obsługujaca Dodawanie Taskow
 export class TaskManager {
-    constructor(ulID, toggleDescBtnID,){
+    constructor(ulID,user){
         this.taskContainer = document.getElementById(ulID)
-        this.descBtn = toggleDescBtnID
+        this.user = user
+        
     }
         
         
     addTaskToUI(data) {
+        
         const li = document.createElement('li');
         li.classList.add('task-item');
         if(data.id){
             li.dataset.id = data.id
-            // li.id = `task-${data.id}`;
+            
         }
         li.innerHTML =`
             <div class="title-and-acrdon">
@@ -291,7 +304,10 @@ export class TaskManager {
                     </svg>
                 </button>
             </div>`;
-        this.taskContainer.appendChild(li);
+            this.taskContainer.appendChild(li);
+            this.bindTaskEvents(li)
+        
+        
         const fieldMap= {
             'tytuł' : '.task-text',
             'desc' : '.task-details',
@@ -318,10 +334,59 @@ export class TaskManager {
             const docRef = await addDoc(userTaskRef, data);
             return docRef.id;
         } catch (error) {
-            console.error("błąd przy zapisie do Firestore:",error);
+            console.error('błąd przy zapisie do Firestore:',error);
             return null;
         }
     }
+    async loadUserTasks(uid) {
+        try {
+            const TaskRef = collection(db,`users/${uid}/tasks`);
+            const docQuery = await getDocs(TaskRef)
+            const tasks =[];
+            docQuery.forEach((doc) => {
+                tasks.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+            console.log('zadania uzytkownika:', tasks);
+            
+            return tasks
+        } catch (error) {
+            console.error ('błąd przy odczycie  od firestore:', error);
+            return [];
+        }
+    }
+    async deleteTask(id,li){
+        try {
+            const docRef = doc(db, `users/${this.user.uid}/tasks/${id}`);
+            await deleteDoc(docRef);
+            li.remove();
+        } catch (error) {
+            console.error('bład przy usuwaniu zadania:', error);
+        }
+    }
+    bindTaskEvents(li) {
+        //pobieram Elementy
+        const deleteBtn = li.querySelector('.delete-btn');
+        const accBtn = li.querySelector('.task-acc-btn');
+        const descContainer = li.querySelector('.task-details');
+
+        //1.Akordeon tasków
+        if(accBtn && descContainer) {
+            accBtn.addEventListener('click', () => {
+            descContainer.classList.toggle('hidden')
+                }
+        ) }
+        //2. Usuwanie
+        deleteBtn?.addEventListener('click', () => {
+            const id = li.dataset.id;
+            this.deleteTask(id,li);
+        })
+    }       
+        
+}
+ 
                 
                     
                 
@@ -333,7 +398,6 @@ export class TaskManager {
             
             
 
-}
 
         
         

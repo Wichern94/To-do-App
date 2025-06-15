@@ -148,7 +148,7 @@
             <ul class="carousel">
                 
                 <li class="carousel-item">
-                    <button class="carusel-btn">
+                    <button class="carusel-btn" data-view="roadmap">
                         <svg  class="svg-modes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="110" height="110" fill="#6BCDCE">
                             <!-- Mapa -->
                             <path d="M10 20 L10 50 L25 40 L39 50 L54 40 L54 10 L39 20 L25 10 Z" fill="none" stroke="#6BCDCE" stroke-width="2"/>
@@ -166,7 +166,7 @@
                         Roadmapa</button>
                 </li>
                  <li class="carousel-item">
-                    <button class="carusel-btn">
+                    <button class="carusel-btn" data-view="list">
                         <svg class="svg-modes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="110" height="110" fill="#6BCDCE">
                         <!-- Rama -->
                         <rect x="12" y="14" width="40" height="36" rx="2" ry="2" fill="none" stroke="#6BCDCE" stroke-width="2"/>
@@ -185,7 +185,7 @@
                     Lista</button>
                 </li>
                 <li class="carousel-item">
-                    <button class="carusel-btn">
+                    <button class="carusel-btn" data-view="calendar">
                         <svg class="svg-modes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="110" height="110" fill="#6BCDCE">
                             <!-- Kalendarz -->
                             <rect x="10" y="16" width="44" height="36" rx="2" ry="2" fill="none" stroke="#6BCDCE" stroke-width="2"/>
@@ -266,7 +266,7 @@
 
                 <!-- Środkowe kwadraty nawigacyjne z odstępami -->
                 <rect x="130" y="13" width="6" height="6" fill="#444" class="dot" data-index="0" />
-                <rect x="150" y="11" width="6" height="6" fill="#6BCDCE" class="dot active" data-index="1" />
+                <rect x="150" y="11" width="6" height="6" fill="#444" class="dot " data-index="1" />
                 <rect x="170" y="13" width="6" height="6" fill="#444" class="dot" data-index="2" />
                 </svg>
 
@@ -281,7 +281,7 @@
                 
 
             
-            <section  id="li-sctn" class="list-section" aria-labelledby="tasks-section">
+        <section  id="li-sctn" class=" modes list-section" aria-labelledby="tasks-section">
                  <h4 id="tasks-section" class="tasks">Zadania:</h4>
 
                 <dialog  id="create-task-menu" class="task-modal hidden " >
@@ -496,6 +496,49 @@
                     
                 </div>
         </section>
+        <section id="roadmap-view" class=" modes roadmap-section hidden" aria-labelledby="roadmap-section-title">
+  <h4 id="roadmap-section-title" class="tasks">Roadmapa:</h4>
+  <div class="roadmap-box">
+    <ul id="roadmap-container" class="roadmap-list">
+      <li class="roadmap-node">
+        <div class="title-and-acrdon">
+          <span class="node-text">Nauka JavaScript</span>
+          <button class="node-acc-btn" id="roadmap-accordeon-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+        </div>
+        <div class="node-container">
+          <p class="node-details">
+            <!-- Opis zadania lub podzadania -->
+          </p>
+        </div>
+        <div class="node-btn-container">
+          <div class="summary">
+            <small class="node-time">0:00</small>
+            <small class="node-group">Faza 1</small>
+            <small class="node-status">W toku</small>
+          </div>
+          <button class="play-btn list-btns" aria-label="start timer">▶</button>
+          <button class="stop-btn list-btns" aria-label="stop timer">⏹</button>
+        </div>
+      </li>
+    </ul>
+    <button id="add-roadmap-task" class="add-task">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+        <rect x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#6BCDCE" stroke-width="2"/>
+        <line x1="24" y1="16" x2="24" y2="32" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
+        <line x1="16" y1="24" x2="32" y2="24" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+        </section>
+        <section id ="calendar-view" class="modes hidden" aria-labelledby="calendar-section-title" >
+        </section>
+            
+
     </section>
 
 

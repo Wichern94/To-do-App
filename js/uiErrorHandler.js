@@ -33,7 +33,7 @@ export class FormErrors {
         const inputElement = this.form.querySelector(`[name='${rightInput}']`); //znajduje input po name
 
         if(targetError){ //jesli jest
-            console.log( 'paragraf znaleziony:', targetError);
+            
             
             targetError.textContent = errMessage; // podaje treść wiadomosci
             targetError.classList.remove('hidden'); //pokazuje usuwajac klase hidden
@@ -55,14 +55,14 @@ export class FormErrors {
             targetError.textContent = '';
             targetError.classList.add('hidden');
             targetError.classList.remove('greenTxt');
-            console.log('usunieto jeden bład');
+            
             
             }
         if(inputElement) {
             inputElement.classList.remove('input-error');
-            console.log('usunieto czerwonyborder');
+            
             inputElement.classList.remove('input-possitive');
-            console.log('usunieto zielony border');
+            
             
         }
     }
@@ -71,7 +71,7 @@ export class FormErrors {
             err.textContent = '';
             err.classList.add('hidden');
             err.classList.remove('greenTxt')
-            console.log('usunieto wszystkie błędy');
+            
             
          }
         ) 
@@ -79,7 +79,7 @@ export class FormErrors {
             inpt.classList.remove('input-error');
             inpt.classList.remove('input-possitive');
 
-            console.log('usunieto wszystkie czerwone inputy');
+            
             }
         );
     }
