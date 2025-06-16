@@ -2,12 +2,15 @@ import { FormErrors } from './uiErrorHandler.js';
 import { collection, addDoc,getDocs,doc,deleteDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import { db } from './firebase-init.js';
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-
+import {GetCaruselPosition} from './ui.js'
 
 export class TodoApp{
     constructor(user, viewManager) {
         this.user = user;
         this.viewManger = viewManager;
+        this.carusel = new GetCaruselPosition('carousel-cont','.carousel-item');
+        this.carusel.setCaruselToMiddle();
+        // this.initCarusel()
         
         this.mainHamburger = new MainMenuHandler(
             'main-hamburger','main-burger-exit','main-burger-menu');
@@ -20,6 +23,12 @@ export class TodoApp{
             'ad-tsk','abandon-btn','create-task-menu','submit-task', this.taskManager,this.user);
         this.loadAndRenderUserTasks();
     }
+    // initCarusel() {
+    //     const mode = this.carusel.getViewKey();
+    //     if(mode) {
+    //         this.viewManger.
+        //}
+    // }
   async  loadAndRenderUserTasks(){
         try {
         const storagedTasks =await this.taskManager.loadUserTasks(this.user.uid);

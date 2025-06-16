@@ -45,28 +45,8 @@ export class ViewManager {
             mode.classList.remove('hidden');
             document.dispatchEvent(new CustomEvent('mode:changed'));
         } else {
-            console.error(`View with id "${modeId}" not found.`)
+            console.error(`Mode with id "${modeId}" not found.`)
         }
     }
-    //switch mode do karuzeli
-    switchViewMode(modename) {
-        const modeMap = {
-            roudmap:'roadmap-view',
-            list: 'li-sctn',
-            calendar: 'calendar-view'
-            
-
-        };
-        const indexMap = {
-            roudmap:1,
-            list: 0,
-            calendar: 2
-
-            
-        };
-        this.showMode(modeMap[modeName]);
-        const activeDot = document.querySelector(`.dot[data-index="${indexMap[modeName]}"]`);
-        activeDot?.classList.add('active');
-
-    }
+    
 }

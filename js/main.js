@@ -107,6 +107,7 @@ onAuthStateChanged(auth,(user) => {
         appBody.classList.remove('hidden');
         console.log(app.viewManager);
         app.viewManager.showView('todo-screen');
+        
         const todoApp = new TodoApp(user,app.viewManager);
         
         
