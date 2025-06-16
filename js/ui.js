@@ -3,4 +3,9 @@ export class GetCaruselPosition {
         this.container = document.getElementById(caruselContainer);
         this.items = document.querySelectorAll(caruselItems);
     }
+    setCaruselToMiddle(){
+        const itemWidth = this.items.forEach(item => {
+            item.offsetWidth;
+        })
+    }
 }

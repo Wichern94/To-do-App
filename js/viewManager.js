@@ -51,15 +51,18 @@ export class ViewManager {
     //switch mode do karuzeli
     switchViewMode(modename) {
         const modeMap = {
-            list: 'li-sctn',
             roudmap:'roadmap-view',
+            list: 'li-sctn',
             calendar: 'calendar-view'
+            
 
         };
         const indexMap = {
-            list: 1,
-            roudmap:0,
+            roudmap:1,
+            list: 0,
             calendar: 2
+
+            
         };
         this.showMode(modeMap[modeName]);
         const activeDot = document.querySelector(`.dot[data-index="${indexMap[modeName]}"]`);
