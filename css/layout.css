@@ -240,19 +240,20 @@ a {
   background-color: transparent;
 }
 
-.list-section {
+.list-section,.roadmap-section {
   flex-grow: 1;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  margin-top: 5rem;
 }
-.list-box {
+.list-box, .roadmap-box {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  
   height: 70dvh;
   overflow-y: auto;
   scroll-behavior: smooth;
@@ -278,11 +279,9 @@ a {
   font-size: 18px;
   font-weight: 600;
 }
-.list-section {
-  margin-top: 5rem;
-}
 
-.task-item {
+
+.task-item,.roadmap-node {
   background: var(--color-bg-soft);
   border: 0.5px solid var(--glass-border);
   border-radius: 8px;

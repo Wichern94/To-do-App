@@ -10,7 +10,7 @@ export class TodoApp{
         this.viewManger = viewManager;
         this.carusel = new GetCaruselPosition('carousel-cont','.carousel-item');
         this.carusel.setCaruselToMiddle();
-        // this.initCarusel()
+         this.initCarusel()
         
         this.mainHamburger = new MainMenuHandler(
             'main-hamburger','main-burger-exit','main-burger-menu');
@@ -23,12 +23,13 @@ export class TodoApp{
             'ad-tsk','abandon-btn','create-task-menu','submit-task', this.taskManager,this.user);
         this.loadAndRenderUserTasks();
     }
-    // initCarusel() {
-    //     const mode = this.carusel.getViewKey();
-    //     if(mode) {
-    //         this.viewManger.
-        //}
-    // }
+     initCarusel() {
+        this.carusel.onViewChange = (mode) => {
+            this.viewManger.showMode(mode.sectionId, mode.indicatorId);
+        }
+       
+        }
+     
   async  loadAndRenderUserTasks(){
         try {
         const storagedTasks =await this.taskManager.loadUserTasks(this.user.uid);

@@ -6,6 +6,7 @@ export class GetCaruselPosition {
         this.items = Array.from(document.querySelectorAll(caruselItems));
         this.currentIndex = null;
         this.scrollTimeout = null;
+        this.onViewChange =  null;
         
         this.modeMap = {
             roadmap: {
@@ -53,13 +54,17 @@ export class GetCaruselPosition {
                  const fullItemWidth = itemWidth + gap;
                 const scrLeft = this.container.scrollLeft
                 this.currentIndex = Math.round(scrLeft/ fullItemWidth);
+                const mode = this.getViewKey();
+                if(mode && typeof this.onViewChange === 'function') {
+                    this.onViewChange(mode)
+                }
 
                 
                     
-                   this.getViewKey()
+                   
                 
                 
-            },200)
+            },100)
         })
     }
     getIndex() {

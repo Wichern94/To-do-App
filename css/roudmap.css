@@ -1,0 +1,9 @@
+
+.roadmap-section,
+.roadmap-list {
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
