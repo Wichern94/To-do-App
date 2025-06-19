@@ -7,3 +7,64 @@
   align-items: center;
   position: relative;
 }
+.roadmap-section {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-top: 5rem;
+}
+.title-roudmap{
+  padding: .5rem 0 .5rem 0;
+  display: flex;
+  flex-direction: column;
+}
+.roadmap-box {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  height: 70dvh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.roadmap-node {
+  background: var(--color-bg-soft);
+  border: 0.5px solid var(--glass-border);
+  border-radius: 8px;
+  width: 20rem;
+  min-height: 2rem;
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  flex-direction: row-reverse;
+  position: relative;
+  margin-bottom: 1.3rem;
+  scroll-snap-align: start;
+}
+.node-btn-container{
+  display:flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 2.5rem;
+  padding: .5rem 0 .5rem 0;
+}
+.summary-roudmap{
+   
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 500;
+}
+.acc-btn-container{
+  display: flex;
+  margin-top: .5rem;
+}
+.timer{
+  display: flex;
+}

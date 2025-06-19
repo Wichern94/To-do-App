@@ -240,7 +240,7 @@ a {
   background-color: transparent;
 }
 
-.list-section,.roadmap-section {
+.list-section {
   flex-grow: 1;
   height: 100%;
   display: flex;
@@ -248,7 +248,7 @@ a {
   justify-content: flex-end;
   margin-top: 5rem;
 }
-.list-box, .roadmap-box {
+.list-box {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -281,7 +281,7 @@ a {
 }
 
 
-.task-item,.roadmap-node {
+.task-item {
   background: var(--color-bg-soft);
   border: 0.5px solid var(--glass-border);
   border-radius: 8px;
@@ -356,20 +356,7 @@ a {
   font-size: 10px;
   font-weight: 500;
 }
-/* .task-prio{
-  font-size:12px;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  border-radius: 0 0 5px 5px;
-  top:-0%;
-  background: var(--color-border-medium);
-  height: 2rem;
-  width: 4rem;
-  left:41% */
-/* } */
+
 .item-container {
   display: flex;
   margin: 0 1rem 0 1rem;
