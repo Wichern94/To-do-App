@@ -155,6 +155,7 @@
 }
 .node-details{
   overflow-x: hidden;
+  width: 10rem;
 }
 .sub-node-btn-container{
   display:flex;
