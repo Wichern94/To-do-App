@@ -17,6 +17,7 @@
   --color-accent-light: #9be5ec;
   --color-accent-blur:#9be5ec94;
   --color-border-task: rgba(107, 106, 106, 0.1);
+  --color-subtask: #262629;
 
   /*  Statusy */
   --color-done: #5ef3a3;
@@ -31,6 +32,7 @@
   --color-btns: #2a2a2c;
   --color-border-medium:#ffa857;
   --color-border-height:#f53434;
+  --box-shadow-white:rgba(255, 255, 255, 0.219);
 
   /*  Efekt glass */
   --glass-blur: blur(16px);

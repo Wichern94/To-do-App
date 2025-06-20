@@ -7,6 +7,10 @@
   align-items: center;
   position: relative;
 }
+.roadmap-list {
+  
+  padding: 2rem;
+}
 .roadmap-section {
   flex-grow: 1;
   height: 100%;
@@ -35,8 +39,8 @@
 }
 .roadmap-node {
   background: var(--color-bg-soft);
-  border: 0.5px solid var(--glass-border);
-  border-radius: 8px;
+   border: 0.5px solid var(--glass-border); 
+  overflow:visible;
   width: 20rem;
   min-height: 2rem;
   position: relative;
@@ -47,8 +51,56 @@
   position: relative;
   margin-bottom: 1.3rem;
   scroll-snap-align: start;
-  z-index: 1;
+  border-radius: 8px;
+  flex-wrap: wrap;
+  
+ 
 }
+@property --angle{
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.active-border::after, .active-border::before{
+  
+  box-sizing: content-box;
+  border-radius: 8px;
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: conic-gradient(from var(--angle), transparent 80%, var(--color-accent));
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  padding: 2px;
+  animation: 2.5s spin linear infinite;
+}
+
+.active-border::before{
+  filter: blur(1rem);
+  opacity: .5;
+}
+
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to{
+    --angle: 360deg;
+  }
+}
+.roud-title{
+   
+  line-height: 1.5;
+  font-size: 18px;
+  font-weight: 600;
+}
+  
+  
+ 
+
 .node-btn-container{
   display:flex;
   align-items: center;
@@ -71,11 +123,55 @@
   display: flex;
   margin-top: .5rem;
 }
-.active-border {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  z-index: 2;
-  background: conic-gradient(#6BCDCE 0%, transparent 50%,#6BCDCE 100%);
-  animation: spin-border 2s linear infinite;
+.subtask-carousel {
+  position: relative;
+  max-width: 100%;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 12px;
+  scrollbar-width: none;
 }
+.subtask-carousel::-webkit-scrollbar{
+  display: none;
+}
+.subtask-card{
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 8rem;
+  min-height: 4rem;
+  border-radius: 10px;
+  background: var(--color-subtask);
+  border: 0.5px solid var(--glass-border);
+  box-shadow: 0 2px 6px var(--box-shadow-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-direction: column;
+  margin-bottom: .8rem;
+ 
+}
+.node-details{
+  overflow-x: hidden;
+}
+.sub-node-btn-container{
+  display:flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  
+}
+.arrow-container {
+  display: flex;
+  align-items: center;
+}
+.arrow-container-nodes{
+  display: flex;
+  width: 100%;
+  height: 2rem;
+  justify-content: center;
+}
+  
+  
