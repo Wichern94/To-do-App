@@ -39,6 +39,7 @@
   border-radius: 8px;
   width: 20rem;
   min-height: 2rem;
+  position: relative;
   display: flex;
   justify-content: space-around;
   align-content: center;
@@ -46,13 +47,14 @@
   position: relative;
   margin-bottom: 1.3rem;
   scroll-snap-align: start;
+  z-index: 1;
 }
 .node-btn-container{
   display:flex;
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
-  width: 2.5rem;
+  width: 3rem;
   padding: .5rem 0 .5rem 0;
 }
 .summary-roudmap{
@@ -67,4 +69,13 @@
 }
 .timer{
   display: flex;
+  margin-top: .5rem;
+}
+.active-border {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  background: conic-gradient(#6BCDCE 0%, transparent 50%,#6BCDCE 100%);
+  animation: spin-border 2s linear infinite;
 }

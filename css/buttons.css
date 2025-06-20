@@ -204,3 +204,6 @@
 .dot.active {
     fill: #6BCDCE
 }
+.play-btn{
+    margin-left: .2rem;
+}
