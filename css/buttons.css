@@ -54,13 +54,13 @@
     outline: none;
     border: none;
 }
-.roud-btns{
-    background-color: transparent;
+.roud-btns-svg{
+    
     width: 1.2rem;
     height: 1.2rem;
     color: var(--text-secondary);
-    outline: none;
-    border: none;
+    margin-top: .5rem;
+    
 }
 
     
@@ -204,6 +204,19 @@
 .dot.active {
     fill: #6BCDCE
 }
-.play-btn{
-    margin-left: .2rem;
+
+.roud-btns {
+    height: 3rem;
+    width: 5rem;
+    background: var(--color-subtask);
+    outline: none;
+    border: none;
+    border-radius: 20%;
+    color: var(--text-secondary);
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 500;
 }
