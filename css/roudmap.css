@@ -9,7 +9,7 @@
 }
 .roadmap-list {
   gap: 2rem;
-  padding: 1.5rem;
+  padding: 2rem 1.5rem 1.5rem 1.5rem
 }
 
   
@@ -35,12 +35,13 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  
   
   height: 70dvh;
   overflow-y: auto;
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
+  scroll-padding-top: 2rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
@@ -103,6 +104,7 @@
   line-height: 1.5;
   font-size: 18px;
   font-weight: 600;
+  
 }
   
   
@@ -132,6 +134,7 @@
   border-radius: 20%;
   letter-spacing: 1px;
   flex-direction: column;
+  border: .5px solid var(--glass-border);
 }
 .node-time {
   margin-top: 4px;
@@ -222,6 +225,137 @@
   
   align-self: flex-end;
 }
+.roadmap-list .roadmap-node:first-child {
+ margin-top: 1.5rem;
+}
+.roud-modal{
+  display: flex;
+    position: fixed;
+    flex-direction: column;
+    
+    top: 0;
+    left: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-glass-bg);
+    height: 100dvh;
+    width: 100dvw;
+    background-color: var(--glass-border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-align: center;
+    z-index: 10;
+    transition: opacity 0.3s, backdrop-filter 0.5s;
+}
+.modal-section {
+    display: flex;
+    position: relative;
+    width: 90%;
+    height: 18rem;
+    flex-direction: column;
+    border-radius: 10px;
+    border: solid 0.5px var(--glass-border);
+    flex-direction: column;
+    align-items: flex-start;
+    
+    background-color: var(--color-hamburger);
+    box-shadow: 0px 5px 10px var(--color-divider);
+  }
+  .modal-tab-bar{
+    display: flex;
+    
+  }
+  .new-roud-title{
+    display: flex;
+    width: 100%;
+    font-weight: 700;
+    margin-top: .5rem;
+    justify-content: center;
+    position: relative;
+  }
+  .new-roud-title::after{
+    content: '';
+    position: absolute;
+    border-bottom: solid 0.5px var(--glass-border);
+    width: 80%;
+    top: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .manual-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  .roudnode-title {
+    margin:  0 0 .5rem 1.5rem;
+  }
+  .roudnode-title::placeholder{
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    font-family: "Oxanium", sans-serif;
+    display: flex;
+    margin: 1rem 0 0 1rem;
+    transition: all 0.8s ease;
+  }
+  .roudnode-title:focus::placeholder{
+    transform: translateX(5rem);
+    opacity: 0;
+  }
+  .modal-subtask, .modal-subtask-text {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 10px;
+  }
+  .modal-custom-check{
+  height: .8rem;
+  width: .8rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 2px;
+  position: relative;
+  display: inline-block;
+  margin-right: .5rem;
+  margin-left: 1.5rem;
+}
+
+.roud-disabld-checkbox:checked +.modal-custom-check::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0px;
+  width: 5px;
+  height: 12px;
+  border:   solid var(--color-done);
+  transform: rotate(45deg);
+  border-width:0 2px 2px 0 ;
+}
+.roud-disabld-checkbox:checked ~ .modal-subtask-text {
+  color: var(--color-done);
+  text-decoration: underline;
+  opacity: .5;
+}
+.sub-element-container{
+  display: flex;
+  position: relative;
+}
+.modal-sub-task-list{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  font-size: 10px;
+  margin: 1rem 0 0 1.5rem;
+  max-height: 5rem;
+  
+  gap: .5rem;
+}
+.modal-sub-task-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
 
 

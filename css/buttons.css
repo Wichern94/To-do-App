@@ -208,15 +208,71 @@
 .roud-btns {
     height: 3rem;
     width: 5rem;
+    border: .5px solid var(--glass-border);
     background: var(--color-subtask);
     outline: none;
-    border: none;
+    letter-spacing: 1px;
     border-radius: 20%;
     color: var(--text-secondary);
     font-size: 12px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column-reverse;
     font-weight: 500;
 }
+.play-btn{
+    color: var(--color-accent-light);
+    border: 1px dashed var(--color-accent-border);
+    
+}
+.play-btn svg{
+    color: var(--color-accent-light);
+}
+.stop-btn {
+    color: var(--color-danger);
+    border: 1px dashed var(--color-danger);
+}
+.stop-btn svg {
+    color: var(--color-danger);
+}
+.tab-btn {
+    
+    color: var(--color-text-primary);
+    height: 2rem;
+    width: 5rem;
+    border: none;
+    outline: none;
+    
+}
+.hand-btn{
+    background-color: var(--color-hamburger);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: .3;
+    border-radius: 10px 0 0 0 ;
+}
+.import-btn {
+    background-color: var(--color-accent-blur);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0px 5px 10px var(--color-divider);
+    color: black;
+    border-radius: 0 10px 0 0 ;
+}
+.modal-roud-btn{
+    border: none;
+    outline: none;
+    background: transparent;
+    
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    color:var(--color-text-secondary)
+}
+.sub-elements {
+    gap:.5rem;
+}
+    
+    
+

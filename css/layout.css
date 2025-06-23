@@ -15,7 +15,9 @@
   /*  Akcenty */
   --color-accent: #6bcdce;
   --color-accent-light: #9be5ec;
-  --color-accent-blur:#9be5ec94;
+  --color-accent-border: #44787c;
+
+  --color-accent-blur:#9be5ec8e;
   --color-border-task: rgba(107, 106, 106, 0.1);
   --color-subtask: #262629;
 

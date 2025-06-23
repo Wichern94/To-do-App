@@ -470,8 +470,70 @@
         </section>
         <section id="roadmap-view" class=" modes roadmap-section hidden" aria-labelledby="roadmap-section-title">
   <h4 id="roadmap-section-title" class="roud-title">Roadmapa:</h4>
+     <dialog  id="create-roud-menu " class="roud-modal  hidden" >
+        <fieldset class="modal-section">
+        <div class="modal-tab-bar">
+            <button class="tab-btn hand-btn" data-mode="manual">Dodaj Ręcznie</button>
+            <button class="tab-btn import-btn" data-mode="import">Importuj</button>
+        </div>
+        <form id="manual-node-form" class="manual-content">
+            <span class="new-roud-title">
+                <h3 id="modal-title">Dodaj Element</h2>
+            </span> 
+            <input class="roudnode-title" type="text" id="r-title" name="roud-title" autocomplete="off" placeholder="Podaj Tytuł..." >
+            <p class="err-message err-msg-new-task hidden" data-for="roud-title"></p>
+            <label class="modal-subtask">
+                <input type="checkbox" class = "roud-disabld-checkbox" />
+                <span class="modal-custom-check"></span>
+                <span class="modal-subtask-text">Chce dodać Sub-Element'y</span>
+            </label>
+            <div class = "sub-element-container hidden">
+                <input class="roudnode-title" type="text" id="r-sub" name="roud-sub" autocomplete="off" placeholder="Nazwa sub-elementu..." >
+                <p class="err-message err-msg-new-task hidden" data-for="roud-sub"></p>
+                <button class="modal-roud-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                </button>
+                </div>
+                <ul class="modal-sub-task-list hidden">
+                    <li class="sub-elements">cos</li>
+                    <li class="sub-elements">przykład</li>
+                    <li class="sub-elements"> dodali takie</li>
+                    <li class="sub-elements"> dodali takie</li>
+                    <li class="sub-elements"> dodali takie</li>
+                    <li class="sub-elements"> dodali takie</li>
+                    <li class="sub-elements"> dodali takie</li>
+                    <li class="sub-elements"> dodali takie</li>
+                    <li class="sub-elements"> dodali takie</li>
+                </ul>
+                <div class="task-btns">
+                    <button type="button" id="submit-node" class="task-handler-btn aprove">Dodaj
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                    </button>
+                    <button type="button" id="abandon-btn" class="task-handler-btn abandon">Anuluj
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                </div>
+
+            
+            
+            
+            
+                     
+                     
+                
+
+        </form>
+            </fieldset>
+
+                    
+                        
+                        
+                           
+    </dialog>
+  
   <div class="roadmap-box">
-    
     <ul id="roadmap-container" class="roadmap-list">
       <li class="roadmap-node active-border">
           
