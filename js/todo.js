@@ -3,6 +3,7 @@ import { collection, addDoc,getDocs,doc,deleteDoc } from "https://www.gstatic.co
 import { db } from './firebase-init.js';
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import {GetCaruselPosition} from './ui.js'
+import {RoudMapModal} from './components/roud-modal.js'
 
 export class TodoApp{
     constructor(user, viewManager) {
@@ -10,7 +11,8 @@ export class TodoApp{
         this.viewManger = viewManager;
         this.carusel = new GetCaruselPosition('carousel-cont','.carousel-item');
         this.carusel.setCaruselToMiddle();
-         this.initCarusel()
+        this.initCarusel()
+        this.roudmapModalBtn = new RoudMapModal('add-roadmap-task','create-roud-menu','manual-abandon-btn')
         
         this.mainHamburger = new MainMenuHandler(
             'main-hamburger','main-burger-exit','main-burger-menu');

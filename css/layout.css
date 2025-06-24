@@ -27,6 +27,9 @@
   --color-warning: #ffc857;
 
   /*  Elementy UI */
+  --color-text-small:#333;
+  --color-text-primiary-contrast:#1D2B36;
+  --color-text-secondary-contrast:#2B2B2B;
   --color-hamburger: #1c1c1e96;
   --color-button-hover: rgba(255, 255, 255, 0.05);
   --color-input-border: rgba(255, 255, 255, 0.15);

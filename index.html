@@ -470,13 +470,13 @@
         </section>
         <section id="roadmap-view" class=" modes roadmap-section hidden" aria-labelledby="roadmap-section-title">
   <h4 id="roadmap-section-title" class="roud-title">Roadmapa:</h4>
-     <dialog  id="create-roud-menu " class="roud-modal  hidden" >
+     <dialog  id="create-roud-menu" class="roud-modal  hidden" >
         <fieldset class="modal-section">
         <div class="modal-tab-bar">
             <button class="tab-btn hand-btn" data-mode="manual">Dodaj Ręcznie</button>
             <button class="tab-btn import-btn" data-mode="import">Importuj</button>
         </div>
-        <form id="manual-node-form" class="manual-content">
+        <form id="manual-node-form" class="manual-content ">
             <span class="new-roud-title">
                 <h3 id="modal-title">Dodaj Element</h2>
             </span> 
@@ -487,7 +487,7 @@
                 <span class="modal-custom-check"></span>
                 <span class="modal-subtask-text">Chce dodać Sub-Element'y</span>
             </label>
-            <div class = "sub-element-container hidden">
+            <div class = "sub-element-container  hidden">
                 <input class="roudnode-title" type="text" id="r-sub" name="roud-sub" autocomplete="off" placeholder="Nazwa sub-elementu..." >
                 <p class="err-message err-msg-new-task hidden" data-for="roud-sub"></p>
                 <button class="modal-roud-btn">
@@ -508,10 +508,10 @@
                     <li class="sub-elements"> dodali takie</li>
                 </ul>
                 <div class="task-btns">
-                    <button type="button" id="submit-node" class="task-handler-btn aprove">Dodaj
+                    <button type="button" id="manual-submit-node" class="task-handler-btn aprove">Dodaj
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
                     </button>
-                    <button type="button" id="abandon-btn" class="task-handler-btn abandon">Anuluj
+                    <button type="button" id="manual-abandon-btn" class="task-handler-btn abandon">Anuluj
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                     </button>
                 </div>
@@ -524,6 +524,26 @@
                      
                 
 
+        </form>
+        <form id="import-node-form" class="import-content hidden">
+            <span class="new-import-title">
+                <h3 id="import-modal-title">Importuj Gotowy text</h2>
+            </span> 
+            <div class="import-text">
+                <textarea id="import-desc" name="import" class="import-discription" placeholder="Wklej..."></textarea>
+            </div>
+            <p class="err-message err-msg-new-task hidden" data-for="import"></p>
+            <div class="task-btns">
+                    <button type="button" id="import-submit-node" class="task-handler-btn aprove">Dodaj
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                    </button>
+                    <button type="button" id="import-abandon-btn" class="task-handler-btn abandon">Anuluj
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+            </div>
+            <div class="helper-footer">
+                <small>Mozesz użyc chatGPT do wygenerowania roudmapy, i ja wkleic</small>
+            </div>
         </form>
             </fieldset>
 
@@ -865,12 +885,7 @@
   
     
         
-        <div class="arrow-container-nodes">
-            <svg class="roud-btns" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-            </svg>
-
-        </div>
+        
 
       
      
