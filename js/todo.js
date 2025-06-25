@@ -12,7 +12,17 @@ export class TodoApp{
         this.carusel = new GetCaruselPosition('carousel-cont','.carousel-item');
         this.carusel.setCaruselToMiddle();
         this.initCarusel()
-        this.roudmapModalBtn = new RoudMapModal('add-roadmap-task','create-roud-menu','manual-abandon-btn')
+        this.roudmapModal = new RoudMapModal({
+            openBtnID:'add-roadmap-task',
+            modalID:'create-roud-menu',
+            closeBtnID:'manual-abandon-btn',
+            handBtnID: 'hand-button',
+            importBtnID:'import-button',
+            importFormID:'import-node-form',
+            manualFormID: 'manual-node-form',
+            onOpen:() => {console.log('otwarto Modal Roudmapy');
+                }
+            });
         
         this.mainHamburger = new MainMenuHandler(
             'main-hamburger','main-burger-exit','main-burger-menu');
@@ -28,6 +38,12 @@ export class TodoApp{
      initCarusel() {
         this.carusel.onViewChange = (mode) => {
             this.viewManger.showMode(mode.sectionId, mode.indicatorId);
+            if (mode.sectionId === 'roadmap-view') {
+                this.roudmapModal?.activate();
+            } else {
+                this.roudmapModal?.deactivate();
+            }
+                
         }
        
         }
