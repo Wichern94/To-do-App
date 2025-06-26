@@ -20,6 +20,11 @@ export class TodoApp{
             importBtnID:'import-button',
             importFormID:'import-node-form',
             manualFormID: 'manual-node-form',
+            modalCheckBoxID:'roud-checkbox',
+            checkBoxContainerID:'sub-container',
+            subTaskInputID: 'r-sub',
+            subTaskBtnID: 'add-subtask-btn',
+            subTaskUlID:'subtask-list',
             onOpen:() => {console.log('otwarto Modal Roudmapy');
                 }
             });

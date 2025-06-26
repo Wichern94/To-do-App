@@ -476,28 +476,30 @@
             <button id="hand-button" class="tab-btn hand-btn" data-mode="manual">Dodaj Ręcznie</button>
             <button id="import-button" class="tab-btn import-btn" data-mode="import">Importuj</button>
         </div>
-        <form id="manual-node-form " class="manual-content ">
+        <form id="manual-node-form" class="manual-content ">
             <span class="new-roud-title">
-                <h3 id="modal-title">Dodaj Element</h2>
+                <h3 id="modal-title">Dodaj Element</h3>
             </span> 
-            <input class="roudnode-title" type="text" id="r-title" name="roud-title" autocomplete="off" placeholder="Podaj Tytuł..." >
-            <p class="err-message err-msg-new-task hidden" data-for="roud-title"></p>
+            <div class="input-container">
+                <input class="roudnode-title" type="text" id="r-title" name="roud-title" autocomplete="off" placeholder="Podaj Tytuł..." >
+                <p class="err-message err-msg-new-task hidden" data-for="roud-title"></p>
+            </div>
             <label class="modal-subtask">
-                <input type="checkbox" class = "roud-disabld-checkbox" />
+                <input type="checkbox" class = "roud-disabld-checkbox" id="roud-checkbox" />
                 <span class="modal-custom-check"></span>
                 <span class="modal-subtask-text">Chce dodać Sub-Element'y</span>
             </label>
-            <div class = "sub-element-container  hidden">
-                <input class="roudnode-title" type="text" id="r-sub" name="roud-sub" autocomplete="off" placeholder="Nazwa sub-elementu..." >
+            <div class = "sub-element-container  hidden" id="sub-container">
+                <input class="roudnode-title" type="text" id="r-sub" name="roud-sub" autocomplete="off" placeholder="Nazwa..." >
                 <p class="err-message err-msg-new-task hidden" data-for="roud-sub"></p>
-                <button class="modal-roud-btn">
+                <button class="modal-roud-btn" id="add-subtask-btn" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
                     </svg>
                 </button>
                 </div>
-                <ul class="modal-sub-task-list hidden">
-                    <li class="sub-elements">cos</li>
+                <ul class="modal-sub-task-list hidden" id="subtask-list">
+                    <!-- <li class="sub-elements">cos</li>
                     <li class="sub-elements">przykład</li>
                     <li class="sub-elements"> dodali takie</li>
                     <li class="sub-elements"> dodali takie</li>
@@ -505,7 +507,7 @@
                     <li class="sub-elements"> dodali takie</li>
                     <li class="sub-elements"> dodali takie</li>
                     <li class="sub-elements"> dodali takie</li>
-                    <li class="sub-elements"> dodali takie</li>
+                    <li class="sub-elements"> dodali takie</li> -->
                 </ul>
                 <div class="task-btns">
                     <button type="button" id="manual-submit-node" class="task-handler-btn aprove">Dodaj
@@ -527,7 +529,7 @@
         </form>
         <form id="import-node-form" class="import-content hidden">
             <span class="new-import-title">
-                <h3 id="import-modal-title">Importuj Gotowy text</h2>
+                <h3 id="import-modal-title">Importuj Gotowy text</h3>
             </span> 
             <div class="import-text">
                 <textarea id="import-desc" name="import" class="import-discription" placeholder="Wklej..."></textarea>
