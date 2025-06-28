@@ -25,6 +25,8 @@ export class TodoApp{
             subTaskInputID: 'r-sub',
             subTaskBtnID: 'add-subtask-btn',
             subTaskUlID:'subtask-list',
+            manualSubmitBtnID:'manual-submit-btn',
+            roudNodeInputID: 'r-title',
             onOpen:() => {console.log('otwarto Modal Roudmapy');
                 }
             });

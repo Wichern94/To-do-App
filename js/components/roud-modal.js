@@ -13,7 +13,9 @@ export class RoudMapModal {
         checkBoxContainerID,
         subTaskInputID,
         subTaskBtnID,
-        subTaskUlID
+        subTaskUlID,
+        manualSubmitBtnID,
+        roudNodeInputID,
         }) {
 
         this.elements = {
@@ -28,7 +30,9 @@ export class RoudMapModal {
             checkBoxContainer: document.getElementById(checkBoxContainerID),
             subTaskInput: document.getElementById(subTaskInputID),
             subTaskBtn: document.getElementById(subTaskBtnID),
-            subTaskUl: document.getElementById(subTaskUlID)
+            subTaskUl: document.getElementById(subTaskUlID),
+            manualSubmitBtn: document.getElementById(manualSubmitBtnID),
+            roudNodeInput: document.getElementById(roudNodeInputID),
         };
         this.manualFormErr = new FormErrors('manual-node-form');
         this.importFormErr = new FormErrors('import-node-form');
@@ -44,6 +48,7 @@ export class RoudMapModal {
             { el: 'modalCheckBox', event: 'change', handler: this.handleCheckboxChange.bind(this) },
             { el: 'subTaskBtn', event: 'click', handler: this.handleAddSubTask.bind(this) },
             { el: 'manualForm', event: 'click', handler: this.handleClearError.bind(this) },
+            { el: 'manualSubmitBtn', event: 'click', handler: this.handleManualSubmit.bind(this)}
             
         ];
     }
@@ -69,7 +74,15 @@ export class RoudMapModal {
         hideAddModal() {
             this.elements.modal?.classList.add('hidden');
             this.subTaskValues = [];
+            this.manualFormErr.clearAllErrors()
             this.elements.subTaskUl.innerHTML = '';
+            this.elements.roudNodeInput.value = '';
+            this.elements.subTaskInput.value = '';
+            if(this.elements.modalCheckBox.checked) {
+                this.handleCheckboxChange();
+                this.elements.modalCheckBox.checked = false;
+            }
+            
         }
         showImportSection() {
             this.elements.importForm?.classList.remove('hidden');
@@ -89,7 +102,7 @@ export class RoudMapModal {
             e.preventDefault()
             const inputValue = this.elements.subTaskInput.value.trim();
             if (!inputValue) {
-                this.manualFormErr.showError('roud-sub','Podaj Nazwe');
+                this.manualFormErr.showError('roud-sub','Podaj Nazwe!');
               return  
             }  
             if (this.subTaskValues.includes(inputValue)) return;
@@ -107,8 +120,25 @@ export class RoudMapModal {
                 
             });
         }
-        handleClearError(){
-            this.manualFormErr.clearError(event.target.name);
+        handleClearError(e){
+            this.manualFormErr.clearError(e.target.name);
+        }
+        handleManualSubmit(e) {
+            e.preventDefault()
+            const nameInputData = this.elements.roudNodeInput.value.trim()
+            if(!nameInputData) {
+                this.manualFormErr.showError('roud-title','Nazwij element!');
+                return
+            }
+            const nodeData = {
+                title: nameInputData,
+                subtasks:[...this.subTaskValues]
+            }
+            if(!this.elements.modalCheckBox.checked) {
+                nodeData.subtasks = [];
+            }
+            console.log('dane z manualnych formularzy', nodeData);
+            
         }
             
             

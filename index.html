@@ -480,10 +480,10 @@
             <span class="new-roud-title">
                 <h3 id="modal-title">Dodaj Element</h3>
             </span> 
-            <div class="input-container">
-                <input class="roudnode-title" type="text" id="r-title" name="roud-title" autocomplete="off" placeholder="Podaj Tytuł..." >
-                <p class="err-message err-msg-new-task hidden" data-for="roud-title"></p>
-            </div>
+                <div class="roud-input-container">
+                    <input class="roudnode-title" type="text" id="r-title" name="roud-title" autocomplete="off" placeholder="Podaj Tytuł..." >
+                    <p class="err-message err-msg-new-task hidden" data-for="roud-title"></p>
+                </div>
             <label class="modal-subtask">
                 <input type="checkbox" class = "roud-disabld-checkbox" id="roud-checkbox" />
                 <span class="modal-custom-check"></span>
@@ -499,18 +499,10 @@
                 </button>
                 </div>
                 <ul class="modal-sub-task-list hidden" id="subtask-list">
-                    <!-- <li class="sub-elements">cos</li>
-                    <li class="sub-elements">przykład</li>
-                    <li class="sub-elements"> dodali takie</li>
-                    <li class="sub-elements"> dodali takie</li>
-                    <li class="sub-elements"> dodali takie</li>
-                    <li class="sub-elements"> dodali takie</li>
-                    <li class="sub-elements"> dodali takie</li>
-                    <li class="sub-elements"> dodali takie</li>
-                    <li class="sub-elements"> dodali takie</li> -->
+                   
                 </ul>
                 <div class="task-btns">
-                    <button type="button" id="manual-submit-node" class="task-handler-btn aprove">Dodaj
+                    <button type="button" id="manual-submit-btn" class="task-handler-btn aprove">Dodaj
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
                     </button>
                     <button type="button" id="manual-abandon-btn" class="task-handler-btn abandon">Anuluj
