@@ -2,7 +2,7 @@ import { FormErrors } from './uiErrorHandler.js';
 import { collection, addDoc,getDocs,doc,deleteDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import { db } from './firebase-init.js';
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-import {GetCaruselPosition} from './ui.js'
+import {GetCaruselPosition} from './components/carouselSettings.js'
 import {RoudMapModal} from './components/roud-modal.js'
 
 export class TodoApp{
@@ -27,8 +27,11 @@ export class TodoApp{
             subTaskUlID:'subtask-list',
             manualSubmitBtnID:'manual-submit-btn',
             roudNodeInputID: 'r-title',
-            onOpen:() => {console.log('otwarto Modal Roudmapy');
-                }
+            onOpen:() => {console.log('otwarto Modal Roudmapy')},
+            onManualSubmit:(nodeData) => {
+                console.log('data z Manula t:',nodeData);
+            }
+                
             });
         
         this.mainHamburger = new MainMenuHandler(

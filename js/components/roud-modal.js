@@ -16,6 +16,7 @@ export class RoudMapModal {
         subTaskUlID,
         manualSubmitBtnID,
         roudNodeInputID,
+        onManualSubmit = null
         }) {
 
         this.elements = {
@@ -38,6 +39,7 @@ export class RoudMapModal {
         this.importFormErr = new FormErrors('import-node-form');
         this.subTaskValues = [];
         this.onOpen = onOpen;
+        this.onManualSubmit= onManualSubmit;
         // musze z bindowac metody zeby dało sie odpinac listenery,
         // gdybym nie zbindował to by metody wskazywały na element dom anie klase.
         this.listeners = [
@@ -137,7 +139,9 @@ export class RoudMapModal {
             if(!this.elements.modalCheckBox.checked) {
                 nodeData.subtasks = [];
             }
-            console.log('dane z manualnych formularzy', nodeData);
+            
+             if(typeof this.onManualSubmit === 'function') this.onManualSubmit(nodeData);
+            return nodeData;
             
         }
             
