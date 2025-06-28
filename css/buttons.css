@@ -205,7 +205,7 @@
     fill: #6BCDCE
 }
 
-.roud-btns {
+.roud-btns,.add-roadmap-btn {
     height: 3rem;
     width: 5rem;
     border: .5px solid var(--glass-border);
@@ -261,7 +261,7 @@
     width: 50%;
     border-radius: 0 10px 0 0 ;
 }
-.modal-roud-btn{
+.modal-roud-btn {
     border: none;
     outline: none;
     background: transparent;
@@ -274,6 +274,30 @@
 .sub-elements {
     gap:.5rem;
 }
+
+.add-roadmap-btn {
+    height: 2.5rem;
+    width: 6rem;
+    
+    background: var(--color-done);
+    outline: none;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    color: var(--color-text-primiary-contrast);
+    font-size: 12px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row-reverse;
+    font-weight: 600;
+    justify-content: space-evenly;
+    padding: .2rem;
+}
+.add-roadmap-btn svg {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
     
     
 
