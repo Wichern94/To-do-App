@@ -4,6 +4,8 @@ import { db } from './firebase-init.js';
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import {GetCaruselPosition} from './components/carouselSettings.js'
 import {RoudMapModal} from './components/roud-modal.js'
+import {RoadmapSelector} from './components/roadmapSelector.js'
+import {FirestoreService} from './Services/Service.js'
 
 export class TodoApp{
     constructor(user, viewManager) {
@@ -33,6 +35,23 @@ export class TodoApp{
             }
                 
             });
+        this.firestoreService = new FirestoreService(this.user.uid);
+        this.roadmapSelector = new RoadmapSelector({
+            titleContainerID:'roadmap-section-title',
+            newMapBtnID:'new-map-btn',
+            setRoadmapContainerID:'add-main-roadmap',
+            setRoadmapFormID:'create-map-form',
+            setInputTitleID:'create-title',
+            setRoadmapSubmitBtnID:'create-submit-btn',
+            abandonRoadmapSubmitBtnID:'create-abandon-btn',
+            ulContainerID: 'ul-container',
+            onSubmit: async (roadData) => {
+                const id = await this.firestoreService.addCollection(roadData,'roadmaps');
+                if (!id) return;
+                const fullRoadData = {...roadData, id};
+                this.roadmapSelector.createRoadmapLi(fullRoadData);
+            }
+        });
         
         this.mainHamburger = new MainMenuHandler(
             'main-hamburger','main-burger-exit','main-burger-menu');
@@ -50,6 +69,7 @@ export class TodoApp{
             this.viewManger.showMode(mode.sectionId, mode.indicatorId);
             if (mode.sectionId === 'roadmap-view') {
                 this.roudmapModal?.activate();
+                this.roadmapSelector?.activate()
             } else {
                 this.roudmapModal?.deactivate();
             }
