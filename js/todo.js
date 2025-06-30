@@ -50,7 +50,16 @@ export class TodoApp{
                 if (!id) return;
                 const fullRoadData = {...roadData, id};
                 this.roadmapSelector.createRoadmapLi(fullRoadData);
-            }
+            },
+
+            onDelete: async (roadmapId) => { 
+              const success = await this.firestoreService.deleteDocument(roadmapId, 'roadmaps');
+              if(success) {
+                const li  = document.querySelector(`.roadmap-list-item[data-id="${roadmapId}"]`);
+                li?.remove();
+                this.roadmapSelector.checkRoudmaps();
+              }
+            },
         });
         
         this.mainHamburger = new MainMenuHandler(
@@ -69,7 +78,16 @@ export class TodoApp{
             this.viewManger.showMode(mode.sectionId, mode.indicatorId);
             if (mode.sectionId === 'roadmap-view') {
                 this.roudmapModal?.activate();
-                this.roadmapSelector?.activate()
+                this.roadmapSelector?.activate();
+
+                this.firestoreService.loadUserCollection('roadmaps')
+                    .then((roadmapData) => {
+                        this.roadmapSelector.loadRoadmapList(roadmapData);
+                    })
+                    .catch((err) => {
+                        console.error('błąd przy ładowaniu roudmap:', err);
+                    });
+                
             } else {
                 this.roudmapModal?.deactivate();
             }

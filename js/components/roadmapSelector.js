@@ -9,7 +9,8 @@ export class RoadmapSelector {
         setRoadmapSubmitBtnID,
         abandonRoadmapSubmitBtnID,
         onSubmit = null,
-        ulContainerID
+        onDelete = null,
+        ulContainerID,
     })
     {
         this.elements = {
@@ -27,13 +28,15 @@ export class RoadmapSelector {
             { el: 'abandonRoadmapSubmitBtn', event: 'click', handler: this.hideAddRoadmap.bind(this) },
             { el: 'setRoadmapSubmitBtn', event: 'click', handler: this.handleSubmit.bind(this) },
             { el: 'setRoadmapForm', event: 'click', handler: this.handleClearError.bind(this) },
+            { el: 'ulContainer', event: 'click', handler: this.handleDelete.bind(this)},
             
             
             
         ];
         this.roadmaps = [];
         this.FormErr = new FormErrors('create-map-form');
-        this.onSubmit = onSubmit
+        this.onSubmit = onSubmit;
+        this.onDelete = onDelete;
          }  
         activate() {
             this.listeners.forEach(({ el,event, handler}) => {
@@ -107,7 +110,45 @@ export class RoadmapSelector {
 
                         </button>
                     </div>`
-            this.elements.ulContainer.appendChild(li) 
+            this.elements.ulContainer.appendChild(li)
+            this.checkRoudmaps();
+        };
+            
+            
+            
+    loadRoadmapList(roadmaps){
+        if(!Array.isArray(roadmaps)) return;
+
+        roadmaps.forEach(road => {
+            this.createRoadmapLi(road);
+
+        })
+    }; 
+    handleDelete(e) {
+        const deleteBtn = e.target.closest('.delete-road-btn');
+        if(!deleteBtn) return;
+
+        const li = deleteBtn.closest('.roadmap-list-item');
+        const roadmapId = li?.dataset.id;
+        if(!roadmapId) return 
+        
+
+        if(typeof this.onDelete === 'function') {
+            this.onDelete(roadmapId);
+            
+        }
+        
+
+    } 
+    checkRoudmaps(){
+        if (this.elements.ulContainer.querySelector('li')) {
+                console.log('tytul nagłowku:',this.elements.titleContainer);
+                
+                this.elements.titleContainer.textContent = 'Twoje Roadmapy:';
+            } else {
+               this.elements.titleContainer.textContent = 'Nie masz Roadmap!'; 
+             }
+    }  
             
             
             
@@ -115,5 +156,4 @@ export class RoadmapSelector {
         
         
         
-    }     
 }
