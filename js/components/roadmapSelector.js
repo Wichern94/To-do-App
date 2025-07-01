@@ -11,6 +11,7 @@ export class RoadmapSelector {
         onSubmit = null,
         onDelete = null,
         ulContainerID,
+        ulContDivID,
     })
     {
         this.elements = {
@@ -21,7 +22,8 @@ export class RoadmapSelector {
             setInputTitle: document.getElementById(setInputTitleID),
             setRoadmapSubmitBtn: document.getElementById(setRoadmapSubmitBtnID),
             abandonRoadmapSubmitBtn: document.getElementById(abandonRoadmapSubmitBtnID),
-            ulContainer: document.getElementById(ulContainerID)
+            ulContainer: document.getElementById(ulContainerID),
+            ulContDiv: document.getElementById(ulContDivID),
         };
         this.listeners = [
             { el: 'newMapBtn', event: 'click', handler: this.showAddRoadmap.bind(this) },
@@ -111,7 +113,7 @@ export class RoadmapSelector {
                         </button>
                     </div>`
             this.elements.ulContainer.appendChild(li)
-            this.checkRoudmaps();
+            
         };
             
             
@@ -119,10 +121,20 @@ export class RoadmapSelector {
     loadRoadmapList(roadmaps){
         if(!Array.isArray(roadmaps)) return;
 
+         this.elements.ulContainer.innerHTML = '';
+         
+
         roadmaps.forEach(road => {
             this.createRoadmapLi(road);
-
-        })
+            const existingUl = this.elements.ulContDiv.querySelector(`ul[data-id="ul-${road.id}"]`);
+            if(!existingUl  ) {
+                this.createNodeUl(road);
+            }
+            
+        });
+        this.roadmaps = [...roadmaps];
+        this.checkRoudmaps()
+        
     }; 
     handleDelete(e) {
         const deleteBtn = e.target.closest('.delete-road-btn');
@@ -141,13 +153,29 @@ export class RoadmapSelector {
 
     } 
     checkRoudmaps(){
+        let liCreated = false;
         if (this.elements.ulContainer.querySelector('li')) {
                 console.log('tytul nagłowku:',this.elements.titleContainer);
-                
                 this.elements.titleContainer.textContent = 'Twoje Roadmapy:';
+                liCreated = true
+                
             } else {
                this.elements.titleContainer.textContent = 'Nie masz Roadmap!'; 
              }
+             return liCreated
+    }
+    createNodeUl(data){
+        const ul = document.createElement('ul');
+         ul.classList.add('roadmap-list', 'hidden');
+         if(data.id){
+             ul.id =`ul-${data.id}` 
+         }
+        
+         
+         this.elements.ulContDiv.appendChild(ul)
+         if(this.elements.ulContDiv.querySelector('ul')){
+             console.log('utworzono nowy ul:', ul);
+         }
     }  
             
             
