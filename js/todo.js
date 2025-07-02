@@ -4,7 +4,7 @@ import { db } from './firebase-init.js';
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import {GetCaruselPosition} from './components/carouselSettings.js'
 import {RoudMapModal} from './components/roud-modal.js'
-import {RoadmapSelector} from './components/roadmapSelector.js'
+import {RoadmapSelector} from './components/RoadmapSelector.js'
 import {FirestoreService} from './Services/Service.js'
 
 export class TodoApp{
@@ -46,6 +46,9 @@ export class TodoApp{
             abandonRoadmapSubmitBtnID:'create-abandon-btn',
             ulContainerID: 'ul-container',
             ulContDivID: 'Ul-cont-div',
+            listTogglerID: 'list-toggler-ID',
+            addBtnContainerID: 'add-node-btn-cont',
+            
             onSubmit: async (roadData) => {
                 const id = await this.firestoreService.addCollection(roadData,'roadmaps');
                 if (!id) return;

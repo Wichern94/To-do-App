@@ -12,6 +12,9 @@ export class RoadmapSelector {
         onDelete = null,
         ulContainerID,
         ulContDivID,
+        listTogglerID,
+        addBtnContainerID,
+        
     })
     {
         this.elements = {
@@ -24,6 +27,9 @@ export class RoadmapSelector {
             abandonRoadmapSubmitBtn: document.getElementById(abandonRoadmapSubmitBtnID),
             ulContainer: document.getElementById(ulContainerID),
             ulContDiv: document.getElementById(ulContDivID),
+            listToggler: document.getElementById(listTogglerID),
+            addBtnContainer: document.getElementById(addBtnContainerID),
+            
         };
         this.listeners = [
             { el: 'newMapBtn', event: 'click', handler: this.showAddRoadmap.bind(this) },
@@ -31,16 +37,24 @@ export class RoadmapSelector {
             { el: 'setRoadmapSubmitBtn', event: 'click', handler: this.handleSubmit.bind(this) },
             { el: 'setRoadmapForm', event: 'click', handler: this.handleClearError.bind(this) },
             { el: 'ulContainer', event: 'click', handler: this.handleDelete.bind(this)},
+            { el: 'ulContainer', event: 'click', handler: this.handleEnterRoadmap.bind(this) },
+            
+            
+
             
             
             
         ];
         this.roadmaps = [];
+        this.activeRoadmapId = null;
         this.FormErr = new FormErrors('create-map-form');
         this.onSubmit = onSubmit;
         this.onDelete = onDelete;
+        
          }  
         activate() {
+            console.log('aktywowano activite RiadmapSelectora');
+            
             this.listeners.forEach(({ el,event, handler}) => {
                 this.elements[el]?.addEventListener(event,handler);
             });
@@ -120,18 +134,35 @@ export class RoadmapSelector {
             
     loadRoadmapList(roadmaps){
         if(!Array.isArray(roadmaps)) return;
+        console.log('ZAŁADOWANO MAPE');
+        
 
-         this.elements.ulContainer.innerHTML = '';
+        this.elements.ulContainer.innerHTML = '';
+        const existingBackBtn = this.elements.ulContDiv.querySelector('#btn-back');
+        if (!existingBackBtn) {
+            const backContDiv = document.createElement('div');
+            backContDiv.classList.add('go-back-btn-container');
+             
+            backContDiv.innerHTML= `
+         
+            <button id="btn-back" class="roud-list-btns">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+            </button>`
+            this.elements.ulContDiv.appendChild(backContDiv);
+            this.activeBackButton();
+        }   
          
 
         roadmaps.forEach(road => {
             this.createRoadmapLi(road);
             const existingUl = this.elements.ulContDiv.querySelector(`ul[data-id="ul-${road.id}"]`);
-            if(!existingUl  ) {
-                this.createNodeUl(road);
-            }
             
-        });
+            if(existingUl) return
+                this.createNodeUl(road);
+            });
+            
         this.roadmaps = [...roadmaps];
         this.checkRoudmaps()
         
@@ -172,11 +203,46 @@ export class RoadmapSelector {
          }
         
          
-         this.elements.ulContDiv.appendChild(ul)
+         this.elements.ulContDiv.appendChild(ul);
+         
          if(this.elements.ulContDiv.querySelector('ul')){
              console.log('utworzono nowy ul:', ul);
          }
-    }  
+    } 
+    handleEnterRoadmap(e) {
+        const btn = e.target.closest('.enter-road-btn');
+        if(!btn) return;
+
+        const li = btn.closest('.roadmap-list-item');
+        const roadmapId = li?.dataset.id;
+        if(!roadmapId) return;
+
+        this.activeRoadmapId = roadmapId;
+        //ukrywam pojemnik na wybor roadmap
+        this.elements.listToggler.classList.add('hidden');
+        //pokazuje ulki z tym ID
+        const targetUl = document.querySelector(`ul[id="ul-${roadmapId}"]`);
+        document.querySelectorAll('.roadmap-list').forEach(ul => ul.classList.add('hidden'));
+        this.elements.ulContDiv.classList.remove('hidden');
+        targetUl?.classList.remove('hidden');
+        //globalny przycisk dodawania nodów
+        this.elements.addBtnContainer.classList.remove('hidden');
+    }
+    activeBackButton() {
+        const backBtn = document.getElementById('btn-back');
+        if(backBtn) {
+            backBtn.addEventListener('click', this.handleGoBack.bind(this));
+        }
+    }
+    handleGoBack() {
+        const targetUl = document.querySelector(`ul[id="ul-${this.activeRoadmapId}"]`);
+        this.elements.listToggler.classList.remove('hidden');
+        this.elements.ulContDiv.classList.add('hidden');
+        targetUl?.classList.add('hidden');
+        this.elements.addBtnContainer.classList.add('hidden');
+        
+
+    }
             
             
             

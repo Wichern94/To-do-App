@@ -493,6 +493,19 @@
     gap: 2rem;
     flex-direction: row-reverse;
   }
+  .list-toggler{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1.5rem;
+  }
+  .roadmap-content-area{
+    height: 100%;
+    width: 100%;
+  }
+  .go-back-btn-container{ 
+    display: flex;
+    margin-left: 1rem;
+  }
     
 
 

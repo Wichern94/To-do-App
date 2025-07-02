@@ -548,7 +548,7 @@
     </dialog>
   
   <div class="roadmap-box">
-    <div class="list-toggler ">
+    <div id ="list-toggler-ID"class="list-toggler ">
         <h4 id="roadmap-section-title" class="roud-title">Nie masz Roadmap!</h4>
         <div class="roadmap-select-bar">
             <button id="new-map-btn" class="add-roadmap-btn" type="button">Nowa
@@ -602,10 +602,28 @@
         </dialog>
 
     
-    <div  id ="Ul-cont-div"class="roadmap-content-area">
+    <div  id ="Ul-cont-div"class="roadmap-content-area hidden">
+        <!-- <div class="go-back-btn-container">
+            <button id="roadmaps-back-btn" class="roud-list-btns">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+            </button>
+        </div> -->
+    </div>
         
+
+        <div id="add-node-btn-cont" class="add-btn-container hidden">
+                <button id="add-roadmap-task" class="add-task">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                    <rect x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#6BCDCE" stroke-width="2"/>
+                    <line x1="24" y1="16" x2="24" y2="32" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
+                    <line x1="16" y1="24" x2="32" y2="24" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
+                </svg>
+                </button>
+            </div>
        
-        <ul id="roadmap-container" class="roadmap-list hidden">
+        <!-- <ul id="roadmap-container" class="roadmap-list hidden">
     
     
       <li class="roadmap-node active-border">
@@ -686,251 +704,11 @@
                     </li>
                 </ul>
             </li>
-        <li class="roadmap-node ">
-          
-          <div class="title-roudmap">
-              <span class="node-text">Nauka JavaScript</span>
-              <button class="node-acc-btn " id="roadmap-accordeon-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                      stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                  </svg>
-              </button>
-              </div>
-        
+       
             
-              
-            <div class="node-btn-container">
-                <button class="stop-btn roud-btns" aria-label="stop timer">Zatrzymaj
-                    <svg class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
-                    </svg>
-                </button>
-                  <div class="timer">Czas
-                    <small class="node-time">0:00</small>
-                </div>
-                  <button class="play-btn roud-btns" aria-label="start timer">Rozpocznij
-                    <svg  class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                    </svg>
-                </button>
-            </div>
-                
-            <div class="progress-container hidden">
-                <span class="progress-text">20%</span>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                
-            </div>
+        </ul> -->
+
     
-            <ul class="subtask-list hidden">
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Utworzyć formularz</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Obsłużyć błędy</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check">
-                            
-                        </span>
-                        <span class="subtask-text">Dodać walidację</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Połączyć z backendem</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Testy jednostkowe</span>
-                    </label>
-                    </li>
-                </ul>
-            </li>
-        <li class="roadmap-node ">
-          
-          <div class="title-roudmap">
-              <span class="node-text">Nauka JavaScript</span>
-              <button class="node-acc-btn " id="roadmap-accordeon-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                      stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                  </svg>
-              </button>
-              </div>
-        
-            
-              
-            <div class="node-btn-container">
-                <button class="stop-btn roud-btns" aria-label="stop timer">Zatrzymaj
-                    <svg class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
-                    </svg>
-                </button>
-                  <div class="timer">Czas
-                    <small class="node-time">0:00</small>
-                </div>
-                  <button class="play-btn roud-btns" aria-label="start timer">Rozpocznij
-                    <svg  class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                    </svg>
-                </button>
-            </div>
-                
-            <div class="progress-container hidden">
-                <span class="progress-text">20%</span>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                
-            </div>
-    
-            <ul class="subtask-list hidden">
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Utworzyć formularz</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Obsłużyć błędy</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check">
-                            
-                        </span>
-                        <span class="subtask-text">Dodać walidację</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Połączyć z backendem</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Testy jednostkowe</span>
-                    </label>
-                    </li>
-                </ul>
-            </li>
-        <li class="roadmap-node ">
-          
-          <div class="title-roudmap">
-              <span class="node-text">Nauka JavaScript</span>
-              <button class="node-acc-btn " id="roadmap-accordeon-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                      stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                  </svg>
-              </button>
-              </div>
-        
-            
-              
-            <div class="node-btn-container">
-                <button class="stop-btn roud-btns" aria-label="stop timer">Zatrzymaj
-                    <svg class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
-                    </svg>
-                </button>
-                  <div class="timer">Czas
-                    <small class="node-time">0:00</small>
-                </div>
-                  <button class="play-btn roud-btns" aria-label="start timer">Rozpocznij
-                    <svg  class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                    </svg>
-                </button>
-            </div>
-                
-            <div class="progress-container hidden">
-                <span class="progress-text">20%</span>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                
-            </div>
-    
-            <ul class="subtask-list hidden">
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Utworzyć formularz</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Obsłużyć błędy</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check">
-                            
-                        </span>
-                        <span class="subtask-text">Dodać walidację</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Połączyć z backendem</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Testy jednostkowe</span>
-                    </label>
-                    </li>
-                </ul>
-            </li> 
-            <div class="add-btn-container">
-                <button id="add-roadmap-task" class="add-task">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-                    <rect x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#6BCDCE" stroke-width="2"/>
-                    <line x1="24" y1="16" x2="24" y2="32" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
-                    <line x1="16" y1="24" x2="32" y2="24" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
-                </svg>
-                </button>
-            </div>
-        </ul>
-    </div>
 </div>
             
         
