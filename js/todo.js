@@ -2,9 +2,9 @@ import { FormErrors } from './uiErrorHandler.js';
 import { collection, addDoc,getDocs,doc,deleteDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import { db } from './firebase-init.js';
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-import {GetCaruselPosition} from './components/carouselSettings.js'
+import {GetCaruselPosition} from './components/carousel-settings.js'
 import {RoudMapModal} from './components/roud-modal.js'
-import {RoadmapSelector} from './components/RoadmapSelector.js'
+import {RoadmapSelector} from './components/roadmap-selector.js'
 import {FirestoreService} from './Services/Service.js'
 
 export class TodoApp{

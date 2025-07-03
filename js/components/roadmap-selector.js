@@ -231,6 +231,7 @@ export class RoadmapSelector {
     activeBackButton() {
         const backBtn = document.getElementById('btn-back');
         if(backBtn) {
+            backBtn.removeEventListener('click', this.handleGoBack);
             backBtn.addEventListener('click', this.handleGoBack.bind(this));
         }
     }
