@@ -10,6 +10,7 @@ export class RoadmapSelector {
         abandonRoadmapSubmitBtnID,
         onSubmit = null,
         onDelete = null,
+        onEnterRoadmap = null,
         ulContainerID,
         ulContDivID,
         listTogglerID,
@@ -50,6 +51,7 @@ export class RoadmapSelector {
         this.FormErr = new FormErrors('create-map-form');
         this.onSubmit = onSubmit;
         this.onDelete = onDelete;
+        this.onEnterRoadmap = onEnterRoadmap;
         
          }  
         activate() {
@@ -216,8 +218,13 @@ export class RoadmapSelector {
         const li = btn.closest('.roadmap-list-item');
         const roadmapId = li?.dataset.id;
         if(!roadmapId) return;
-
+        //dodaje aktywne id do konstruktora
         this.activeRoadmapId = roadmapId;
+        //przekazuje callback żeby go potem podac to roud-modal
+        if(typeof this.onEnterRoadmap ==='function') {
+            this.onEnterRoadmap(`ul-${roadmapId}`);
+        }
+
         //ukrywam pojemnik na wybor roadmap
         this.elements.listToggler.classList.add('hidden');
         //pokazuje ulki z tym ID

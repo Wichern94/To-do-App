@@ -12,8 +12,10 @@ export class TodoApp{
         this.user = user;
         this.viewManger = viewManager;
         this.carusel = new GetCaruselPosition('carousel-cont','.carousel-item');
+        this.firestoreService = new FirestoreService(this.user.uid);
         this.carusel.setCaruselToMiddle();
         this.initCarusel()
+        this.activeRoadmapId = null
         this.roudmapModal = new RoudMapModal({
             openBtnID:'add-roadmap-task',
             modalID:'create-roud-menu',
@@ -29,13 +31,19 @@ export class TodoApp{
             subTaskUlID:'subtask-list',
             manualSubmitBtnID:'manual-submit-btn',
             roudNodeInputID: 'r-title',
-            onOpen:() => {console.log('otwarto Modal Roudmapy')},
-            onManualSubmit:(nodeData) => {
-                console.log('data z Manula t:',nodeData);
+            onOpen:() => {
+                this.roudmapModal.setRoadmapId(this.activeRoadmapId)
+                },
+            onManualSubmit: async (nodeData) => { 
+                const nodeID = this.firestoreService.addCollectionElement(nodeData,'roadmaps','nodes')
+                if(!nodeID) return;
+                console.log(nodeID);
+                
+                
             }
                 
             });
-        this.firestoreService = new FirestoreService(this.user.uid);
+        
         this.roadmapSelector = new RoadmapSelector({
             titleContainerID:'roadmap-section-title',
             newMapBtnID:'new-map-btn',
@@ -48,6 +56,12 @@ export class TodoApp{
             ulContDivID: 'Ul-cont-div',
             listTogglerID: 'list-toggler-ID',
             addBtnContainerID: 'add-node-btn-cont',
+            //calback z id odpowiedniego ui
+            onEnterRoadmap: (roadmapId) => {
+                this.activeRoadmapId = roadmapId;
+                
+                
+            } ,
             
             onSubmit: async (roadData) => {
                 const id = await this.firestoreService.addCollection(roadData,'roadmaps');

@@ -38,6 +38,7 @@ export class RoudMapModal {
         this.manualFormErr = new FormErrors('manual-node-form');
         this.importFormErr = new FormErrors('import-node-form');
         this.subTaskValues = [];
+        this.activeRoadmapId = null;
         this.onOpen = onOpen;
         this.onManualSubmit= onManualSubmit;
         // musze z bindowac metody zeby dało sie odpinac listenery,
@@ -134,14 +135,24 @@ export class RoudMapModal {
             }
             const nodeData = {
                 title: nameInputData,
-                subtasks:[...this.subTaskValues]
+                subtasks:[...this.subTaskValues],
+                roadmapID: this.activeRoadmapId,
             }
             if(!this.elements.modalCheckBox.checked) {
                 nodeData.subtasks = [];
             }
             
-             if(typeof this.onManualSubmit === 'function') this.onManualSubmit(nodeData);
+             if(typeof this.onManualSubmit === 'function') { 
+                this.onManualSubmit(nodeData);
+                this.hideAddModal()
+             }
+             
             return nodeData;
+            
+        }
+        setRoadmapId(roadmapID){
+            this.activeRoadmapId = roadmapID;
+            console.log('roadmapid w roud-modal to:', roadmapID);
             
         }
         

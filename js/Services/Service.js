@@ -11,7 +11,7 @@ export class FirestoreService {
     // Metoda dodwania kolekcji do fire base
     async addCollection(data,collectionName) {
         if(!data || !collectionName) {
-            throw new Error("data i nazwa Kolekcji jest wymagana");
+            throw new Error('data i nazwa Kolekcji jest wymagana');
         }
        console.log('typeof data.title:', typeof this.uid);
         console.log('data.title:', data.title);
@@ -32,7 +32,7 @@ export class FirestoreService {
     //Metoda odczytu Kolekcji
     async loadUserCollection(collectionName) {
          if(!collectionName) {
-            throw new Error("nazwa Kolekcji do odczytu danych jest wymagana");
+            throw new Error('nazwa Kolekcji do odczytu danych jest wymagana');
         }
         try {
             const collectionRef = collection(db,`users/${this.uid}/${collectionName}`);
@@ -55,7 +55,7 @@ export class FirestoreService {
      //metoda Kasująca kolekcje
     async deleteDocument(docId,collectionName){
         if(!docId || !collectionName) {
-            throw new Error("ID i nazwa Kolekcji jest wymagana");
+            throw new Error('ID i nazwa Kolekcji jest wymagana');
         }
 
         try {
@@ -70,20 +70,26 @@ export class FirestoreService {
     }
    
     
+    // metoda dodajca element do odpowiedniej kolekcji
+     async addCollectionElement (data, collectionName,subColection) {
+        if(!data || !collectionName) {
+            throw new Error('Data i nazwa Kolekcji jest wymagana');
+        }
 
-    // static async AddUserDoc (data) {
-    //       try {
-    //           const userTaskRef = collection(db,`users/${data.uid}/Roudmaps`);
-    //           const docRef = await addDoc(userTaskRef, {
-    //               ...data,
-    //               createdAt: serverTimestamp()
-    //               });
-    //           return docRef.id;
-    //       } catch (error) {
-    //           console.error('błąd przy zapisie do Firestore:',error);
-    //           return null;
-    //       }
-    //   }
+          try {
+            const roadmapID = data.roadmapID.replace('ul-','');
+            const userTaskRef = collection(db,`users/${this.uid}/${collectionName}/${roadmapID}/${subColection}`);
+            const docRef = await addDoc(userTaskRef, {
+                ...data,
+                createdAt: serverTimestamp()
+                  });
+                  console.log("dodano do fire base:",data)
+              return docRef.id;
+          } catch (error) {
+              console.error('błąd przy zapisie Elementow do Firestore:',error);
+              return null;
+          }
+      }
   
     
  
