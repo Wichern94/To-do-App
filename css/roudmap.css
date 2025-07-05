@@ -506,6 +506,15 @@
     display: flex;
     margin-left: 1rem;
   }
+  .disabled-node {
+    opacity: .5;
+    filter: grayscale(.8);
+    pointer-events: none;
+    width:auto;
+    min-width: 10rem;
+    min-height: 4rem;
+    
+  }
     
 
 

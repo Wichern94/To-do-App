@@ -8,9 +8,9 @@ export class NodeElement {
         const ulID = this.nodeData.roadmapID;
         const rightUl = document.getElementById(ulID);
         const title= this.nodeData.title;
-        const subUlID =`sub-${ulID}` //<-tworze id dla pojemnika na subtaski
+        const subUlID =`sub-${this.nodeData.id}` //<-tworze id dla pojemnika na subtaski
         const li = document.createElement('li');
-        li.classList.add('roadmap-node');
+        li.classList.add('roadmap-node','disabled-node');
         
         if(this.nodeData.id){
             li.dataset.id = this.nodeData.id //<-nadaje id takie jak ten z firebase
@@ -31,7 +31,7 @@ export class NodeElement {
         
             
               
-            <div class="node-btn-container">
+            <div class="node-btn-container hidden">
                 <button class="stop-btn roud-btns" aria-label="stop timer">Zatrzymaj
                     <svg class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
@@ -47,7 +47,7 @@ export class NodeElement {
                 </button>
             </div>
                 
-            <div class="progress-container">
+            <div class="progress-container hidden">
                 <span class="progress-text">20%</span>
                 <div class="progress-bar">
                     <div class="progress-fill"></div>

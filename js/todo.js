@@ -42,6 +42,8 @@ export class TodoApp{
                 
                 const fullData = {...nodeData, id: nodeID};
                 if(fullData) {
+                    console.log('fulldata to:',fullData);
+                    
                     const node = new NodeElement(fullData);
                     node.render()
                     
