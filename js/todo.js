@@ -6,6 +6,7 @@ import {GetCaruselPosition} from './components/carousel-settings.js'
 import {RoudMapModal} from './components/roud-modal.js'
 import {RoadmapSelector} from './components/roadmap-selector.js'
 import {FirestoreService} from './Services/Service.js'
+import {NodeElement} from './components/node-component.js'
 
 export class TodoApp{
     constructor(user, viewManager) {
@@ -15,6 +16,7 @@ export class TodoApp{
         this.firestoreService = new FirestoreService(this.user.uid);
         this.carusel.setCaruselToMiddle();
         this.initCarusel()
+        
         this.activeRoadmapId = null
         this.roudmapModal = new RoudMapModal({
             openBtnID:'add-roadmap-task',
@@ -35,9 +37,17 @@ export class TodoApp{
                 this.roudmapModal.setRoadmapId(this.activeRoadmapId)
                 },
             onManualSubmit: async (nodeData) => { 
-                const nodeID = this.firestoreService.addCollectionElement(nodeData,'roadmaps','nodes')
+                const nodeID = await this.firestoreService.addCollectionElement(nodeData,'roadmaps','nodes')
                 if(!nodeID) return;
-                console.log(nodeID);
+                
+                const fullData = {...nodeData, id: nodeID};
+                if(fullData) {
+                    localStorage.setItem('testNodeData', JSON.stringify(fullData));
+                   
+                    
+                    
+                }
+                console.log('full data to:', fullData);
                 
                 
             }
@@ -481,7 +491,11 @@ export class TaskManager {
         
 }
  
-                
+          const testDataRaw = localStorage.getItem('testNodeData');
+                    if(testDataRaw) {
+                        const testData = JSON.parse(testDataRaw);
+                        window.testNode = new NodeElement(testData);
+                    }       
                     
                 
                 
