@@ -42,9 +42,8 @@ export class TodoApp{
                 
                 const fullData = {...nodeData, id: nodeID};
                 if(fullData) {
-                    localStorage.setItem('testNodeData', JSON.stringify(fullData));
-                   
-                    
+                    const node = new NodeElement(fullData);
+                    node.render()
                     
                 }
                 console.log('full data to:', fullData);
@@ -66,12 +65,29 @@ export class TodoApp{
             ulContDivID: 'Ul-cont-div',
             listTogglerID: 'list-toggler-ID',
             addBtnContainerID: 'add-node-btn-cont',
-            //calback z id odpowiedniego ui
-            onEnterRoadmap: (roadmapId) => {
-                this.activeRoadmapId = roadmapId;
+
+            //calback z id odpowiedniego uL w ktorym renderujemy nody
+            onEnterRoadmap: async (roadmapId) => {
+                try{
+                    this.activeRoadmapId = roadmapId;
+                    console.log('onEnterRoadmap ma:', roadmapId);
+
+                    const nodeList = await this.firestoreService.getElementsfromSubCollection(roadmapId,'roadmaps','nodes');
+                    if(!Array.isArray(nodeList)) return;
+
+                    nodeList.forEach((nodeData) => {
+                        const node = new NodeElement(nodeData);
+                        node.render()
+                    });
+                    }
+                catch (err) {
+                    console.error('błąd przy wczytywaniu roadmapy:', err);
+                   }
+                    
+                } ,
                 
                 
-            } ,
+                
             
             onSubmit: async (roadData) => {
                 const id = await this.firestoreService.addCollection(roadData,'roadmaps');
@@ -491,11 +507,7 @@ export class TaskManager {
         
 }
  
-          const testDataRaw = localStorage.getItem('testNodeData');
-                    if(testDataRaw) {
-                        const testData = JSON.parse(testDataRaw);
-                        window.testNode = new NodeElement(testData);
-                    }       
+                
                     
                 
                 

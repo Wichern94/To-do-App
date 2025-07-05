@@ -71,15 +71,15 @@ export class FirestoreService {
    
     
     // metoda dodajca element do odpowiedniej kolekcji
-     async addCollectionElement (data, collectionName,subColection) {
+     async addCollectionElement (data, collectionName,subCollection) {
         if(!data || !collectionName) {
             throw new Error('Data i nazwa Kolekcji jest wymagana');
         }
 
           try {
             const roadmapID = data.roadmapID.replace('ul-','');
-            const userTaskRef = collection(db,`users/${this.uid}/${collectionName}/${roadmapID}/${subColection}`);
-            const docRef = await addDoc(userTaskRef, {
+            const collectionRef = collection(db,`users/${this.uid}/${collectionName}/${roadmapID}/${subCollection}`);
+            const docRef = await addDoc(collectionRef, {
                 ...data,
                 createdAt: serverTimestamp()
                   });
@@ -89,6 +89,30 @@ export class FirestoreService {
               console.error('błąd przy zapisie Elementow do Firestore:',error);
               return null;
           }
+      }
+      //metoda odczytująca elementy z danej kolekcji
+      async getElementsfromSubCollection(roadmapID,collectionName, subCollection) {
+         if(!collectionName || !subCollection) {
+            throw new Error('Nazwa Kolekcji i pod kolekcji jest wymagana');
+        }
+        try {
+            const roadmapId = roadmapID.replace('ul-','');
+            const collectionRef = collection(db,`users/${this.uid}/${collectionName}/${roadmapId}/${subCollection}`);
+            const docQuery = await getDocs(collectionRef);
+            const elements = [];
+            docQuery.forEach((doc) => {
+                elements.push({
+                    id: doc.id,
+                    ...doc.data(),
+                    });
+                });
+            
+            console.log(`nody ${this.uid}: `, elements);
+            return elements;
+        } catch (error) {
+            console.error ('błąd przy odczycie  od firestore:', error);
+            return [];
+        }
       }
   
     
