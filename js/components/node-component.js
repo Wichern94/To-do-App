@@ -1,3 +1,4 @@
+import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 export class NodeElement {
     constructor(fullNodeData) {
         this.nodeData = fullNodeData,
@@ -106,7 +107,8 @@ export class NodeElement {
     enableNode() {
         
         this.ui.root?.classList.remove('disabled-node');
-        this.ui.startBtn?.classList.remove('hidden');
+        showElement(this.ui.startBtn);
+        
         this.setupAccordeons()
         return this.isActive = true;
 
@@ -114,7 +116,8 @@ export class NodeElement {
     disableNode(){
         
         this.ui.root?.classList.add('disabled-node');
-        this.ui.btnContainer?.classList.add('hidden');
+        hideElement(this.ui.btnContainer)
+        
         this.setupAccordeons();
 
         return this.isActive = false;
@@ -124,7 +127,8 @@ export class NodeElement {
          const accBtn = this.ui.accordionBtn;
          accBtn?.addEventListener('click',() => {
             const subTaskCont = this.ui.subtaskList;
-            subTaskCont?.classList.toggle('hidden');
+            toggleElement(subTaskCont);
+            
          });
         this.isAccordionReady = true; 
     }
