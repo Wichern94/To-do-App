@@ -77,9 +77,15 @@ export class TodoApp{
                     const nodeList = await this.firestoreService.getElementsfromSubCollection(roadmapId,'roadmaps','nodes');
                     if(!Array.isArray(nodeList)) return;
 
-                    nodeList.forEach((nodeData) => {
+                    nodeList.forEach((nodeData, index) => {
                         const node = new NodeElement(nodeData);
                         node.render()
+                        if(index === 0) {
+                            node.enableNode();
+                        } else {
+                            node.disableNode()
+                        
+                    } 
                     });
                     }
                 catch (err) {

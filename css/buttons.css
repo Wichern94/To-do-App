@@ -60,7 +60,7 @@
     width: 1.2rem;
     height: 1.2rem;
     color: var(--text-secondary);
-    margin-top: .5rem;
+    
     
 }
 
@@ -207,35 +207,40 @@
 }
 
 .roud-btns,.add-roadmap-btn {
-    height: 3rem;
-    width: 5rem;
+    
     border: .5px solid var(--glass-border);
     background: var(--color-subtask);
     outline: none;
-    letter-spacing: 1px;
-    border-radius: 20%;
+    padding: .2rem .4rem .2rem .4rem;
+    border-radius: 10px;
     color: var(--text-secondary);
     font-size: 12px;
+    letter-spacing: .5px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     flex-direction: column-reverse;
-    font-weight: 500;
+    font-weight: 600;
 }
 .play-btn{
     color: var(--color-accent-light);
-    border: 1px dashed var(--color-accent-border);
+    border: 2px solid var(--color-accent-border);
+    background-color: rgba(107, 205, 206, 0.1);
+    box-shadow: 0 0 10px rgba(107, 205, 206, 0.5);
     
 }
 .play-btn svg{
     color: var(--color-accent-light);
+    filter: drop-shadow(0 0 4px rgba(107, 205, 206, 0.5));
 }
 .stop-btn {
-    color: var(--color-danger);
-    border: 1px dashed var(--color-danger);
+    color: var(--color-red-btn);
+    border: 2px solid var(--color-red-btn);
+    box-shadow: 0 0 8px rgba(239, 83, 80, 0.6);
+    background-color: rgba(238, 94, 91, 0.1);
 }
 .stop-btn svg {
-    color: var(--color-danger);
+    color: var(--color-red-btn);
 }
 .tab-btn {
     

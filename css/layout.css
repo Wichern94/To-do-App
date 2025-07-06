@@ -20,13 +20,16 @@
   --color-accent-blur:#9be5ec8e;
   --color-border-task: rgba(107, 106, 106, 0.1);
   --color-subtask: #262629;
+  --color-subtask2:#2f394da2;
 
   /*  Statusy */
   --color-done: #5ef3a3;
   --color-danger: #ff5f5f;
   --color-warning: #ffc857;
 
+
   /*  Elementy UI */
+  --color-red-btn:#db5656;
   --color-text-small:#333;
   --color-text-primiary-contrast:#1D2B36;
   --color-text-secondary-contrast:#2B2B2B;
