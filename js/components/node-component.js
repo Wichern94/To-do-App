@@ -1,3 +1,4 @@
+import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 export class NodeElement {
     constructor(fullNodeData) {
         this.nodeData = fullNodeData,
@@ -106,7 +107,8 @@ export class NodeElement {
     enableNode() {
         
         this.ui.root?.classList.remove('disabled-node');
-        this.ui.startBtn?.classList.remove('hidden');
+        showElement(this.ui.startBtn);
+        
         this.setupAccordeons()
         //blokuje checkboxy
         this.ui.checkBoxList?.forEach(cb => {
@@ -118,7 +120,8 @@ export class NodeElement {
     disableNode(){
         
         this.ui.root?.classList.add('disabled-node');
-        this.ui.btnContainer?.classList.add('hidden');
+        hideElement(this.ui.btnContainer)
+        
         this.setupAccordeons();
 
         
@@ -137,7 +140,8 @@ export class NodeElement {
             console.log('kliknieto wakordeon:',this.ui.root);
             
             const subTaskCont = this.ui.subtaskList;
-            subTaskCont?.classList.toggle('hidden');
+            toggleElement(subTaskCont);
+            
          });
         this.isAccordionReady = true; 
     }
