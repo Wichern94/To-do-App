@@ -36,13 +36,21 @@ export class TodoApp{
             onOpen:() => {
                 this.roudmapModal.setRoadmapId(this.activeRoadmapId)
                 },
-            onManualSubmit: async (nodeData) => { 
+            onManualSubmit: async (nodeData) => {
+                const existingNodes = await this.firestoreService.getElementsfromSubCollection(
+                nodeData.roadmapID,
+                'roadmaps',
+                'nodes'
+                );
+
+                const order = existingNodes.length;
+                nodeData={...nodeData,order: order }
                 const nodeID = await this.firestoreService.addCollectionElement(nodeData,'roadmaps','nodes')
                 if(!nodeID) return;
                 
                 const fullData = {...nodeData, id: nodeID};
                 if(fullData) {
-                    console.log('fulldata to:',fullData);
+                    
                     
                     const node = new NodeElement(fullData);
                     node.render()
@@ -54,7 +62,7 @@ export class TodoApp{
             }
                 
             });
-        
+        this.isroadmapcreated = false 
         this.roadmapSelector = new RoadmapSelector({
             titleContainerID:'roadmap-section-title',
             newMapBtnID:'new-map-btn',
@@ -67,32 +75,45 @@ export class TodoApp{
             ulContDivID: 'Ul-cont-div',
             listTogglerID: 'list-toggler-ID',
             addBtnContainerID: 'add-node-btn-cont',
-
+            
             //calback z id odpowiedniego uL w ktorym renderujemy nody
             onEnterRoadmap: async (roadmapId) => {
                 try{
                     this.activeRoadmapId = roadmapId;
-                    console.log('onEnterRoadmap ma:', roadmapId);
+                   
+                    const nodeList = await this.firestoreService.getElementsfromSubCollection(
+                        roadmapId,
+                        'roadmaps',
+                        'nodes'
+                    );
+                    
+                    if(!Array.isArray(nodeList )) return;
 
-                    const nodeList = await this.firestoreService.getElementsfromSubCollection(roadmapId,'roadmaps','nodes');
-                    if(!Array.isArray(nodeList)) return;
+                    const ul = document.getElementById(roadmapId)
+                    if (ul) ul.innerHTML = '';
 
-                    nodeList.forEach((nodeData, index) => {
+
+                    nodeList.forEach((nodeData, index) =>{
                         const node = new NodeElement(nodeData);
-                        node.render()
+                        node.render();
+                    
                         if(index === 0) {
                             node.enableNode();
                         } else {
                             node.disableNode()
+                        } 
                         
-                    } 
                     });
-                    }
-                catch (err) {
+                } catch (err) {
                     console.error('błąd przy wczytywaniu roadmapy:', err);
                    }
-                    
+                   
                 } ,
+                        
+                        
+                        
+                         
+                        
                 
                 
                 

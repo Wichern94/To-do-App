@@ -108,7 +108,11 @@ export class NodeElement {
         this.ui.root?.classList.remove('disabled-node');
         this.ui.startBtn?.classList.remove('hidden');
         this.setupAccordeons()
-        return this.isActive = true;
+        //blokuje checkboxy
+        this.ui.checkBoxList?.forEach(cb => {
+            cb.disabled = true;
+        });
+        
 
     }
     disableNode(){
@@ -117,12 +121,21 @@ export class NodeElement {
         this.ui.btnContainer?.classList.add('hidden');
         this.setupAccordeons();
 
-        return this.isActive = false;
+        
     }
+    //metoda Aktywacji Roadmapy
+    setActive() {
+        if (this.isActive) return ;
+        showElement
+
+    }
+    //metoda ustawiająca Akordeony
     setupAccordeons() {
         if (this.isAccordionReady) return;   //flaga zeby akordeon nie właczał sie kilka razy
          const accBtn = this.ui.accordionBtn;
          accBtn?.addEventListener('click',() => {
+            console.log('kliknieto wakordeon:',this.ui.root);
+            
             const subTaskCont = this.ui.subtaskList;
             subTaskCont?.classList.toggle('hidden');
          });
