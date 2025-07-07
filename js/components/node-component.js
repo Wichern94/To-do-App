@@ -26,14 +26,18 @@ export class NodeElement {
           
           <div class="title-roudmap">
               <span class="node-text">${title}</span>
+              <span class="node-time">0:00</span>
+        </div>         
               <button class="node-acc-btn " id="roadmap-accordeon-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                       stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                   </svg>
               </button>
-              </div>
-        
+              
+            <div class="timer ">
+                
+            </div>
             
               
             <div class="node-btn-container ">
@@ -51,14 +55,12 @@ export class NodeElement {
             </div>
                 
             <div class="progress-container hidden">
-                <div class="timer ">
-                    <span class="node-time">0:00</span>
-                    <span class="progress-text">20%</span>
-                </div>
+                
                
 
                 <div class="progress-bar">
                     <div class="progress-fill"></div>
+                    <span class="progress-text"></span>
                 </div>
                 
             </div>
@@ -73,8 +75,12 @@ export class NodeElement {
         this.ui.accordionBtn = li.querySelector('.node-acc-btn');
         this.ui.startBtn = li.querySelector('.play-btn');
         this.ui.stopBtn = li.querySelector('.stop-btn');
-        this.ui.btnContainer = li.querySelector('.node-btn-container')
+        this.ui.btnContainer = li.querySelector('.node-btn-container');
         this.ui.subtaskList = li.querySelector('.subtask-list');
+        this.ui.progressText = li.querySelector('.progress-text');
+        this.ui.progressFill = li.querySelector('.progress-fill');
+        this.ui.timer = li.querySelector('.timer')
+        
 
         
 
@@ -103,6 +109,8 @@ export class NodeElement {
                 getSubUL.appendChild(subLi);
             });
             this.ui.checkBoxList = li.querySelectorAll('.roud-disabld-checkbox');
+            
+            
         }
     }
     enableNode() {
@@ -110,7 +118,7 @@ export class NodeElement {
         this.ui.root?.classList.remove('disabled-node');
         showElement(this.ui.startBtn);
         this.ui.startBtn?.addEventListener('click',this.setActive.bind(this));
-        this.ui.stopBtn?.addEventListener('click',this.checkCheckbox.bind(this));
+        hideElement(this.ui.timer);
         this.setupAccordeons()
         //blokuje checkboxy
         this.ui.checkBoxList?.forEach(cb => {
@@ -122,8 +130,8 @@ export class NodeElement {
     disableNode(){
         
         this.ui.root?.classList.add('disabled-node');
-        hideElement(this.ui.btnContainer)
-        
+        hideElement(this.ui.btnContainer);
+        hideElement(this.ui.timer);
 
         this.setupAccordeons();
 
@@ -135,21 +143,25 @@ export class NodeElement {
         this.ui.root.classList.add('active-border');
         showElement(this.ui.stopBtn);
         showElement(this.ui.progressBarCont);
+        showElement(this.ui.timer);
 
          //odblokuje checkboxy
         this.ui.checkBoxList?.forEach(cb => {
             cb.disabled = false;
         });
         this.isActive = true;
+        // obliczenia dotyczace checkboxów
+        const checkBoxLenght = this.ui.checkBoxList.length;
+        this.progressStep = 100 / checkBoxLenght;
+
+        this.ui.checkBoxList.forEach(cb => {
+            cb.addEventListener('change', this.updateProgress.bind(this));
+        })
+        
+
             
     }
-    checkCheckbox(){
-        const checkBoxLenght = this.ui.checkBoxList.length
-        
-        this.progressStep = 100 / checkBoxLenght;
-        console.log(this.progressStep);
-        
-    }
+   
     //metoda ustawiająca Akordeony
     setupAccordeons() {
         if (this.isAccordionReady) return;   //flaga zeby akordeon nie właczał sie kilka razy
@@ -162,6 +174,15 @@ export class NodeElement {
             
          });
         this.isAccordionReady = true; 
+    }
+    updateProgress() {
+        const checkedCount = Array.from(this.ui.checkBoxList).filter(cb => cb.checked).length;
+        const percent = Math.round(checkedCount * this.progressStep);
+        
+        if(this.ui.progressText) {
+            this.ui.progressText.textContent = `${percent}%`;
+            this.ui.progressFill.style.width = `${percent}%`;
+        }
     }
 }
 
