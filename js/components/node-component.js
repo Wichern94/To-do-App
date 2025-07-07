@@ -5,6 +5,7 @@ export class NodeElement {
         this.ui = {};
         this.isActive = false;
         this.isAccordionReady = false;
+        this.progressStep = null;
         
     }
    //Metoda renderowania elementów roadmapy
@@ -108,7 +109,8 @@ export class NodeElement {
         
         this.ui.root?.classList.remove('disabled-node');
         showElement(this.ui.startBtn);
-        
+        this.ui.startBtn?.addEventListener('click',this.setActive.bind(this));
+        this.ui.stopBtn?.addEventListener('click',this.checkCheckbox.bind(this));
         this.setupAccordeons()
         //blokuje checkboxy
         this.ui.checkBoxList?.forEach(cb => {
@@ -122,6 +124,7 @@ export class NodeElement {
         this.ui.root?.classList.add('disabled-node');
         hideElement(this.ui.btnContainer)
         
+
         this.setupAccordeons();
 
         
@@ -129,8 +132,23 @@ export class NodeElement {
     //metoda Aktywacji Roadmapy
     setActive() {
         if (this.isActive) return ;
-        showElement
+        this.ui.root.classList.add('active-border');
+        showElement(this.ui.stopBtn);
+        showElement(this.ui.progressBarCont);
 
+         //odblokuje checkboxy
+        this.ui.checkBoxList?.forEach(cb => {
+            cb.disabled = false;
+        });
+        this.isActive = true;
+            
+    }
+    checkCheckbox(){
+        const checkBoxLenght = this.ui.checkBoxList.length
+        
+        this.progressStep = 100 / checkBoxLenght;
+        console.log(this.progressStep);
+        
     }
     //metoda ustawiająca Akordeony
     setupAccordeons() {
