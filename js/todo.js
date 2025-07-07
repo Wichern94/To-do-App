@@ -54,6 +54,9 @@ export class TodoApp{
                     
                     const node = new NodeElement(fullData);
                     node.render()
+                    const index = node.nodeData.order;
+                      
+                     
                     
                 }
                 console.log('full data to:', fullData);

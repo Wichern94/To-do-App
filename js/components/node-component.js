@@ -27,17 +27,16 @@ export class NodeElement {
           <div class="title-roudmap">
               <span class="node-text">${title}</span>
               <span class="node-time">0:00</span>
-        </div>         
               <button class="node-acc-btn " id="roadmap-accordeon-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                       stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                   </svg>
               </button>
+        </div>         
               
-            <div class="timer ">
-                
-            </div>
+              
+            
             
               
             <div class="node-btn-container ">
@@ -79,7 +78,7 @@ export class NodeElement {
         this.ui.subtaskList = li.querySelector('.subtask-list');
         this.ui.progressText = li.querySelector('.progress-text');
         this.ui.progressFill = li.querySelector('.progress-fill');
-        this.ui.timer = li.querySelector('.timer')
+        this.ui.timer = li.querySelector('.node-time')
         
 
         
@@ -151,13 +150,20 @@ export class NodeElement {
         });
         this.isActive = true;
         // obliczenia dotyczace checkboxów
-        const checkBoxLenght = this.ui.checkBoxList.length;
+        const boxList = this.ui.checkBoxList; 
+        let checkBoxLenght = null
+        if(!Array.isArray(boxList)) {
+            checkBoxLenght = 1;
+        } else {
+        checkBoxLenght = this.ui.checkBoxList.length;
+
         this.progressStep = 100 / checkBoxLenght;
 
         this.ui.checkBoxList.forEach(cb => {
             cb.addEventListener('change', this.updateProgress.bind(this));
-        })
-        
+            
+            })
+        }
 
             
     }
@@ -170,6 +176,8 @@ export class NodeElement {
             console.log('kliknieto wakordeon:',this.ui.root);
             
             const subTaskCont = this.ui.subtaskList;
+            console.log('checkboxwo to:', subTaskCont);
+            
             toggleElement(subTaskCont);
             
          });
