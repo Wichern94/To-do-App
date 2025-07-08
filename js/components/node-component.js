@@ -148,25 +148,24 @@ export class NodeElement {
         this.ui.checkBoxList?.forEach(cb => {
             cb.disabled = false;
         });
+        this.drawConnectionLine()
         this.isActive = true;
+
         // obliczenia dotyczace checkboxów
-        const boxList = this.ui.checkBoxList; 
-        let checkBoxLenght = null
-        if(!Array.isArray(boxList)) {
-            checkBoxLenght = 1;
-        } else {
-        checkBoxLenght = this.ui.checkBoxList.length;
-
+        const checkBoxLenght = this.ui.checkBoxList.length;
         this.progressStep = 100 / checkBoxLenght;
-
         this.ui.checkBoxList.forEach(cb => {
             cb.addEventListener('change', this.updateProgress.bind(this));
-            
-            })
-        }
+        })
+    }
+        
+        
+
 
             
-    }
+
+            
+    
    
     //metoda ustawiająca Akordeony
     setupAccordeons() {
@@ -191,6 +190,35 @@ export class NodeElement {
             this.ui.progressText.textContent = `${percent}%`;
             this.ui.progressFill.style.width = `${percent}%`;
         }
+    }
+    //metoda Rysuwania linni biblioteką leaderLine
+    drawConnectionLine() {
+        const currentActiveNode = this.ui.root;
+        console.log('current to:',currentActiveNode);
+        
+        const nextNode = currentActiveNode?.nextElementSibling; // <- nastepny taki sam element
+        console.log('next to:',nextNode);
+        
+        if(!nextNode) return;
+        const container = document.querySelector('.roadmap-box');
+        const line = new LeaderLine(
+            currentActiveNode,
+            nextNode,
+        {
+            startSocket:'left',
+            endSocket:  'right',
+            path: 'grid',
+            color: '#6BCDCE',
+            size: 3,
+            container: container,
+            appendTo: container,
+        }
+        );
+        container.addEventListener('scroll', () => {
+            line.position();
+        })
+        console.log('line to:',line);
+       
     }
 }
 

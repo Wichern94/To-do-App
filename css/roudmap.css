@@ -47,7 +47,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  
+  position: relative;
   
   height: 70dvh;
   overflow-y: auto;
@@ -540,6 +540,7 @@
     margin-left: 1rem;
     position: fixed;
     cursor: pointer;
+    z-index: 999;
   }
   .disabled-node {
     opacity: .2;
@@ -551,6 +552,10 @@
   }
   .disabled-node .node-acc-btn{
     pointer-events: all;
+  }
+  .leader-line {
+    z-index: 999;
+    pointer-events: none;
   }
 
     
