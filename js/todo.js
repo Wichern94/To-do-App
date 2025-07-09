@@ -50,6 +50,8 @@ export class TodoApp{
                 if(!nodeID) return;
                 
                 const fullData = {...nodeDataWithOrder, id: nodeID};
+                console.log('roadmapid wmanualu',fullData);
+                
                 await this.renderNodesForRoadmap(fullData.roadmapID)
             }
                
@@ -71,8 +73,8 @@ export class TodoApp{
             addBtnContainerID: 'add-node-btn-cont',
             
             //calback z id odpowiedniego uL w ktorym renderujemy nody
-            onEnterRoadmap: async (roadmapId) => {
-                await this.renderNodesForRoadmap(roadmapId)
+            onEnterRoadmap: async (roadmapID) => {
+                await this.renderNodesForRoadmap(roadmapID)
                 } ,
                         
                         
@@ -131,58 +133,69 @@ export class TodoApp{
                 }
             }
         }
-    async renderNodesForRoadmap(roadmapId){
+    async renderNodesForRoadmap(roadmapID){
         try{
-            this.activeRoadmapId = roadmapId;
+            this.activeRoadmapId = roadmapID;
+            const ul = document.getElementById(roadmapID)
+            if(!ul) {
+                console.warn('nie znaleziono ul o id:',roadmapID);
+                return;
+            }
+            Array.from(ul.querySelectorAll('.roadmap-node')).forEach(child => ul.removeChild(child));
 
+
+        const nodeList = await this.firestoreService.getElementsfromSubCollection(
+            roadmapID,
+            'roadmaps',
+            'nodes'
+                );
            
+            console.log('node list to:',nodeList);
             
+        if(!Array.isArray(nodeList )) return;
 
-            const ul = document.getElementById(roadmapId)
-            if (ul) {
-              [...ul.children].forEach( child => {
-                if(child.tagName === 'LI' && child.classList.contains('roadmap-node')){
-                    ul.removeChild(child);
-                }
-              }); 
-            } 
+        const sortedNodeList = nodeList.sort( (a,b) => a.order - b.order);  
+           console.log('posortowana lista to:', sortedNodeList);
+           console.log('aktywny rodmapidto :', this.activeRoadmapId);
+       
 
-            const nodeList = await this.firestoreService.getElementsfromSubCollection(
-                roadmapId,
-                'roadmaps',
-                'nodes'
-                    );
                     
-            if(!Array.isArray(nodeList )) return;
-
-                 const sortedNodeList = nodeList.sort( (a,b) => a.order - b.order);  
-
-                 sortedNodeList.forEach((nodeData,index ) =>{
-                     const node = new NodeElement(nodeData,{
-                        onNodeActivate:(nodeId) =>{
-                            this.firestoreService.updateElements(
-                                this.activeRoadmapId,
-                                'roadmaps',
-                                'nodes',
-                                nodeId,
-                                {...nodeData,wasActive: true}
-                            );
-                           } 
-                        });
-                     node.render();
-
-                     if(index === 0) {
-                         node.enableNode();
-                         if(nodeData.wasActive) node.setActive()
-                    } else {
-                        node.disableNode()
+        const nodes = [];
+        sortedNodeList.forEach((nodeData,index ) =>{
+            const node = new NodeElement(nodeData,{
+                onNodeActivate:(nodeId) =>{
+                    this.firestoreService.updateElements(
+                        this.activeRoadmapId,
+                        'roadmaps',
+                        'nodes',
+                         nodeId,
+                        {...nodeData,wasActive: true}
+                        );
                     } 
-                     
-                    });
-                } catch (err) {
-                    console.error('błąd przy wczytywaniu roadmapy:', err);
+                });
+                node.render();
+                nodes.push(node)
+            
+                if(index === 0) {
+                    node.enableNode();
+                } else {
+                    node.disableNode()
+                } 
+            });
+            nodes.forEach(node => {
+                if(node.nodeData.wasActive ===true) {
+                    node.setActive()
                 }
-            } 
+            })
+                
+                            
+
+            
+                     
+    } catch (err) {
+        console.error('błąd przy wczytywaniu roadmapy:', err);
+        }
+    } 
 
                         
                    

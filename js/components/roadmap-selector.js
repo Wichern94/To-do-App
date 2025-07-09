@@ -216,19 +216,19 @@ export class RoadmapSelector {
         if(!btn) return;
 
         const li = btn.closest('.roadmap-list-item');
-        const roadmapId = li?.dataset.id;
-        if(!roadmapId) return;
+        const roadmapID = li?.dataset.id;
+        if(!roadmapID) return;
         //dodaje aktywne id do konstruktora
-        this.activeRoadmapId = roadmapId;
+        this.activeRoadmapId = roadmapID;
         //przekazuje callback żeby go potem podac to roud-modal
         if(typeof this.onEnterRoadmap ==='function') {
-            this.onEnterRoadmap(`ul-${roadmapId}`);
+            this.onEnterRoadmap(`ul-${roadmapID}`);
         }
 
         //ukrywam pojemnik na wybor roadmap
         this.elements.listToggler.classList.add('hidden');
         //pokazuje ulki z tym ID
-        const targetUl = document.querySelector(`ul[id="ul-${roadmapId}"]`);
+        const targetUl = document.querySelector(`ul[id="ul-${roadmapID}"]`);
         document.querySelectorAll('.roadmap-list').forEach(ul => ul.classList.add('hidden'));
         this.elements.ulContDiv.classList.remove('hidden');
         targetUl?.classList.remove('hidden');

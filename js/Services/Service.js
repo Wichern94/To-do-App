@@ -125,7 +125,7 @@ export class FirestoreService {
             const roadmapId = roadmapID.replace('ul-','');
             const collectionRef = doc(db,`users/${this.uid}/${collectionName}/${roadmapId}/${subCollection}/${nodeID}`);
             const docQuery = await updateDoc(collectionRef,updateObj);
-            console.log('obiekt zaktualizowano!');
+            console.log('obiekt ktory był:!',updateObj);
             
         } catch(err) {
             console.error('bład podczas updatu:',err)

@@ -249,12 +249,12 @@
   text-decoration: line-through;
   opacity: .5;
 }
-.roadmap-list .roadmap-node:nth-child(even) {
+.roadmap-node.right {
   
   align-self: flex-start;
 }
 
-.roadmap-list .roadmap-node:nth-child(odd) {
+ .roadmap-node.left {
   
   align-self: flex-end;
 }

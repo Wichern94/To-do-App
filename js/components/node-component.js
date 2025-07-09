@@ -2,13 +2,16 @@ import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 
 export class NodeElement {
     constructor(fullNodeData, callbacks = {}) {
-        this.nodeData = fullNodeData,
+        this.nodeData = fullNodeData;
         
         this.ui = {};
         this.isActive = false;
         this.isAccordionReady = false;
+        this.listenersBound = false;
+        this.connectionDrawn = false;
         this.progressStep = null;
         this.onNodeActivate = callbacks.onNodeActivate || null;
+
         
     }
    //Metoda renderowania elementów roadmapy
@@ -25,6 +28,12 @@ export class NodeElement {
             li.dataset.id = this.nodeData.id //<-nadaje id takie jak ten z firebase
             li.id = `node-${this.nodeData.id}`
         }
+        if(this.nodeData.order % 2 === 0) {
+            li.classList.add('left');
+        } else {
+            li.classList.add('right');
+        }
+    
         //tworze html noda
         li.innerHTML =`
         
@@ -88,7 +97,7 @@ export class NodeElement {
 
         
 
-        rightUl.appendChild(li); // <-dodaje do odpowiedniego UL
+        rightUl?.appendChild(li); // <-dodaje do odpowiedniego UL
         
         const subtasks = this.nodeData.subtasks;
         if(!Array.isArray(subtasks) || subtasks.length === 0) { // <- jesli subtask jest tablica, i nie jest pusta
@@ -143,7 +152,17 @@ export class NodeElement {
     }
     //metoda Aktywacji Roadmapy
     setActive() {
-        if (this.isActive) return ;
+         if (this.isActive) {
+
+            if(!this.connectionDrawn) {
+                this.drawConnectionLine();
+                this.connectionDrawn = true;
+            }
+            return;
+         }
+        this.isActive = true;
+        this.nodeData.wasActive = true;
+        
         this.ui.root.classList.add('active-border');
         showElement(this.ui.stopBtn);
         showElement(this.ui.progressBarCont);
@@ -157,17 +176,28 @@ export class NodeElement {
         // obliczenia dotyczace checkboxów
         const checkBoxLenght = this.ui.checkBoxList.length;
         this.progressStep = 100 / checkBoxLenght;
+
+        if(!this.listenersBound){
         this.ui.checkBoxList.forEach(cb => {
             cb.addEventListener('change', this.updateProgress.bind(this));
-        })
+        });
+        this.listenersBound = true;
+    }
        
         // rysowanie liini oraz zapis updatowanego noda do bazy
+        
         this.drawConnectionLine()
-        this.isActive = true;
-        this.nodeData.wasActive = true;
+        this.connectionDrawn = true;
+
         if(typeof this.onNodeActivate === 'function') {
+            console.log('[setActive] Wywołuję callback onNodeActivate z id:', this.nodeData.id);
             this.onNodeActivate(this.nodeData.id);
         }
+       
+
+      
+       
+       
     }
         
         
@@ -204,6 +234,8 @@ export class NodeElement {
     }
     //metoda Rysuwania linni biblioteką jsPlumb
     drawConnectionLine() {
+        
+        
         const mainNode = this.ui.root;
         console.log('current to:',mainNode);
         
