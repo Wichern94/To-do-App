@@ -165,7 +165,7 @@ export class TodoApp{
                                 'roadmaps',
                                 'nodes',
                                 nodeId,
-                                {wasActive: true}
+                                {...nodeData,wasActive: true}
                             );
                            } 
                         });
@@ -173,6 +173,7 @@ export class TodoApp{
 
                      if(index === 0) {
                          node.enableNode();
+                         if(nodeData.wasActive) node.setActive()
                     } else {
                         node.disableNode()
                     } 
