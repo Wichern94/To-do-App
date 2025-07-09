@@ -1,4 +1,4 @@
-import { collection, addDoc,getDocs,doc,deleteDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { collection, addDoc,getDocs,doc,deleteDoc,updateDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import { db } from '../firebase-init.js';
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
@@ -112,6 +112,23 @@ export class FirestoreService {
         } catch (error) {
             console.error ('błąd przy odczycie  od firestore:', error);
             return [];
+        }
+      }
+
+      //metoda do nadpisywania progrsu nodow
+
+      async updateElements(roadmapID,collectionName,subCollection,nodeID,updateObj){
+             if(!collectionName || !subCollection || !nodeID || !updateObj ) {
+            throw new Error('Nazwa Kolekcji,pod kolekcji, id noda,oraz obiekt zdanymi są wymagane');
+        }
+        try {
+            const roadmapId = roadmapID.replace('ul-','');
+            const collectionRef = doc(db,`users/${this.uid}/${collectionName}/${roadmapId}/${subCollection}/${nodeID}`);
+            const docQuery = await updateDoc(collectionRef,updateObj);
+            console.log('obiekt zaktualizowano!');
+            
+        } catch(err) {
+            console.error('bład podczas updatu:',err)
         }
       }
   

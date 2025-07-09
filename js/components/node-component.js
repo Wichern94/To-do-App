@@ -1,15 +1,19 @@
 import { showElement,hideElement,toggleElement } from "../utils/helper.js";
+
 export class NodeElement {
-    constructor(fullNodeData) {
+    constructor(fullNodeData, callbacks = {}) {
         this.nodeData = fullNodeData,
+        
         this.ui = {};
         this.isActive = false;
         this.isAccordionReady = false;
         this.progressStep = null;
+        this.onNodeActivate = callbacks.onNodeActivate || null;
         
     }
    //Metoda renderowania elementów roadmapy
     render(){
+        
         const ulID = this.nodeData.roadmapID;
         const rightUl = document.getElementById(ulID);
         const title= this.nodeData.title;
@@ -19,6 +23,7 @@ export class NodeElement {
         
         if(this.nodeData.id){
             li.dataset.id = this.nodeData.id //<-nadaje id takie jak ten z firebase
+            li.id = `node-${this.nodeData.id}`
         }
         //tworze html noda
         li.innerHTML =`
@@ -143,20 +148,26 @@ export class NodeElement {
         showElement(this.ui.stopBtn);
         showElement(this.ui.progressBarCont);
         showElement(this.ui.timer);
-
+        
          //odblokuje checkboxy
         this.ui.checkBoxList?.forEach(cb => {
             cb.disabled = false;
         });
-        this.drawConnectionLine()
-        this.isActive = true;
-
+        
         // obliczenia dotyczace checkboxów
         const checkBoxLenght = this.ui.checkBoxList.length;
         this.progressStep = 100 / checkBoxLenght;
         this.ui.checkBoxList.forEach(cb => {
             cb.addEventListener('change', this.updateProgress.bind(this));
         })
+       
+        // rysowanie liini oraz zapis updatowanego noda do bazy
+        this.drawConnectionLine()
+        this.isActive = true;
+        this.nodeData.wasActive = true;
+        if(typeof this.onNodeActivate === 'function') {
+            this.onNodeActivate(this.nodeData.id);
+        }
     }
         
         
@@ -191,33 +202,32 @@ export class NodeElement {
             this.ui.progressFill.style.width = `${percent}%`;
         }
     }
-    //metoda Rysuwania linni biblioteką leaderLine
+    //metoda Rysuwania linni biblioteką jsPlumb
     drawConnectionLine() {
-        const currentActiveNode = this.ui.root;
-        console.log('current to:',currentActiveNode);
+        const mainNode = this.ui.root;
+        console.log('current to:',mainNode);
         
-        const nextNode = currentActiveNode?.nextElementSibling; // <- nastepny taki sam element
+        const nextNode = mainNode?.nextElementSibling; // <- nastepny taki sam element
         console.log('next to:',nextNode);
+
         
-        if(!nextNode) return;
-        const container = document.querySelector('.roadmap-box');
-        const line = new LeaderLine(
-            currentActiveNode,
-            nextNode,
-        {
-            startSocket:'left',
-            endSocket:  'right',
-            path: 'grid',
-            color: '#6BCDCE',
-            size: 3,
-            container: container,
-            appendTo: container,
-        }
-        );
-        container.addEventListener('scroll', () => {
-            line.position();
+        if (!nextNode || !mainNode.id || !nextNode.id) return;
+
+        jsPlumb.connect({
+            container: document.querySelector('.roadmap-box'),
+            source:mainNode.id,
+            target:nextNode.id,
+            anchors:['Left','Right'],
+            connector: 'Flowchart',
+            paintStyle: {stroke: '#6BCDCE', strokeWidth: 3},
+            endpoint: 'Dot',
+            endpointStyle: {fill:'#6BCDCE', radius:4},
         })
-        console.log('line to:',line);
+        
+        
+        
+        
+        
        
     }
 }

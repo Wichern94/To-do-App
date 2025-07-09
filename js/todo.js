@@ -44,7 +44,7 @@ export class TodoApp{
                 );
 
                 const order = Array.isArray(existingNodes) ? existingNodes.length : 0;
-                const nodeDataWithOrder={...nodeData,order: order }
+                const nodeDataWithOrder={...nodeData,order: order, wasActive:false }
 
                 const nodeID = await this.firestoreService.addCollectionElement(nodeDataWithOrder,'roadmaps','nodes')
                 if(!nodeID) return;
@@ -135,6 +135,9 @@ export class TodoApp{
         try{
             this.activeRoadmapId = roadmapId;
 
+           
+            
+
             const ul = document.getElementById(roadmapId)
             if (ul) {
               [...ul.children].forEach( child => {
@@ -155,7 +158,17 @@ export class TodoApp{
                  const sortedNodeList = nodeList.sort( (a,b) => a.order - b.order);  
 
                  sortedNodeList.forEach((nodeData,index ) =>{
-                     const node = new NodeElement(nodeData);
+                     const node = new NodeElement(nodeData,{
+                        onNodeActivate:(nodeId) =>{
+                            this.firestoreService.updateElements(
+                                this.activeRoadmapId,
+                                'roadmaps',
+                                'nodes',
+                                nodeId,
+                                {wasActive: true}
+                            );
+                           } 
+                        });
                      node.render();
 
                      if(index === 0) {
