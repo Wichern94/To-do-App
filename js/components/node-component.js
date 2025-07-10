@@ -189,7 +189,7 @@ export class NodeElement {
        
         // rysowanie liini oraz zapis updatowanego noda do bazy
         
-        this.drawConnectionLine()
+        
         this.connectionDrawn = true;
 
         if(typeof this.onNodeActivate === 'function') {
