@@ -7,6 +7,7 @@ import {RoudMapModal} from './components/roud-modal.js'
 import {RoadmapSelector} from './components/roadmap-selector.js'
 import {FirestoreService} from './Services/Service.js'
 import {NodeElement} from './components/node-component.js'
+import { RoadmapPlumbManager } from './Services/plumb-manager.js';
 
 export class TodoApp{
     constructor(user, viewManager) {
@@ -18,6 +19,8 @@ export class TodoApp{
         this.initCarusel()
         
         this.activeRoadmapId = null
+        this.activeRoadmapInstance = null;
+        this.plumbManagers = {};
         this.roudmapModal = new RoudMapModal({
             openBtnID:'add-roadmap-task',
             modalID:'create-roud-menu',
@@ -136,13 +139,21 @@ export class TodoApp{
     async renderNodesForRoadmap(roadmapID){
         try{
             this.activeRoadmapId = roadmapID;
+
+            if(this.plumbManagers?.[roadmapID]) {
+                this.plumbManagers[roadmapID].destroy();
+                delete this.plumbManagers[roadmapID];
+            }
             const ul = document.getElementById(roadmapID)
+            this.plumbManagers[roadmapID] = new RoadmapPlumbManager(ul);
+
             if(!ul) {
                 console.warn('nie znaleziono ul o id:',roadmapID);
                 return;
             }
             Array.from(ul.querySelectorAll('.roadmap-node')).forEach(child => ul.removeChild(child));
 
+            
 
         const nodeList = await this.firestoreService.getElementsfromSubCollection(
             roadmapID,
@@ -155,14 +166,14 @@ export class TodoApp{
         if(!Array.isArray(nodeList )) return;
 
         const sortedNodeList = nodeList.sort( (a,b) => a.order - b.order);  
-           console.log('posortowana lista to:', sortedNodeList);
-           console.log('aktywny rodmapidto :', this.activeRoadmapId);
-       
+           
+        
 
                     
         const nodes = [];
+        
         sortedNodeList.forEach((nodeData,index ) =>{
-            const node = new NodeElement(nodeData,{
+            const node = new NodeElement(nodeData,this.plumbManagers[roadmapID],{
                 onNodeActivate:(nodeId) =>{
                     this.firestoreService.updateElements(
                         this.activeRoadmapId,
@@ -171,7 +182,9 @@ export class TodoApp{
                          nodeId,
                         {...nodeData,wasActive: true}
                         );
-                    } 
+                    },
+                
+               
                 });
                 node.render();
                 nodes.push(node)
@@ -182,8 +195,9 @@ export class TodoApp{
                     node.disableNode()
                 } 
             });
+            
             nodes.forEach(node => {
-                if(node.nodeData.wasActive ===true) {
+                if( node.nodeData.wasActive === true) {
                     node.setActive()
                 }
             })

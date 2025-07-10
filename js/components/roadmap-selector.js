@@ -53,6 +53,7 @@ export class RoadmapSelector {
         this.onDelete = onDelete;
         this.onEnterRoadmap = onEnterRoadmap;
         
+        
          }  
         activate() {
             console.log('aktywowano activite RiadmapSelectora');
@@ -158,11 +159,14 @@ export class RoadmapSelector {
          
 
         roadmaps.forEach(road => {
+           
             this.createRoadmapLi(road);
             const existingUl = this.elements.ulContDiv.querySelector(`ul[data-id="ul-${road.id}"]`);
             
             if(existingUl) return
                 this.createNodeUl(road);
+
+            
             });
             
         this.roadmaps = [...roadmaps];

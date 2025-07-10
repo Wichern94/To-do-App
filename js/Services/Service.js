@@ -21,6 +21,7 @@ export class FirestoreService {
             const docRef = await addDoc(ref,{
                 ...data,
                 createdAt: serverTimestamp(),
+                isActive: false,
             });
             return docRef.id;
             }

@@ -1,16 +1,19 @@
 import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 
 export class NodeElement {
-    constructor(fullNodeData, callbacks = {}) {
+    constructor(fullNodeData,plumbManager, callbacks = {}) {
         this.nodeData = fullNodeData;
-        
+        this.plumbManager = plumbManager,
         this.ui = {};
         this.isActive = false;
         this.isAccordionReady = false;
         this.listenersBound = false;
         this.connectionDrawn = false;
         this.progressStep = null;
+        // jesli callback nie jest podany  to domyslnie jest null a jesli jest podany to zostanie przypisany
         this.onNodeActivate = callbacks.onNodeActivate || null;
+        
+        
 
         
     }
@@ -193,6 +196,7 @@ export class NodeElement {
             console.log('[setActive] Wywołuję callback onNodeActivate z id:', this.nodeData.id);
             this.onNodeActivate(this.nodeData.id);
         }
+         
        
 
       
@@ -242,19 +246,17 @@ export class NodeElement {
         const nextNode = mainNode?.nextElementSibling; // <- nastepny taki sam element
         console.log('next to:',nextNode);
 
+        if( !mainNode.id || !nextNode.id) {
+            console.warn ('brak id dla nodów - nie mozna rysowac lini.');
+            return
+        }
         
-        if (!nextNode || !mainNode.id || !nextNode.id) return;
+        
 
-        jsPlumb.connect({
-            container: document.querySelector('.roadmap-box'),
-            source:mainNode.id,
-            target:nextNode.id,
-            anchors:['Left','Right'],
-            connector: 'Flowchart',
-            paintStyle: {stroke: '#6BCDCE', strokeWidth: 3},
-            endpoint: 'Dot',
-            endpointStyle: {fill:'#6BCDCE', radius:4},
-        })
+    
+    this.plumbManager?.connect(mainNode.id, nextNode.id);
+        
+        
         
         
         
