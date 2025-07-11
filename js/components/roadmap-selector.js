@@ -11,6 +11,7 @@ export class RoadmapSelector {
         onSubmit = null,
         onDelete = null,
         onEnterRoadmap = null,
+        onQuitRoadmap = null,
         ulContainerID,
         ulContDivID,
         listTogglerID,
@@ -52,6 +53,7 @@ export class RoadmapSelector {
         this.onSubmit = onSubmit;
         this.onDelete = onDelete;
         this.onEnterRoadmap = onEnterRoadmap;
+        this.onQuitRoadmap = onQuitRoadmap;
         
         
          }  
@@ -252,6 +254,10 @@ export class RoadmapSelector {
         this.elements.ulContDiv.classList.add('hidden');
         targetUl?.classList.add('hidden');
         this.elements.addBtnContainer.classList.add('hidden');
+        const roadmapID = `ul-${this.activeRoadmapId}`
+         if(typeof this.onQuitRoadmap ==='function') {
+            this.onQuitRoadmap(roadmapID);
+        }
         
 
     }

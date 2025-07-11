@@ -79,6 +79,13 @@ export class TodoApp{
             onEnterRoadmap: async (roadmapID) => {
                 await this.renderNodesForRoadmap(roadmapID)
                 } ,
+            onQuitRoadmap: (roadmapID) => {
+                console.log('callback z on quit to:',roadmapID)
+                if(this.plumbManagers?.[roadmapID]) {
+                this.plumbManagers[roadmapID].destroy();
+                delete this.plumbManagers[roadmapID];
+            }
+            },
                         
                         
                         
@@ -195,12 +202,16 @@ export class TodoApp{
                     node.disableNode()
                 } 
             });
-            
+            let activeNode = null;
             nodes.forEach(node => {
                 if( node.nodeData.wasActive === true) {
-                    node.setActive()
+                    activeNode= node
                 }
-            })
+            });
+            if(activeNode) {
+                activeNode.setActive();
+                activeNode.drawConnectionLines();
+            }
                 
                             
 

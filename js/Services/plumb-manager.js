@@ -13,15 +13,26 @@ export class RoadmapPlumbManager {
       source: sourceId,
       target: targetId,
       anchors: anchors,
-      connector: ['Flowchart',{stub:[30,30],cornerRadius:10}],
-      paintStyle: { stroke: '#6BCDCE', strokeWidth: 3 },
+      connector: ['Flowchart',{
+        stub:[30,30],
+        cornerRadius:10,
+        alwaysRespectStubs: true,
+      }],
+      paintStyle: { 
+        stroke: '#6BCDCE',
+        strokeWidth: 1,
+      },
+      cssClass:'connection-glow connection-animated',
+        
       endpoint: 'Dot',
-      endpointStyle: { fill: '#6BCDCE', radius: 4 }
+      endpointStyle: { fill: '#6BCDCE', radius: 4 },
+      connectionsDetachable: false,
+       reattachConnections: false,
      
       
       
     });
-    console.log('miejsca odczepienia to:',sourceId,targetId);
+    
     this.connections.push(connection);
   }
 

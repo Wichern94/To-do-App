@@ -30,6 +30,7 @@ export class NodeElement {
         if(this.nodeData.id){
             li.dataset.id = this.nodeData.id //<-nadaje id takie jak ten z firebase
             li.id = `node-${this.nodeData.id}`
+            li.dataset.order = this.nodeData.order;
         }
         if(this.nodeData.order % 2 === 0) {
             li.classList.add('left');
@@ -155,54 +156,114 @@ export class NodeElement {
     }
     //metoda Aktywacji Roadmapy
     setActive() {
-         if (this.isActive) {
-
-            if(!this.connectionDrawn) {
-                this.drawConnectionLine();
-                this.connectionDrawn = true;
-            }
-            return;
-         }
+         if (this.isActive)  return;
+         
+           
+         
         this.isActive = true;
         this.nodeData.wasActive = true;
         
         this.ui.root.classList.add('active-border');
         showElement(this.ui.stopBtn);
-        showElement(this.ui.progressBarCont);
         showElement(this.ui.timer);
-        
-         //odblokuje checkboxy
-        this.ui.checkBoxList?.forEach(cb => {
-            cb.disabled = false;
-        });
-        
-        // obliczenia dotyczace checkboxów
-        const checkBoxLenght = this.ui.checkBoxList.length;
-        this.progressStep = 100 / checkBoxLenght;
+        this.setupCheckBoxes()
 
-        if(!this.listenersBound){
-        this.ui.checkBoxList.forEach(cb => {
-            cb.addEventListener('change', this.updateProgress.bind(this));
-        });
-        this.listenersBound = true;
-    }
-       
-        // rysowanie liini oraz zapis updatowanego noda do bazy
-        
-        
-        
-
+        this.drawConnectionLines()
         if(typeof this.onNodeActivate === 'function') {
             console.log('[setActive] Wywołuję callback onNodeActivate z id:', this.nodeData.id);
             this.onNodeActivate(this.nodeData.id);
         }
+    }
          
+    //metoda ustawiająca Akordeony
+    setupAccordeons() {
+        if (this.isAccordionReady) return;   //flaga zeby akordeon nie właczał sie kilka razy
+         const accBtn = this.ui.accordionBtn;
+         accBtn?.addEventListener('click',() => {
+             const subTaskCont = this.ui.subtaskList;
+             toggleElement(subTaskCont);
+             this.plumbManager.jsPlumbInstance.repaintEverything();
+            });
+            this.isAccordionReady = true; 
+        }
+        
+        updateProgress() {
+            const checkedCount = Array.from(this.ui.checkBoxList).filter(cb => cb.checked).length;
+            const percent = Math.round(checkedCount * this.progressStep);
+            
+            if(this.ui.progressText) {
+                this.ui.progressText.textContent = `${percent}%`;
+                this.ui.progressFill.style.width = `${percent}%`;
+            }
+        }
+        //metoda Rysuwania linni biblioteką jsPlumb
+        drawConnectionLines() {
+            const ulID = this.nodeData.roadmapID;
+            const rightUl = document.getElementById(ulID);
+            const allNodes = Array.from(rightUl.querySelectorAll('.roadmap-node'));
+            const sortedNodes = allNodes.sort((a,b) =>{
+                const orderA = Number(a.dataset.order); // Number zmienia dataset order string na liczbe
+                const orderB = Number(b.dataset.order);
+                return orderA - orderB;
+            });
+            
+            const anchorsLeftRight = ['Right', 'Left'];
+            const anchorsTopBottom = ['Bottom','Top' ];
+            
+    
+            sortedNodes.forEach((currentNode, index) => {
+                const nextNode =sortedNodes[index + 1];
+                if(!nextNode) return;
+                    const anchors = (index % 2 === 0 )? anchorsTopBottom: anchorsLeftRight; // jesli parzysta to top-bottom, jesli nie to left-right
+                        
+                    this.plumbManager?.connect(currentNode.id, nextNode.id,anchors)
+                        
+                    });
+                }
+    
+    
+        setupCheckBoxes(){
+             //pobieram checkboxy 
+            const checkboxes = this.ui.checkBoxList;
+            const checkBoxLenght = checkboxes?.length || 0;
+            // obliczenia dotyczace checkboxów
+            if(checkBoxLenght === 0) {
+                hideElement(this.ui.progressBarCont); // upewniam sie ze nie pokazuje progressbaru jesli nie ma subtaskow
+                return
+            }
+    
+                showElement(this.ui.progressBarCont);
+                this.progressStep = 100 / checkBoxLenght;
+            
+             //odblokuje checkboxy
+            checkboxes?.forEach(cb => {
+                cb.disabled = false;
+            });
+            
+           // dodaje nasłuch
+           if(!this.listenersBound){
+               checkboxes.forEach(cb => {
+                    cb.addEventListener('change', this.updateProgress.bind(this));
+                });
+                this.listenersBound = true;
+            }
+        }
+            
+       
+     
+       
+       
+
+       
+      
+        
+        
+        
        
 
       
        
        
-    }
         
         
 
@@ -212,71 +273,25 @@ export class NodeElement {
             
     
    
-    //metoda ustawiająca Akordeony
-    setupAccordeons() {
-        if (this.isAccordionReady) return;   //flaga zeby akordeon nie właczał sie kilka razy
-         const accBtn = this.ui.accordionBtn;
-         accBtn?.addEventListener('click',() => {
-            console.log('kliknieto wakordeon:',this.ui.root);
             
-            const subTaskCont = this.ui.subtaskList;
-            console.log('checkboxwo to:', subTaskCont);
             
-            toggleElement(subTaskCont);
             
-         });
-        this.isAccordionReady = true; 
-    }
-    updateProgress() {
-        const checkedCount = Array.from(this.ui.checkBoxList).filter(cb => cb.checked).length;
-        const percent = Math.round(checkedCount * this.progressStep);
+            
+            
         
-        if(this.ui.progressText) {
-            this.ui.progressText.textContent = `${percent}%`;
-            this.ui.progressFill.style.width = `${percent}%`;
-        }
-    }
-    //metoda Rysuwania linni biblioteką jsPlumb
-    drawConnectionLine() {
-        const ulID = this.nodeData.roadmapID;
-        const rightUl = document.getElementById(ulID);
-        const allNodes = rightUl.querySelectorAll('.roadmap-node');
-        const anchorsLeftRight = ['Right','Left' ];
-        const anchorsTopBottom = ['Bottom','Top' ];
-        const continous =['Continuous','Continuous'];
-
-        allNodes.forEach((currentNode, index) => {
-            if (index < allNodes.length - 1) {
-                const nextNode =allNodes[index + 1];
-                if(index === 0 && nextNode){
-                    console.log('current node to:',currentNode);
-                    this.plumbManager?.connect(currentNode.id, nextNode.id,anchorsTopBottom)
-                    
-                } else{
-                 this.plumbManager?.connect(currentNode.id, nextNode.id,anchorsTopBottom) 
-                };
+               
                 
                
-            };
-        });
-        console.log('wszystkie li to:', allNodes);
+            
         
         
-        // const mainNode = this.ui.root;
-        // console.log('current to:',mainNode);
         
-        // const nextNode = mainNode?.nextElementSibling; // <- nastepny taki sam element
-        // console.log('next to:',nextNode);
-
-        // if( !mainNode.id || !nextNode.id) {
-        //     console.warn ('brak id dla nodów - nie mozna rysowac lini.');
-        //     return
-        // }
+        
         
         
 
     
-    // 
+     
         
         
         
@@ -285,7 +300,6 @@ export class NodeElement {
         
         
        
-    }
 }
 
         
