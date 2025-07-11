@@ -190,7 +190,7 @@ export class NodeElement {
         // rysowanie liini oraz zapis updatowanego noda do bazy
         
         
-        this.connectionDrawn = true;
+        
 
         if(typeof this.onNodeActivate === 'function') {
             console.log('[setActive] Wywołuję callback onNodeActivate z id:', this.nodeData.id);
@@ -238,23 +238,45 @@ export class NodeElement {
     }
     //metoda Rysuwania linni biblioteką jsPlumb
     drawConnectionLine() {
-        
-        
-        const mainNode = this.ui.root;
-        console.log('current to:',mainNode);
-        
-        const nextNode = mainNode?.nextElementSibling; // <- nastepny taki sam element
-        console.log('next to:',nextNode);
+        const ulID = this.nodeData.roadmapID;
+        const rightUl = document.getElementById(ulID);
+        const allNodes = rightUl.querySelectorAll('.roadmap-node');
+        const anchorsLeftRight = ['Right','Left' ];
+        const anchorsTopBottom = ['Bottom','Top' ];
+        const continous =['Continuous','Continuous'];
 
-        if( !mainNode.id || !nextNode.id) {
-            console.warn ('brak id dla nodów - nie mozna rysowac lini.');
-            return
-        }
+        allNodes.forEach((currentNode, index) => {
+            if (index < allNodes.length - 1) {
+                const nextNode =allNodes[index + 1];
+                if(index === 0 && nextNode){
+                    console.log('current node to:',currentNode);
+                    this.plumbManager?.connect(currentNode.id, nextNode.id,anchorsTopBottom)
+                    
+                } else{
+                 this.plumbManager?.connect(currentNode.id, nextNode.id,anchorsTopBottom) 
+                };
+                
+               
+            };
+        });
+        console.log('wszystkie li to:', allNodes);
+        
+        
+        // const mainNode = this.ui.root;
+        // console.log('current to:',mainNode);
+        
+        // const nextNode = mainNode?.nextElementSibling; // <- nastepny taki sam element
+        // console.log('next to:',nextNode);
+
+        // if( !mainNode.id || !nextNode.id) {
+        //     console.warn ('brak id dla nodów - nie mozna rysowac lini.');
+        //     return
+        // }
         
         
 
     
-    this.plumbManager?.connect(mainNode.id, nextNode.id);
+    // 
         
         
         

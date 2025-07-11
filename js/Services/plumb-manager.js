@@ -8,12 +8,12 @@ export class RoadmapPlumbManager {
    
 
 
-  connect(sourceId, targetId) {
+  connect(sourceId, targetId ,anchors) {
     const connection = this.jsPlumbInstance.connect({
       source: sourceId,
       target: targetId,
-      anchors: ['Left','Right' ],
-      connector: 'Flowchart',
+      anchors: anchors,
+      connector: ['Flowchart',{stub:[30,30],cornerRadius:10}],
       paintStyle: { stroke: '#6BCDCE', strokeWidth: 3 },
       endpoint: 'Dot',
       endpointStyle: { fill: '#6BCDCE', radius: 4 }
