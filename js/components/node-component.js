@@ -1,17 +1,19 @@
 import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 
 export class NodeElement {
-    constructor(fullNodeData,plumbManager, callbacks = {}) {
+    constructor(fullNodeData,plumbManager,firestoreService ) {
         this.nodeData = fullNodeData;
         this.plumbManager = plumbManager,
+        this.firestoreService = firestoreService;
         this.ui = {};
         this.isActive = false;
         this.isAccordionReady = false;
         this.listenersBound = false;
         this.connectionDrawn = false;
         this.progressStep = null;
-        // jesli callback nie jest podany  to domyslnie jest null a jesli jest podany to zostanie przypisany
-        this.onNodeActivate = callbacks.onNodeActivate || null;
+        this.timerIntervak = null;
+        this.timerSeconds = 0 ;
+       
         
         
 
@@ -58,15 +60,21 @@ export class NodeElement {
             
               
             <div class="node-btn-container ">
-                <button class="stop-btn roud-btns hidden" aria-label="stop timer">Zatrzymaj
+                <button class="stop-btn roud-btns hidden" aria-label="finish node">Zatrzymaj
                     <svg class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
                     </svg>
                 </button>
                  
-                  <button class="play-btn roud-btns hidden" aria-label="start timer">Rozpocznij
+                  <button class="play-btn roud-btns hidden" aria-label="start node">Rozpocznij
                     <svg  class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                    </svg>
+                </button>
+
+                <button class= "pause-btn roud-btns hidden" aria-label="Pause node">Pauza
+                    <svg class="roud-btns-svg"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
                     </svg>
                 </button>
             </div>
@@ -91,6 +99,7 @@ export class NodeElement {
         this.ui.progressBarCont = li.querySelector('.progress-container');
         this.ui.accordionBtn = li.querySelector('.node-acc-btn');
         this.ui.startBtn = li.querySelector('.play-btn');
+        this.ui.pauseBtn = li.querySelector('.pause-btn')
         this.ui.stopBtn = li.querySelector('.stop-btn');
         this.ui.btnContainer = li.querySelector('.node-btn-container');
         this.ui.subtaskList = li.querySelector('.subtask-list');
@@ -166,13 +175,22 @@ export class NodeElement {
         this.ui.root.classList.add('active-border');
         showElement(this.ui.stopBtn);
         showElement(this.ui.timer);
+        hideElement(this.ui.startBtn);
+        showElement(this.ui.pauseBtn);
         this.setupCheckBoxes()
-
         this.drawConnectionLines()
-        if(typeof this.onNodeActivate === 'function') {
-            console.log('[setActive] Wywołuję callback onNodeActivate z id:', this.nodeData.id);
-            this.onNodeActivate(this.nodeData.id);
-        }
+
+        this.firestoreService.updateElements(
+            this.nodeData.roadmapID,
+            'roadmaps','nodes',
+            this.nodeData.id,
+                        
+                        {
+                        wasActive: true,
+                        timerSeconds: this.timerSeconds || 0,
+                        isRunning: true
+                        }
+                    );
     }
          
     //metoda ustawiająca Akordeony
@@ -247,6 +265,29 @@ export class NodeElement {
                 });
                 this.listenersBound = true;
             }
+        }
+        startTimer() {
+           this.timerIntervak = setInterval(() => {
+            this.timerSeconds++;
+            this.ui.timer.textContent = this.formatTime(this.timerSeconds);
+           },1000);
+        }
+        formatTime(seconds) {
+
+            const totalMinutes = Math.floor(seconds / 60);//<- dzielenie z obcięciem czesci po przecinku
+            const hours = Math.floor(totalMinutes / 60);
+            const mins = totalMinutes % 60;    //<- zwraca reszte z dzielenia
+            const secs = seconds % 60 ;
+
+            //podziel sekundy przez 60, zmien na string,
+            //i jesli sa mniej niz dwa znaki dodaj 0 przed liczba
+            const h = hours.toString().padStart(2,'0');
+            const m = mins.toString().padStart(2,'0');
+            const s = secs.toString().padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+        stopTimer() {
+            clearInterval(this.timerIntervak);
         }
             
        

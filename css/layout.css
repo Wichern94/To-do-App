@@ -29,6 +29,9 @@
 
 
   /*  Elementy UI */
+  --pause-btn-main:#e3b341;
+  --pause-btn-border:#d6a835;
+  --pause-btn-background:rgba(227, 179, 65, 0.1);
   --color-red-btn:#db5656;
   --color-text-small:#333;
   --color-text-primiary-contrast:#1D2B36;

@@ -146,81 +146,84 @@ export class TodoApp{
     async renderNodesForRoadmap(roadmapID){
         try{
             this.activeRoadmapId = roadmapID;
+            const ul = document.getElementById(roadmapID)
+            // sprawdze czy jest ul zanim utowrze plumbmangera, aby uniknac problemu
+                        if(!ul) {
+                            console.warn('nie znaleziono ul o id:',roadmapID);
+                            return;
+                        }
 
+
+            // jesli plumManger juz cos ma to resetuje/usuwam
+            //aby uniknac dublowania
             if(this.plumbManagers?.[roadmapID]) {
                 this.plumbManagers[roadmapID].destroy();
                 delete this.plumbManagers[roadmapID];
             }
-            const ul = document.getElementById(roadmapID)
+            
+           // kazda Roadmapa ma swoją instacje plumMangera
             this.plumbManagers[roadmapID] = new RoadmapPlumbManager(ul);
 
-            if(!ul) {
-                console.warn('nie znaleziono ul o id:',roadmapID);
-                return;
-            }
-            Array.from(ul.querySelectorAll('.roadmap-node')).forEach(child => ul.removeChild(child));
+            //czyszcze roadmapy zeby uniknac dublikatów
+            Array.from(ul.querySelectorAll('.roadmap-node')).forEach(child => ul.removeChild(child)); 
 
-            
+            //pobieram dane z bazy
+            const nodeList = await this.firestoreService.getElementsfromSubCollection(
+                roadmapID,
+                'roadmaps',
+                'nodes'
+                    );
+                    console.log('node list to:',nodeList);
+                    if(!Array.isArray(nodeList )||nodeList.length === 0) return;
 
-        const nodeList = await this.firestoreService.getElementsfromSubCollection(
-            roadmapID,
-            'roadmaps',
-            'nodes'
-                );
-           
-            console.log('node list to:',nodeList);
-            
-        if(!Array.isArray(nodeList )) return;
-
-        const sortedNodeList = nodeList.sort( (a,b) => a.order - b.order);  
-           
-        
-
-                    
-        const nodes = [];
-        
-        sortedNodeList.forEach((nodeData,index ) =>{
-            const node = new NodeElement(nodeData,this.plumbManagers[roadmapID],{
-                onNodeActivate:(nodeId) =>{
-                    this.firestoreService.updateElements(
-                        this.activeRoadmapId,
-                        'roadmaps',
-                        'nodes',
-                         nodeId,
-                        {...nodeData,wasActive: true}
-                        );
-                    },
+            //sortuje według order w kolejnosci od najmniejszego do nawiekszego
+            const sortedNodeList = nodeList.sort( (a,b) => a.order - b.order);  
                 
-               
-                });
-                node.render();
-                nodes.push(node)
+            const nodes = []; // <-tablica na nody  
+
+            sortedNodeList.forEach((nodeData,index ) => {
+            // kazdy node jest osobną  instacja NodeElement
+            const node = new NodeElement(nodeData,this.plumbManagers[roadmapID], this.firestoreService)
             
-                if(index === 0) {
-                    node.enableNode();
-                } else {
-                    node.disableNode()
-                } 
+                // renderuje i dodaje do tablicy
+            node.render();
+            nodes.push(node)
+        
+            if(index === 0) {
+                node.enableNode();
+            } else {
+                node.disableNode()
+            } 
+
             });
+            //flaga
             let activeNode = null;
-            nodes.forEach(node => {
+            // sprawdzam czy były aktywne
+            nodes.forEach(node => {  
                 if( node.nodeData.wasActive === true) {
-                    activeNode= node
+                    activeNode = node;
                 }
             });
+            // jesli byly rysuje linie i aktywuje przyciski
             if(activeNode) {
                 activeNode.setActive();
                 activeNode.drawConnectionLines();
             }
-                
-                            
-
-            
-                     
+        
     } catch (err) {
         console.error('błąd przy wczytywaniu roadmapy:', err);
-        }
-    } 
+    }
+} 
+                    
+
+    
+             
+                    
+        
+                
+                
+               
+                
 
                         
                    

@@ -223,20 +223,31 @@
     flex-direction: column-reverse;
     font-weight: 600;
 }
-.road-btns {
-
+.roud-btns{
+    min-width: 4.5rem;;
 }
+
 .play-btn{
     color: var(--color-accent-light);
     border: 2px solid var(--color-accent-border);
     background-color: rgba(107, 205, 206, 0.1);
-    
-    
 }
 .play-btn svg{
     color: var(--color-accent-light);
    
 }
+.pause-btn{
+    color: var(--pause-btn-main);
+    border: 2px solid var(--pause-btn-border);
+    background-color: var(--pause-btn-background);
+}
+.pause-btn svg {
+     color: var(--pause-btn-main);
+}
+
+    
+    
+
 .stop-btn {
     color: var(--color-red-btn);
     border: 2px solid var(--color-red-btn);
