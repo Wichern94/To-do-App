@@ -1,6 +1,6 @@
-import { collection, addDoc,getDocs,doc,deleteDoc,updateDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { collection, addDoc,getDocs,doc,deleteDoc,updateDoc,serverTimestamp,onSnapshot } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import { db } from '../firebase-init.js';
-import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
 
 
 export class FirestoreService {
@@ -132,6 +132,49 @@ export class FirestoreService {
             console.error('bład podczas updatu:',err)
         }
       }
+    //metoda zapisu do firebase w czasie rzeczywistym
+     listenToCollection(roadmapID,collectionName,subCollection,callbacks={
+        onAdd: () => {},
+        onModify: () => {},
+        onRemove: () => {},})
+        {
+        if(!collectionName || !subCollection || !roadmapID ) {
+        throw new Error('Brak Danych do Sluchania w czasie rzeczywistym!');
+        }
+        try {
+            const roadmapId = roadmapID.replace('ul-','');
+            const collectionRef = collection(db,`users/${this.uid}/${collectionName}/${roadmapId}/${subCollection}`);
+            const unsub = onSnapshot(collectionRef, (onData) => {
+                onData.docChanges().forEach((change) =>{
+                    if(change.type === 'added') {
+                        console.log('Dodano:',change.doc.data());
+                        callbacks.onAdd(change.doc.data());
+                    }
+                    if(change.type === 'modified') {
+                        console.log('Zmodyfikowano:',change.doc.data());
+                         callbacks.onModify(change.doc.data());
+                    }
+                    if(change.type === 'removed') {
+                        console.log('Usunieto:',change.doc.data());
+                        callbacks.onRemove(change.doc.data());
+                    }
+                })
+            },
+            (onError) => {
+                console.log('wykryto Bład!:',onError);
+            }
+        )
+         return unsub       
+        }
+        catch(err) {
+            console.error('bład podczas nasłuchu!',err)
+        }
+                        
+                        
+                        
+    }
+        
+    
   
     
  
