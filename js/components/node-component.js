@@ -12,7 +12,9 @@ export class NodeElement {
         this.connectionDrawn = false;
         this.progressStep = null;
         this.timerInterval = null;
-        this.timerSeconds = 0 ;
+        this.timerSeconds = this.nodeData.timerSeconds || 0 ;
+        this.nodeData.paused = this.nodeData.paused || false;
+        this.isListening = false;
        
         
         
@@ -46,7 +48,7 @@ export class NodeElement {
           
           <div class="title-roudmap">
               <span class="node-text">${title}</span>
-              <span class="node-time">0:00</span>
+              <span class="node-time"></span>
               <button class="node-acc-btn " id="roadmap-accordeon-btn">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                       stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -187,9 +189,17 @@ export class NodeElement {
 
         this.setupCheckBoxes()
         this.drawConnectionLines()
-        this.nodeData.wasActive = true;
-        this.startTimer();
-        this.setupPause()
+
+        if(!this.nodeData.paused) {
+          this.startTimer();  
+        } else {
+            showElement(this.ui.continueBtn);
+            hideElement(this.ui.pauseBtn);
+            this.togglePauseAndContinue();
+        }
+        
+        this.realTimeListener();
+       
 
        
         }
@@ -218,32 +228,6 @@ export class NodeElement {
                 this.ui.progressFill.style.width = `${percent}%`;
             }
         }
-        //metoda Rysuwania linni biblioteką jsPlumb
-        drawConnectionLines() {
-            const ulID = this.nodeData.roadmapID;
-            const rightUl = document.getElementById(ulID);
-            const allNodes = Array.from(rightUl.querySelectorAll('.roadmap-node'));
-            const sortedNodes = allNodes.sort((a,b) =>{
-                const orderA = Number(a.dataset.order); // Number zmienia dataset order string na liczbe
-                const orderB = Number(b.dataset.order);
-                return orderA - orderB;
-            });
-            
-            const anchorsLeftRight = ['Right', 'Left'];
-            const anchorsTopBottom = ['Bottom','Top' ];
-            
-    
-            sortedNodes.forEach((currentNode, index) => {
-                const nextNode =sortedNodes[index + 1];
-                if(!nextNode) return;
-                    const anchors = (index % 2 === 0 )? anchorsTopBottom: anchorsLeftRight; // jesli parzysta to top-bottom, jesli nie to left-right
-                        
-                    this.plumbManager?.connect(currentNode.id, nextNode.id,anchors)
-                        
-                    });
-                }
-    
-    
         setupCheckBoxes(){
              //pobieram checkboxy 
             const checkboxes = this.ui.checkBoxList;
@@ -270,12 +254,40 @@ export class NodeElement {
                 this.listenersBound = true;
             }
         }
+        //metoda Rysuwania linni biblioteką jsPlumb
+        drawConnectionLines() {
+            const ulID = this.nodeData.roadmapID;
+            const rightUl = document.getElementById(ulID);
+            const allNodes = Array.from(rightUl.querySelectorAll('.roadmap-node'));
+            const sortedNodes = allNodes.sort((a,b) =>{
+                const orderA = Number(a.dataset.order); // Number zmienia dataset order string na liczbe
+                const orderB = Number(b.dataset.order);
+                return orderA - orderB;
+            });
+            
+            const anchorsLeftRight = ['Right', 'Left'];
+            const anchorsTopBottom = ['Bottom','Top' ];
+            
+    
+            sortedNodes.forEach((currentNode, index) => {
+                const nextNode =sortedNodes[index + 1];
+                if(!nextNode) return;
+                    const anchors = (index % 2 === 0 )? anchorsTopBottom: anchorsLeftRight; // jesli parzysta to top-bottom, jesli nie to left-right
+                        
+                    this.plumbManager?.connect(currentNode.id, nextNode.id,anchors)
+                        
+                    });
+                }
+    
+    
+        
         startTimer() {
             this.nodeData.isRuning = true;
-
+            this.setupPause()
             const updatedData = {
                 wasActive: true,
                 isRunning: true,
+                paused: false,
                 timerSeconds: this.timerSeconds || 0,
                  
             };
@@ -288,6 +300,7 @@ export class NodeElement {
                 updatedData
             );
             console.log('uruchomiono licznik');
+            
             
             this.timerInterval = setInterval(() => {
             this.timerSeconds++;
@@ -311,6 +324,7 @@ export class NodeElement {
         pauseTimer(){
             if(this.timerInterval) {
             console.log('zatrzymano licznik');
+            this.setupContinue()
             
             clearInterval(this.timerInterval);
             this.timerInterval = null;
@@ -320,6 +334,7 @@ export class NodeElement {
 
             const updatedData = {
                 isRunning: false,
+                paused:true,
                 timerSeconds: this.timerSeconds
             };
             this.firestoreService.updateElements(
@@ -340,6 +355,8 @@ export class NodeElement {
 
         //obsluga FirebaseRealtime w NodeElement:
         realTimeListener() {
+            if(this.isListening) return
+            
             this.unsubRealTime = this.firestoreService.listenToElement(
                 this.nodeData.roadmapID,
                 'roadmaps',
@@ -347,9 +364,10 @@ export class NodeElement {
                 this.nodeData.id,
                 {
                     onUpdate: this.handleRealTimeUpdate.bind(this),
-                    onDelete: this.handleRealTimeDelete.bind(this),
+                    // onDelete: this.handleRealTimeDelete.bind(this),
                 }
             );
+            this.isListening = true;
         }
         handleRealTimeUpdate(data) {
 
@@ -359,9 +377,9 @@ export class NodeElement {
                 this.timerSeconds = data.timerSeconds ;
                 this.updateTimerDisplay();
             }
-
+            //uruchamiam licznik w zaleznosci od flagi
             if(typeof data.isRunning ==='boolean') {
-                const currentlyRunning = this.nodeData.isRuning;
+                const currentlyRunning = this.nodeData.isRunning;
                 const incomingRunning = data.isRunning;
 
                 if(incomingRunning && !currentlyRunning) {
@@ -369,28 +387,52 @@ export class NodeElement {
                 } else if (!incomingRunning && currentlyRunning) {
                     this.pauseTimer();
                 }
-                this.nodeData.isRuning = incomingRunning;
+                this.nodeData.isRunning = incomingRunning;
+            }
+            //pokazuje odpowiedni przycisk w zależnosci od flagi
+            if(typeof data.paused === 'boolean') {
+                if(data.paused) {
+                    showElement(this.ui.continueBtn);
+                    hideElement(this.ui.pauseBtn);
+                } else {
+                    showElement(this.ui.pauseBtn);
+                    hideElement(this.ui.continueBtn);
+                }
             }
             
         }
     setupPause(){
-        const pauseBtn = this.ui.pauseBtn;
         const continueBtn = this.ui.continueBtn;
-
+        const pauseBtn = this.ui.pauseBtn;
         pauseBtn?.addEventListener('click', () => {
             this.pauseTimer();
-            hideElement(pauseBtn);
             showElement(continueBtn);
-
+            hideElement(pauseBtn);
+            
         });
+    }  
+
+       
+
+    setupContinue(){
+        const pauseBtn = this.ui.pauseBtn;
+        const continueBtn = this.ui.continueBtn;
         continueBtn?.addEventListener('click', () => {
             this.startTimer();
             showElement(pauseBtn);
             hideElement(continueBtn);
+        });
+    } 
+    togglePauseAndContinue(){
+        const pauseBtn = this.ui.pauseBtn;
+        const continueBtn = this.ui.continueBtn;
+        if(pauseBtn?.classList.contains('hidden')) {
+            this.setupContinue();
+        }
+
+    }
 
             
-        })
-    }
 
             
        
