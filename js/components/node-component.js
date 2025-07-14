@@ -15,6 +15,8 @@ export class NodeElement {
         this.timerSeconds = this.nodeData.timerSeconds || 0 ;
         this.nodeData.paused = this.nodeData.paused || false;
         this.isListening = false;
+        this.nodeData.checkedSubtasks = this.nodeData.checkedSubtasks || [];
+        this.nodeData.subtasksDone = this.nodeData.subtasksDone || false;
        
         
         
@@ -142,6 +144,11 @@ export class NodeElement {
                     </label>`;
                 
                 getSubUL.appendChild(subLi);
+                const checkbox = subLi.querySelector('input[type="checkbox"]');
+                const subtaskText = subtask;
+                if(this.nodeData.checkedSubtasks?.includes(subtaskText)){
+                    checkbox.checked = true;
+                }
             });
             this.ui.checkBoxList = li.querySelectorAll('.roud-disabld-checkbox');
             
@@ -182,7 +189,8 @@ export class NodeElement {
         this.nodeData.wasActive = true;
         
         this.ui.root.classList.add('active-border');
-        showElement(this.ui.stopBtn);
+        
+        
         showElement(this.ui.timer);
         hideElement(this.ui.startBtn);
         showElement(this.ui.pauseBtn);
@@ -227,7 +235,36 @@ export class NodeElement {
                 this.ui.progressText.textContent = `${percent}%`;
                 this.ui.progressFill.style.width = `${percent}%`;
             }
+            this.nodeData.checkedSubtasks = [];
+            this.ui.checkBoxList.forEach((cb,i) => {
+                const text = this.nodeData.subtasks[i];
+                if(cb.checked && text) {
+                    this.nodeData.checkedSubtasks.push(text);
+                }
+            });
+            this.firestoreService.updateElements(
+                this.nodeData.roadmapID,
+                'roadmaps',
+                'nodes',
+                this.nodeData.id,
+                { checkedSubtasks: this.nodeData.checkedSubtasks }
+            );
+
+            // jesli subtaski sa zrobione(zaznaczone) to pokazuje przycisk stopu,
+            if(this.nodeData.checkedSubtasks.length === this.ui.checkBoxList.length) {
+                this.nodeData.subtasksDone = true;
+                showElement(this.ui.stopBtn);
+                
+            } else {
+                
+                this.nodeData.subtasksDone = false;
+                hideElement(this.ui.stopBtn);
+            }
         }
+                
+            
+           
+            
         setupCheckBoxes(){
              //pobieram checkboxy 
             const checkboxes = this.ui.checkBoxList;
@@ -282,6 +319,7 @@ export class NodeElement {
     
         
         startTimer() {
+            if(this.timerInterval) return;
             this.nodeData.isRuning = true;
             this.setupPause()
             const updatedData = {
@@ -328,6 +366,8 @@ export class NodeElement {
             
             clearInterval(this.timerInterval);
             this.timerInterval = null;
+            console.log('pauza:', this.timerInterval);
+            
             }
 
             this.nodeData.isRunning = false;
@@ -398,6 +438,16 @@ export class NodeElement {
                     showElement(this.ui.pauseBtn);
                     hideElement(this.ui.continueBtn);
                 }
+            }
+            //Aktualizuje zaznaczone Subtaski
+            if(Array.isArray(data.checkedSubtasks)) {
+                this.nodeData.checkedSubtasks = data.checkedSubtasks;
+
+                this.ui.checkBoxList?.forEach((cb,i) => {
+                    const subtaskText = this.nodeData.subtasks[i];
+                    cb.checked = this.nodeData.checkedSubtasks.includes(subtaskText);
+                });
+                this.updateProgress();
             }
             
         }
