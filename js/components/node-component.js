@@ -11,7 +11,7 @@ export class NodeElement {
         this.listenersBound = false;
         this.connectionDrawn = false;
         this.progressStep = null;
-        this.timerIntervak = null;
+        this.timerInterval = null;
         this.timerSeconds = 0 ;
        
         
@@ -77,6 +77,12 @@ export class NodeElement {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
                     </svg>
                 </button>
+
+                 <button class="continue-btn roud-btns hidden" aria-label="start node">Wznów
+                    <svg  class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                    </svg>
+                </button>
             </div>
                 
             <div class="progress-container hidden">
@@ -100,6 +106,7 @@ export class NodeElement {
         this.ui.accordionBtn = li.querySelector('.node-acc-btn');
         this.ui.startBtn = li.querySelector('.play-btn');
         this.ui.pauseBtn = li.querySelector('.pause-btn')
+        this.ui.continueBtn = li.querySelector('.continue-btn');
         this.ui.stopBtn = li.querySelector('.stop-btn');
         this.ui.btnContainer = li.querySelector('.node-btn-container');
         this.ui.subtaskList = li.querySelector('.subtask-list');
@@ -177,21 +184,18 @@ export class NodeElement {
         showElement(this.ui.timer);
         hideElement(this.ui.startBtn);
         showElement(this.ui.pauseBtn);
+
         this.setupCheckBoxes()
         this.drawConnectionLines()
+        this.nodeData.wasActive = true;
+        this.startTimer();
+         this.setupPause()
 
-        this.firestoreService.updateElements(
-            this.nodeData.roadmapID,
-            'roadmaps','nodes',
-            this.nodeData.id,
+       
+        }
                         
-                        {
-                        wasActive: true,
-                        timerSeconds: this.timerSeconds || 0,
-                        isRunning: true
-                        }
-                    );
-    }
+                       
+                   
          
     //metoda ustawiająca Akordeony
     setupAccordeons() {
@@ -267,7 +271,25 @@ export class NodeElement {
             }
         }
         startTimer() {
-           this.timerIntervak = setInterval(() => {
+            this.nodeData.isRuning = true;
+
+            const updatedData = {
+                wasActive: true,
+                isRunning: true,
+                timerSeconds: this.timerSeconds || 0,
+                 
+            };
+
+            this.firestoreService.updateElements(
+                this.nodeData.roadmapID,
+                'roadmaps',
+                'nodes',
+                this.nodeData.id,
+                updatedData
+            );
+            console.log('uruchomiono licznik');
+            
+            this.timerInterval = setInterval(() => {
             this.timerSeconds++;
             this.ui.timer.textContent = this.formatTime(this.timerSeconds);
            },1000);
@@ -286,9 +308,86 @@ export class NodeElement {
             const s = secs.toString().padStart(2, '0');
             return `${h}:${m}:${s}`;
         }
-        stopTimer() {
-            clearInterval(this.timerIntervak);
+        pauseTimer(){
+            if(this.timerInterval) {
+            console.log('zatrzymano licznik');
+            
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+            }
+
+            this.nodeData.isRunning = false;
+
+            const updatedData = {
+                isRunning: false,
+                timerSeconds: this.timerSeconds
+            };
+            this.firestoreService.updateElements(
+                this.nodeData.roadmapID,
+                'roadmaps',
+                'nodes',
+                this.nodeData.id,
+                updatedData
+            );
+            
         }
+        stopTimer() {
+            clearInterval(this.timerInterval);
+        }
+        updateTimerDisplay(){
+             this.ui.timer.textContent = this.formatTime(this.timerSeconds);
+        }
+
+        //obsluga FirebaseRealtime w NodeElement:
+        realTimeListener() {
+            this.unsubRealTime = this.firestoreService.listenToElement(
+                this.nodeData.roadmapID,
+                'roadmaps',
+                'nodes',
+                this.nodeData.id,
+                {
+                    onUpdate: this.handleRealTimeUpdate.bind(this),
+                    onDelete: this.handleRealTimeDelete.bind(this),
+                }
+            );
+        }
+        handleRealTimeUpdate(data) {
+
+            console.log('[REALTIME] Zmiana node:', data);
+
+            if(typeof data.timerSeconds === 'number') {
+                this.timerSeconds = data.timerSeconds ;
+                this.updateTimerDisplay();
+            }
+
+            if(typeof data.isRunning ==='boolean') {
+                const currentlyRunning = this.nodeData.isRuning;
+                const incomingRunning = data.isRunning;
+
+                if(incomingRunning && !currentlyRunning) {
+                    this.startTimer();
+                } else if (!incomingRunning && currentlyRunning) {
+                    this.pauseTimer();
+                }
+                this.nodeData.isRuning = incomingRunning;
+            }
+            
+        }
+    setupPause(){
+        const pauseBtn = this.ui.pauseBtn;
+        const continueBtn = this.ui.continueBtn;
+
+        pauseBtn?.addEventListener('click', () => {
+            this.pauseTimer();
+            hideElement(pauseBtn);
+        });
+        continueBtn?.addEventListener('click', () => {
+            this.startTimer();
+            hideElement(continueBtn);
+            showElement(pauseBtn);
+        })
+    }
+
             
        
      

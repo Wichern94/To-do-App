@@ -244,6 +244,15 @@
 .pause-btn svg {
      color: var(--pause-btn-main);
 }
+.continue-btn {
+    color: var(--continue-btn-light);
+    border: 2px solid var(--continue-btn-border);
+    background-color: var(--continue-btn-bg);
+}
+.continue-btn svg {
+    color: var(--continue-btn-light);
+}
+
 
     
     

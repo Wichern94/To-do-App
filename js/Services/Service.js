@@ -132,7 +132,7 @@ export class FirestoreService {
             console.error('bład podczas updatu:',err)
         }
       }
-    //metoda zapisu do firebase w czasie rzeczywistym
+    //metoda zapisu subkolekcji do firebase w czasie rzeczywistym
      listenToCollection(roadmapID,collectionName,subCollection,callbacks={
         onAdd: () => {},
         onModify: () => {},
@@ -169,10 +169,48 @@ export class FirestoreService {
         catch(err) {
             console.error('bład podczas nasłuchu!',err)
         }
-                        
-                        
-                        
     }
+    //metoda zapisu Elementu w czasie rzeczywistym
+    listenToElement(roadmapID,collectionName,subCollection,nodeID,callbacks={
+        onUpdate:() => {},
+        onDelete:() => {},
+        })
+    {
+         if(!collectionName || !subCollection || !roadmapID || !nodeID) {
+        throw new Error('Nazwa Kolekcji,pod kolekcji, id noda,oraz obiekt zdanymi są wymagane');
+        }
+       
+
+    try{
+         const roadmapId = roadmapID.replace('ul-','');
+         const docRef = doc(db,`users/${this.uid}/${collectionName}/${roadmapId}/${subCollection}/${nodeID}`);
+         const unsub = onSnapshot(docRef,(snapshot) => {
+
+            if(snapshot.exists() === true) {
+                console.log('dane z snapshota:',snapshot.data());
+                callbacks.onUpdate(snapshot.data());
+                } 
+            if(snapshot.exists() === false) {
+                console.log('brakdanych z snapshota,uruchomiono ondelete');
+                callbacks.onDelete()
+                }
+            },
+            (onError)=> {
+                console.error('Błąd podczas nasluchu Elementu!',onError);
+              }   
+           )
+           return unsub;
+        }
+        catch(err) {
+             console.error('bład try/catch podczas nasłuchu!',err)
+        }
+    }
+                
+                
+
+                        
+                        
+                        
         
     
   
