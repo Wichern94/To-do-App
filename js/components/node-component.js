@@ -189,7 +189,7 @@ export class NodeElement {
         this.drawConnectionLines()
         this.nodeData.wasActive = true;
         this.startTimer();
-         this.setupPause()
+        this.setupPause()
 
        
         }
@@ -380,11 +380,15 @@ export class NodeElement {
         pauseBtn?.addEventListener('click', () => {
             this.pauseTimer();
             hideElement(pauseBtn);
+            showElement(continueBtn);
+
         });
         continueBtn?.addEventListener('click', () => {
             this.startTimer();
-            hideElement(continueBtn);
             showElement(pauseBtn);
+            hideElement(continueBtn);
+
+            
         })
     }
 
