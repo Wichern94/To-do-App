@@ -132,6 +132,23 @@ export class FirestoreService {
             console.error('bład podczas updatu:',err)
         }
       }
+        //metoda Kasująca element subkolekcji
+    async deleteElement(docId,collectionName,subCollection,nodeID){
+        if(!docId || !collectionName || !subCollection || !nodeID) {
+            throw new Error('Brak odpowiednich danych do usuniecia elementu subkolekcji');
+        }
+        try {
+            const roadmapId = docId.replace('ul-','');
+            const docRef = doc(db, `users/${this.uid}/${collectionName}/${roadmapId}/${subCollection}/${nodeID}`);
+            await deleteDoc(docRef);
+            console.log(`Usunięto dokument ${nodeID} z podkolekcji ${subCollection}`);
+            return true;
+
+        } catch (error) {
+            console.error('bład przy usuwaniu zadania:', error);
+            return false;
+        }
+    }
     //metoda zapisu subkolekcji do firebase w czasie rzeczywistym
      listenToCollection(roadmapID,collectionName,subCollection,callbacks={
         onAdd: () => {},
@@ -205,9 +222,42 @@ export class FirestoreService {
              console.error('bład try/catch podczas nasłuchu!',err)
         }
     }
-                
-                
+    async moveElementToFinished(dataObj, refObj){
+        try{
+            const newId = await this.addCollectionElement(
+                dataObj,
+                refObj.collection,
+                refObj.subCollection
+            );
 
+            if(!newId) {
+                throw new Error('nie udało sie przeniesc noda - zapis nie powiódł się.');
+                
+            }
+            const deletedDoc = await this.deleteElement(
+                dataObj.roadmapID,
+                refObj.collection,
+                refObj.subCollection,
+                dataObj.id
+            );
+            if(!deletedDoc) {
+                throw new Error('Usuniecie orginalnego Noda nie powiodło się!');
+            }
+
+            if(newId && deletedDoc) {
+                console.log( '✅ ukonczono przenoszenie!');
+                return true;
+            }
+        } catch(error){
+            console.error('❌błąd przy przenoszeniu Noda:',error);
+            return false;
+            }
+        }
+            
+        
+                
+                
+}
                         
                         
                         
@@ -216,4 +266,3 @@ export class FirestoreService {
   
     
  
-}

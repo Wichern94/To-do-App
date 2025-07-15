@@ -17,6 +17,7 @@ export class NodeElement {
         this.isListening = false;
         this.nodeData.checkedSubtasks = this.nodeData.checkedSubtasks || [];
         this.nodeData.subtasksDone = this.nodeData.subtasksDone || false;
+        this.stopListenerBound = this.stopListenerBound || false;
        
         
         
@@ -162,6 +163,7 @@ export class NodeElement {
         this.ui.startBtn?.addEventListener('click',this.setActive.bind(this));
         hideElement(this.ui.timer);
         this.setupAccordeons()
+        this.setupStopBtn()
         //blokuje checkboxy
         this.ui.checkBoxList?.forEach(cb => {
             cb.disabled = true;
@@ -320,8 +322,12 @@ export class NodeElement {
         
         startTimer() {
             if(this.timerInterval) return;
-            this.nodeData.isRuning = true;
+            this.nodeData.isRunning = true;
             this.setupPause()
+
+            this.ui.checkBoxList?.forEach(cb => {
+            cb.disabled = false;
+        });
             const updatedData = {
                 wasActive: true,
                 isRunning: true,
@@ -363,7 +369,10 @@ export class NodeElement {
             if(this.timerInterval) {
             console.log('zatrzymano licznik');
             this.setupContinue()
-            
+
+            this.ui.checkBoxList?.forEach(cb => {
+            cb.disabled = true;
+        });
             clearInterval(this.timerInterval);
             this.timerInterval = null;
             console.log('pauza:', this.timerInterval);
@@ -458,6 +467,8 @@ export class NodeElement {
             this.pauseTimer();
             showElement(continueBtn);
             hideElement(pauseBtn);
+           
+        
             
         });
     }  
@@ -471,6 +482,7 @@ export class NodeElement {
             this.startTimer();
             showElement(pauseBtn);
             hideElement(continueBtn);
+            
         });
     } 
     togglePauseAndContinue(){
@@ -478,8 +490,23 @@ export class NodeElement {
         const continueBtn = this.ui.continueBtn;
         if(pauseBtn?.classList.contains('hidden')) {
             this.setupContinue();
+            this.ui.checkBoxList?.forEach(cb => {
+            cb.disabled = true;
+        });
+            
+        
         }
 
+    }
+    setupStopBtn(){
+        if(!this.stopListenerBound) {
+            this.ui.stopBtn?.addEventListener('click',this.handleCompleteNode.bind(this))
+            this.stopListenerBound = true;
+        }
+    }
+    handleCompleteNode(){
+        console.log('ukonczono node:', this.nodeData);
+        
     }
 
             
