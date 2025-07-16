@@ -17,7 +17,7 @@ export class TodoApp{
         this.firestoreService = new FirestoreService(this.user.uid);
         this.carusel.setCaruselToMiddle();
         this.initCarusel()
-        
+        this.nodesByRoadmap = {}
         this.activeRoadmapId = null
         this.activeRoadmapInstance = null;
         this.plumbManagers = {};
@@ -183,7 +183,14 @@ export class TodoApp{
 
             sortedNodeList.forEach((nodeData,index ) => {
             // kazdy node jest osobną  instacja NodeElement
-            const node = new NodeElement(nodeData,this.plumbManagers[roadmapID], this.firestoreService)
+            const node = new NodeElement(
+                nodeData,
+                this.plumbManagers[roadmapID],
+                this.firestoreService,
+                {
+                    onDelete:this.handleNodeDeleted.bind(this)
+                }
+            )
             
                 // renderuje i dodaje do tablicy
             node.render();
@@ -209,11 +216,53 @@ export class TodoApp{
                 activeNode.setActive();
                 activeNode.drawConnectionLines();
             }
-        
+            this.nodesByRoadmap[roadmapID] = nodes;
+
     } catch (err) {
         console.error('błąd przy wczytywaniu roadmapy:', err);
     }
-} 
+}
+
+    handleNodeDeleted(deletedNode){
+        const roadmap = deletedNode.nodeData.roadmapID;
+        const nodeList = this.nodesByRoadmap[roadmap];
+        const index = nodeList.findIndex(n =>n.nodeData.id === deletedNode.nodeData.id);
+        nodeList.splice(index,1);
+        nodeList.forEach( node => {
+            if(node.nodeData.order > deletedNode.nodeData.order) {
+                node.nodeData.order--;
+           
+                this.firestoreService.updateElements(
+                    node.nodeData.roadmapID,
+                     'roadmaps',
+                    'nodes',
+                    node.nodeData.id,
+                    { order: node.nodeData.order }
+                    );
+                }
+            });
+            const nextNode = nodeList.find(n => n.nodeData.order === 0);
+            const ul = document.getElementById(this.activeRoadmapId)
+            
+                if(!ul) {
+                    console.warn('nie znaleziono ul o id:',this.activeRoadmapId);
+                return;
+                }
+                if(this.plumbManagers?.[this.activeRoadmapId]) {
+                    this.plumbManagers[this.activeRoadmapId].destroy();
+                    delete this.plumbManagers[this.activeRoadmapId];
+                }
+                if(nextNode) {
+                 nextNode.enableNode();
+                }
+            }
+
+            
+
+
+            
+
+        
                     
 
     

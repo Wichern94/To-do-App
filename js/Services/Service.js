@@ -205,12 +205,18 @@ export class FirestoreService {
 
             if(snapshot.exists() === true) {
                 console.log('dane z snapshota:',snapshot.data());
+
+                if(typeof callbacks.onUpdate === 'function') {
                 callbacks.onUpdate(snapshot.data());
+                    }
                 } 
             if(snapshot.exists() === false) {
                 console.log('brakdanych z snapshota,uruchomiono ondelete');
-                callbacks.onDelete()
-                }
+
+                if(typeof callbacks.onDelete === 'function') {
+                callbacks.onDelete();
+                    }
+                    }
             },
             (onError)=> {
                 console.error('Błąd podczas nasluchu Elementu!',onError);
@@ -222,6 +228,7 @@ export class FirestoreService {
              console.error('bład try/catch podczas nasłuchu!',err)
         }
     }
+    
     async moveElementToFinished(dataObj, refObj){
         try{
             const newId = await this.addCollectionElement(

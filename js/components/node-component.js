@@ -1,7 +1,7 @@
 import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 
 export class NodeElement {
-    constructor(fullNodeData,plumbManager,firestoreService ) {
+    constructor(fullNodeData,plumbManager,firestoreService,options = {} ) {
         this.nodeData = fullNodeData;
         this.plumbManager = plumbManager,
         this.firestoreService = firestoreService;
@@ -18,6 +18,9 @@ export class NodeElement {
         this.nodeData.checkedSubtasks = this.nodeData.checkedSubtasks || [];
         this.nodeData.subtasksDone = this.nodeData.subtasksDone || false;
         this.stopListenerBound = this.stopListenerBound || false;
+        this.nodeData.nodeCompleted =  this.nodeData.nodeCompleted || false;
+        this.timerStopped = false;
+        this.options = options;
        
         
         
@@ -256,12 +259,33 @@ export class NodeElement {
             if(this.nodeData.checkedSubtasks.length === this.ui.checkBoxList.length) {
                 this.nodeData.subtasksDone = true;
                 showElement(this.ui.stopBtn);
-                
+
+                 this.ui.checkBoxList?.forEach(cb => {
+                cb.disabled = true;
+                });
+
+                const buttons = [this.ui.startBtn, this.ui.pauseBtn,this.ui.continueBtn];
+                buttons.forEach(btn => {
+                    btn.disabled =true;
+                    btn.classList.add('hidden');
+                });
             } else {
-                
                 this.nodeData.subtasksDone = false;
                 hideElement(this.ui.stopBtn);
-            }
+
+                this.ui.checkBoxList?.forEach(cb => {
+                cb.disabled = false;
+                });
+                
+                if(this.isRunning) {
+                    showElement(this.ui.pauseBtn);
+                    hideElement(this.ui.continueBtn);
+                
+                } else {
+                    showElement(this.ui.continueBtn);
+                    hideElement(this.ui.pauseBtn);
+                }
+            } 
         }
                 
             
@@ -396,7 +420,31 @@ export class NodeElement {
             
         }
         stopTimer() {
+            if(this.timerStopped) return
+            
+            this.nodeData.completedAt = Date.now();
             clearInterval(this.timerInterval);
+            this.timerInterval = null ;
+
+            this.isRunning = false;
+            this.nodeData.nodeCompleted = true;
+            
+            const updatedData = {
+               isRunning: false,
+               nodeCompleted: this.nodeData.nodeCompleted,
+               timerSeconds: this.timerSeconds,
+               completedAt: this.nodeData.completedAt,
+           };
+
+            this.firestoreService.updateElements(
+                this.nodeData.roadmapID,
+                'roadmaps',
+                'nodes',
+                this.nodeData.id,
+                updatedData
+            );
+            this.timerStopped = true;
+           
         }
         updateTimerDisplay(){
              this.ui.timer.textContent = this.formatTime(this.timerSeconds);
@@ -413,9 +461,10 @@ export class NodeElement {
                 this.nodeData.id,
                 {
                     onUpdate: this.handleRealTimeUpdate.bind(this),
-                    // onDelete: this.handleRealTimeDelete.bind(this),
+                    onDelete: this.handleRealTimeDelete.bind(this),
                 }
             );
+
             this.isListening = true;
         }
         handleRealTimeUpdate(data) {
@@ -459,6 +508,20 @@ export class NodeElement {
                 this.updateProgress();
             }
             
+        }
+
+        handleRealTimeDelete() {
+            console.log('[REALTIME] Node został usunięty z Firestore');
+
+            if(this.unsubRealTime) {
+                console.log('Odpinam nasłuch realtime');
+                this.unsubRealTime();
+            } 
+            this.ui.nodeElement.remove();
+            if(this.options?.onDelete) {
+                this.options.onDelete(this);
+            }
+
         }
     setupPause(){
         const continueBtn = this.ui.continueBtn;
@@ -505,9 +568,40 @@ export class NodeElement {
         }
     }
     handleCompleteNode(){
-        console.log('ukonczono node:', this.nodeData);
         
+        this.stopTimer();
+
+        this.ui.checkBoxList?.forEach(cb => {
+            cb.disabled = true;
+        });
+
+        const buttons = [this.ui.startBtn, this.ui.pauseBtn,this.ui.continueBtn];
+        buttons.forEach(btn => {
+            btn.disabled =true
+        });
+        console.log('ukonczono node:', this.nodeData);
+
+
+        const finishedData = {
+            id: this.nodeData.id,
+            title: this.nodeData.title,
+            roadmapID: this.nodeData.roadmapID,
+            createdAt: this.nodeData.createdAt,
+            completedAt: this.nodeData.completedAt,
+            timerSeconds: this.nodeData.timerSeconds,
+            checkedSubtasks: this.nodeData.checkedSubtasks,
+            order: this.nodeData.order
+        };
+       const refObj = {
+        collection: 'roadmaps',
+        subCollection: 'nodes',
+       }
+       this.firestoreService.moveElementToFinished(finishedData,refObj);
+       
     }
+        
+
+        
 
             
 
