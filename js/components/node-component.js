@@ -23,6 +23,7 @@ export class NodeElement {
         this.nodeData.nodeCompleted =  this.nodeData.nodeCompleted || false;
         this.timerStopped = false;
         this.options = options;
+        
        
         
         
@@ -165,6 +166,10 @@ export class NodeElement {
         
         this.ui.root?.classList.remove('disabled-node');
         showElement(this.ui.startBtn);
+
+        
+        
+        
         this.ui.startBtn?.addEventListener('click',this.setActive.bind(this));
 
         if(this.nodeData.wasActive && this.nodeData.timerSeconds > 0) {
@@ -198,7 +203,7 @@ export class NodeElement {
     //metoda Aktywacji Roadmapy
     setActive() {
          if (this.isActive)  return;
-         
+         this.animationManager?.buttonOneAnimation(this.ui.startBtn);
            
          
         this.isActive = true;
@@ -237,6 +242,24 @@ export class NodeElement {
          const accBtn = this.ui.accordionBtn;
          accBtn?.addEventListener('click',() => {
              const subTaskCont = this.ui.subtaskList;
+             const isVisible = subTaskCont.classList.contains('hidden');
+
+             accBtn?.classList.add('animate__animated');
+             if(isVisible) {
+                accBtn.classList.remove('animate__rotateIn');
+                accBtn.classList.add('animate__rotateOut');
+
+                accBtn.addEventListener('animationend', function handleOut() {
+                    
+                    accBtn.classList.remove('animate__rotateOut');
+                    accBtn.removeEventListener('animationend',handleOut);
+                });
+             } else{
+                
+                accBtn.classList.remove('animate__rotateOut');
+                accBtn.classList.add('animate__rotateIn');
+             }
+            
              toggleElement(subTaskCont);
              this.plumbManager.jsPlumbInstance.repaintEverything();
             });
@@ -540,7 +563,9 @@ export class NodeElement {
     setupPause(){
         const continueBtn = this.ui.continueBtn;
         const pauseBtn = this.ui.pauseBtn;
+        
         pauseBtn?.addEventListener('click', () => {
+            this.animationManager.buttonOneAnimation(pauseBtn);
             this.pauseTimer();
             showElement(continueBtn);
             hideElement(pauseBtn);
@@ -548,17 +573,27 @@ export class NodeElement {
         
             
         });
-    }  
+    }
+   
+        
+
+
+
+        
+
+
+
 
        
 
     setupContinue(){
-        const roadmapID = document.getElementById(this.nodeData.roadmapID);
+        
         const pauseBtn = this.ui.pauseBtn;
         const continueBtn = this.ui.continueBtn;
+       
         continueBtn?.addEventListener('click', () => {
+            this.animationManager.buttonOneAnimation(continueBtn);
             this.startTimer();
-            this.animationManager.launchConfetti(roadmapID);
             showElement(pauseBtn);
             hideElement(continueBtn);
             
@@ -568,6 +603,7 @@ export class NodeElement {
         const pauseBtn = this.ui.pauseBtn;
         const continueBtn = this.ui.continueBtn;
         if(pauseBtn?.classList.contains('hidden')) {
+            this.animationManager.buttonOneAnimation(continueBtn);
             this.setupContinue();
             this.ui.checkBoxList?.forEach(cb => {
             cb.disabled = true;
@@ -579,15 +615,29 @@ export class NodeElement {
     }
     setupStopBtn(){
         if(!this.stopListenerBound) {
-            this.ui.stopBtn?.addEventListener('click',this.handleCompleteNode.bind(this))
+            this.ui.stopBtn?.addEventListener('click',this.handleCompleteNode.bind(this));
             this.stopListenerBound = true;
         }
     }
     handleCompleteNode(){
-        
+        this.animationManager?.buttonOneAnimation(this.ui.stopBtn);
         this.stopTimer();
+           
+            const container = document.getElementById('view-standard');
 
-        this.ui.checkBoxList?.forEach(cb => {
+            const rect = this.ui.stopBtn.getBoundingClientRect();
+            const contRect = container.getBoundingClientRect();
+
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const relX =(centerX - contRect.left) / contRect.width;
+            const relY =(centerY - contRect.top) / contRect.height;
+
+            console.log('dane z recta:',relX,relY);
+            this.animationManager.launchConfetti(container, relX,relY );
+
+            this.ui.checkBoxList?.forEach(cb => {
             cb.disabled = true;
         });
 
