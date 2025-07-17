@@ -223,39 +223,32 @@ export class TodoApp{
     }
 }
 
-    handleNodeDeleted(deletedNode){
+    async handleNodeDeleted(deletedNode){
         const roadmap = deletedNode.nodeData.roadmapID;
         const nodeList = this.nodesByRoadmap[roadmap];
+
         const index = nodeList.findIndex(n =>n.nodeData.id === deletedNode.nodeData.id);
+        if(index === -1)return;
+
         nodeList.splice(index,1);
-        nodeList.forEach( node => {
+
+        for(const node of nodeList) {
             if(node.nodeData.order > deletedNode.nodeData.order) {
                 node.nodeData.order--;
            
-                this.firestoreService.updateElements(
+               await this.firestoreService.updateElements(
                     node.nodeData.roadmapID,
-                     'roadmaps',
+                    'roadmaps',
                     'nodes',
                     node.nodeData.id,
                     { order: node.nodeData.order }
-                    );
-                }
-            });
-            const nextNode = nodeList.find(n => n.nodeData.order === 0);
-            const ul = document.getElementById(this.activeRoadmapId)
-            
-                if(!ul) {
-                    console.warn('nie znaleziono ul o id:',this.activeRoadmapId);
-                return;
-                }
-                if(this.plumbManagers?.[this.activeRoadmapId]) {
-                    this.plumbManagers[this.activeRoadmapId].destroy();
-                    delete this.plumbManagers[this.activeRoadmapId];
-                }
-                if(nextNode) {
-                 nextNode.enableNode();
-                }
+
+                );
             }
+        }
+           await this.renderNodesForRoadmap(this.activeRoadmapId);
+    } 
+            
 
             
 

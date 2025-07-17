@@ -229,12 +229,12 @@ export class FirestoreService {
         }
     }
     
-    async moveElementToFinished(dataObj, refObj){
+    async moveElementToFinished(dataObj, refObj,copyRefObj){
         try{
             const newId = await this.addCollectionElement(
                 dataObj,
-                refObj.collection,
-                refObj.subCollection
+                copyRefObj.collection,
+                copyRefObj.subCollection
             );
 
             if(!newId) {

@@ -164,6 +164,15 @@ export class NodeElement {
         this.ui.root?.classList.remove('disabled-node');
         showElement(this.ui.startBtn);
         this.ui.startBtn?.addEventListener('click',this.setActive.bind(this));
+
+        if(this.nodeData.wasActive && this.nodeData.timerSeconds > 0) {
+            this.timerSeconds = this.nodeData.timerSeconds;
+            this.ui.timer.textContent = this.formatTime(this.timerSeconds);
+
+            showElement(this.ui.timer);
+        } else {
+            hideElement(this.ui.timer);
+        }
         hideElement(this.ui.timer);
         this.setupAccordeons()
         this.setupStopBtn()
@@ -277,7 +286,7 @@ export class NodeElement {
                 cb.disabled = false;
                 });
                 
-                if(this.isRunning) {
+                if(this.nodeData.isRunning) {
                     showElement(this.ui.pauseBtn);
                     hideElement(this.ui.continueBtn);
                 
@@ -298,6 +307,7 @@ export class NodeElement {
             // obliczenia dotyczace checkboxów
             if(checkBoxLenght === 0) {
                 hideElement(this.ui.progressBarCont); // upewniam sie ze nie pokazuje progressbaru jesli nie ma subtaskow
+                showElement(this.ui.stopBtn);
                 return
             }
     
@@ -472,8 +482,10 @@ export class NodeElement {
             console.log('[REALTIME] Zmiana node:', data);
 
             if(typeof data.timerSeconds === 'number') {
+                if(data.timerSeconds > this.timerSeconds) {
                 this.timerSeconds = data.timerSeconds ;
                 this.updateTimerDisplay();
+                }
             }
             //uruchamiam licznik w zaleznosci od flagi
             if(typeof data.isRunning ==='boolean') {
@@ -517,7 +529,7 @@ export class NodeElement {
                 console.log('Odpinam nasłuch realtime');
                 this.unsubRealTime();
             } 
-            this.ui.nodeElement.remove();
+            this.ui.root.remove();
             if(this.options?.onDelete) {
                 this.options.onDelete(this);
             }
@@ -595,8 +607,13 @@ export class NodeElement {
        const refObj = {
         collection: 'roadmaps',
         subCollection: 'nodes',
-       }
-       this.firestoreService.moveElementToFinished(finishedData,refObj);
+    }
+        const copyRefObj ={
+        collection: 'Finished_Roadmaps',
+        subCollection: 'Finished_Nodes',
+        }
+        
+       this.firestoreService.moveElementToFinished(finishedData,refObj,copyRefObj);
        
     }
         
