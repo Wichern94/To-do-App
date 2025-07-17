@@ -1,10 +1,12 @@
 import { showElement,hideElement,toggleElement } from "../utils/helper.js";
+import {AnimationManager} from "../Services/animation-manager.js"
 
 export class NodeElement {
     constructor(fullNodeData,plumbManager,firestoreService,options = {} ) {
         this.nodeData = fullNodeData;
         this.plumbManager = plumbManager,
         this.firestoreService = firestoreService;
+        this.animationManager = new AnimationManager();
         this.ui = {};
         this.isActive = false;
         this.isAccordionReady = false;
@@ -551,10 +553,12 @@ export class NodeElement {
        
 
     setupContinue(){
+        const roadmapID = document.getElementById(this.nodeData.roadmapID);
         const pauseBtn = this.ui.pauseBtn;
         const continueBtn = this.ui.continueBtn;
         continueBtn?.addEventListener('click', () => {
             this.startTimer();
+            this.animationManager.launchConfetti(roadmapID);
             showElement(pauseBtn);
             hideElement(continueBtn);
             

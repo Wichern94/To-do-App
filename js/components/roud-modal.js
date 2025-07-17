@@ -1,4 +1,5 @@
 import { FormErrors } from '../uiErrorHandler.js';
+import {AnimationManager} from "../Services/animation-manager.js"
 export class RoudMapModal {
     constructor({
         openBtnID,
@@ -38,9 +39,11 @@ export class RoudMapModal {
         this.manualFormErr = new FormErrors('manual-node-form');
         this.importFormErr = new FormErrors('import-node-form');
         this.subTaskValues = [];
+        this.animationManager = new AnimationManager();
         this.activeRoadmapId = null;
         this.onOpen = onOpen;
         this.onManualSubmit= onManualSubmit;
+        this.activeAnimations()
         // musze z bindowac metody zeby dało sie odpinac listenery,
         // gdybym nie zbindował to by metody wskazywały na element dom anie klase.
         this.listeners = [
@@ -68,6 +71,16 @@ export class RoudMapModal {
                 this.elements[el]?.removeEventListener(event, handler)
             })
         };
+        activeAnimations(){
+            const addBtn = this.elements.openBtn;
+            if (addBtn) {
+                this.animationManager?.bounceBtn(addBtn);
+            } else {
+                console.log('brak przycisku do animacji w dom!')
+            }
+        
+        
+        }
     
         
         showAddModal() {
