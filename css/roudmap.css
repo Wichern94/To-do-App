@@ -61,7 +61,7 @@
   background: var(--color-bg-soft);
   border: 0.5px solid var(--glass-border); 
   overflow:visible;
-  min-width: 14rem;
+  width: 14rem;
   will-change: height;
   position: relative;
   display: flex;
@@ -206,6 +206,7 @@
 .subtask-list{
   display:flex;
   flex-wrap: wrap;
+  overflow: hidden;
   
 }
 .subtask-item{

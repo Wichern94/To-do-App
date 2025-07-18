@@ -1,6 +1,6 @@
 export class AnimationManager{
-    constructor() {
-        
+    constructor(plumbManager) {
+        this.plumbManager = plumbManager;
     }
 
     launchConfetti(container,originX,originY){
@@ -77,32 +77,63 @@ export class AnimationManager{
     toggleAccordeon(btn,contentBox, li){
             if(!btn || !contentBox ||!li) {
                 console.log('brakdanych do akordeonu');
-                
                 return ;
             }
+            const wasHidden = contentBox.classList.contains('hidden');
             const defaultLiHeight = li.offsetHeight;
-            contentBox.classList.toggle('hidden');
+            
+            if(wasHidden){
+               contentBox.classList.remove('hidden');
+               this.plumbManager.jsPlumbInstance.repaintEverything() 
+           
+               requestAnimationFrame(() => {
+                   const liEndHeight = li.scrollHeight;
+                   li.style.height =`${defaultLiHeight}px`;
+            
+            
+                requestAnimationFrame(() => {
+                    li.style.transition = 'height .3s ease'
+                    li.style.height = `${liEndHeight}px`
                 
-            requestAnimationFrame(() => {
-                const liEndHeight = li.scrollHeight;
-                li.style.height =`${defaultLiHeight}px`;
 
+                    const cleanHeight = ()=>{
+                        li.style.height = '';
+                        li.style.transition = '';
+                        li.removeEventListener('transitionend', cleanHeight);
+                    };
 
-            requestAnimationFrame(() => {
-                li.style.transition = 'height .3s ease'
-                li.style.height = `${liEndHeight}px`
+                    li.addEventListener('transitionend', cleanHeight);
+                });
+            });
 
+        } else{
+            const liEndHeight = li.scrollHeight
+            li.style.height = `${liEndHeight}px`;
+
+                requestAnimationFrame(() => {
+                    li.style.transition = 'height .3s ease';
+                    
+                    li.style.height = `${li.offsetHeight - contentBox.scrollHeight}px`;
+                    setTimeout(() => {
+                     
+                    this.plumbManager?.jsPlumbInstance?.revalidate(li);
+                    this.plumbManager.jsPlumbInstance.repaintEverything()
+                    }, 210);
+                    
+                    const cleanHeight = () => {
+                        
+                        contentBox.classList.add('hidden');
+                        
+                        li.style.height = '';
+                        li.style.transition = '';
                        
-                const cleanHeight = ()=>{
-                    li.style.height = '';
-                    li.style.transition = '';
-                    li.removeEventListener('transitionend', cleanHeight);
-                };
+                        li.removeEventListener('transitionend', cleanHeight);
+                    };
+                    li.addEventListener('transitionend', cleanHeight);
+                });
+        }      
+                       
                    
-                li.addEventListener('transitionend', cleanHeight);
-              });
-        });
-                
                     
                      
                  

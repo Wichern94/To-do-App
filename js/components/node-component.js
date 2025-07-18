@@ -6,7 +6,7 @@ export class NodeElement {
         this.nodeData = fullNodeData;
         this.plumbManager = plumbManager,
         this.firestoreService = firestoreService;
-        this.animationManager = new AnimationManager();
+        this.animationManager = new AnimationManager(this.plumbManager);
         this.ui = {};
         this.isActive = false;
         this.isAccordionReady = false;
