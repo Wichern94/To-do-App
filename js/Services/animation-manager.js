@@ -74,6 +74,67 @@ export class AnimationManager{
 
         element.addEventListener('animationend',handleAnimationEnd);
     }
+    toggleAccordeon(btn,contentBox, li){
+            if(!btn || !contentBox ||!li) {
+                console.log('brakdanych do akordeonu');
+                
+                return ;
+            }
+            const defaultLiHeight = li.offsetHeight;
+            contentBox.classList.toggle('hidden');
+                
+            requestAnimationFrame(() => {
+                const liEndHeight = li.scrollHeight;
+                li.style.height =`${defaultLiHeight}px`;
+
+
+            requestAnimationFrame(() => {
+                li.style.transition = 'height .3s ease'
+                li.style.height = `${liEndHeight}px`
+
+                       
+                const cleanHeight = ()=>{
+                    li.style.height = '';
+                    li.style.transition = '';
+                    li.removeEventListener('transitionend', cleanHeight);
+                };
+                   
+                li.addEventListener('transitionend', cleanHeight);
+              });
+        });
+                
+                    
+                     
+                 
+                
+                void btn.offsetWidth;
+                void contentBox.offsetWidth;
+
+                btn?.classList.add('animate__animated','animate__flip');
+                contentBox?.classList.add('animate__animated','animate__pulse');
+
+                const cleanClasses = () => {
+                    
+                    btn.classList.remove('animate__flip','animate__animated');
+                    contentBox.classList.remove('animate__pulse','animate__animated');
+                    btn.removeEventListener('animationend',cleanClasses);
+                };
+               
+                btn.addEventListener('animationend', cleanClasses);
+                
+            }
+                
+
+                    
+                    
+
+              
+                    
+
+
+
+                
+            
 
 
 

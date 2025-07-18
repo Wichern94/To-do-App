@@ -59,23 +59,24 @@
 }
 .roadmap-node {
   background: var(--color-bg-soft);
-   border: 0.5px solid var(--glass-border); 
+  border: 0.5px solid var(--glass-border); 
   overflow:visible;
   min-width: 14rem;
-  min-height: 2rem;
+  will-change: height;
   position: relative;
   display: flex;
   justify-content: space-around; 
   
   flex-direction: column;
   position: relative;
-  
   scroll-snap-align: start;
   border-radius: 8px;
+}
+
+  
   
   
  
-}
 @property --angle{
   syntax: "<angle>";
   initial-value: 0deg;

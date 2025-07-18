@@ -165,6 +165,8 @@ export class NodeElement {
     enableNode() {
         
         this.ui.root?.classList.remove('disabled-node');
+        this.ui.root?.classList.add('expand');
+
         showElement(this.ui.startBtn);
 
         
@@ -240,27 +242,11 @@ export class NodeElement {
     setupAccordeons() {
         if (this.isAccordionReady) return;   //flaga zeby akordeon nie właczał sie kilka razy
          const accBtn = this.ui.accordionBtn;
+         const nodeLI = document.querySelector('.expand')
          accBtn?.addEventListener('click',() => {
              const subTaskCont = this.ui.subtaskList;
-             const isVisible = subTaskCont.classList.contains('hidden');
-
-             accBtn?.classList.add('animate__animated');
-             if(isVisible) {
-                accBtn.classList.remove('animate__rotateIn');
-                accBtn.classList.add('animate__rotateOut');
-
-                accBtn.addEventListener('animationend', function handleOut() {
-                    
-                    accBtn.classList.remove('animate__rotateOut');
-                    accBtn.removeEventListener('animationend',handleOut);
-                });
-             } else{
-                
-                accBtn.classList.remove('animate__rotateOut');
-                accBtn.classList.add('animate__rotateIn');
-             }
-            
-             toggleElement(subTaskCont);
+             this.animationManager.toggleAccordeon(accBtn, subTaskCont, nodeLI);
+            //   toggleElement(subTaskCont);
              this.plumbManager.jsPlumbInstance.repaintEverything();
             });
             this.isAccordionReady = true; 
