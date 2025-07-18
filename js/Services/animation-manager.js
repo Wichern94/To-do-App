@@ -114,12 +114,17 @@ export class AnimationManager{
                     li.style.transition = 'height .3s ease';
                     
                     li.style.height = `${li.offsetHeight - contentBox.scrollHeight}px`;
+                   
+                    const interval = setInterval(() => {
+                        this.plumbManager?.jsPlumbInstance?.revalidate(li);
+                        this.plumbManager?.jsPlumbInstance?.repaintEverything();
+                    }, 10); // co 50ms przez 300ms
+
                     setTimeout(() => {
-                     
-                    this.plumbManager?.jsPlumbInstance?.revalidate(li);
-                    this.plumbManager.jsPlumbInstance.repaintEverything()
-                    }, 210);
+                        clearInterval(interval);
+                    }, 300); // zatrzymaj po 300ms
                     
+                                        
                     const cleanHeight = () => {
                         
                         contentBox.classList.add('hidden');
