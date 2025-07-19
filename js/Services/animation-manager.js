@@ -57,22 +57,22 @@ export class AnimationManager{
         });
 
     }
-    buttonOneAnimation(element){
+    buttonOneAnimation(element, animation){
         if(!element) return;
 
-        element.classList.remove('animate__rubberBand'); // reset
-       
+        requestAnimationFrame(()=>{
+            element.classList.remove(`animate__${animation}`); // reset
 
-        //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
-        void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
-        element.classList.add('animate__animated', 'animate__rubberBand');
+            //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
+            void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
+            element.classList.add('animate__animated', `animate__${animation}`);
 
-        const handleAnimationEnd = () => {
-            element.classList.remove('animate__animated','animate__rubberBand');
-            element.removeEventListener('animationend',handleAnimationEnd);
-        };
-
-        element.addEventListener('animationend',handleAnimationEnd);
+            const handleAnimationEnd = () => {
+                element.classList.remove('animate__animated',`animate__${animation}`);
+                element.removeEventListener('animationend',handleAnimationEnd);
+            };
+            element.addEventListener('animationend',handleAnimationEnd);
+        });
     }
     toggleAccordeon(btn,contentBox, li){
             if(!btn || !contentBox ||!li) {
@@ -109,56 +109,56 @@ export class AnimationManager{
         } else{
             const liEndHeight = li.scrollHeight
             li.style.height = `${liEndHeight}px`;
+            
+            requestAnimationFrame(() => {
+                li.style.transition = 'height .3s ease';
+                li.style.height = `${li.offsetHeight - contentBox.scrollHeight}px`;
+                
+                const interval = setInterval(() => {
+                    this.plumbManager?.jsPlumbInstance?.revalidate(li);
+                    this.plumbManager?.jsPlumbInstance?.repaintEverything();
+                }, 10); // co 10ms przez 300ms
+               
+                setTimeout(() => {
+                    clearInterval(interval);
+                }, 300); // zatrzymaj po 300ms
+                
 
-                requestAnimationFrame(() => {
-                    li.style.transition = 'height .3s ease';
+                                    
+                const cleanHeight = () => {
+                    contentBox.classList.add('hidden');
                     
-                    li.style.height = `${li.offsetHeight - contentBox.scrollHeight}px`;
-                   
-                    const interval = setInterval(() => {
-                        this.plumbManager?.jsPlumbInstance?.revalidate(li);
-                        this.plumbManager?.jsPlumbInstance?.repaintEverything();
-                    }, 10); // co 50ms przez 300ms
-
-                    setTimeout(() => {
-                        clearInterval(interval);
-                    }, 300); // zatrzymaj po 300ms
-                    
-                                        
-                    const cleanHeight = () => {
-                        
-                        contentBox.classList.add('hidden');
-                        
-                        li.style.height = '';
-                        li.style.transition = '';
-                       
-                        li.removeEventListener('transitionend', cleanHeight);
-                    };
-                    li.addEventListener('transitionend', cleanHeight);
-                });
+                    li.style.height = '';
+                    li.style.transition = '';
+                    li.removeEventListener('transitionend', cleanHeight);
+                };
+                li.addEventListener('transitionend', cleanHeight);
+            });
         }      
+        
+        void btn.offsetWidth;
+        void contentBox.offsetWidth;
+
+        btn?.classList.add('animate__animated','animate__flip');
+        contentBox?.classList.add('animate__animated','animate__tada');
+
+        const cleanClasses = () => {
+            
+            btn.classList.remove('animate__flip','animate__animated');
+            contentBox.classList.remove('animate__tada','animate__animated');
+            btn.removeEventListener('animationend',cleanClasses);
+        };
+        btn.addEventListener('animationend', cleanClasses);
+    }
+       
+        
+                    
                        
                    
                     
                      
                  
                 
-                void btn.offsetWidth;
-                void contentBox.offsetWidth;
-
-                btn?.classList.add('animate__animated','animate__flip');
-                contentBox?.classList.add('animate__animated','animate__pulse');
-
-                const cleanClasses = () => {
-                    
-                    btn.classList.remove('animate__flip','animate__animated');
-                    contentBox.classList.remove('animate__pulse','animate__animated');
-                    btn.removeEventListener('animationend',cleanClasses);
-                };
-               
-                btn.addEventListener('animationend', cleanClasses);
-                
-            }
                 
 
                     

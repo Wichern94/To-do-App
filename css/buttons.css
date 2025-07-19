@@ -227,7 +227,10 @@
     font-weight: 600;
 }
 .roud-btns{
-    min-width: 4.5rem;;
+    min-width: 4.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
 }
 
 .play-btn{

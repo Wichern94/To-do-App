@@ -168,9 +168,9 @@ export class NodeElement {
         this.ui.root?.classList.add('expand');
 
         showElement(this.ui.startBtn);
-
+        this.animationManager?.buttonOneAnimation(this.ui.startBtn,'rubberBand');
         
-        
+        this.plumbConnectionsTest() 
         
         this.ui.startBtn?.addEventListener('click',this.setActive.bind(this));
 
@@ -205,7 +205,7 @@ export class NodeElement {
     //metoda Aktywacji Roadmapy
     setActive() {
          if (this.isActive)  return;
-         this.animationManager?.buttonOneAnimation(this.ui.startBtn);
+         
            
          
         this.isActive = true;
@@ -279,7 +279,7 @@ export class NodeElement {
             if(this.nodeData.checkedSubtasks.length === this.ui.checkBoxList.length) {
                 this.nodeData.subtasksDone = true;
                 showElement(this.ui.stopBtn);
-
+                this.animationManager.buttonOneAnimation(this.ui.stopBtn, 'rubberBand');
                  this.ui.checkBoxList?.forEach(cb => {
                 cb.disabled = true;
                 });
@@ -551,9 +551,10 @@ export class NodeElement {
         const pauseBtn = this.ui.pauseBtn;
         
         pauseBtn?.addEventListener('click', () => {
-            this.animationManager.buttonOneAnimation(pauseBtn);
+            
             this.pauseTimer();
             showElement(continueBtn);
+            this.animationManager.buttonOneAnimation(continueBtn,'rubberBand');
             hideElement(pauseBtn);
            
         
@@ -578,9 +579,10 @@ export class NodeElement {
         const continueBtn = this.ui.continueBtn;
        
         continueBtn?.addEventListener('click', () => {
-            this.animationManager.buttonOneAnimation(continueBtn);
+            
             this.startTimer();
             showElement(pauseBtn);
+            this.animationManager.buttonOneAnimation(pauseBtn,'rubberBand');
             hideElement(continueBtn);
             
         });
@@ -589,7 +591,7 @@ export class NodeElement {
         const pauseBtn = this.ui.pauseBtn;
         const continueBtn = this.ui.continueBtn;
         if(pauseBtn?.classList.contains('hidden')) {
-            this.animationManager.buttonOneAnimation(continueBtn);
+            
             this.setupContinue();
             this.ui.checkBoxList?.forEach(cb => {
             cb.disabled = true;
@@ -606,7 +608,7 @@ export class NodeElement {
         }
     }
     handleCompleteNode(){
-        this.animationManager?.buttonOneAnimation(this.ui.stopBtn);
+        
         this.stopTimer();
            
             const container = document.getElementById('view-standard');
@@ -659,7 +661,40 @@ export class NodeElement {
         
 
         
+    plumbConnectionsTest(){
+        
+         
+        this.ui.root.addEventListener('click',()=>{
+            const connections = this.plumbManager.jsPlumbInstance.getConnections();
+            console.log('połączenia to:',connections);
 
+            const connection = connections[0];
+           
+             
+            const path = connection.canvas.querySelector('path');
+            console.log('path to:', path.getTotalLength());
+            const length = path.getTotalLength()
+            const clonedPath = path.cloneNode();
+            clonedPath.style.stroke ='#9AEFFF';
+            clonedPath.style.strokeDasharray = `20 ${length -20 } `;
+            clonedPath.style.strokeDashoffset = `${length}`;
+            
+            clonedPath.style.strokeWidth = '2.5px';
+            clonedPath.style.filter = 'drop-shadow(0 0 10px #A0FFF7)';
+
+                clonedPath.animate([
+                    { strokeDashoffset: 0 },
+                    { strokeDashoffset: `-${length}` }  
+                    ], {
+                    duration: 1000,
+                    iterations: Infinity,
+                    easing: 'linear'
+                    });
+                    
+
+            path.parentNode.appendChild(clonedPath);
+        })
+    }
             
 
             
