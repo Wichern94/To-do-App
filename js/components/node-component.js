@@ -349,14 +349,16 @@ export class NodeElement {
                 return orderA - orderB;
             });
             
-            const anchorsLeftRight = ['Right', 'Left'];
+            const anchorsLeftRight = ['Right','Left' ];
             const anchorsTopBottom = ['Bottom','Top' ];
             
     
             sortedNodes.forEach((currentNode, index) => {
                 const nextNode =sortedNodes[index + 1];
                 if(!nextNode) return;
-                    const anchors = (index % 2 === 0 )? anchorsTopBottom: anchorsLeftRight; // jesli parzysta to top-bottom, jesli nie to left-right
+                    const order = Number(currentNode.dataset.order);
+
+                    const anchors = (order % 2 === 0 )? anchorsTopBottom: anchorsLeftRight; // jesli parzysta to top-bottom, jesli nie to left-right
                         
                     this.plumbManager?.connect(currentNode.id, nextNode.id,anchors)
                         
@@ -551,22 +553,7 @@ export class NodeElement {
         const pauseBtn = this.ui.pauseBtn;
         
         pauseBtn?.addEventListener('click', () => {
-            const connections = this.plumbManager.jsPlumbInstance.getConnections();
-            connections.forEach(conn => {
-            console.log('conn:', conn.sourceId, '->', conn.targetId);
-            });
-
-            const rightUl = document.getElementById(this.nodeData.roadmapID);
-            const allNodes = Array.from(rightUl.querySelectorAll('.roadmap-node'));
-            const nextNode = allNodes[1]
-            const nodeid = 'node-'+ this.nodeData.id
-            console.log('mojsource:',this.NodeElement.id,'moj target:',nextNode.id);
-
             
-             this.animationManager.plumbLineAnimation(nodeid,nextNode.id,()=>{
-                 console.log('animacja działa?');
-                
-             })
             
             this.pauseTimer();
             showElement(continueBtn);
@@ -638,6 +625,7 @@ export class NodeElement {
             btn.disabled =true;
             btn.classList.add('hidden');
         });
+        this.setAndLaunchLineAnimation()
         console.log('ukonczono node:', this.nodeData);
 
 
@@ -675,18 +663,23 @@ export class NodeElement {
         
         for (let i = 0; i < sortedNodes.length -1; i++){
             const currentNode = sortedNodes[i];
-            const nextNode = sortedNodes[i + 1];
-
+            const nextNodeDOM = sortedNodes[i + 1];
+            const allNodeInstances = this.nodesByRoadmap[this.nodeData.roadmapID];
+            const nextNode = allNodeInstances.find(node =>node.ui.root.id === nextNodeDOM.id);
+            
             if(currentNode.classList.contains('active-border')){
                 this.animationManager.plumbLineAnimation(currentNode.id,nextNode.id,()=>{
                     currentNode.classList.remove('active-border');
 
-                    this.animationManager.removeElementAnimation(currentNode,'zoomOut',()=>{
+                    this.animationManager.removeElementAnimation(currentNode,'fadeOut',()=>{
                         currentNode.classList.add('hidden');
                     });
                     this.getCompletedata();
                     this.animationManager.removeElementAnimation(nextNode,'slideInUp',()=>{
-                        nextNode.setActive();
+                        nextNode?.enableNode();
+                        nextNode?.setActive();
+                        console.log('aktywowano');
+                        
                     });
                    
                 });

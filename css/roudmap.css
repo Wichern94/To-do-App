@@ -66,7 +66,7 @@
   position: relative;
   display: flex;
   justify-content: space-around; 
-  
+  transition: transform 0.4s ease;
   flex-direction: column;
   position: relative;
   scroll-snap-align: start;

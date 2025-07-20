@@ -232,20 +232,7 @@ export class TodoApp{
 
         nodeList.splice(index,1);
 
-        for(const node of nodeList) {
-            if(node.nodeData.order > deletedNode.nodeData.order) {
-                node.nodeData.order--;
-           
-               await this.firestoreService.updateElements(
-                    node.nodeData.roadmapID,
-                    'roadmaps',
-                    'nodes',
-                    node.nodeData.id,
-                    { order: node.nodeData.order }
-
-                );
-            }
-        }
+       
            await this.renderNodesForRoadmap(this.activeRoadmapId);
     } 
             
