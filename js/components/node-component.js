@@ -170,7 +170,7 @@ export class NodeElement {
         showElement(this.ui.startBtn);
         this.animationManager?.buttonOneAnimation(this.ui.startBtn,'rubberBand');
         
-        this.plumbConnectionsTest() 
+        
         
         this.ui.startBtn?.addEventListener('click',this.setActive.bind(this));
 
@@ -551,6 +551,22 @@ export class NodeElement {
         const pauseBtn = this.ui.pauseBtn;
         
         pauseBtn?.addEventListener('click', () => {
+            const connections = this.plumbManager.jsPlumbInstance.getConnections();
+            connections.forEach(conn => {
+            console.log('conn:', conn.sourceId, '->', conn.targetId);
+            });
+
+            const rightUl = document.getElementById(this.nodeData.roadmapID);
+            const allNodes = Array.from(rightUl.querySelectorAll('.roadmap-node'));
+            const nextNode = allNodes[1]
+            const nodeid = 'node-'+ this.nodeData.id
+            console.log('mojsource:',this.NodeElement.id,'moj target:',nextNode.id);
+
+            
+             this.animationManager.plumbLineAnimation(nodeid,nextNode.id,()=>{
+                 console.log('animacja działa?');
+                
+             })
             
             this.pauseTimer();
             showElement(continueBtn);
@@ -611,31 +627,77 @@ export class NodeElement {
         
         this.stopTimer();
            
-            const container = document.getElementById('view-standard');
-
-            const rect = this.ui.stopBtn.getBoundingClientRect();
-            const contRect = container.getBoundingClientRect();
-
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            const relX =(centerX - contRect.left) / contRect.width;
-            const relY =(centerY - contRect.top) / contRect.height;
-
-            console.log('dane z recta:',relX,relY);
-            this.animationManager.launchConfetti(container, relX,relY );
-
-            this.ui.checkBoxList?.forEach(cb => {
-            cb.disabled = true;
+        this.setAndLaunchCofetti()
+            
+        this.ui.checkBoxList?.forEach(cb => {
+        cb.disabled = true;
         });
-
+            
         const buttons = [this.ui.startBtn, this.ui.pauseBtn,this.ui.continueBtn];
         buttons.forEach(btn => {
-            btn.disabled =true
+            btn.disabled =true;
+            btn.classList.add('hidden');
         });
         console.log('ukonczono node:', this.nodeData);
 
 
+
+
+        
+    }
+
+
+    setAndLaunchCofetti(){
+        const container = document.getElementById('view-standard');
+
+        const rect = this.ui.stopBtn.getBoundingClientRect();
+        const contRect = container.getBoundingClientRect();
+
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const relX =(centerX - contRect.left) / contRect.width;
+        const relY =(centerY - contRect.top) / contRect.height;
+
+        console.log('dane z recta:',relX,relY);
+        this.animationManager.launchConfetti(container, relX,relY );
+    }
+
+    setAndLaunchLineAnimation(){
+        const rightUl = document.getElementById(this.nodeData.roadmapID);
+        const allNodes = Array.from(rightUl.querySelectorAll('.roadmap-node'));
+
+        const sortedNodes = allNodes.sort((a,b) =>{
+            const orderA = Number(a.dataset.order); // Number zmienia dataset order string na liczbe
+            const orderB = Number(b.dataset.order);
+            return orderA - orderB;
+        });
+        
+        for (let i = 0; i < sortedNodes.length -1; i++){
+            const currentNode = sortedNodes[i];
+            const nextNode = sortedNodes[i + 1];
+
+            if(currentNode.classList.contains('active-border')){
+                this.animationManager.plumbLineAnimation(currentNode.id,nextNode.id,()=>{
+                    currentNode.classList.remove('active-border');
+
+                    this.animationManager.removeElementAnimation(currentNode,'zoomOut',()=>{
+                        currentNode.classList.add('hidden');
+                    });
+                    this.getCompletedata();
+                    this.animationManager.removeElementAnimation(nextNode,'slideInUp',()=>{
+                        nextNode.setActive();
+                    });
+                   
+                });
+                break;       
+            }
+        }
+
+                    
+    }   
+    
+    getCompletedata(){
         const finishedData = {
             id: this.nodeData.id,
             title: this.nodeData.title,
@@ -647,54 +709,31 @@ export class NodeElement {
             order: this.nodeData.order
         };
        const refObj = {
-        collection: 'roadmaps',
-        subCollection: 'nodes',
-    }
+            collection: 'roadmaps',
+            subCollection: 'nodes',
+        }
         const copyRefObj ={
-        collection: 'Finished_Roadmaps',
-        subCollection: 'Finished_Nodes',
+            collection: 'Finished_Roadmaps',
+            subCollection: 'Finished_Nodes',
         }
         
        this.firestoreService.moveElementToFinished(finishedData,refObj,copyRefObj);
        
+
     }
-        
 
-        
-    plumbConnectionsTest(){
-        
-         
-        this.ui.root.addEventListener('click',()=>{
-            const connections = this.plumbManager.jsPlumbInstance.getConnections();
-            console.log('połączenia to:',connections);
+                        
 
-            const connection = connections[0];
-           
-             
-            const path = connection.canvas.querySelector('path');
-            console.log('path to:', path.getTotalLength());
-            const length = path.getTotalLength()
-            const clonedPath = path.cloneNode();
-            clonedPath.style.stroke ='#9AEFFF';
-            clonedPath.style.strokeDasharray = `20 ${length -20 } `;
-            clonedPath.style.strokeDashoffset = `${length}`;
             
-            clonedPath.style.strokeWidth = '2.5px';
-            clonedPath.style.filter = 'drop-shadow(0 0 10px #A0FFF7)';
-
-                clonedPath.animate([
-                    { strokeDashoffset: 0 },
-                    { strokeDashoffset: `-${length}` }  
-                    ], {
-                    duration: 1000,
-                    iterations: Infinity,
-                    easing: 'linear'
-                    });
+            
                     
+               
+            
+         
+        
 
-            path.parentNode.appendChild(clonedPath);
-        })
-    }
+        
+   
             
 
             

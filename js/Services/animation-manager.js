@@ -150,6 +150,98 @@ export class AnimationManager{
         };
         btn.addEventListener('animationend', cleanClasses);
     }
+
+    plumbLineAnimation(sourceID,targetID, onFinish){
+        
+        const connections = this.plumbManager.jsPlumbInstance.getConnections();
+        console.log('połączenia to:',connections);
+
+        const targetConnection = connections.find(
+            conn =>
+            conn.sourceId === sourceID &&
+            conn.targetId === targetID
+            );
+
+         if(!targetConnection) {
+            console.log('nie znaleziono połączen!');
+            return;
+        }
+            this.plumbManager?.jsPlumbInstance?.repaintEverything();
+            const path = targetConnection.canvas?.querySelector('path');
+            
+            
+            const length = path.getTotalLength()
+            
+            const existing = path.parentNode.querySelector('path[data-cloned="true"]');
+            if (existing) {
+                console.log('brak existing!');
+                return;
+            }
+
+            const clonedPath = path.cloneNode();
+
+            clonedPath.dataset.cloned = "true";
+            clonedPath.style.stroke ='#9AEFFF';
+            clonedPath.style.strokeDasharray = `20 ${length -20 } `;
+            clonedPath.style.strokeDashoffset = `${length}`;
+            
+            clonedPath.style.strokeWidth = '2.5px';
+            clonedPath.style.filter = 'drop-shadow(0 0 10px #A0FFF7)';
+           
+               const animation = clonedPath.animate([
+                    { strokeDashoffset: 0 },
+                    { strokeDashoffset: `-${length}` }  
+                    ], {
+                    duration: 1000,
+                    iterations: 1,
+                    easing: 'linear'
+                    });
+
+                path.parentNode.appendChild(clonedPath);
+
+                animation.onfinish = () => {
+                    if(clonedPath && clonedPath.parentNode) {
+                        clonedPath.remove();
+                    }
+                    console.log('animacja zakonczona, i ścieżka usunięta!');
+                    if(typeof onFinish === 'function') {
+                        onFinish();
+                    }
+                };
+                    
+
+            }
+
+
+    removeElementAnimation(element, animation,callback){
+        if(!element) return;
+
+        requestAnimationFrame(()=>{
+            element.classList.remove(`animate__${animation}`); // reset
+
+            //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
+            void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
+            element.classList.add('animate__animated', `animate__${animation}`);
+
+            const handleAnimationEnd = () => {
+                element.classList.remove('animate__animated',`animate__${animation}`);
+                element.removeEventListener('animationend',handleAnimationEnd);
+
+                if(typeof callback === 'function') {
+                    callback();
+                }
+            };
+
+            element.addEventListener('animationend',handleAnimationEnd);
+        });
+    }
+            
+
+           
+           
+             
+            
+    
        
         
                     
