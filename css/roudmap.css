@@ -551,7 +551,7 @@
     pointer-events: none;
     width:auto;
     min-width: 10rem;
-    min-height: 4rem;
+    min-height: 6rem;
   }
   .disabled-node .node-acc-btn{
     pointer-events: all;

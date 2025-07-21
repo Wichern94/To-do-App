@@ -442,7 +442,7 @@ export class NodeElement {
             );
             
         }
-        stopTimer() {
+        async stopTimer() {
             if(this.timerStopped) return
             
             this.nodeData.completedAt = Date.now();
@@ -451,7 +451,7 @@ export class NodeElement {
 
             this.isRunning = false;
             this.nodeData.nodeCompleted = true;
-            
+            this.nodeData.timerSeconds = this.timerSeconds;
             const updatedData = {
                isRunning: false,
                nodeCompleted: this.nodeData.nodeCompleted,
@@ -459,7 +459,7 @@ export class NodeElement {
                completedAt: this.nodeData.completedAt,
            };
 
-            this.firestoreService.updateElements(
+            await this.firestoreService.updateElements(
                 this.nodeData.roadmapID,
                 'roadmaps',
                 'nodes',
@@ -564,24 +564,17 @@ export class NodeElement {
             
         });
     }
-   
+   setNodeListForRoadmap(nodes){
+        this.allNodeInstances=nodes;
+    }
         
-
-
-
-        
-
-
-
-
-       
-
     setupContinue(){
         
         const pauseBtn = this.ui.pauseBtn;
         const continueBtn = this.ui.continueBtn;
        
         continueBtn?.addEventListener('click', () => {
+            console.log('allNodeInstances to:', this.allNodeInstances);
             
             this.startTimer();
             showElement(pauseBtn);
@@ -625,15 +618,10 @@ export class NodeElement {
             btn.disabled =true;
             btn.classList.add('hidden');
         });
-        this.setAndLaunchLineAnimation()
+        this.setAndLaunchLineAnimation(this.allNodeInstances)
         console.log('ukonczono node:', this.nodeData);
 
-
-
-
-        
     }
-
 
     setAndLaunchCofetti(){
         const container = document.getElementById('view-standard');
@@ -651,33 +639,52 @@ export class NodeElement {
         this.animationManager.launchConfetti(container, relX,relY );
     }
 
-    setAndLaunchLineAnimation(){
-        const rightUl = document.getElementById(this.nodeData.roadmapID);
-        const allNodes = Array.from(rightUl.querySelectorAll('.roadmap-node'));
-
-        const sortedNodes = allNodes.sort((a,b) =>{
-            const orderA = Number(a.dataset.order); // Number zmienia dataset order string na liczbe
-            const orderB = Number(b.dataset.order);
-            return orderA - orderB;
+    setAndLaunchLineAnimation(allNodeInstances){
+        const sortedInstances = [...allNodeInstances].sort((a,b) => {
+            return a.nodeData.order - b.nodeData.order
         });
-        
-        for (let i = 0; i < sortedNodes.length -1; i++){
-            const currentNode = sortedNodes[i];
-            const nextNodeDOM = sortedNodes[i + 1];
-            const allNodeInstances = this.nodesByRoadmap[this.nodeData.roadmapID];
-            const nextNode = allNodeInstances.find(node =>node.ui.root.id === nextNodeDOM.id);
-            
-            if(currentNode.classList.contains('active-border')){
-                this.animationManager.plumbLineAnimation(currentNode.id,nextNode.id,()=>{
-                    currentNode.classList.remove('active-border');
 
-                    this.animationManager.removeElementAnimation(currentNode,'fadeOut',()=>{
-                        currentNode.classList.add('hidden');
-                    });
+        
+        for (let i = 0; i < sortedInstances.length ; i++){
+            const currentNode = sortedInstances[i];
+            const nextNode = sortedInstances[i + 1];
+
+            
+            
+            if(currentNode.ui.root.classList.contains('active-border')){
+                if(!nextNode) {
                     this.getCompletedata();
-                    this.animationManager.removeElementAnimation(nextNode,'slideInUp',()=>{
-                        nextNode?.enableNode();
-                        nextNode?.setActive();
+
+                    this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut',()=>{
+                        currentNode.ui.root.classList.add('hidden');
+                    });
+
+                    currentNode.ui.root.classList.remove('active-border');
+                    break;
+                }
+
+
+                this.animationManager.plumbLineAnimation(
+                    currentNode.ui.root.id,
+                    nextNode.ui.root.id,
+                    ()=>{
+                    currentNode.ui.root.classList.remove('active-border');
+
+                    this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut',()=>{
+                        currentNode.ui.root.classList.add('hidden');
+                    });
+
+                    this.getCompletedata();
+
+                    this.animationManager.removeElementAnimation(nextNode.ui.root,'slideInUp',()=>{
+                        allNodeInstances.forEach(n => {
+                            n.disableNode();
+                             if(!n.classList.contains('disabled-node')) {
+                                n.setActive();
+                             }
+                        })
+                        
+                        
                         console.log('aktywowano');
                         
                     });
@@ -697,7 +704,7 @@ export class NodeElement {
             roadmapID: this.nodeData.roadmapID,
             createdAt: this.nodeData.createdAt,
             completedAt: this.nodeData.completedAt,
-            timerSeconds: this.nodeData.timerSeconds,
+            timerSeconds: this.timerSeconds,
             checkedSubtasks: this.nodeData.checkedSubtasks,
             order: this.nodeData.order
         };
@@ -714,6 +721,22 @@ export class NodeElement {
        
 
     }
+    
+
+
+        
+
+
+
+        
+
+
+
+
+       
+
+
+
 
                         
 

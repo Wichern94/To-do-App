@@ -194,6 +194,7 @@ export class TodoApp{
             
                 // renderuje i dodaje do tablicy
             node.render();
+            node.setNodeListForRoadmap(nodes);
             nodes.push(node)
         
             if(index === 0) {

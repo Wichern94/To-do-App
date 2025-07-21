@@ -213,10 +213,14 @@ export class AnimationManager{
             }
 
 
-    removeElementAnimation(element, animation,callback){
-        if(!element) return;
+    removeElementAnimation(element, animation, callback){
+        if(!element) {
+            console.log('brakuje elementów! element jest:',element);
+           return; 
+        }
+            
 
-        requestAnimationFrame(()=>{
+        
             element.classList.remove(`animate__${animation}`); // reset
 
             //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
@@ -226,14 +230,17 @@ export class AnimationManager{
             const handleAnimationEnd = () => {
                 element.classList.remove('animate__animated',`animate__${animation}`);
                 element.removeEventListener('animationend',handleAnimationEnd);
-
+                console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
                 if(typeof callback === 'function') {
                     callback();
+                    console.log('ANIMACJA ZROBILA SIE!!!');
+                    
                 }
             };
-
+            console.log('callbackto', typeof callback);
+            
             element.addEventListener('animationend',handleAnimationEnd);
-        });
+        
     }
             
 
