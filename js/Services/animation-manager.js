@@ -151,33 +151,33 @@ export class AnimationManager{
         btn.addEventListener('animationend', cleanClasses);
     }
 
-    plumbLineAnimation(sourceID,targetID, onFinish){
-        
-        const connections = this.plumbManager.jsPlumbInstance.getConnections();
-        console.log('połączenia to:',connections);
+    plumbLineAnimation(sourceID,targetID){
+        return new Promise ((resolve,reject) => {
+        try{
+            
+            const connections = this.plumbManager.jsPlumbInstance.getConnections();
+            console.log('połączenia to:',connections);
+            
+            const targetConnection = connections.find(
+                conn =>
+                conn.sourceId === sourceID &&
+                conn.targetId === targetID
+                );
 
-        const targetConnection = connections.find(
-            conn =>
-            conn.sourceId === sourceID &&
-            conn.targetId === targetID
-            );
-
-         if(!targetConnection) {
-            console.log('nie znaleziono połączen!');
-            return;
-        }
+            if(!targetConnection) {
+                throw new Error('nie znaleziono połączen!');
+            }
+                    
             this.plumbManager?.jsPlumbInstance?.repaintEverything();
             const path = targetConnection.canvas?.querySelector('path');
-            
-            
+
             const length = path.getTotalLength()
-            
+                
             const existing = path.parentNode.querySelector('path[data-cloned="true"]');
             if (existing) {
-                console.log('brak existing!');
-                return;
+                throw new Error('Animacja juz instnieje, nie mozna dodac drugiej!');
             }
-
+                
             const clonedPath = path.cloneNode();
 
             clonedPath.dataset.cloned = "true";
@@ -187,8 +187,8 @@ export class AnimationManager{
             
             clonedPath.style.strokeWidth = '2.5px';
             clonedPath.style.filter = 'drop-shadow(0 0 10px #A0FFF7)';
-           
-               const animation = clonedPath.animate([
+        
+            const animation = clonedPath.animate([
                     { strokeDashoffset: 0 },
                     { strokeDashoffset: `-${length}` }  
                     ], {
@@ -196,56 +196,111 @@ export class AnimationManager{
                     iterations: 1,
                     easing: 'linear'
                     });
-
-                path.parentNode.appendChild(clonedPath);
-
-                animation.onfinish = () => {
-                    if(clonedPath && clonedPath.parentNode) {
-                        clonedPath.remove();
-                    }
-                    console.log('animacja zakonczona, i ścieżka usunięta!');
-                    if(typeof onFinish === 'function') {
-                        onFinish();
-                    }
+                
+                
+            path.parentNode.appendChild(clonedPath);
+            
+            animation.onfinish = () => {
+                
+                if(clonedPath && clonedPath.parentNode) {
+                    clonedPath.remove();
+                }
+                
+                resolve('Animacja Lini Ok');
                 };
+
+                } catch (err) {
+                    reject(err);
+                }   
+            });    
+        }
+
+
+                        
+                        
+                    
                     
 
+
+
+    removeElementAnimation(element, animation ){
+        return new Promise((resolve,reject) => {
+            try{
+                if(!element) {
+                    throw new Error('brakuje elementów! element jest:',element);
+                }
+
+            requestAnimationFrame(()=>{
+                element.classList.remove(`animate__${animation}`); // reset
+                
+                //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
+                void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
+                element.classList.add('animate__animated', `animate__${animation}`);
+           
+            
+                const handleAnimationEnd = () => {
+                   element.classList.remove('animate__animated',`animate__${animation}`);
+                   element.removeEventListener('animationend',handleAnimationEnd);
+                   console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
+                   resolve('Animcja node ok');
+           
+                };
+                element.addEventListener('animationend',handleAnimationEnd);
+                
+            });
+                    
+            } catch(err) {
+                reject(err);
             }
+        });
+    }
 
 
-    removeElementAnimation(element, animation, callback){
-        return new Promise((resolve) => {
-            if(!element) {
-            console.log('brakuje elementów! element jest:',element);
-            resolve()
-           return; 
-          }  
+    slideUpElement(element){
+        return new Promise((resolve,reject) => {
+            try{
+                if(!element) {
+                    throw new Error('brakuje elementów do animacji! element jest:',element);
+                }
+                const height = element.offsetHeight;
+                const fullheight = height + (4 * 16); // <- +gap 4 rem
+                
+                if (element.classList.contains('hidden')) {
+                    element.classList.remove('hidden');
+                    
+                }
+                requestAnimationFrame(()=>{
+                    anime({
+                        targets:element,
+                        translateY: `-${height}px`,
+                        duration: 1000,
+                        easing:'easeInOutSine',
+                        complete: () => resolve('Animation ok')
+                    });
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+                           
+                       
+                       
+                       
+                
+
         
+                
+                    
         
        
             
-        requestAnimationFrame(()=>{
-        element.classList.remove(`animate__${animation}`); // reset
 
-        //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
-        void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
-        element.classList.add('animate__animated', `animate__${animation}`);
 
-        const handleAnimationEnd = () => {
-           element.classList.remove('animate__animated',`animate__${animation}`);
-           element.removeEventListener('animationend',handleAnimationEnd);
-           console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
-           if(typeof callback === 'function') {
-               callback();
-               console.log('ANIMACJA ZROBILA SIE!!!');
-               
-            }
-        };
-        console.log('callbackto', typeof callback);
+          
+        
        
-        element.addEventListener('animationend',handleAnimationEnd);
-        });
-      });  
+       
     }
 
             
@@ -284,4 +339,3 @@ export class AnimationManager{
        
 
 
-}

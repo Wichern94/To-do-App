@@ -234,7 +234,7 @@ export class TodoApp{
         nodeList.splice(index,1);
 
        
-           await this.renderNodesForRoadmap(this.activeRoadmapId);
+             await this.renderNodesForRoadmap(this.activeRoadmapId);
     } 
             
 

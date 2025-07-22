@@ -639,14 +639,15 @@ export class NodeElement {
         this.animationManager.launchConfetti(container, relX,relY );
     }
 
-   async setAndLaunchLineAnimation(allNodeInstances){
+    async setAndLaunchLineAnimation(allNodeInstances){
+        try{
         const sortedInstances = [...allNodeInstances].sort((a,b) => {
             return a.nodeData.order - b.nodeData.order
         });
 
-        let shouldStop = false
+        
         for (let i = 0; i < sortedInstances.length ; i++){
-            if(shouldStop) break;
+            
             const currentNode = sortedInstances[i];
             const nextNode = sortedInstances[i + 1];
 
@@ -656,46 +657,86 @@ export class NodeElement {
             if(!nextNode) {
                 
 
-                this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut',()=>{
-                    currentNode.ui.root.classList.add('hidden');
-                    this.getCompletedata();
-                    currentNode.ui.root.classList.remove('active-border');
-                    shouldStop = true;
-                    });
+               await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
 
+               currentNode.ui.root.classList.add('hidden');
+               await this.getCompletedata();
+               currentNode.ui.root.classList.remove('active-border');
+               break
+               
+            } else {
                     
-                } else {
+                await this.animationManager.plumbLineAnimation(currentNode.ui.root.id, nextNode.ui.root.id);
 
-                
-                    
-
-
-        this.animationManager.plumbLineAnimation(
-            currentNode.ui.root.id,
-            nextNode.ui.root.id,
-            ()=>{
                 currentNode.ui.root.classList.remove('active-border');
-                this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut',()=>{
-                    currentNode.ui.root.classList.add('hidden');
-                    this.getCompletedata();
-                    
-                        this.animationManager.removeElementAnimation(nextNode.ui.root,'slideInUp',()=>{
-                        allNodeInstances.forEach(n => {
-                            this.isActive = false;
-                        console.log('aktywowano');
-                        if(!n.ui.root.classList.contains('disabled-node')) {
-                        n.setActive();
-                            }
-                        });
-                        shouldStop = true;
-                    });
-                    
-                });
+                await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
+                currentNode.ui.root.classList.add('hidden');
+                // await this.animationManager.removeElementAnimation(nextNode.ui.root,'fadeOut');
+                await this.animationManager.removeElementAnimation(nextNode.ui.root,'fadeInDownBig');
+
+                // await this.animationManager.slideUpElement(nextNode.ui.root);
+
+                await this.getCompletedata();
                 
-            });
+
+                
+                
+                
+                this.isActive = false;
+                    
+                   
+                           
+                            console.log('aktywowano');
+                                 
+                            
+                        break;
+                        }   
+                    }  
+                }
+            } catch(err) {
+                console.error('błąd w animacje sekwecnji:',err.message);
+            }
+    }
+                        
+                                
+                                        
+                               
+                        
+                            
+                        
+          
+       
+                
+
+
+                    
+
+                
+                    
+
+
+                
+                
+                    
+                    
+                    
+                        
+                        
+                            
+                        
+                        
+                        
+                            
+                        
+                        
+                    
+                    
+                
+                
+            
            
-        } } }
-    }  
+        
+    
               
                         
                         
@@ -712,7 +753,8 @@ export class NodeElement {
 
                     
     
-    getCompletedata(){
+    async getCompletedata(){
+       
         const finishedData = {
             id: this.nodeData.id,
             title: this.nodeData.title,
@@ -723,19 +765,26 @@ export class NodeElement {
             checkedSubtasks: this.nodeData.checkedSubtasks,
             order: this.nodeData.order
         };
-       const refObj = {
+        if(!this.nodeData || !this.timerSeconds) {
+            throw new Error('brak odpowiednich Danych!')
+        }
+       
+        const refObj = {
             collection: 'roadmaps',
             subCollection: 'nodes',
         }
+
         const copyRefObj ={
             collection: 'Finished_Roadmaps',
-            subCollection: 'Finished_Nodes',
+             subCollection: 'Finished_Nodes',
         }
-        
-       this.firestoreService.moveElementToFinished(finishedData,refObj,copyRefObj);
-       
-
+        await this.firestoreService.moveElementToFinished(finishedData,refObj,copyRefObj);
     }
+            
+                
+            
+        
+
     
 
 
