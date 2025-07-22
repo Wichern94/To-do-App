@@ -214,34 +214,40 @@ export class AnimationManager{
 
 
     removeElementAnimation(element, animation, callback){
-        if(!element) {
+        return new Promise((resolve) => {
+            if(!element) {
             console.log('brakuje elementów! element jest:',element);
+            resolve()
            return; 
-        }
-            
-
+          }  
         
-            element.classList.remove(`animate__${animation}`); // reset
-
-            //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
-            void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
-            element.classList.add('animate__animated', `animate__${animation}`);
-
-            const handleAnimationEnd = () => {
-                element.classList.remove('animate__animated',`animate__${animation}`);
-                element.removeEventListener('animationend',handleAnimationEnd);
-                console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
-                if(typeof callback === 'function') {
-                    callback();
-                    console.log('ANIMACJA ZROBILA SIE!!!');
-                    
-                }
-            };
-            console.log('callbackto', typeof callback);
-            
-            element.addEventListener('animationend',handleAnimationEnd);
         
+       
+            
+        requestAnimationFrame(()=>{
+        element.classList.remove(`animate__${animation}`); // reset
+
+        //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
+        void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
+        element.classList.add('animate__animated', `animate__${animation}`);
+
+        const handleAnimationEnd = () => {
+           element.classList.remove('animate__animated',`animate__${animation}`);
+           element.removeEventListener('animationend',handleAnimationEnd);
+           console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
+           if(typeof callback === 'function') {
+               callback();
+               console.log('ANIMACJA ZROBILA SIE!!!');
+               
+            }
+        };
+        console.log('callbackto', typeof callback);
+       
+        element.addEventListener('animationend',handleAnimationEnd);
+        });
+      });  
     }
+
             
 
            

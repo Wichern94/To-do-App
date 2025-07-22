@@ -639,63 +639,78 @@ export class NodeElement {
         this.animationManager.launchConfetti(container, relX,relY );
     }
 
-    setAndLaunchLineAnimation(allNodeInstances){
+   async setAndLaunchLineAnimation(allNodeInstances){
         const sortedInstances = [...allNodeInstances].sort((a,b) => {
             return a.nodeData.order - b.nodeData.order
         });
 
-        
+        let shouldStop = false
         for (let i = 0; i < sortedInstances.length ; i++){
+            if(shouldStop) break;
             const currentNode = sortedInstances[i];
             const nextNode = sortedInstances[i + 1];
 
             
             
-            if(currentNode.ui.root.classList.contains('active-border')){
-                if(!nextNode) {
+        if(currentNode.ui.root.classList.contains('active-border')){
+            if(!nextNode) {
+                
+
+                this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut',()=>{
+                    currentNode.ui.root.classList.add('hidden');
                     this.getCompletedata();
-
-                    this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut',()=>{
-                        currentNode.ui.root.classList.add('hidden');
-                    });
-
                     currentNode.ui.root.classList.remove('active-border');
-                    break;
-                }
-
-
-                this.animationManager.plumbLineAnimation(
-                    currentNode.ui.root.id,
-                    nextNode.ui.root.id,
-                    ()=>{
-                    currentNode.ui.root.classList.remove('active-border');
-
-                    this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut',()=>{
-                        currentNode.ui.root.classList.add('hidden');
+                    shouldStop = true;
                     });
-
-                    this.getCompletedata();
-
-                    this.animationManager.removeElementAnimation(nextNode.ui.root,'slideInUp',()=>{
-                        allNodeInstances.forEach(n => {
-                            n.disableNode();
-                             if(!n.classList.contains('disabled-node')) {
-                                n.setActive();
-                             }
-                        })
-                        
-                        
-                        console.log('aktywowano');
-                        
-                    });
-                   
-                });
-                break;       
-            }
-        }
 
                     
-    }   
+                } else {
+
+                
+                    
+
+
+        this.animationManager.plumbLineAnimation(
+            currentNode.ui.root.id,
+            nextNode.ui.root.id,
+            ()=>{
+                currentNode.ui.root.classList.remove('active-border');
+                this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut',()=>{
+                    currentNode.ui.root.classList.add('hidden');
+                    this.getCompletedata();
+                    
+                        this.animationManager.removeElementAnimation(nextNode.ui.root,'slideInUp',()=>{
+                        allNodeInstances.forEach(n => {
+                            this.isActive = false;
+                        console.log('aktywowano');
+                        if(!n.ui.root.classList.contains('disabled-node')) {
+                        n.setActive();
+                            }
+                        });
+                        shouldStop = true;
+                    });
+                    
+                });
+                
+            });
+           
+        } } }
+    }  
+              
+                        
+                        
+                
+            
+
+                        
+                        
+
+                    
+
+                    
+                   
+
+                    
     
     getCompletedata(){
         const finishedData = {
