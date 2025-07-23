@@ -549,9 +549,9 @@
     opacity: .2;
     filter: grayscale(1);
     pointer-events: none;
-    width:auto;
-    min-width: 10rem;
-    min-height: 6rem;
+    width: 10rem;
+    
+    
   }
   .disabled-node .node-acc-btn{
     pointer-events: all;

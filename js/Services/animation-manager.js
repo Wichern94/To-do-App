@@ -75,7 +75,7 @@ export class AnimationManager{
         });
     }
     toggleAccordeon(btn,contentBox, li){
-            if(!btn || !contentBox ||!li) {
+            if(!btn || !contentBox || !li) {
                 console.log('brakdanych do akordeonu');
                 return ;
             }
@@ -94,6 +94,16 @@ export class AnimationManager{
                 requestAnimationFrame(() => {
                     li.style.transition = 'height .3s ease'
                     li.style.height = `${liEndHeight}px`
+
+                    const interval = setInterval(() => {
+                    this.plumbManager?.jsPlumbInstance?.revalidate(li);
+                    this.plumbManager?.jsPlumbInstance?.repaintEverything();
+                }, 10); // co 10ms przez 300ms
+               
+                setTimeout(() => {
+                    clearInterval(interval);
+                }, 300); // zatrzymaj po 300ms
+                
                 
 
                     const cleanHeight = ()=>{
@@ -143,7 +153,7 @@ export class AnimationManager{
         contentBox?.classList.add('animate__animated','animate__tada');
 
         const cleanClasses = () => {
-            
+            this.plumbManager?.jsPlumbInstance?.repaintEverything();
             btn.classList.remove('animate__flip','animate__animated');
             contentBox.classList.remove('animate__tada','animate__animated');
             btn.removeEventListener('animationend',cleanClasses);
@@ -279,6 +289,40 @@ export class AnimationManager{
                     });
                 });
             } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    addElementAnimation(element, animation,duration ){
+        return new Promise((resolve,reject) => {
+            try{
+                if(!element) {
+                    throw new Error('brakuje elementów! element jest:',element);
+                }
+
+            requestAnimationFrame(()=>{
+                element.classList.remove(`animate__${animation}`); // reset
+                
+                //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
+                void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
+                element.style.setProperty('--animate-duration', `${duration}`);
+                element.classList.add('animate__animated', `animate__${animation}`);
+           
+            
+                const handleAnimationEnd = () => {
+                   element.classList.remove('animate__animated',`animate__${animation}`);
+                   element.style.removeProperty('--animate-duration');
+                   element.removeEventListener('animationend',handleAnimationEnd);
+                   console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
+                   resolve('Animcja node ok');
+           
+                };
+                element.addEventListener('animationend',handleAnimationEnd);
+                
+            });
+                    
+            } catch(err) {
                 reject(err);
             }
         });

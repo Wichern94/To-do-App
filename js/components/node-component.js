@@ -166,7 +166,7 @@ export class NodeElement {
         
         this.ui.root?.classList.remove('disabled-node');
         this.ui.root?.classList.add('expand');
-
+        showElement(this.ui.btnContainer);
         showElement(this.ui.startBtn);
         this.animationManager?.buttonOneAnimation(this.ui.startBtn,'rubberBand');
         
@@ -195,6 +195,7 @@ export class NodeElement {
     disableNode(){
         
         this.ui.root?.classList.add('disabled-node');
+        this.ui.root?.classList.add('expand-disabled');
         hideElement(this.ui.btnContainer);
         hideElement(this.ui.timer);
 
@@ -243,11 +244,17 @@ export class NodeElement {
         if (this.isAccordionReady) return;   //flaga zeby akordeon nie właczał sie kilka razy
          const accBtn = this.ui.accordionBtn;
          const nodeLI = document.querySelector('.expand')
+         const nodeLIDisabled = document.querySelectorAll('.expand-disabled')
+
          accBtn?.addEventListener('click',() => {
              const subTaskCont = this.ui.subtaskList;
              this.animationManager.toggleAccordeon(accBtn, subTaskCont, nodeLI);
+             nodeLIDisabled.forEach(node => {
+                this.animationManager.toggleAccordeon(accBtn, subTaskCont, node);
+             })
+             
             //   toggleElement(subTaskCont);
-             this.plumbManager.jsPlumbInstance.repaintEverything();
+             
             });
             this.isAccordionReady = true; 
         }
@@ -564,8 +571,9 @@ export class NodeElement {
             
         });
     }
-   setNodeListForRoadmap(nodes){
+   setNodeListForRoadmap(nodes,plumbers){
         this.allNodeInstances=nodes;
+        this.plumbManagers = plumbers;
     }
         
     setupContinue(){
@@ -672,31 +680,66 @@ export class NodeElement {
                 await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
                 currentNode.ui.root.classList.add('hidden');
                 // await this.animationManager.removeElementAnimation(nextNode.ui.root,'fadeOut');
-                await this.animationManager.removeElementAnimation(nextNode.ui.root,'fadeInDownBig');
+                 await this.animationManager.addElementAnimation(nextNode.ui.root,'fadeInDownBig', '1.5s');
 
-                // await this.animationManager.slideUpElement(nextNode.ui.root);
+                //  await this.animationManager.slideUpElement(nextNode.ui.root);
 
                 await this.getCompletedata();
+                this.isActive = false;
+                await this.activateNextNode(this.allNodeInstances);
+                
+                console.log('teraz lista nodów:', this.allNodeInstances);
                 
 
+                break;
                 
+       } } }   
+         
+            
+            } catch(err) {
+            console.error('błąd w animacje sekwecnji:',err.message);
+            }
+        }
+
+        activateNextNode(allNodeInstances){
+             return new Promise ((resolve,reject) => {
+        try{ 
+            if (!allNodeInstances) {
+                throw new Error('brak danych do Aktywacji nowego')
+            }
+            const instancesAfterDelete = [...allNodeInstances].sort((a,b) => {
+            return a.nodeData.order - b.nodeData.order
+        });
+
+        instancesAfterDelete.forEach((node,index) => {
+            if(index === 0) {
+                node.enableNode();
+                if(this.plumbManagers?.[this.nodeData.roadmapID]) {
+                this.plumbManagers[this.nodeData.roadmapID].destroy();
+                delete this.plumbManagers[this.nodeData.roadmapID];
+            }
+                node.setActive();
+            } else {
+                node.disableNode();
+            }
+        });
+        resolve('nodes ok');
+        // this.plumbManager?.jsPlumbInstance?.repaintEverything();
+            
+    } catch (err) {
+        reject(err);
+    }
+
+    })
+}
+         
+               
                 
-                
-                this.isActive = false;
                     
                    
                            
-                            console.log('aktywowano');
-                                 
                             
-                        break;
-                        }   
-                    }  
-                }
-            } catch(err) {
-                console.error('błąd w animacje sekwecnji:',err.message);
-            }
-    }
+                                 
                         
                                 
                                         

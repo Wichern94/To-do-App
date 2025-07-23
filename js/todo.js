@@ -194,7 +194,7 @@ export class TodoApp{
             
                 // renderuje i dodaje do tablicy
             node.render();
-            node.setNodeListForRoadmap(nodes);
+            node.setNodeListForRoadmap(nodes,this.plumbManagers);
             nodes.push(node)
         
             if(index === 0) {
@@ -234,7 +234,7 @@ export class TodoApp{
         nodeList.splice(index,1);
 
        
-             await this.renderNodesForRoadmap(this.activeRoadmapId);
+            //  await this.renderNodesForRoadmap(this.activeRoadmapId);
     } 
             
 
