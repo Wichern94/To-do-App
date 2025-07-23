@@ -8,6 +8,7 @@ import {RoadmapSelector} from './components/roadmap-selector.js'
 import {FirestoreService} from './Services/Service.js'
 import {NodeElement} from './components/node-component.js'
 import { RoadmapPlumbManager } from './Services/plumb-manager.js';
+import {AnimationManager} from "./Services/animation-manager.js"
 
 export class TodoApp{
     constructor(user, viewManager) {
@@ -15,6 +16,7 @@ export class TodoApp{
         this.viewManger = viewManager;
         this.carusel = new GetCaruselPosition('carousel-cont','.carousel-item');
         this.firestoreService = new FirestoreService(this.user.uid);
+        
         this.carusel.setCaruselToMiddle();
         this.initCarusel()
         this.nodesByRoadmap = {}
@@ -55,7 +57,7 @@ export class TodoApp{
                 const fullData = {...nodeDataWithOrder, id: nodeID};
                 console.log('roadmapid wmanualu',fullData);
                 
-                await this.renderNodesForRoadmap(fullData.roadmapID)
+                await this.renderNodesForRoadmap(fullData.roadmapID,fullData.id)
             }
                
                 
@@ -143,7 +145,7 @@ export class TodoApp{
                 }
             }
         }
-    async renderNodesForRoadmap(roadmapID){
+    async renderNodesForRoadmap(roadmapID, newNodeID = null){
         try{
             this.activeRoadmapId = roadmapID;
             const ul = document.getElementById(roadmapID)
@@ -180,20 +182,23 @@ export class TodoApp{
             const sortedNodeList = nodeList.sort( (a,b) => a.order - b.order);  
                 
             const nodes = []; // <-tablica na nody  
-
+            
             sortedNodeList.forEach((nodeData,index ) => {
+            const isNew = nodeData.id === newNodeID;
             // kazdy node jest osobną  instacja NodeElement
             const node = new NodeElement(
                 nodeData,
                 this.plumbManagers[roadmapID],
                 this.firestoreService,
-                {
+                {   
+                    isNew,
                     onDelete:this.handleNodeDeleted.bind(this)
                 }
             )
             
                 // renderuje i dodaje do tablicy
             node.render();
+            
             node.setNodeListForRoadmap(nodes,this.plumbManagers);
             nodes.push(node)
         

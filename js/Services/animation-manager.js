@@ -245,9 +245,9 @@ export class AnimationManager{
                 
                 //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
                 void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
+                 
                 element.classList.add('animate__animated', `animate__${animation}`);
-           
-            
+                
                 const handleAnimationEnd = () => {
                    element.classList.remove('animate__animated',`animate__${animation}`);
                    element.removeEventListener('animationend',handleAnimationEnd);
@@ -283,7 +283,7 @@ export class AnimationManager{
                     anime({
                         targets:element,
                         translateY: `-${height}px`,
-                        duration: 1000,
+                        duration: 1500,
                         easing:'easeInOutSine',
                         complete: () => resolve('Animation ok')
                     });
@@ -304,12 +304,13 @@ export class AnimationManager{
             requestAnimationFrame(()=>{
                 element.classList.remove(`animate__${animation}`); // reset
                 
-                //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
-                void element.offsetWidth;  //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
+                
+                void element.offsetWidth;
+               
                 element.style.setProperty('--animate-duration', `${duration}`);
                 element.classList.add('animate__animated', `animate__${animation}`);
            
-            
+              
                 const handleAnimationEnd = () => {
                    element.classList.remove('animate__animated',`animate__${animation}`);
                    element.style.removeProperty('--animate-duration');
@@ -327,6 +328,147 @@ export class AnimationManager{
             }
         });
     }
+
+
+     widthAndHeight(element){
+        return new Promise((resolve,reject) => {
+            try{
+                if(!element) {
+                    throw new Error('brakuje elementów do animacji! element jest:',element);
+                }
+                
+                
+                
+                if (element.classList.contains('hidden')) {
+                    element.classList.remove('hidden');
+                    
+                }
+                requestAnimationFrame(()=>{
+                    anime({
+                        targets:element,
+                        width:`224px`,
+                        height:`103px`,
+                        duration: 1500,
+                        easing:'easeInOutQuad',
+                        complete: () => resolve('Animation ok')
+                        
+                    });
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    showBtns(element,duration ){
+        return new Promise((resolve,reject) => {
+            try{
+                if(!element) {
+                    throw new Error('brakuje elementów! element jest:',element);
+                }
+
+            requestAnimationFrame(()=>{
+                element.classList.remove(`animate__fadeIn`); // reset 
+                
+                
+                void element.offsetWidth;
+
+               
+                element.style.setProperty('--animate-duration', `${duration}`);
+                element.classList.remove('hidden');
+                element.classList.add('animate__animated', `animate__fadeIn`);
+                
+           
+              
+                const handleAnimationEnd = () => {
+                   element.classList.remove('animate__animated',`animate__fadeIn`);
+                   element.style.removeProperty('--animate-duration');
+                   element.removeEventListener('animationend',handleAnimationEnd);
+                   console.log('Dodaję klasy:', `animate__animated animate__fadeIn`);
+                   resolve('Animcja node ok');
+           
+                };
+                element.addEventListener('animationend',handleAnimationEnd);
+                
+            });
+                    
+            } catch(err) {
+                reject(err);
+            }
+        });
+    }
+    hideBtns(element,duration ){
+        return new Promise((resolve,reject) => {
+            try{
+                if(!element) {
+                    throw new Error('brakuje elementów! element jest:',element);
+                }
+
+            requestAnimationFrame(()=>{
+                element.classList.remove(`animate__fadeOut`); // reset 
+                
+                
+                void element.offsetWidth;
+
+               
+                element.style.setProperty('--animate-duration', `${duration}`);
+                element.classList.add('hidden');
+                element.classList.add('animate__animated', `animate__fadeOut`);
+                
+           
+              
+                const handleAnimationEnd = () => {
+                   element.classList.remove('animate__animated',`animate__fadeOut`);
+                   element.style.removeProperty('--animate-duration');
+                   element.removeEventListener('animationend',handleAnimationEnd);
+                   console.log('Dodaję klasy:', `animate__animated animate__fadeOut`);
+                   resolve('Animcja node ok');
+           
+                };
+                element.addEventListener('animationend',handleAnimationEnd);
+                
+            });
+                    
+            } catch(err) {
+                reject(err);
+            }
+        });
+    }
+
+    addnodeAnimation(element, animation,duration ){
+        
+                if(!element) {
+                    throw new Error('brakuje elementów! element jest:',element);
+                }
+
+            requestAnimationFrame(()=>{
+                element.classList.remove(`animate__${animation}`); // reset
+                
+                
+                void element.offsetWidth;
+               
+                element.style.setProperty('--animate-duration', `${duration}`);
+                element.classList.add('animate__animated', `animate__${animation}`);
+           
+              
+                const handleAnimationEnd = () => {
+                   element.classList.remove('animate__animated',`animate__${animation}`);
+                   element.style.removeProperty('--animate-duration');
+                   element.removeEventListener('animationend',handleAnimationEnd);
+                   console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
+                   
+           
+                };
+                element.addEventListener('animationend',handleAnimationEnd);
+                
+            });
+                    
+            
+        
+    }
+
+
+
                            
                        
                        

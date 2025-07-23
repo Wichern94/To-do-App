@@ -24,6 +24,7 @@ export class NodeElement {
         this.timerStopped = false;
         this.options = options;
         
+        
        
         
         
@@ -38,7 +39,7 @@ export class NodeElement {
         const title= this.nodeData.title;
         const subUlID =`sub-${this.nodeData.id}` //<-tworze id dla pojemnika na subtaski
         const li = document.createElement('li');
-        li.classList.add('roadmap-node','disabled-node');
+        li.classList.add('roadmap-node',);
         
         if(this.nodeData.id){
             li.dataset.id = this.nodeData.id //<-nadaje id takie jak ten z firebase
@@ -58,7 +59,7 @@ export class NodeElement {
           <div class="title-roudmap">
               <span class="node-text">${title}</span>
               <span class="node-time"></span>
-              <button class="node-acc-btn " id="roadmap-accordeon-btn">
+              <button class="node-acc-btn" >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                       stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
@@ -130,6 +131,10 @@ export class NodeElement {
 
         rightUl?.appendChild(li); // <-dodaje do odpowiedniego UL
         
+        if (this.options?.isNew) {
+        this.animationManager.addElementAnimation(li, 'rollIn', '1s');
+        }
+        
         const subtasks = this.nodeData.subtasks;
         if(!Array.isArray(subtasks) || subtasks.length === 0) { // <- jesli subtask jest tablica, i nie jest pusta
             return
@@ -162,11 +167,12 @@ export class NodeElement {
             
         }
     }
+    
     enableNode() {
         
         this.ui.root?.classList.remove('disabled-node');
-        this.ui.root?.classList.add('expand');
-        showElement(this.ui.btnContainer);
+        this.animationManager?.showBtns(this.ui.btnContainer,'1.5s')
+        
         showElement(this.ui.startBtn);
         this.animationManager?.buttonOneAnimation(this.ui.startBtn,'rubberBand');
         
@@ -242,22 +248,29 @@ export class NodeElement {
     //metoda ustawiająca Akordeony
     setupAccordeons() {
         if (this.isAccordionReady) return;   //flaga zeby akordeon nie właczał sie kilka razy
-         const accBtn = this.ui.accordionBtn;
-         const nodeLI = document.querySelector('.expand')
-         const nodeLIDisabled = document.querySelectorAll('.expand-disabled')
 
-         accBtn?.addEventListener('click',() => {
-             const subTaskCont = this.ui.subtaskList;
-             this.animationManager.toggleAccordeon(accBtn, subTaskCont, nodeLI);
-             nodeLIDisabled.forEach(node => {
-                this.animationManager.toggleAccordeon(accBtn, subTaskCont, node);
-             })
-             
-            //   toggleElement(subTaskCont);
-             
-            });
-            this.isAccordionReady = true; 
+        const btn = this.ui.accordionBtn;
+        const content = this.ui.subtaskList;
+        const li = this.ui.root;
+
+        if(!btn || !content ||!li) {
+            console.warn('nie mozna ustawic Akordeonu - brak elementów');
+            return
         }
+        btn?.addEventListener('click',() => {
+            this.animationManager.toggleAccordeon(btn, content, li);
+        });
+         this.isAccordionReady = true; 
+         
+
+        }
+             
+             
+             
+           
+             
+            
+            
         
         updateProgress() {
             const checkedCount = Array.from(this.ui.checkBoxList).filter(cb => cb.checked).length;
@@ -670,6 +683,10 @@ export class NodeElement {
                currentNode.ui.root.classList.add('hidden');
                await this.getCompletedata();
                currentNode.ui.root.classList.remove('active-border');
+               if(this.plumbManagers?.[this.nodeData.roadmapID]) {
+                this.plumbManagers[this.nodeData.roadmapID].destroy();
+                delete this.plumbManagers[this.nodeData.roadmapID];
+            }
                break
                
             } else {
@@ -679,12 +696,18 @@ export class NodeElement {
                 currentNode.ui.root.classList.remove('active-border');
                 await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
                 currentNode.ui.root.classList.add('hidden');
-                // await this.animationManager.removeElementAnimation(nextNode.ui.root,'fadeOut');
-                 await this.animationManager.addElementAnimation(nextNode.ui.root,'fadeInDownBig', '1.5s');
+                 
+                //  await this.animationManager.addElementAnimation(nextNode.ui.root,'fadeInDownBig', '1.5s');
 
-                //  await this.animationManager.slideUpElement(nextNode.ui.root);
+                
+                await this.animationManager.addElementAnimation(nextNode.ui.root,'fadeInUp', '1.5s');
+                await this.animationManager.widthAndHeight(nextNode.ui.root);
 
+            
                 await this.getCompletedata();
+                await this.animationManager.addElementAnimation(nextNode.ui.root,'heartBeat', '.5s');
+                this.plumbManager?.jsPlumbInstance?.repaintEverything();
+
                 this.isActive = false;
                 await this.activateNextNode(this.allNodeInstances);
                 

@@ -21,7 +21,7 @@
   justify-content: flex-end;
   margin-top: 5rem;
 }
-.title-roudmap:after {
+li:first-of-type .title-roudmap::after {
   content: '';
   border-bottom: 1px solid var(--glass-border);
   width: 90%;
@@ -546,7 +546,7 @@
     z-index: 5;
   }
   .disabled-node {
-    opacity: .2;
+    opacity: .5;
     filter: grayscale(1);
     pointer-events: none;
     width: 10rem;
