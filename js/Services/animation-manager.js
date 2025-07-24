@@ -180,7 +180,7 @@ export class AnimationManager{
                     
             this.plumbManager?.jsPlumbInstance?.repaintEverything();
             const path = targetConnection.canvas?.querySelector('path');
-            const svg = targetConnection.canvas?.querySelector('svg');
+            
 
             const length = path.getTotalLength()
                 
@@ -189,8 +189,8 @@ export class AnimationManager{
                 throw new Error('Animacja juz instnieje, nie mozna dodac drugiej!');
             }
                 
-            path.style.strokeDasharray = `20 50`;
-            path.style.strokeDashoffset = '0';
+             path.style.strokeDasharray = `${length}`;
+             path.style.strokeDashoffset = '0';
 
             const clonedPath = path.cloneNode();
             clonedPath.dataset.cloned = "true";
@@ -200,56 +200,82 @@ export class AnimationManager{
             
             clonedPath.style.strokeWidth = '2.5px';
             clonedPath.style.filter = 'drop-shadow(0 0 10px #A0FFF7)';
-        
+
+            path.parentNode.appendChild(clonedPath);
+            clonedPath.getBoundingClientRect();
             const animation = clonedPath.animate([
                     { strokeDashoffset: 0 },
                     { strokeDashoffset: `-${length}` }  
                     ], {
-                    duration: 1000,
+                    duration: 1200,
                     iterations: 1,
                     easing: 'linear'
                     });
-                
-                
-            path.parentNode.appendChild(clonedPath);
-
            
             
             animation.onfinish = () => {
-                 requestAnimationFrame(()=>{
-                    
                 
-
-                if(clonedPath && clonedPath.parentNode) {
-                    clonedPath.remove();
+                
+               
+                    clonedPath?.remove();
+                    console.log('czy jest usuniety:?',clonedPath);
+                    
                 }
+            
+
+
+            requestAnimationFrame(() => {
+            const animationTwo = path.animate([
+                { strokeDashoffset: `0` },
+                { strokeDashoffset: `${length}` }  
+                ], {
+                duration: 1000,
+                iterations: 1,
+                easing: 'ease-in',
+                fill:'forwards',
+                });  
+            
+
+            animationTwo.onfinish = () => {
+                path.style.strokeDashoffset = length;
+                path.style.strokeDasharray = length;
+                this.plumbManager.jsPlumbInstance.deleteConnection(targetConnection);
+                resolve('Animacja zakończona poprawnie');
+                const connectionsAfter = this.plumbManager.jsPlumbInstance.getConnections();
+                console.log('After połączenia to:',connectionsAfter);
+            };
+           });     
+            
+            } catch (err) {
+                reject(err);
+            }   
+        });    
+    }
+                             
                 
-                    
-                    anime({
-                        targets:path,
-                        
-                        strokeDashoffset:[0,200],
-                        duration: 2000,
-                        easing:'linear',
-                        begin: () => console.log('animacja sie rozpoczyna'),
-                        
-                        complete: () => resolve('Animation Lini ok')
-                        
-                        
-                        });
-                    
-                    });
-                    this.plumbManager.jsPlumbInstance.deleteConnection(targetConnection);
-                    
-                    
-                };
+           
+
+           
+            
+            
+                
                 
 
-                } catch (err) {
-                    reject(err);
-                }   
-            });    
-        }
+                
+            
+            
+                    
+                    
+                    
+                
+
+                
+                    
+                    
+                    
+                    
+                    
+                    
 
 
                         
@@ -303,8 +329,16 @@ export class AnimationManager{
                 
                 if (element.classList.contains('hidden')) {
                     element.classList.remove('hidden');
-                    
                 }
+                 const interval = setInterval(() => {
+                    this.plumbManager?.jsPlumbInstance?.revalidate(element);
+                    this.plumbManager?.jsPlumbInstance?.repaintEverything();
+                }, 10); // co 10ms przez 300ms
+               
+                setTimeout(() => {
+                    clearInterval(interval);
+                }, 1500); // zatrzymaj po 300ms
+                   
                 requestAnimationFrame(()=>{
                     anime({
                         targets:element,
@@ -326,7 +360,14 @@ export class AnimationManager{
                 if(!element) {
                     throw new Error('brakuje elementów! element jest:',element);
                 }
-
+            const interval = setInterval(() => {
+                    this.plumbManager?.jsPlumbInstance?.revalidate(element);
+                    this.plumbManager?.jsPlumbInstance?.repaintEverything();
+                }, 10); 
+               
+                setTimeout(() => {
+                    clearInterval(interval);
+                }, 1500); 
             requestAnimationFrame(()=>{
                 element.classList.remove(`animate__${animation}`); // reset
                 
@@ -369,6 +410,15 @@ export class AnimationManager{
                     element.classList.remove('hidden');
                     
                 }
+                const interval = setInterval(() => {
+                    this.plumbManager?.jsPlumbInstance?.revalidate(element);
+                    this.plumbManager?.jsPlumbInstance?.repaintEverything();
+                }, 10); // co 10ms przez 300ms
+               
+                setTimeout(() => {
+                    clearInterval(interval);
+                }, 1500); // zatrzymaj po 300ms
+                
                 requestAnimationFrame(()=>{
                     anime({
                         targets:element,

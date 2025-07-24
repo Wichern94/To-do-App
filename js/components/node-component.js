@@ -360,6 +360,7 @@ export class NodeElement {
         }
         //metoda Rysuwania linni biblioteką jsPlumb
         drawConnectionLines() {
+            this.plumbManager.jsPlumbInstance.deleteEveryConnection();
             const ulID = this.nodeData.roadmapID;
             const rightUl = document.getElementById(ulID);
             const allNodes = Array.from(rightUl.querySelectorAll('.roadmap-node'));
@@ -685,6 +686,7 @@ export class NodeElement {
                 currentNode.ui.root.classList.remove('active-border');
                 this.plumbManager.jsPlumbInstance.deleteEveryConnection();
                 this.plumbManager.jsPlumbInstance.deleteEveryEndpoint();
+
                 if(this.plumbManagers?.[this.nodeData.roadmapID]) {
                 this.plumbManagers[this.nodeData.roadmapID].destroy();
                 delete this.plumbManagers[this.nodeData.roadmapID];
@@ -692,22 +694,22 @@ export class NodeElement {
                break
                
             } else {
-                    
+               
                 await this.animationManager.plumbLineAnimation(currentNode.ui.root.id, nextNode.ui.root.id);
 
                 currentNode.ui.root.classList.remove('active-border');
                 await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
                 currentNode.ui.root.classList.add('hidden');
                  
-                //  await this.animationManager.addElementAnimation(nextNode.ui.root,'fadeInDownBig', '1.5s');
+                //   await this.animationManager.slideUpElement(nextNode.ui.root);
 
                 
-                await this.animationManager.addElementAnimation(nextNode.ui.root,'fadeInUp', '1.5s');
-                await this.animationManager.widthAndHeight(nextNode.ui.root);
+                 await this.animationManager.addElementAnimation(nextNode.ui.root,'slideInUp', '1.5s');
+                 await this.animationManager.widthAndHeight(nextNode.ui.root);
 
             
                 await this.getCompletedata();
-                await this.animationManager.addElementAnimation(nextNode.ui.root,'heartBeat', '.5s');
+                await this.animationManager.addElementAnimation(nextNode.ui.root,'pulse', '.7s');
                 this.plumbManager?.jsPlumbInstance?.repaintEverything();
 
                 this.isActive = false;

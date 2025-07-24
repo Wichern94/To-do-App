@@ -14,7 +14,7 @@ export class RoadmapPlumbManager {
       target: targetId,
       anchors: anchors,
       connector: ['Flowchart',{
-        //stub:[30,30],
+        stub:[30,30],
         cornerRadius:10,
         alwaysRespectStubs: true,
       }],
@@ -22,7 +22,7 @@ export class RoadmapPlumbManager {
         stroke: '#6BCDCE',
         strokeWidth: 1,
       },
-      cssClass:'connection-glow connection-animated',
+       cssClass:'connection-glow connection-animated',
         
       endpoint: 'Dot',
       endpointStyle: { fill: '#6BCDCE', radius: 4 },

@@ -71,6 +71,7 @@ li:first-of-type .title-roudmap::after {
   position: relative;
   scroll-snap-align: start;
   border-radius: 8px;
+  /* z-index: 10; */
 }
 
   
