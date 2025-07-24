@@ -180,6 +180,7 @@ export class AnimationManager{
                     
             this.plumbManager?.jsPlumbInstance?.repaintEverything();
             const path = targetConnection.canvas?.querySelector('path');
+            const svg = targetConnection.canvas?.querySelector('svg');
 
             const length = path.getTotalLength()
                 
@@ -188,8 +189,10 @@ export class AnimationManager{
                 throw new Error('Animacja juz instnieje, nie mozna dodac drugiej!');
             }
                 
-            const clonedPath = path.cloneNode();
+            path.style.strokeDasharray = `20 50`;
+            path.style.strokeDashoffset = '0';
 
+            const clonedPath = path.cloneNode();
             clonedPath.dataset.cloned = "true";
             clonedPath.style.stroke ='#9AEFFF';
             clonedPath.style.strokeDasharray = `20 ${length -20 } `;
@@ -209,15 +212,38 @@ export class AnimationManager{
                 
                 
             path.parentNode.appendChild(clonedPath);
+
+           
             
             animation.onfinish = () => {
+                 requestAnimationFrame(()=>{
+                    
                 
+
                 if(clonedPath && clonedPath.parentNode) {
                     clonedPath.remove();
                 }
                 
-                resolve('Animacja Lini Ok');
+                    
+                    anime({
+                        targets:path,
+                        
+                        strokeDashoffset:[0,200],
+                        duration: 2000,
+                        easing:'linear',
+                        begin: () => console.log('animacja sie rozpoczyna'),
+                        
+                        complete: () => resolve('Animation Lini ok')
+                        
+                        
+                        });
+                    
+                    });
+                    this.plumbManager.jsPlumbInstance.deleteConnection(targetConnection);
+                    
+                    
                 };
+                
 
                 } catch (err) {
                     reject(err);

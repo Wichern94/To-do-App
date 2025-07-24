@@ -678,12 +678,14 @@ export class NodeElement {
             if(!nextNode) {
                 
 
-               await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
+                await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
 
-               currentNode.ui.root.classList.add('hidden');
-               await this.getCompletedata();
-               currentNode.ui.root.classList.remove('active-border');
-               if(this.plumbManagers?.[this.nodeData.roadmapID]) {
+                currentNode.ui.root.classList.add('hidden');
+                await this.getCompletedata();
+                currentNode.ui.root.classList.remove('active-border');
+                this.plumbManager.jsPlumbInstance.deleteEveryConnection();
+                this.plumbManager.jsPlumbInstance.deleteEveryEndpoint();
+                if(this.plumbManagers?.[this.nodeData.roadmapID]) {
                 this.plumbManagers[this.nodeData.roadmapID].destroy();
                 delete this.plumbManagers[this.nodeData.roadmapID];
             }

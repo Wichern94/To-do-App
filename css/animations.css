@@ -27,14 +27,16 @@
   transition: opacity 0.3s ease;
   opacity: 0;
 }
-@keyframes dashMove {
-  from {
-    stroke-dashoffset: 0;
-  }
-  to {
-    stroke-dashoffset: -200;
-  }
+
+.dis-connection-animated  {
+  
+  stroke-dasharray: 500;
+  stroke-dashoffset: 0;
+  animation: vanishLine 2s ease-out forwards;
 }
-.dash-animate {
-  animation: dashMove 2s ease-out ;
+
+@keyframes vanishLine {
+  to {
+    stroke-dashoffset: 500;
+  }
 }

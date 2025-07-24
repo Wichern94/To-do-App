@@ -14,7 +14,7 @@ export class RoadmapPlumbManager {
       target: targetId,
       anchors: anchors,
       connector: ['Flowchart',{
-        stub:[30,30],
+        //stub:[30,30],
         cornerRadius:10,
         alwaysRespectStubs: true,
       }],
