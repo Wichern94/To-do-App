@@ -343,7 +343,11 @@
     color: var(--color-text-secondary);
     
 }
-
+.disabled-btn {
+    opacity: .4;
+    filter: grayscale(1);
+    pointer-events: none;
+}
     
     
 

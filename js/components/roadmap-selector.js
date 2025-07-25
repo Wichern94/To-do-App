@@ -1,62 +1,65 @@
 import { FormErrors } from '../uiErrorHandler.js';
 export class RoadmapSelector {
-    constructor({
-        titleContainerID,
-        newMapBtnID,
-        setRoadmapContainerID,
-        setRoadmapFormID,
-        setInputTitleID,
-        setRoadmapSubmitBtnID,
-        abandonRoadmapSubmitBtnID,
-        onSubmit = null,
-        onDelete = null,
-        onEnterRoadmap = null,
-        onQuitRoadmap = null,
-        ulContainerID,
-        ulContDivID,
-        listTogglerID,
-        addBtnContainerID,
-        
-    })
-    {
+    constructor({elements, callbacks = {}, services ={} }) {
         this.elements = {
-            titleContainer: document.getElementById(titleContainerID),
-            newMapBtn: document.getElementById(newMapBtnID),
-            setRoadmapContainer: document.getElementById(setRoadmapContainerID),
-            setRoadmapForm: document.getElementById(setRoadmapFormID),
-            setInputTitle: document.getElementById(setInputTitleID),
-            setRoadmapSubmitBtn: document.getElementById(setRoadmapSubmitBtnID),
-            abandonRoadmapSubmitBtn: document.getElementById(abandonRoadmapSubmitBtnID),
-            ulContainer: document.getElementById(ulContainerID),
-            ulContDiv: document.getElementById(ulContDivID),
-            listToggler: document.getElementById(listTogglerID),
-            addBtnContainer: document.getElementById(addBtnContainerID),
-            
+            //przyciski:
+
+            newMapBtn: document.getElementById(elements.newMapBtnID),
+            setRoadmapSubmitBtn: document.getElementById(elements.setRoadmapSubmitBtnID),
+            abandonRoadmapSubmitBtn: document.getElementById(elements.abandonRoadmapSubmitBtnID),
+            listToggler: document.getElementById(elements.listTogglerID),
+            //kontenery:
+
+            titleContainer: document.getElementById(elements.titleContainerID),
+            setRoadmapContainer: document.getElementById(elements.setRoadmapContainerID),
+            ulContainer: document.getElementById(elements.ulContainerID),
+            ulContDiv: document.getElementById(elements.ulContDivID),
+            addBtnContainer: document.getElementById(elements.addBtnContainerID),
+            //Elementy formularzy:
+
+            setRoadmapForm: document.getElementById(elements.setRoadmapFormID),
+            setInputTitle: document.getElementById(elements.setInputTitleID),
         };
+        //Callbacki:
+        this.onSubmit = callbacks.onSubmit;
+        this.onDelete = callbacks.onDelete;
+        this.onEnterRoadmap = callbacks.onEnterRoadmap;
+        this.onQuitRoadmap = callbacks.onQuitRoadmap;
+
+        //Zewnetrzne serwisy:
+        this.firestoreService = services.firestoreService;
+        this.FormErr = new FormErrors('create-map-form');
+        this.animationManager = services.animationManager;
+        
+        //listenery:
         this.listeners = [
             { el: 'newMapBtn', event: 'click', handler: this.showAddRoadmap.bind(this) },
             { el: 'abandonRoadmapSubmitBtn', event: 'click', handler: this.hideAddRoadmap.bind(this) },
             { el: 'setRoadmapSubmitBtn', event: 'click', handler: this.handleSubmit.bind(this) },
             { el: 'setRoadmapForm', event: 'click', handler: this.handleClearError.bind(this) },
-            { el: 'ulContainer', event: 'click', handler: this.handleDelete.bind(this)},
-            { el: 'ulContainer', event: 'click', handler: this.handleEnterRoadmap.bind(this) },
+            { el: 'ulContainer', event: 'click', handler: this.handleUlClick.bind(this)},
+            
+        ];
+
+        //Pojemniki: 
+        
+        this.roadmaps = [];
+        this.activeRoadmapId = null;
+            
+    }  
+            
+            
             
             
 
             
             
             
-        ];
-        this.roadmaps = [];
-        this.activeRoadmapId = null;
-        this.FormErr = new FormErrors('create-map-form');
-        this.onSubmit = onSubmit;
-        this.onDelete = onDelete;
-        this.onEnterRoadmap = onEnterRoadmap;
-        this.onQuitRoadmap = onQuitRoadmap;
         
         
-         }  
+        
+        
+        
         activate() {
             console.log('aktywowano activite RiadmapSelectora');
             
@@ -81,9 +84,12 @@ export class RoadmapSelector {
         this.FormErr.clearAllErrors()
         this.elements.setInputTitle.value = '';
     }
-    handleSubmit(e) {
-            e.preventDefault()
-            const nameInputData = this.elements.setInputTitle.value.trim()
+    async handleSubmit(e) {
+        e.preventDefault();
+        try{     
+                                                       //trim usuwa spacje,taby, itd!
+            const nameInputData = this.elements.setInputTitle.value.trim()//<-pobieram Value z impota czyli tytuł
+             
             if(!nameInputData) {
                 this.FormErr.showError('create-map-title','Nazwij mapę!');
                 return
@@ -92,21 +98,39 @@ export class RoadmapSelector {
                 this.FormErr.showError('create-map-title','Nazwa juz instnieje!');
                 return;
             }
-            
-            
-           
+            //tworze Obiekt z danymi
             const roadData = {
                 title: nameInputData,
-                
-                
+                createdAt: Date.now(),
             }
-            this.roadmaps.push(roadData);
-                
-            if(typeof this.onSubmit === 'function') this.onSubmit(roadData);
+            this.isRoadmapSubmitting = true;
+            const id = await this.firestoreService.addCollection(roadData,'roadmaps');
+            if (!id) throw new Error('brak ID z bazy Danych!')
+
+            const fullData = {...roadData, id};
+            this.roadmaps.push(fullData); //<- dodaje do pojemnika
             
-            this.hideAddRoadmap()
-            return roadData
-        } 
+            
+            this.createRoadmapLi(fullData);
+            this.createNodeUl(fullData)
+            this.hideAddRoadmap();//<- ukrywam Modal
+
+            if(typeof this.onSubmit === 'function') { 
+                this.onSubmit(fullData);
+            }
+                
+        } catch(error) {
+            console.error('bład tworzenia mapy!', error)
+        } finally {
+            this.isRoadmapSubmitting = false;
+        }
+    } 
+                
+                
+                
+            
+            
+            
      handleClearError(e){
             this.FormErr.clearError(e.target.name);
         }
@@ -175,22 +199,51 @@ export class RoadmapSelector {
         this.checkRoudmaps()
         
     }; 
-    handleDelete(e) {
-        const deleteBtn = e.target.closest('.delete-road-btn');
-        if(!deleteBtn) return;
 
-        const li = deleteBtn.closest('.roadmap-list-item');
-        const roadmapId = li?.dataset.id;
-        if(!roadmapId) return 
-        
+         handleUlClick(e){
+            const deleteBtn = e.target.closest('.delete-road-btn'); //<- wybieram przycisk najblizszy targtowi eventu
+            const enterBtn = e.target.closest('.enter-road-btn');
+            const li = deleteBtn?.closest('.roadmap-list-item') || enterBtn?.closest('.roadmap-list-item');
 
-        if(typeof this.onDelete === 'function') {
-            this.onDelete(roadmapId);
+            if(deleteBtn){
+                this.handleDelete(li);
+            } else if(enterBtn){
+                this.handleEnterRoadmap(li)
+            }
+                
+         }
+   async handleDelete(li) {
+        try {
+            if(!li) throw new Error('Nie znaleziono elementu LI!')
+                
+            const deleteBtn = li.querySelector('.delete-road-btn');
+            deleteBtn.classList.add('disabled-btn');
+            const roadmapID = li?.dataset.id;
+
+            if(!roadmapID) throw new Error('Nie znaleziono ID Roadmapy!')
+            const success = await this.firestoreService.deleteDocument(roadmapID, 'roadmaps');
             
-        }
-        
+           
+            if(success) { // usuwanie zapomcą filter: nie modyfikuje oryginalnej tablicy, tylko zwracam nową
+                this.roadmaps = this.roadmaps.filter(map => map.id !== roadmapID); // i przypisuję ją z powrotem
+                const li  = document.querySelector(`.roadmap-list-item[data-id="${roadmapID}"]`);
+                li?.remove();
+                this.checkRoudmaps();
+            }
+            
 
-    } 
+               if(typeof this.onDelete === 'function') {
+                this.onDelete(roadmapID);
+            }
+                
+        } catch(error) {
+            console.error('bład przy usuwaniu:',error)
+            }
+       }     
+            
+
+         
+
     checkRoudmaps(){
         let liCreated = false;
         if (this.elements.ulContainer.querySelector('li')) {
@@ -217,15 +270,16 @@ export class RoadmapSelector {
              console.log('utworzono nowy ul:', ul);
          }
     } 
-    handleEnterRoadmap(e) {
-        const btn = e.target.closest('.enter-road-btn');
+    handleEnterRoadmap(li) {
+        const btn = li.querySelector('.enter-road-btn');
         if(!btn) return;
-
-        const li = btn.closest('.roadmap-list-item');
+        
         const roadmapID = li?.dataset.id;
         if(!roadmapID) return;
+        
         //dodaje aktywne id do konstruktora
         this.activeRoadmapId = roadmapID;
+
         //przekazuje callback żeby go potem podac to roud-modal
         if(typeof this.onEnterRoadmap ==='function') {
             this.onEnterRoadmap(`ul-${roadmapID}`);
@@ -234,10 +288,13 @@ export class RoadmapSelector {
         //ukrywam pojemnik na wybor roadmap
         this.elements.listToggler.classList.add('hidden');
         //pokazuje ulki z tym ID
-        const targetUl = document.querySelector(`ul[id="ul-${roadmapID}"]`);
-        document.querySelectorAll('.roadmap-list').forEach(ul => ul.classList.add('hidden'));
+        const targetUl = this.elements.ulContDiv.querySelector(`ul[id="ul-${roadmapID}"]`);
+        this.elements.ulContDiv.querySelectorAll('.roadmap-list').forEach(ul => 
+            ul.classList.add('hidden'));
+
         this.elements.ulContDiv.classList.remove('hidden');
         targetUl?.classList.remove('hidden');
+
         //globalny przycisk dodawania nodów
         this.elements.addBtnContainer.classList.remove('hidden');
     }

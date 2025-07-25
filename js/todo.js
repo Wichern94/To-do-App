@@ -23,6 +23,7 @@ export class TodoApp{
         this.activeRoadmapId = null
         this.activeRoadmapInstance = null;
         this.plumbManagers = {};
+        this.AnimationManager = new AnimationManager();
         this.roudmapModal = new RoudMapModal({
             openBtnID:'add-roadmap-task',
             modalID:'create-roud-menu',
@@ -65,31 +66,54 @@ export class TodoApp{
             });
         this.isroadmapcreated = false 
         this.roadmapSelector = new RoadmapSelector({
-            titleContainerID:'roadmap-section-title',
-            newMapBtnID:'new-map-btn',
-            setRoadmapContainerID:'add-main-roadmap',
-            setRoadmapFormID:'create-map-form',
-            setInputTitleID:'create-title',
-            setRoadmapSubmitBtnID:'create-submit-btn',
-            abandonRoadmapSubmitBtnID:'create-abandon-btn',
-            ulContainerID: 'ul-container',
-            ulContDivID: 'Ul-cont-div',
-            listTogglerID: 'list-toggler-ID',
-            addBtnContainerID: 'add-node-btn-cont',
-            
-            //calback z id odpowiedniego uL w ktorym renderujemy nody
-            onEnterRoadmap: async (roadmapID) => {
-                await this.renderNodesForRoadmap(roadmapID)
+            elements: {
+                titleContainerID:'roadmap-section-title',
+                newMapBtnID:'new-map-btn',
+                setRoadmapContainerID:'add-main-roadmap',
+                setRoadmapFormID:'create-map-form',
+                setInputTitleID:'create-title',
+                setRoadmapSubmitBtnID:'create-submit-btn',
+                abandonRoadmapSubmitBtnID:'create-abandon-btn',
+                ulContainerID: 'ul-container',
+                ulContDivID: 'Ul-cont-div',
+                listTogglerID: 'list-toggler-ID',
+                addBtnContainerID: 'add-node-btn-cont',
+                },
+            callbacks: {
+                // calback tworzenia Roadmapy
+                onSubmit:  (fullData) => {
+                    console.log(console.log('%cDodanie Roadmapy Udane!', 'color: green; font-weight: bold;',fullData));
+                    
+                },
+                // calback Kasowania roadmapy  
+                onDelete: async (roadmapID) => { 
+                    console.log(console.log('%cUsuniecie Roadmapy Udane!', 'color: green; font-weight: bold;',roadmapID));
+                },
+
+                //calback z do wchodzenia w roadmape
+                onEnterRoadmap: async (roadmapID) => {
+                    
+                    await this.renderNodesForRoadmap(roadmapID)
                 } ,
-            onQuitRoadmap: (roadmapID) => {
-                console.log('callback z on quit to:',roadmapID)
-                if(this.plumbManagers?.[roadmapID]) {
-                this.plumbManagers[roadmapID].destroy();
-                delete this.plumbManagers[roadmapID];
-            }
-            },
+                //callback do wychodenia z roadmapy
+                onQuitRoadmap: (roadmapID) => {
+                    console.log('callback z on quit to:',roadmapID)
+
+                    if(this.plumbManagers?.[roadmapID]) {
+                    this.plumbManagers[roadmapID].destroy();
+                    delete this.plumbManagers[roadmapID];
+                    }
+                }
+              },
+            services: {
+                firestoreService: this.firestoreService,
+                animationManager: this.AnimationManager,
+            }          
+        });
                         
-                        
+          
+
+            
                         
                          
                         
@@ -97,22 +121,6 @@ export class TodoApp{
                 
                 
             
-            onSubmit: async (roadData) => {
-                const id = await this.firestoreService.addCollection(roadData,'roadmaps');
-                if (!id) return;
-                const fullRoadData = {...roadData, id};
-                this.roadmapSelector.createRoadmapLi(fullRoadData);
-            },
-
-            onDelete: async (roadmapId) => { 
-              const success = await this.firestoreService.deleteDocument(roadmapId, 'roadmaps');
-              if(success) {
-                const li  = document.querySelector(`.roadmap-list-item[data-id="${roadmapId}"]`);
-                li?.remove();
-                this.roadmapSelector.checkRoudmaps();
-              }
-            },
-        });
         
         this.mainHamburger = new MainMenuHandler(
             'main-hamburger','main-burger-exit','main-burger-menu');

@@ -60,7 +60,7 @@ li:first-of-type .title-roudmap::after {
 .roadmap-node {
   background: var(--color-bg-soft);
   border: 0.5px solid var(--glass-border); 
-  overflow:visible;
+  overflow: hidden;
   width: 14rem;
   will-change: height;
   position: relative;
