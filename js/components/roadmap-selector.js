@@ -1,4 +1,5 @@
 import { FormErrors } from '../uiErrorHandler.js';
+import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 export class RoadmapSelector {
     constructor({elements, callbacks = {}, services ={} }) {
         this.elements = {
@@ -107,8 +108,9 @@ export class RoadmapSelector {
             const id = await this.firestoreService.addCollection(roadData,'roadmaps');
             if (!id) throw new Error('brak ID z bazy Danych!')
 
-            const fullData = {...roadData, id};
-            this.roadmaps.push(fullData); //<- dodaje do pojemnika
+            const fullData = {...roadData, id,isNew: true };
+            const {isNew, ...RoadDataWithoutFlag} = fullData; //<- destrukturyzacja, zeby bylo bez isNew
+            this.roadmaps.push(RoadDataWithoutFlag); //<- dodaje do pojemnika
             
             
             this.createRoadmapLi(fullData);
@@ -134,7 +136,7 @@ export class RoadmapSelector {
      handleClearError(e){
             this.FormErr.clearError(e.target.name);
         }
-    createRoadmapLi(data){
+   async createRoadmapLi(data){
         const li = document.createElement('li');
         li.classList.add('roadmap-list-item');
          if(data.id){
@@ -156,6 +158,9 @@ export class RoadmapSelector {
                         </button>
                     </div>`
             this.elements.ulContainer.appendChild(li)
+            if(data.isNew) {
+               await this.animationManager.addElementAnimation(li,'bounceInLeft', '1s')
+            }
             
         };
             
@@ -227,6 +232,7 @@ export class RoadmapSelector {
             if(success) { // usuwanie zapomcą filter: nie modyfikuje oryginalnej tablicy, tylko zwracam nową
                 this.roadmaps = this.roadmaps.filter(map => map.id !== roadmapID); // i przypisuję ją z powrotem
                 const li  = document.querySelector(`.roadmap-list-item[data-id="${roadmapID}"]`);
+                await this.animationManager.addElementAnimation(li,'bounceOutRight', '1s');
                 li?.remove();
                 this.checkRoudmaps();
             }
@@ -270,7 +276,7 @@ export class RoadmapSelector {
              console.log('utworzono nowy ul:', ul);
          }
     } 
-    handleEnterRoadmap(li) {
+    async handleEnterRoadmap(li) {
         const btn = li.querySelector('.enter-road-btn');
         if(!btn) return;
         
@@ -284,20 +290,47 @@ export class RoadmapSelector {
         if(typeof this.onEnterRoadmap ==='function') {
             this.onEnterRoadmap(`ul-${roadmapID}`);
         }
+        //stałe:
+        const targetUl = this.elements.ulContDiv.querySelector(`ul[id="ul-${roadmapID}"]`); //<-wlasciy ul
+        const backBtn = this.elements.ulContDiv.querySelector('#btn-back');
+        const ulContainer = this.elements.ulContDiv; // <- pojemnik na ulki
+        const mapMenu = this.elements.listToggler; // <-panel wyboru roadmapy
+        const addModalContainer = this.elements.addBtnContainer //<- pojemnik na przycisk do dodawania nodów
+        // przygotowanie elemtów:
 
-        //ukrywam pojemnik na wybor roadmap
-        this.elements.listToggler.classList.add('hidden');
-        //pokazuje ulki z tym ID
-        const targetUl = this.elements.ulContDiv.querySelector(`ul[id="ul-${roadmapID}"]`);
-        this.elements.ulContDiv.querySelectorAll('.roadmap-list').forEach(ul => 
+        hideElement(backBtn) // ukrywam wczesniej zeby pokazac go  nakoniec sekwencji i zeby nie przeszkadzal
+        ulContainer.querySelectorAll('.roadmap-list').forEach(ul =>  // ukrywam wszystkie ulki roadmap
             ul.classList.add('hidden'));
+        //Sekwecja Animowana pokazywania/ukrywania 
 
-        this.elements.ulContDiv.classList.remove('hidden');
-        targetUl?.classList.remove('hidden');
+        //1)ukrywam pojemnik na wybor roadmap:
+         await this.animationManager.hideAnimation(mapMenu,'fadeOutRight','.5s' );
+        
+        //2)pokazuje pojemnik na ulki wszytskie sa tu ukryte!
+        await this.animationManager.showAnimation(ulContainer,'fadeInRight','.1s');
 
-        //globalny przycisk dodawania nodów
-        this.elements.addBtnContainer.classList.remove('hidden');
+        //3) pokazuje własciwy ul zgodny z ID
+       await this.animationManager.showAnimation(targetUl,'fadeInRight', '.5s');
+
+       //4) Przyciski:
+
+        //powrót
+        await this.animationManager.showBtns(backBtn, '.2s')
+
+        // pokazuje globalny przycisk dodawania nodów
+        await this.animationManager.showBtns(addModalContainer, '.2s')
     }
+        
+            
+        
+
+        
+        
+        
+         
+        
+        
+        
     activeBackButton() {
         const backBtn = document.getElementById('btn-back');
         if(backBtn) {

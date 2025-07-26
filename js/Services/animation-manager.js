@@ -360,14 +360,7 @@ export class AnimationManager{
                 if(!element) {
                     throw new Error('brakuje elementów! element jest:',element);
                 }
-            const interval = setInterval(() => {
-                    this.plumbManager?.jsPlumbInstance?.revalidate(element);
-                    this.plumbManager?.jsPlumbInstance?.repaintEverything();
-                }, 10); 
-               
-                setTimeout(() => {
-                    clearInterval(interval);
-                }, 1500); 
+            
             requestAnimationFrame(()=>{
                 element.classList.remove(`animate__${animation}`); // reset
                 
@@ -511,18 +504,20 @@ export class AnimationManager{
         });
     }
 
-    addnodeAnimation(element, animation,duration ){
-        
+    showAnimation(element, animation,duration ){
+        return new Promise((resolve,reject) => {
+            try{
                 if(!element) {
                     throw new Error('brakuje elementów! element jest:',element);
                 }
 
             requestAnimationFrame(()=>{
+
                 element.classList.remove(`animate__${animation}`); // reset
-                
-                
                 void element.offsetWidth;
-               
+                
+                
+                element.classList.remove('hidden');
                 element.style.setProperty('--animate-duration', `${duration}`);
                 element.classList.add('animate__animated', `animate__${animation}`);
            
@@ -532,16 +527,116 @@ export class AnimationManager{
                    element.style.removeProperty('--animate-duration');
                    element.removeEventListener('animationend',handleAnimationEnd);
                    console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
-                   
-           
+                   resolve('animacja ok!')
                 };
                 element.addEventListener('animationend',handleAnimationEnd);
-                
             });
+        }catch(error) {
+            reject(error)
+        }
+    });
+}
+
+     hideAnimation(element, animation,duration ){
+        return new Promise((resolve,reject) => {
+            try{
+                if(!element) {
+                    throw new Error('brakuje elementów! element jest:',element);
+                }
+
+            requestAnimationFrame(()=>{
+
+                element.classList.remove(`animate__${animation}`); // reset
+                void element.offsetWidth;
+                
+                
+               
+                element.style.setProperty('--animate-duration', `${duration}`);
+                element.classList.add('animate__animated', `animate__${animation}`);
+           
+              
+                const handleAnimationEnd = () => {
+                    element.classList.remove('animate__animated',`animate__${animation}`);
+                    element.style.removeProperty('--animate-duration');
+                    element.classList.add('hidden');
+                    element.removeEventListener('animationend',handleAnimationEnd);
+                    console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
+                    resolve('animacja ok!');
+                };
+                element.addEventListener('animationend',handleAnimationEnd);
+            });
+        }catch(error) {
+            reject(error)
+        }
+    });
+}
+                   
+           
+                
                     
             
         
+
+    transitionBetweenViews(hideEl,showEls,{ outClass= 'fadeOutRight',inClass = 'fadeInRight'} = {}) {
+        return new Promise((resolve,reject) => {
+            try{
+                if(!hideEl ||!showEl) {
+                    throw new Error('brak elementu wyjscia:',hideEl,'lub wejscia:',showEl);
+                }
+                let finished = 0;
+                const elements = [hideEl,showEls];
+                const showElements = Array.isArray(showEls) ? showEls :[showEls];
+                showElements.forEach((el) => {
+                    
+                    //jesli znajduje el  nie ukryty
+                    if(!el.classList.contains('hidden')) {
+
+                        el.classList.remove(`animate__${outClass}`);
+                        void  el.offsetWidth;
+                        el.classList.add('animate__animated', `animate__${outClass}`);
+                        
+                         const handleAnimationEnd = () => {
+                            el.classList.remove('animate__animated',`animate__${outClass}`);
+                            el.classList.add('hidden'); // to ukrywam
+                            finished ++
+                            el.removeEventListener('animationend',handleAnimationEnd);
+                            console.log('Dodaję klasy:', `animate__animated animate__${outClass}`);
+                            if(finished === 2) resolve('animacje ok!')
+                        };
+                        el.addEventListener('animationend',handleAnimationEnd);
+
+                        //jesli znajduje el ukryty
+                    } else if (el.classList.contains('hidden')) {
+                        el.classList.remove(`animate__${inClass}`);
+                        void  el.offsetWidth;
+
+                        el.classList.remove('hidden') //to odkrywam
+                        el.classList.add('animate__animated', `animate__${inClass}`);
+
+                        const handleHideAnimationEnd = () => {
+                            el.classList.remove('animate__animated',`animate__${inClass}`);
+                            finished ++
+                            el.removeEventListener('animationend',handleHideAnimationEnd);
+                            console.log('Dodaję klasy:', `animate__animated animate__${inClass}`);
+                            console.log('finished ma:',finished);
+                            if(finished === 2) resolve('animacje ok!')
+                        };
+                        el.addEventListener('animationend',handleHideAnimationEnd);
+                        
+                        
+                    }
+                });
+            }catch(error) {
+                reject(error)
+            }
+        });
     }
+
+
+                            
+                    
+
+
 
 
 
