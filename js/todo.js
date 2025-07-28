@@ -9,6 +9,7 @@ import {FirestoreService} from './Services/Service.js'
 import {NodeElement} from './components/node-component.js'
 import { RoadmapPlumbManager } from './Services/plumb-manager.js';
 import {AnimationManager} from "./Services/animation-manager.js"
+import {ToastManager} from "./Services/toastify-manger.js"
 
 export class TodoApp{
     constructor(user, viewManager) {
@@ -25,24 +26,30 @@ export class TodoApp{
         this.plumbManagers = {};
         this.AnimationManager = new AnimationManager();
         this.roudmapModal = new RoudMapModal({
-            openBtnID:'add-roadmap-task',
-            modalID:'create-roud-menu',
-            closeBtnID:'manual-abandon-btn',
-            handBtnID: 'hand-button',
-            importBtnID:'import-button',
-            importFormID:'import-node-form',
-            manualFormID: 'manual-node-form',
-            modalCheckBoxID:'roud-checkbox',
-            checkBoxContainerID:'sub-container',
-            subTaskInputID: 'r-sub',
-            subTaskBtnID: 'add-subtask-btn',
-            subTaskUlID:'subtask-list',
-            manualSubmitBtnID:'manual-submit-btn',
-            roudNodeInputID: 'r-title',
-            onOpen:() => {
+            elements: {
+                openBtnID:'add-roadmap-task',
+                modalID:'create-roud-menu',
+                closeBtnID:'manual-abandon-btn',
+                handBtnID: 'hand-button',
+                importBtnID:'import-button',
+                importFormID:'import-node-form',
+                manualFormID: 'manual-node-form',
+                modalCheckBoxID:'roud-checkbox',
+                checkBoxContainerID:'sub-container',
+                subTaskInputID: 'r-sub',
+                subTaskBtnID: 'add-subtask-btn',
+                subTaskUlID:'subtask-list',
+                manualSubmitBtnID:'manual-submit-btn',
+                roudNodeInputID: 'r-title',
+            },
+            callbacks: {
+                //callback po wejsciu:
+                 onOpen:() => {
                 this.roudmapModal.setRoadmapId(this.activeRoadmapId)
                 },
-            onManualSubmit: async (nodeData) => {
+
+                // callback po dodaniu Manualnym:
+                 onManualSubmit: async (nodeData) => {
                 const existingNodes = await this.firestoreService.getElementsfromSubCollection(
                 nodeData.roadmapID,
                 'roadmaps',
@@ -59,11 +66,19 @@ export class TodoApp{
                 console.log('roadmapid wmanualu',fullData);
                 
                 await this.renderNodesForRoadmap(fullData.roadmapID,fullData.id)
-            }
+                },
+            },
+            //Serwisy
+             services: {
+                firestoreService: this.firestoreService,
+                animationManager: this.AnimationManager,
+            }          
+        });
+           
+           
                
                 
                 
-            });
         this.isroadmapcreated = false 
         this.roadmapSelector = new RoadmapSelector({
             elements: {
@@ -83,17 +98,27 @@ export class TodoApp{
                 // calback tworzenia Roadmapy
                 onSubmit:  (fullData) => {
                     console.log(console.log('%cDodanie Roadmapy Udane!', 'color: green; font-weight: bold;',fullData));
-                    
+                    ToastManager.success('👍 Dodanie Roadmapy Udane!')
                 },
                 // calback Kasowania roadmapy  
                 onDelete: async (roadmapID) => { 
                     console.log(console.log('%cUsuniecie Roadmapy Udane!', 'color: green; font-weight: bold;',roadmapID));
+                    ToastManager.info('🗑️ Usunięto roadmapę!')
                 },
 
                 //calback z do wchodzenia w roadmape
                 onEnterRoadmap: async (roadmapID) => {
+                    await this.renderNodesForRoadmap(roadmapID);
+                    const interval = setInterval(() => { // <-naprawiam linie zeby sie nie rozjechały
+                    this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(roadmapID);
+                    this.plumbManagers[roadmapID]?.jsPlumbInstance?.repaintEverything();
+                }, 10); // co 10ms przez 300ms
+               
+                setTimeout(() => {
+                    clearInterval(interval);
+                }, 1500); // zatrzymaj po 300ms
                     
-                    await this.renderNodesForRoadmap(roadmapID)
+                    
                 } ,
                 //callback do wychodenia z roadmapy
                 onQuitRoadmap: (roadmapID) => {

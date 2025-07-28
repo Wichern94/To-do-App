@@ -321,7 +321,52 @@ export class RoadmapSelector {
         await this.animationManager.showBtns(addModalContainer, '.2s')
     }
         
+    activeBackButton() {
+        const backBtn = document.getElementById('btn-back');
+        if(backBtn) {
+            backBtn.removeEventListener('click', this.handleGoBack);
+            backBtn.addEventListener('click', this.handleGoBack.bind(this));
+        }
+    }
             
+   async handleGoBack() {
+         // przygotowanie elemtów:
+        const targetUl = document.querySelector(`ul[id="ul-${this.activeRoadmapId}"]`);
+        const backBtn = this.elements.ulContDiv.querySelector('#btn-back');
+        const ulContainer = this.elements.ulContDiv; // <- pojemnik na ulki
+        const mapMenu = this.elements.listToggler; // <-panel wyboru roadmapy
+        const addModalContainer = this.elements.addBtnContainer; //<- pojemnik na przycisk do dodawania nodów
+        const roadmapID = `ul-${this.activeRoadmapId}`;
+        //Sekwecja Animowana pokazywania/ukrywania 
+         //1) Przyciski:
+
+        //powrót
+        await this.animationManager.hideBtns(backBtn, '.2s');
+
+        // ukrywam globalny przycisk dodawania nodów
+        await this.animationManager.hideBtns(addModalContainer, '.2s');
+
+        //2) ukrywam własciwy ul zgodny z ID
+        await this.animationManager.hideAnimation(targetUl,'fadeOutLeft', '.5s');
+        console.log('log pohide target ul');
+        
+        //3) ukrywam pojemnik na ulki wszytskie sa tu ukryte!
+        await this.animationManager.hideAnimation(ulContainer,'fadeOutLeft','.1s');
+         //1)ukrywam pojemnik na wybor roadmap:
+        await this.animationManager.showAnimation(mapMenu,'fadeInLeft','.5s' );
+        
+
+        // // this.elements.listToggler.classList.remove('hidden');
+        // this.elements.ulContDiv.classList.add('hidden');
+        // targetUl?.classList.add('hidden');
+        // this.elements.addBtnContainer.classList.add('hidden');
+        
+         if(typeof this.onQuitRoadmap ==='function') {
+            this.onQuitRoadmap(roadmapID);
+        }
+        
+
+    }
         
 
         
@@ -331,26 +376,6 @@ export class RoadmapSelector {
         
         
         
-    activeBackButton() {
-        const backBtn = document.getElementById('btn-back');
-        if(backBtn) {
-            backBtn.removeEventListener('click', this.handleGoBack);
-            backBtn.addEventListener('click', this.handleGoBack.bind(this));
-        }
-    }
-    handleGoBack() {
-        const targetUl = document.querySelector(`ul[id="ul-${this.activeRoadmapId}"]`);
-        this.elements.listToggler.classList.remove('hidden');
-        this.elements.ulContDiv.classList.add('hidden');
-        targetUl?.classList.add('hidden');
-        this.elements.addBtnContainer.classList.add('hidden');
-        const roadmapID = `ul-${this.activeRoadmapId}`
-         if(typeof this.onQuitRoadmap ==='function') {
-            this.onQuitRoadmap(roadmapID);
-        }
-        
-
-    }
             
             
             

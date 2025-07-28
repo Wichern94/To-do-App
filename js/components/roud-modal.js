@@ -1,52 +1,45 @@
 import { FormErrors } from '../uiErrorHandler.js';
 import {AnimationManager} from "../Services/animation-manager.js"
+import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 export class RoudMapModal {
-    constructor({
-        openBtnID,
-        modalID,
-        closeBtnID,
-        onOpen = null,
-        handBtnID,
-        importBtnID,
-        importFormID,
-        manualFormID,
-        modalCheckBoxID,
-        checkBoxContainerID,
-        subTaskInputID,
-        subTaskBtnID,
-        subTaskUlID,
-        manualSubmitBtnID,
-        roudNodeInputID,
-        onManualSubmit = null
-        }) {
-
+    constructor({elements, callbacks = {}, services ={} }) {
+        // Elementy Ui
         this.elements = {
-            openBtn: document.getElementById(openBtnID),
-            modal: document.getElementById(modalID),
-            closeBtn: document.getElementById(closeBtnID),
-            handSwitchBtn: document.getElementById(handBtnID),
-            importSwitchBtn: document.getElementById(importBtnID),
-            importForm: document.getElementById(importFormID),
-            manualForm: document.getElementById(manualFormID),
-            modalCheckBox: document.getElementById(modalCheckBoxID),
-            checkBoxContainer: document.getElementById(checkBoxContainerID),
-            subTaskInput: document.getElementById(subTaskInputID),
-            subTaskBtn: document.getElementById(subTaskBtnID),
-            subTaskUl: document.getElementById(subTaskUlID),
-            manualSubmitBtn: document.getElementById(manualSubmitBtnID),
-            roudNodeInput: document.getElementById(roudNodeInputID),
+            //przyciski:
+            openBtn: document.getElementById(elements.openBtnID),
+            closeBtn: document.getElementById(elements.closeBtnID),
+            handSwitchBtn: document.getElementById(elements.handBtnID),
+            importSwitchBtn: document.getElementById(elements.importBtnID),
+            subTaskBtn: document.getElementById(elements.subTaskBtnID),
+            manualSubmitBtn: document.getElementById(elements.manualSubmitBtnID),
+            // elementy formularza:
+            importForm: document.getElementById(elements.importFormID),
+            manualForm: document.getElementById(elements.manualFormID),
+            subTaskInput: document.getElementById(elements.subTaskInputID),
+            roudNodeInput: document.getElementById(elements.roudNodeInputID),
+            modalCheckBox: document.getElementById(elements.modalCheckBoxID),
+            //kontenery:
+            modal: document.getElementById(elements.modalID),
+            checkBoxContainer: document.getElementById(elements.checkBoxContainerID),
+            subTaskUl: document.getElementById(elements.subTaskUlID),
         };
+        // CallBacki:
+        this.onOpen = callbacks.onOpen || null;
+        this.onManualSubmit = callbacks.onManualSubmit || null;
+        this.onImportSubmit = callbacks.onImportSubmit || null;
+        //Zewnętrzne serwisy:
         this.manualFormErr = new FormErrors('manual-node-form');
         this.importFormErr = new FormErrors('import-node-form');
+        this.animationManager = services.animationManager || null;
+        this.firebaseServices =services.firestoreService || null;
+        // pojemniki:
         this.subTaskValues = [];
-        this.animationManager = new AnimationManager();
         this.activeRoadmapId = null;
-        this.onOpen = onOpen;
-        this.onManualSubmit= onManualSubmit;
-        this.activeAnimations()
-        // musze z bindowac metody zeby dało sie odpinac listenery,
-        // gdybym nie zbindował to by metody wskazywały na element dom anie klase.
-        this.listeners = [
+        //Metody
+        this.activeAnimations();
+        // Listenery:
+        this.listeners = [      // musze z bindowac metody zeby dało sie odpinac listenery,
+                            // gdybym nie zbindował to by metody wskazywały na element dom anie klase.
             { el: 'openBtn', event: 'click', handler: this.showAddModal.bind(this) },
             { el: 'closeBtn', event: 'click', handler: this.hideAddModal.bind(this) },
             { el: 'importSwitchBtn', event: 'click', handler: this.showImportSection.bind(this) },
@@ -61,6 +54,12 @@ export class RoudMapModal {
             
             // tu Bedę właczac modal
         activate() {
+            // sprawdzam czy wszystie elementy istnieją:
+            Object.entries(this.elements).forEach(([key, el]) =>{
+                if (!el) {
+                    console.warn(`Brakuje Elementu dom:${key}`);
+                }
+            });
             this.listeners.forEach(({ el,event, handler}) => {
                 this.elements[el]?.addEventListener(event,handler);
             });

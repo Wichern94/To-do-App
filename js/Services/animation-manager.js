@@ -481,7 +481,7 @@ export class AnimationManager{
 
                
                 element.style.setProperty('--animate-duration', `${duration}`);
-                element.classList.add('hidden');
+                
                 element.classList.add('animate__animated', `animate__fadeOut`);
                 
            
@@ -489,6 +489,7 @@ export class AnimationManager{
                 const handleAnimationEnd = () => {
                    element.classList.remove('animate__animated',`animate__fadeOut`);
                    element.style.removeProperty('--animate-duration');
+                   element.classList.add('hidden');
                    element.removeEventListener('animationend',handleAnimationEnd);
                    console.log('Dodaję klasy:', `animate__animated animate__fadeOut`);
                    resolve('Animcja node ok');
