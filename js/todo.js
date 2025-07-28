@@ -41,6 +41,7 @@ export class TodoApp{
                 subTaskUlID:'subtask-list',
                 manualSubmitBtnID:'manual-submit-btn',
                 roudNodeInputID: 'r-title',
+                uiPanelID: 'modal-ui-panel'
             },
             callbacks: {
                 //callback po wejsciu:
@@ -49,22 +50,8 @@ export class TodoApp{
                 },
 
                 // callback po dodaniu Manualnym:
-                 onManualSubmit: async (nodeData) => {
-                const existingNodes = await this.firestoreService.getElementsfromSubCollection(
-                nodeData.roadmapID,
-                'roadmaps',
-                'nodes'
-                );
-
-                const order = Array.isArray(existingNodes) ? existingNodes.length : 0;
-                const nodeDataWithOrder={...nodeData,order: order, wasActive:false }
-
-                const nodeID = await this.firestoreService.addCollectionElement(nodeDataWithOrder,'roadmaps','nodes')
-                if(!nodeID) return;
-                
-                const fullData = {...nodeDataWithOrder, id: nodeID};
-                console.log('roadmapid wmanualu',fullData);
-                
+                 onSubmitSuccess: async (fullData) => {
+                ToastManager.success('👍 Dodanie pojedynczego Elmentu Udane!')
                 await this.renderNodesForRoadmap(fullData.roadmapID,fullData.id)
                 },
             },

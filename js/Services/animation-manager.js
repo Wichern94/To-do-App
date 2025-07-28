@@ -573,65 +573,79 @@ export class AnimationManager{
 }
                    
            
-                
-                    
-            
-        
 
-    transitionBetweenViews(hideEl,showEls,{ outClass= 'fadeOutRight',inClass = 'fadeInRight'} = {}) {
+     blurInElement(element, ){
         return new Promise((resolve,reject) => {
             try{
-                if(!hideEl ||!showEl) {
-                    throw new Error('brak elementu wyjscia:',hideEl,'lub wejscia:',showEl);
+                if(!element) {
+                    throw new Error('brakuje elementów! element jest:',element);
                 }
-                let finished = 0;
-                const elements = [hideEl,showEls];
-                const showElements = Array.isArray(showEls) ? showEls :[showEls];
-                showElements.forEach((el) => {
-                    
-                    //jesli znajduje el  nie ukryty
-                    if(!el.classList.contains('hidden')) {
+                element.style.backdropFilter = 'blur(0px)'
+                void element.offsetHeight
+                const blurState = {value: 0};
 
-                        el.classList.remove(`animate__${outClass}`);
-                        void  el.offsetWidth;
-                        el.classList.add('animate__animated', `animate__${outClass}`);
+                
+                requestAnimationFrame(()=>{
+                    element.classList.remove('hidden');
+                    anime({
+                        targets:blurState,
+                        value: 10,
+                        duration: 500,
+                        easing:'easeInOutQuad',
+                        update: function() {
+                         element.style.backdropFilter = `blur(${blurState.value}px)`
+                         element.style.webkitbackdropFilter = `blur(${blurState.value}px)`
+                        },
+                        complete: () => resolve('Animation ok')
                         
-                         const handleAnimationEnd = () => {
-                            el.classList.remove('animate__animated',`animate__${outClass}`);
-                            el.classList.add('hidden'); // to ukrywam
-                            finished ++
-                            el.removeEventListener('animationend',handleAnimationEnd);
-                            console.log('Dodaję klasy:', `animate__animated animate__${outClass}`);
-                            if(finished === 2) resolve('animacje ok!')
-                        };
-                        el.addEventListener('animationend',handleAnimationEnd);
-
-                        //jesli znajduje el ukryty
-                    } else if (el.classList.contains('hidden')) {
-                        el.classList.remove(`animate__${inClass}`);
-                        void  el.offsetWidth;
-
-                        el.classList.remove('hidden') //to odkrywam
-                        el.classList.add('animate__animated', `animate__${inClass}`);
-
-                        const handleHideAnimationEnd = () => {
-                            el.classList.remove('animate__animated',`animate__${inClass}`);
-                            finished ++
-                            el.removeEventListener('animationend',handleHideAnimationEnd);
-                            console.log('Dodaję klasy:', `animate__animated animate__${inClass}`);
-                            console.log('finished ma:',finished);
-                            if(finished === 2) resolve('animacje ok!')
-                        };
-                        el.addEventListener('animationend',handleHideAnimationEnd);
-                        
-                        
-                    }
+                    });
                 });
             }catch(error) {
                 reject(error)
             }
         });
     }
+        
+     blurOutElement(element, ){
+        return new Promise((resolve,reject) => {
+            try{
+                if(!element) {
+                    throw new Error('brakuje elementów! element jest:',element);
+                }
+                element.style.backdropFilter = 'blur(10px)'
+                void element.offsetHeight
+                const blurState = {value: 10};
+
+                
+                requestAnimationFrame(()=>{
+                    element.classList.remove('hidden');
+                    anime({
+                        targets:blurState,
+                        value: 0,
+                        duration: 500,
+                        easing:'easeInOutQuad',
+                        update: function() {
+                         element.style.backdropFilter = `blur(${blurState.value}px)`
+                         element.style.webkitbackdropFilter = `blur(${blurState.value}px)`
+                        },
+                        complete: () =>{
+                            element.classList.add('hidden');
+                            resolve('Animation ok');
+                        } 
+                        
+                    });
+                });
+            }catch(error) {
+                reject(error)
+            }
+        });
+    }
+                    
+            
+        
+
+    
+                        
 
 
                             

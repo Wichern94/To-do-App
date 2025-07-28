@@ -22,16 +22,17 @@ export class RoudMapModal {
             modal: document.getElementById(elements.modalID),
             checkBoxContainer: document.getElementById(elements.checkBoxContainerID),
             subTaskUl: document.getElementById(elements.subTaskUlID),
+            uiPanel: document.getElementById(elements.uiPanelID)
         };
         // CallBacki:
         this.onOpen = callbacks.onOpen || null;
-        this.onManualSubmit = callbacks.onManualSubmit || null;
+        this.onSubmitSuccess = callbacks.onSubmitSuccess || null;
         this.onImportSubmit = callbacks.onImportSubmit || null;
         //Zewnętrzne serwisy:
         this.manualFormErr = new FormErrors('manual-node-form');
         this.importFormErr = new FormErrors('import-node-form');
         this.animationManager = services.animationManager || null;
-        this.firebaseServices =services.firestoreService || null;
+        this.firestoreService =services.firestoreService || null;
         // pojemniki:
         this.subTaskValues = [];
         this.activeRoadmapId = null;
@@ -42,9 +43,10 @@ export class RoudMapModal {
                             // gdybym nie zbindował to by metody wskazywały na element dom anie klase.
             { el: 'openBtn', event: 'click', handler: this.showAddModal.bind(this) },
             { el: 'closeBtn', event: 'click', handler: this.hideAddModal.bind(this) },
-            { el: 'importSwitchBtn', event: 'click', handler: this.showImportSection.bind(this) },
-            { el: 'handSwitchBtn', event: 'click', handler: this.showManualSection.bind(this) },
+            
             { el: 'modalCheckBox', event: 'change', handler: this.handleCheckboxChange.bind(this) },
+            { el: 'uiPanel', event: 'click', handler: this.handleModalClick.bind(this) },
+
             { el: 'subTaskBtn', event: 'click', handler: this.handleAddSubTask.bind(this) },
             { el: 'manualForm', event: 'click', handler: this.handleClearError.bind(this) },
             { el: 'manualSubmitBtn', event: 'click', handler: this.handleManualSubmit.bind(this)}
@@ -81,13 +83,21 @@ export class RoudMapModal {
         
         }
     
+        async showAddModal() {
+             const bluredOne = this.elements.modal;
+             const fieldset = this.elements.uiPanel;
+             await this.animationManager.blurInElement(bluredOne);
+             await this.animationManager.showAnimation(fieldset,'bounceInUp','1s');
+             if(typeof this.onOpen === 'function') this.onOpen();
+         }
         
-        showAddModal() {
-            this.elements.modal?.classList.remove('hidden');
-            if(typeof this.onOpen === 'function') this.onOpen();
-        }
-        hideAddModal() {
-            this.elements.modal?.classList.add('hidden');
+       async hideAddModal() {
+            const bluredOne = this.elements.modal;
+            const fieldset = this.elements.uiPanel;
+
+            await this.animationManager.hideAnimation(fieldset,'bounceOutDown','1s');
+            await this.animationManager.blurOutElement(bluredOne);
+            
             this.subTaskValues = [];
             this.manualFormErr.clearAllErrors()
             this.elements.subTaskUl.innerHTML = '';
@@ -99,14 +109,41 @@ export class RoudMapModal {
             }
             
         }
-        showImportSection() {
-            this.elements.importForm?.classList.remove('hidden');
-            if(this.elements.manualForm) this.elements.manualForm.classList.add('hidden')
+         handleModalClick(e){
+            const handBtn = e.target.closest('.hand-btn '); //<- wybieram przycisk najblizszy targtowi eventu
+            const importBtn = e.target.closest('.import-btn');
+            
+            if(handBtn){
+                this.showSection(handBtn)
+            } else if(importBtn){
+                this.showSection(importBtn);
+            }
         }
-        showManualSection() {
-            this.elements.manualForm?.classList.remove('hidden');
-            if(this.elements.importForm) this.elements.importForm.classList.add('hidden')
+           
+       async showSection(button) {
+            const importForm = this.elements.importForm;
+            const manualForm = this.elements.manualForm;
+
+            if(button.classList.contains('hand-btn')){
+                hideElement(importForm);
+                await this.animationManager.showAnimation(manualForm,'fadeIn','.5s');
+                
+            } else{
+                hideElement(manualForm);
+                await this.animationManager.showAnimation(importForm,'fadeIn','.5s');
+                
+                
+                 
+            }
         }
+
+               
+                 
+
+                
+         
+
+            
         handleCheckboxChange() {
             this.elements.checkBoxContainer?.classList.toggle('hidden')
             this.elements.subTaskUl?.classList.toggle('hidden');
@@ -138,28 +175,54 @@ export class RoudMapModal {
         handleClearError(e){
             this.manualFormErr.clearError(e.target.name);
         }
-        handleManualSubmit(e) {
+        
+        // metoda Zapisu Danych  Noda do Bazy danych
+       async handleManualSubmit(e) {
             e.preventDefault()
-            const nameInputData = this.elements.roudNodeInput.value.trim()
-            if(!nameInputData) {
-                this.manualFormErr.showError('roud-title','Nazwij element!');
-                return
+            try{
+                const nameInputData = this.elements.roudNodeInput.value.trim() //<- usuwam białe znaki
+                if(!nameInputData) {
+                    this.manualFormErr.showError('roud-title','Nazwij element!');
+                    return
+                    
+                }
+                const nodeData = {
+                    title: nameInputData,
+                    subtasks:[...this.subTaskValues],
+                    roadmapID: this.activeRoadmapId,
+                }
+                if(!this.elements.modalCheckBox.checked) {
+                    nodeData.subtasks = [];
+                }
+                //pobieram dane o instniejacych nodach
+                const existingNodes = await this.firestoreService.getElementsfromSubCollection(
+                    nodeData.roadmapID,
+                    'roadmaps',
+                    'nodes'
+                    );
+                     // nadaje Order 
+                    const order = Array.isArray(existingNodes) ? existingNodes.length : 0;
+                    const nodeDataWithOrder={...nodeData,order: order, wasActive:false }
+                    // dodaje element do kolekcji
+                    this.isNodeSubmitting = true;
+                    const nodeID = await this.firestoreService.addCollectionElement(nodeDataWithOrder,'roadmaps','nodes')
+                    if(!nodeID) throw new Error('nie znaleziono node ID!',)
+                    //dane pelne dane z orderem oraz id
+                    const fullData = {...nodeDataWithOrder, id: nodeID};
+                    console.log('roadmapID w manualSubmit',fullData);
+
+
+                if(typeof this.onSubmitSuccess === 'function') { 
+                    this.onSubmitSuccess(fullData);
+                    this.hideAddModal()
+                }
+                return fullData;
+            } catch (error) {
+                console.error('bład tworzenia Noda!', error)
+            } finally {
+                this.isNodeSubmitting = false;
             }
-            const nodeData = {
-                title: nameInputData,
-                subtasks:[...this.subTaskValues],
-                roadmapID: this.activeRoadmapId,
-            }
-            if(!this.elements.modalCheckBox.checked) {
-                nodeData.subtasks = [];
-            }
-            
-             if(typeof this.onManualSubmit === 'function') { 
-                this.onManualSubmit(nodeData);
-                this.hideAddModal()
-             }
-             
-            return nodeData;
+                
             
         }
         setRoadmapId(roadmapID){

@@ -266,25 +266,25 @@ li:first-of-type .title-roudmap::after {
 }
 .roud-modal{
   display: flex;
-    position: fixed;
-    flex-direction: column;
-    
-    top: 0;
-    left: 0;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-glass-bg);
-    height: 100dvh;
-    width: 100dvw;
-    background-color: var(--glass-border);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    text-align: center;
-    z-index: 10;
-    transition: opacity 0.3s, backdrop-filter 0.5s;
+  position: fixed;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-glass-bg);
+  height: 100dvh;
+  width: 100dvw;
+  background-color: var(--glass-border);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  text-align: center;
+  z-index: 10;
+  
 }
+    
 .modal-section {
     display: flex;
     position: relative;
