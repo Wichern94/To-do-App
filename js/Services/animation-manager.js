@@ -1,3 +1,4 @@
+import { showElement,hideElement,toggleElement } from "../utils/helper.js";
 export class AnimationManager{
     constructor(plumbManager) {
         this.plumbManager = plumbManager;
@@ -83,7 +84,7 @@ export class AnimationManager{
             const defaultLiHeight = li.offsetHeight;
             
             if(wasHidden){
-               contentBox.classList.remove('hidden');
+               showElement(contentBox);
                this.plumbManager.jsPlumbInstance.repaintEverything() 
            
                requestAnimationFrame(() => {
@@ -136,7 +137,8 @@ export class AnimationManager{
 
                                     
                 const cleanHeight = () => {
-                    contentBox.classList.add('hidden');
+                    hideElement(contentBox);
+                    
                     
                     li.style.height = '';
                     li.style.transition = '';
@@ -160,6 +162,51 @@ export class AnimationManager{
         };
         btn.addEventListener('animationend', cleanClasses);
     }
+
+      async elementToggle(elOne,elSecond){
+          if(!elOne || !elSecond) throw new Error('Nie znaleziono Elementów!');
+
+          const isHidden = elOne.classList.contains('hidden');
+       
+
+           
+            if(isHidden) {
+                void elOne.offsetWidth;
+                void elSecond.offsetWidth;
+                // showElement(elOne);
+                // showElement(elSecond);
+
+               await this.showAnimation(elOne, 'fadeIn','.3s');
+               await this.showAnimation(elSecond,'fadeIn','.3s'); 
+
+            } else {
+                void elOne.offsetWidth;
+                void elSecond.offsetWidth;
+                // hideElement(elSecond)
+                // hideElement(elSecond)
+
+               await this.hideAnimation(elSecond,'fadeOut','.3s'); 
+               await this.hideAnimation(elOne, 'fadeOut','.3s');
+            }
+            return 'Animacja zakonczona';
+        }
+                
+
+              
+
+
+              
+       
+        
+       
+                    
+               
+            
+             
+            
+
+
+
 
     plumbLineAnimation(sourceID,targetID){
         return new Promise ((resolve,reject) => {
@@ -325,10 +372,11 @@ export class AnimationManager{
                     throw new Error('brakuje elementów do animacji! element jest:',element);
                 }
                 const height = element.offsetHeight;
-                const fullheight = height + (4 * 16); // <- +gap 4 rem
+                
                 
                 if (element.classList.contains('hidden')) {
-                    element.classList.remove('hidden');
+                    showElement(element);
+                    
                 }
                  const interval = setInterval(() => {
                     this.plumbManager?.jsPlumbInstance?.revalidate(element);
@@ -400,7 +448,8 @@ export class AnimationManager{
                 
                 
                 if (element.classList.contains('hidden')) {
-                    element.classList.remove('hidden');
+                    showElement(element);
+                    
                     
                 }
                 const interval = setInterval(() => {
@@ -444,7 +493,8 @@ export class AnimationManager{
 
                
                 element.style.setProperty('--animate-duration', `${duration}`);
-                element.classList.remove('hidden');
+                showElement(element);
+                
                 element.classList.add('animate__animated', `animate__fadeIn`);
                 
            
@@ -489,7 +539,8 @@ export class AnimationManager{
                 const handleAnimationEnd = () => {
                    element.classList.remove('animate__animated',`animate__fadeOut`);
                    element.style.removeProperty('--animate-duration');
-                   element.classList.add('hidden');
+                   hideElement(element);
+                   
                    element.removeEventListener('animationend',handleAnimationEnd);
                    console.log('Dodaję klasy:', `animate__animated animate__fadeOut`);
                    resolve('Animcja node ok');
@@ -518,7 +569,8 @@ export class AnimationManager{
                 void element.offsetWidth;
                 
                 
-                element.classList.remove('hidden');
+                
+                showElement(element);
                 element.style.setProperty('--animate-duration', `${duration}`);
                 element.classList.add('animate__animated', `animate__${animation}`);
            
@@ -559,7 +611,8 @@ export class AnimationManager{
                 const handleAnimationEnd = () => {
                     element.classList.remove('animate__animated',`animate__${animation}`);
                     element.style.removeProperty('--animate-duration');
-                    element.classList.add('hidden');
+                    
+                    hideElement(element);
                     element.removeEventListener('animationend',handleAnimationEnd);
                     console.log('Dodaję klasy:', `animate__animated animate__${animation}`);
                     resolve('animacja ok!');

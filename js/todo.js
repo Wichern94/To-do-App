@@ -27,22 +27,28 @@ export class TodoApp{
         this.AnimationManager = new AnimationManager();
         this.roudmapModal = new RoudMapModal({
             elements: {
+                //przyciski
                 openBtnID:'add-roadmap-task',
-                modalID:'create-roud-menu',
                 closeBtnID:'manual-abandon-btn',
                 handBtnID: 'hand-button',
                 importBtnID:'import-button',
+                subTaskBtnID: 'add-subtask-btn',
+                importSubmitBtnID: 'import-submit-node',
+                manualSubmitBtnID:'manual-submit-btn',
+                //formularze
                 importFormID:'import-node-form',
                 manualFormID: 'manual-node-form',
+                subTaskInputID: 'r-sub',
+                roudNodeInputID: 'r-title',
+                importDescID: 'import-desc',
+                //kontenery
+                modalID:'create-roud-menu',
                 modalCheckBoxID:'roud-checkbox',
                 checkBoxContainerID:'sub-container',
-                subTaskInputID: 'r-sub',
-                subTaskBtnID: 'add-subtask-btn',
                 subTaskUlID:'subtask-list',
-                manualSubmitBtnID:'manual-submit-btn',
-                roudNodeInputID: 'r-title',
-                uiPanelID: 'modal-ui-panel'
+                uiPanelID: 'modal-ui-panel',
             },
+
             callbacks: {
                 //callback po wejsciu:
                  onOpen:() => {
