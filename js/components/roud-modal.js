@@ -200,8 +200,10 @@ export class RoudMapModal {
                         'nodes'
                         );
                          // nadaje Order 
-                        const order = Array.isArray(existingNodes) ? existingNodes.length : 0;
-                        const nodeDataWithOrder={...nodeData,order: order, wasActive:false }
+                        const maxOrder = Math.max(...existingNodes.map(n => n.order ?? 0));
+                        const newOrder = isFinite(maxOrder) ? maxOrder + 1 : 0;
+                        
+                        const nodeDataWithOrder={...nodeData,order: newOrder, wasActive:false }
                         // dodaje element do kolekcji
                         this.isNodeSubmitting = true;
                         const nodeID = await this.firestoreService.addCollectionElement(nodeDataWithOrder,'roadmaps','nodes')
@@ -226,13 +228,35 @@ export class RoudMapModal {
             const textarea = this.elements.importDesc;
             const values = textarea.value;
             this.parseRoadmapText(values);
+            console.log('aktywna roadmapa:', this.activeRoadmapId);
+            
             
             
 
         }
-        parseRoadmapText(rawText) {
-            const lines  = rawText.split('/n').map(line =>line.trim());
-            console.log( 'linie bez białych:',lines);
+        parseRoadmapText(jsonText) {
+            try{
+                const parsedData = JSON.parse(jsonText);
+
+                if(!Array.isArray(parsedData)) {
+                    throw new Error('Dane nie są tablicą')};
+                
+                parsedData.forEach((node,index) => {
+
+                    if(!node.title || typeof node.title !== 'string') {
+                        throw new Error(`Brak tytułu lub nieprawidłowy typ w elemencie [${index}]`);
+                    }
+                    if(!Array.isArray(node.subtasks)) {
+                        throw new Error(`subtasks nie są tablicą w elemencie [${index}]`)
+                    }
+                });
+                console.log('obiekty zadan:',parsedData);
+                    
+
+            } catch(err) {
+                console.error('Nieprawidłowy format JSON!');
+                
+            }
             
             
         }

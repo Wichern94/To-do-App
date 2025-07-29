@@ -176,8 +176,8 @@ export class AnimationManager{
                 // showElement(elOne);
                 // showElement(elSecond);
 
-               await this.showAnimation(elOne, 'fadeIn','.3s');
-               await this.showAnimation(elSecond,'fadeIn','.3s'); 
+               await this.showAnimation(elOne, 'fadeIn','.4s');
+               await this.showAnimation(elSecond,'fadeIn','.1s'); 
 
             } else {
                 void elOne.offsetWidth;
@@ -185,8 +185,8 @@ export class AnimationManager{
                 // hideElement(elSecond)
                 // hideElement(elSecond)
 
-               await this.hideAnimation(elSecond,'fadeOut','.3s'); 
-               await this.hideAnimation(elOne, 'fadeOut','.3s');
+               await this.hideAnimation(elSecond,'fadeOut','.1s'); 
+               await this.hideAnimation(elOne, 'fadeOut','.4s');
             }
             return 'Animacja zakonczona';
         }
