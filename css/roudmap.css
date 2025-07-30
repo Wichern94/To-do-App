@@ -568,6 +568,16 @@ li:first-of-type .title-roudmap::after {
   opacity: 1;
   pointer-events: auto;
 }
+.err-msg-import{
+  color: var(--color-danger);
+  font-size: 12px;
+  position: absolute;
+  
+  top: 0rem;
+}
+.error-border{
+    border: 0.5px solid var(--btn-danger);
+}
 
     
     

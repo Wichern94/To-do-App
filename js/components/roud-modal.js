@@ -45,14 +45,15 @@ export class RoudMapModal {
                             // gdybym nie zbindował to by metody wskazywały na element dom anie klase.
             { el: 'openBtn', event: 'click', handler: this.showAddModal.bind(this) },
             { el: 'closeBtn', event: 'click', handler: this.hideAddModal.bind(this) },
-            
             { el: 'modalCheckBox', event: 'change', handler: this.handleCheckboxChange.bind(this) },
             { el: 'uiPanel', event: 'click', handler: this.handleModalClick.bind(this) },
-
             { el: 'subTaskBtn', event: 'click', handler: this.handleAddSubTask.bind(this) },
-            { el: 'manualForm', event: 'click', handler: this.handleClearError.bind(this) },
+            { el: 'manualForm', event: 'click', handler: this.handleClearErrorManual.bind(this) },
+            { el: 'importForm', event: 'click', handler: this.handleClearErrorImport.bind(this) },
             { el: 'manualSubmitBtn', event: 'click', handler: this.handleManualSubmit.bind(this)},
             { el: 'importSubmitBtn', event: 'click', handler: this.handleImportSubmit.bind(this)}
+            
+
             
         ];
     }
@@ -171,9 +172,20 @@ export class RoudMapModal {
                 });
             }
              
-            handleClearError(e){
-                this.manualFormErr.clearError(e.target.name);
+            handleClearErrorManual(e){
+                if(e.target.tagName ==='INPUT') {
+                    console.log('kliknieto w:',e.target.type);
+                    this.manualFormErr.clearError(e.target.name);
+                } else return
             }
+            handleClearErrorImport(e){
+                if(e.target.tagName ==='TEXTAREA') {
+                    console.log('kliknieto w:',e.target.type);
+                    this.importFormErr.clearError(e.target.name);
+                } else return
+            }
+                
+
                  
             // metoda Zapisu Danych  Noda do Bazy danych
            async handleManualSubmit(e) {
@@ -224,12 +236,41 @@ export class RoudMapModal {
                     this.isNodeSubmitting = false;
                 }
             }
-        handleImportSubmit() {
+       async handleImportSubmit() {
+            try{
             const textarea = this.elements.importDesc;
             const values = textarea.value;
-            this.parseRoadmapText(values);
-            console.log('aktywna roadmapa:', this.activeRoadmapId);
+            const parsedData = this.parseRoadmapText(values);
+
+            if(!parsedData) {
+                this.importFormErr.showError('import','Podano Pustą wartość!');
+                throw new Error('Wysłano pusta wartosc!');
+            }
+                
+             //pobieram dane o instniejacych nodach
+            const existingNodes = await this.firestoreService.getElementsfromSubCollection(
+                this.activeRoadmapId,
+                'roadmaps',
+                'nodes'
+                );
+             // nadaje Order 
+            const maxOrder = Math.max(...existingNodes.map(n => n.order ?? 0));
+            let currentOrder = isFinite(maxOrder) ? maxOrder + 1 : 0;
+            const nodesData = parsedData.map(node =>{
+                return{
+                    ...node,
+                    order:currentOrder++,
+                    wasActive:false,
+                    roadmapID: this.activeRoadmapId,
+                };
+            });
+               console.log('nowe dane:',nodesData);
+                    
+
             
+            } catch(error){
+                console.error('błąd importu!:',error)
+            }
             
             
 
@@ -250,13 +291,14 @@ export class RoudMapModal {
                         throw new Error(`subtasks nie są tablicą w elemencie [${index}]`)
                     }
                 });
-                console.log('obiekty zadan:',parsedData);
+               return parsedData;
                     
 
             } catch(err) {
                 console.error('Nieprawidłowy format JSON!');
                 
             }
+            
             
             
         }

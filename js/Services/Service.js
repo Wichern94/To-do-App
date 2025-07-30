@@ -1,4 +1,4 @@
-import { collection, addDoc,getDocs,doc,deleteDoc,updateDoc,serverTimestamp,onSnapshot } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { collection, addDoc,getDocs,doc,deleteDoc,updateDoc,serverTimestamp,onSnapshot,writeBatch } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import { db } from '../firebase-init.js';
 
 
@@ -90,6 +90,39 @@ export class FirestoreService {
               console.error('błąd przy zapisie Elementow do Firestore:',error);
               return null;
           }
+      }
+      async batchAddNodes(roadmapId, nodesData,collectionName,subCollection){
+        if (!nodesData || nodesData.length === 0 || !roadmapId || !collectionName ||!subCollection) {
+            throw new Error('Brak Elementów do Batchowania!');
+        }
+            try{
+                const roadmapID = roadmapId.replace('ul-','');
+                const batch = writeBatch(db);
+                const allData =[];
+                nodesData.forEach(nodeData =>{
+                    
+                    const docRef = doc(collection(db,`users/${this.uid}/${collectionName}/${roadmapID}/${subCollection}`));
+                    const newID = docRef.id;
+
+                    const fullData ={
+                        ...nodeData,
+                        id:newID,
+                        createdAt:serverTimestamp()}
+
+                    if(!fullData.id) throw new Error('Brak ID noda!')
+
+                    allData.push(fullData);
+                    batch.set(docRef,fullData);
+                });
+                    
+                await batch.commit();
+                return allData;
+                    
+
+            } catch(error) {
+                console.error('Błąd przy zapisie w Batchu:',error)
+            }
+
       }
       //metoda odczytująca elementy z danej kolekcji
       async getElementsfromSubCollection(roadmapID,collectionName, subCollection) {

@@ -81,6 +81,7 @@ input{
 .input-error {
   border-bottom: 0.5px solid var(--btn-danger);
 }
+
 .input-possitive {
   border-bottom: 0.5px solid var(--btn-possitive);
 }

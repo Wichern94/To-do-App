@@ -543,12 +543,14 @@
         </form>
         <form id="import-node-form" class="import-content hidden">
             <span class="new-import-title">
-                <h3 id="import-modal-title">Importuj Gotowy text</h3>
+                <h3 id="import-modal-title">Importuj RoadMapę!</h3>
             </span> 
+            
             <div class="import-text">
+                <p class="err-message err-msg-import hidden" data-for="import"></p>
                 <textarea id="import-desc" name="import" class="import-discription" placeholder="Wklej..."></textarea>
             </div>
-            <p class="err-message err-msg-new-task hidden" data-for="import"></p>
+            
             <div class="task-btns">
                     <button type="button" id="import-submit-node" class="task-handler-btn aprove">Dodaj
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>

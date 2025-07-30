@@ -20,8 +20,12 @@ export class FormErrors {
             targetError.classList.remove('hidden'); //pokazuje usuwajac klase hidden
         }
         
-        if(inputElement) {
+        if(inputElement.tagName ==='INPUT') {
             inputElement.classList.add('input-error'); //dodaje klase z czerwonym borderem
+        }else if (inputElement.tagName ==='TEXTAREA'){
+            
+            inputElement.classList.add('error-border');
+            
         }
     }  
      //  Metoda pokazujaca zielony pozytywny
@@ -48,6 +52,9 @@ export class FormErrors {
     // Metoda usuwajacy błąd
     clearError(rightInput) {
        const inputElement = this.form.querySelector(`[name='${rightInput}']`);
+       if(!inputElement){
+        console.warn(`Element o nazwie:${rightInput} nie został znaleziony!`)
+       }
        const targetError = Array.from(this.errorElement).find(
             el => el.dataset.for === rightInput
        );
@@ -58,13 +65,17 @@ export class FormErrors {
             
             
             }
-        if(inputElement) {
+        if(inputElement.tagName === 'INPUT') {
             inputElement.classList.remove('input-error');
-            
             inputElement.classList.remove('input-possitive');
+        }  
+         else if (inputElement.tagName ==='TEXTAREA') {
+            console.log('element do usuwania bledu to :',inputElement);
             
-            
+            inputElement.classList.remove('error-border');
         }
+            
+            
     }
     clearAllErrors() {
          this.errorElement.forEach( err => {
