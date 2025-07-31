@@ -264,13 +264,26 @@ export class RoudMapModal {
                     roadmapID: this.activeRoadmapId,
                 };
             });
-               console.log('nowe dane:',nodesData);
+               
+               this.isNodeSubmitting = true;
+               const allData = await this.firestoreService.batchAddNodes(
+                this.activeRoadmapId,
+                nodesData,
+                'roadmaps',
+                'nodes');
+
+                if(typeof this.onImportSubmit === 'function') { 
+                    this.onImportSubmit(allData);
+                    this.hideAddModal()
+                    }
                     
 
             
             } catch(error){
                 console.error('błąd importu!:',error)
-            }
+            } finally {
+                    this.isNodeSubmitting = false;
+                }
             
             
 

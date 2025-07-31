@@ -57,9 +57,17 @@ export class TodoApp{
 
                 // callback po dodaniu Manualnym:
                  onSubmitSuccess: async (fullData) => {
-                ToastManager.success('👍 Dodanie pojedynczego Elmentu Udane!')
-                await this.renderNodesForRoadmap(fullData.roadmapID,fullData.id)
+                    await this.renderNodesForRoadmap(fullData.roadmapID,fullData.id)
+                    ToastManager.success('👍 Dodanie pojedynczego Elmentu Udane!');
                 },
+                onImportSubmit: async (allData) => {
+                    const length = allData.length;
+                    for(const node of allData) {
+                        await this.renderNodesForRoadmap(node.roadmapID,node.id)
+                    };
+                    ToastManager.success(`👍 Dodano ${length} Elementów!`);
+                    
+                }
             },
             //Serwisy
              services: {
