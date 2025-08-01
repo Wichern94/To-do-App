@@ -75,40 +75,45 @@ export class AnimationManager{
             element.addEventListener('animationend',handleAnimationEnd);
         });
     }
-    toggleAccordeon(btn,contentBox, li){
+   async toggleAccordeon(btn,contentBox, li){
             if(!btn || !contentBox || !li) {
                 console.log('brakdanych do akordeonu');
                 return ;
             }
             const wasHidden = contentBox.classList.contains('hidden');
-            const defaultLiHeight = li.offsetHeight;
-            
-            if(wasHidden){
-               showElement(contentBox);
-               this.plumbManager.jsPlumbInstance.repaintEverything() 
            
-               requestAnimationFrame(() => {
-                   const liEndHeight = li.scrollHeight;
-                   li.style.height =`${defaultLiHeight}px`;
+            if(wasHidden){
+                const heightStart = li.offsetHeight;
+                const widthStart = li.offsetWidth;
             
-            
-                requestAnimationFrame(() => {
-                    li.style.transition = 'height .3s ease'
-                    li.style.height = `${liEndHeight}px`
+               showElement(contentBox);
+               this.plumbManager.jsPlumbInstance.repaintEverything()
+               
+               requestAnimationFrame(() =>{
 
+                const widthEnd = li.scrollWidth;
+                const heightEnd = li.scrollHeight;
+                
+                li.style.transition = 'width .3s ,height .3s ';
+                li.style.width = `${widthStart}px`;
+                li.style.height = `${heightStart}px`;
+             
+                requestAnimationFrame(() => {
+                    li.style.width = `${widthEnd}px`;
+                    li.style.height = `${heightEnd}px`;
+                    
                     const interval = setInterval(() => {
                     this.plumbManager?.jsPlumbInstance?.revalidate(li);
                     this.plumbManager?.jsPlumbInstance?.repaintEverything();
-                }, 10); // co 10ms przez 300ms
-               
-                setTimeout(() => {
-                    clearInterval(interval);
-                }, 300); // zatrzymaj po 300ms
+                    }, 10); // co 10ms przez 300ms
+                                   
+                    setTimeout(() => {
+                        clearInterval(interval);
+                    }, 300); // zatrzymaj po 300ms
                 
-                
-
                     const cleanHeight = ()=>{
                         li.style.height = '';
+                        li.style.width = '';
                         li.style.transition = '';
                         li.removeEventListener('transitionend', cleanHeight);
                     };
@@ -116,14 +121,36 @@ export class AnimationManager{
                     li.addEventListener('transitionend', cleanHeight);
                 });
             });
+                    
+
+                
+                        
+                        
+                    
+                    
+    
+                    
+                   
+                    
+                
 
         } else{
-            const liEndHeight = li.scrollHeight
-            li.style.height = `${liEndHeight}px`;
+            const widthStart = li.offsetWidth;
+            const heightStart = li.offsetHeight;
+            await this.hideAnimation(contentBox,'fadeOut','.2s')
+            
             
             requestAnimationFrame(() => {
-                li.style.transition = 'height .3s ease';
-                li.style.height = `${li.offsetHeight - contentBox.scrollHeight}px`;
+                const widthEnd = li.scrollWidth;
+                const heightEnd = li.scrollHeight;
+
+                li.style.transition = 'width .3s ,height .3s ';
+                li.style.height = `${heightStart}px`;
+                li.style.width = `${widthStart}px`;
+                requestAnimationFrame(()=>{
+                    li.style.width = `${widthEnd}px`;
+                    li.style.height =`${heightEnd}px`;
+                
                 
                 const interval = setInterval(() => {
                     this.plumbManager?.jsPlumbInstance?.revalidate(li);
@@ -136,16 +163,17 @@ export class AnimationManager{
                 
 
                                     
-                const cleanHeight = () => {
-                    hideElement(contentBox);
+                const clean = () => {
+                   
                     
-                    
+                    li.style.width = ''
                     li.style.height = '';
                     li.style.transition = '';
-                    li.removeEventListener('transitionend', cleanHeight);
+                    li.removeEventListener('transitionend', clean);
                 };
-                li.addEventListener('transitionend', cleanHeight);
+                li.addEventListener('transitionend', clean);
             });
+        });
         }      
         
         void btn.offsetWidth;
@@ -438,7 +466,7 @@ export class AnimationManager{
     }
 
 
-     widthAndHeight(element){
+     widthAndHeight(element,){
         return new Promise((resolve,reject) => {
             try{
                 if(!element) {
@@ -460,16 +488,23 @@ export class AnimationManager{
                 setTimeout(() => {
                     clearInterval(interval);
                 }, 1500); // zatrzymaj po 300ms
-                
+                const height = element.offsetHeight;
+                const width = element.offsetWidth;
+                element.style.height = `${height}px`;
+                element.style.width = `${width}px`;
                 requestAnimationFrame(()=>{
+                   
                     anime({
                         targets:element,
-                        width:`224px`,
-                        height:`103px`,
+                        width:`240`,
+                        height:`128`,
                         duration: 1500,
                         easing:'easeInOutQuad',
-                        complete: () => resolve('Animation ok')
-                        
+                        complete: () =>{
+                            element.style.height ='';
+                            element.style.width ='';
+                         resolve('Animation ok')
+                        }
                     });
                 });
             } catch (err) {

@@ -61,9 +61,10 @@ li:first-of-type .title-roudmap::after {
   background: var(--color-bg-soft);
   border: 0.5px solid var(--glass-border); 
   overflow: visible;
-  max-width: 15rem;
+  max-width: 18rem;
+  width: auto;
   max-height: initial;
-  min-height: 8rem;
+  height: auto;
   position: relative;
   display: flex;
   justify-content: space-around; 
@@ -557,7 +558,9 @@ li:first-of-type .title-roudmap::after {
     filter: grayscale(1);
     pointer-events: none;
     max-width: 12rem;
+    min-width: 6rem;
     min-height: 5rem;
+    max-height: 10rem;
   }
   .disabled-node .node-text{
     font-size: 14px;
