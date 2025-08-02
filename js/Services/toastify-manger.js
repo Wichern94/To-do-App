@@ -4,7 +4,7 @@ export class ToastManager {
           text: msg,
           duration: 2000,
           close: true,
-          gravity:'bottom',
+          gravity:'top',
           position: 'left',
           stopOnFocus:true,
           style: {
@@ -24,7 +24,7 @@ export class ToastManager {
           text: msg,
           duration: 2000,
           close: true,
-          gravity:'bottom',
+          gravity:'top',
           position: 'left',
           stopOnFocus:true,
           style: {

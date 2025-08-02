@@ -351,6 +351,14 @@
 #btn-back{
     position: absolute;
 }
+.text-button {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--color-accent-light);
+    font-size: 12px;
+    font-family: "Oxanium", sans-serif;
+}
     
     
 

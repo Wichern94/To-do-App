@@ -30,6 +30,8 @@ export class TodoApp{
                 //przyciski
                 openBtnID:'add-roadmap-task',
                 closeBtnID:'manual-abandon-btn',
+                importCloseBtnID:'import-abandon-btn',
+                promtCopyBtnID:'promt-btn',
                 handBtnID: 'hand-button',
                 importBtnID:'import-button',
                 subTaskBtnID: 'add-subtask-btn',
@@ -66,8 +68,11 @@ export class TodoApp{
                         await this.renderNodesForRoadmap(node.roadmapID,node.id)
                     };
                     ToastManager.success(`👍 Dodano ${length} Elementów!`);
-                    
+                },
+                onPromtCopy: () => {
+                    ToastManager.info(`Skopiowano do schowka!`);
                 }
+                    
             },
             //Serwisy
              services: {
@@ -85,6 +90,7 @@ export class TodoApp{
             elements: {
                 titleContainerID:'roadmap-section-title',
                 newMapBtnID:'new-map-btn',
+                uiPanelID: 'creator-panel',
                 setRoadmapContainerID:'add-main-roadmap',
                 setRoadmapFormID:'create-map-form',
                 setInputTitleID:'create-title',

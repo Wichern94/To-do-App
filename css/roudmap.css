@@ -58,7 +58,26 @@ li:first-of-type .title-roudmap::after {
   scrollbar-width: none;
 }
 .roadmap-node {
-  background: var(--color-bg-soft);
+  /* background: var(--color-bg-soft);
+  border: 0.5px solid var(--glass-border); 
+  overflow: visible;
+  max-width: 18rem;
+  width: auto;
+  max-height: initial;
+  height: auto;
+  position: relative;
+  display: flex;
+  justify-content: space-around; 
+  transition: transform 0.4s ease;
+  flex-direction: column;
+  
+  scroll-snap-align: start;
+  border-radius: 8px;
+  z-index: 10; */
+  position: relative;
+}
+.roadmap-node__content {
+   background: var(--color-bg-soft);
   border: 0.5px solid var(--glass-border); 
   overflow: visible;
   max-width: 18rem;
@@ -73,9 +92,8 @@ li:first-of-type .title-roudmap::after {
   position: relative;
   scroll-snap-align: start;
   border-radius: 8px;
-  /* z-index: 10; */
+   
 }
-
   
   
   
@@ -85,7 +103,7 @@ li:first-of-type .title-roudmap::after {
   initial-value: 0deg;
   inherits: false;
 }
-.active-border::after, .active-border::before{
+.active-border{ 
   
   box-sizing: content-box;
   border-radius: 8px;
@@ -102,7 +120,7 @@ li:first-of-type .title-roudmap::after {
   animation: 2.5s spin linear infinite;
 }
 
-.active-border::before{
+.active-border-blur{
   filter: blur(1rem);
   opacity: .5;
 }

@@ -466,47 +466,62 @@ export class AnimationManager{
     }
 
 
-     widthAndHeight(element,){
+     widthAndHeight(element,referenceElement){
         return new Promise((resolve,reject) => {
             try{
                 if(!element) {
                     throw new Error('brakuje elementów do animacji! element jest:',element);
                 }
                 
-                
-                
                 if (element.classList.contains('hidden')) {
                     showElement(element);
-                    
-                    
                 }
-                const interval = setInterval(() => {
-                    this.plumbManager?.jsPlumbInstance?.revalidate(element);
-                    this.plumbManager?.jsPlumbInstance?.repaintEverything();
-                }, 10); // co 10ms przez 300ms
-               
-                setTimeout(() => {
-                    clearInterval(interval);
-                }, 1500); // zatrzymaj po 300ms
-                const height = element.offsetHeight;
-                const width = element.offsetWidth;
-                element.style.height = `${height}px`;
-                element.style.width = `${width}px`;
+                const heightStart = element.offsetHeight;
+                const widthStart = element.offsetWidth;
+
+                const heightEnd = referenceElement.h;
+                const widthEnd = referenceElement.w;
+                
+                element.style.width = `${widthStart}px`
+                element.style.height = `${heightStart}px`
+                console.log('start', widthStart, heightStart);
+                console.log('end', widthEnd, heightEnd);
                 requestAnimationFrame(()=>{
+                    
+                    const interval = setInterval(() => {
+                        this.plumbManager?.jsPlumbInstance?.revalidate(element);
+                        this.plumbManager?.jsPlumbInstance?.repaintEverything();
+                    }, 10); // co 10ms przez 300ms
                    
-                    anime({
-                        targets:element,
-                        width:`240`,
-                        height:`128`,
-                        duration: 1500,
-                        easing:'easeInOutQuad',
-                        complete: () =>{
-                            element.style.height ='';
-                            element.style.width ='';
-                         resolve('Animation ok')
-                        }
+                    setTimeout(() => {
+                        clearInterval(interval);
+                    }, 1800); // zatrzymaj po 300ms
+                    element.style.transition = 'width 1.5s, height 1.5s';
+                    
+                    requestAnimationFrame(()=>{
+                       element.style.width = `${widthEnd}px`;
+                       element.style.height = `${heightEnd}px`;
+
+
+                       const clean = ()=>{
+                            console.log('uruchomiono clean odwidthandheight!');
+                            
+                            element.style.height = '';
+                            element.style.width = '';
+                            element.style.transition = '';
+                            resolve('animation ok!')
+                            element.removeEventListener('transitionend', clean);
+                    };
+
+                    element.addEventListener('transitionend', clean);
                     });
-                });
+            });
+                
+                
+                    
+               
+                   
+                   
             } catch (err) {
                 reject(err);
             }

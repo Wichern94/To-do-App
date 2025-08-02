@@ -13,6 +13,8 @@ export class RoudMapModal {
             subTaskBtn: document.getElementById(elements.subTaskBtnID),
             manualSubmitBtn: document.getElementById(elements.manualSubmitBtnID),
             importSubmitBtn: document.getElementById(elements.importSubmitBtnID),
+            importCloseBtn: document.getElementById(elements.importCloseBtnID),
+            promtCopyBtn: document.getElementById(elements.promtCopyBtnID),
             // elementy formularza:
             importForm: document.getElementById(elements.importFormID),
             manualForm: document.getElementById(elements.manualFormID),
@@ -30,6 +32,7 @@ export class RoudMapModal {
         this.onOpen = callbacks.onOpen || null;
         this.onSubmitSuccess = callbacks.onSubmitSuccess || null;
         this.onImportSubmit = callbacks.onImportSubmit || null;
+        this.onPromtCopy = callbacks.onPromtCopy || null;
         //Zewnętrzne serwisy:
         this.manualFormErr = new FormErrors('manual-node-form');
         this.importFormErr = new FormErrors('import-node-form');
@@ -45,6 +48,8 @@ export class RoudMapModal {
                             // gdybym nie zbindował to by metody wskazywały na element dom anie klase.
             { el: 'openBtn', event: 'click', handler: this.showAddModal.bind(this) },
             { el: 'closeBtn', event: 'click', handler: this.hideAddModal.bind(this) },
+            { el: 'importCloseBtn', event: 'click', handler: this.hideAddModal.bind(this) },
+            { el: 'promtCopyBtn', event: 'click', handler: this.handlePromtCopy.bind(this) },
             { el: 'modalCheckBox', event: 'change', handler: this.handleCheckboxChange.bind(this) },
             { el: 'uiPanel', event: 'click', handler: this.handleModalClick.bind(this) },
             { el: 'subTaskBtn', event: 'click', handler: this.handleAddSubTask.bind(this) },
@@ -52,6 +57,7 @@ export class RoudMapModal {
             { el: 'importForm', event: 'click', handler: this.handleClearErrorImport.bind(this) },
             { el: 'manualSubmitBtn', event: 'click', handler: this.handleManualSubmit.bind(this)},
             { el: 'importSubmitBtn', event: 'click', handler: this.handleImportSubmit.bind(this)}
+
             
 
             
@@ -102,7 +108,9 @@ export class RoudMapModal {
             await this.animationManager.blurOutElement(bluredOne);
               
             this.subTaskValues = [];
-            this.manualFormErr.clearAllErrors()
+            this.manualFormErr.clearAllErrors();
+            this.importFormErr.clearAllErrors();
+            this.elements.importDesc.value = '';
             this.elements.subTaskUl.innerHTML = '';
             this.elements.roudNodeInput.value = '';
             this.elements.subTaskInput.value = '';
@@ -274,6 +282,7 @@ export class RoudMapModal {
 
                 if(typeof this.onImportSubmit === 'function') { 
                     this.onImportSubmit(allData);
+                    textarea.value = '';
                     this.hideAddModal()
                     }
                     
@@ -324,7 +333,44 @@ export class RoudMapModal {
             console.log('roadmapid w roud-modal to:', roadmapID);
                 
             }
-        }
+        
+        handlePromtCopy(){
+           const promtText = `Wygeneruj roadmapę w formacie JSON do nauki <TUTAJ NAPISZ CZEGO MA DOTYCZYC ROADMAPA!!>. Struktura powinna wyglądać jak tablica obiektów, z których każdy ma klucz "title" oraz tablicę "subtasks".
+
+            Wymagania:
+            - Tytuł ("title") powinien być zwięzły, maksymalnie 3–4 słowa, konkretne i opisujące dany etap nauki.
+            - Każdy "subtask" powinien mieścić się maksymalnie w 5 słowach.
+            - Nazwy subtasków również powinny być zwięzłe, ale czytelne.
+            - Nie ograniczaj liczby etapów ani liczby subtasków.
+            - Pomiń wszelkie dodatkowe komentarze – odpowiedź ma zawierać **tylko** czysty JSON w podanym formacie.
+
+            Przykładowa struktura:
+
+            [
+            {
+                "title": "Podstawy SCSS i Sass",
+                "subtasks": ["Różnice Sass CSS", "Instalacja Sass", "Zmienne i zagnieżdżanie"]
+            },
+            {
+                "title": "Mixiny i funkcje",
+                "subtasks": ["Definiowanie mixinów", "Argumenty mixinów", "Mixiny z @content", "Tworzenie funkcji", "Różnice mixin funkcja"]
+            }
+            ]
+            `
+
+            navigator.clipboard.writeText(promtText)
+        .then(() => {
+             if(typeof this.onPromtCopy === 'function') { 
+                    this.onPromtCopy();
+                }
+            })
+        .catch(err => {
+            console.error('Błąd kopiowania promptu:', err);
+        });
+    }
+}
+                        
+            
             
                 
                 

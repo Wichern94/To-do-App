@@ -10,7 +10,7 @@ export class RoadmapSelector {
             abandonRoadmapSubmitBtn: document.getElementById(elements.abandonRoadmapSubmitBtnID),
             listToggler: document.getElementById(elements.listTogglerID),
             //kontenery:
-
+            uiPanel: document.getElementById(elements.uiPanelID),
             titleContainer: document.getElementById(elements.titleContainerID),
             setRoadmapContainer: document.getElementById(elements.setRoadmapContainerID),
             ulContainer: document.getElementById(elements.ulContainerID),
@@ -76,12 +76,21 @@ export class RoadmapSelector {
         };
 
     
-    showAddRoadmap(){
+   async showAddRoadmap(){
+            const bluredOne = this.elements.setRoadmapContainer
+            const fieldset = this.elements.uiPanel;
+            await this.animationManager.blurInElement(bluredOne);
+            await this.animationManager.showAnimation(fieldset,'bounceInUp','1s');
         
-        this.elements.setRoadmapContainer?.classList.remove('hidden')
     }
-    hideAddRoadmap() {
-        this.elements.setRoadmapContainer?.classList.add('hidden');
+   async  hideAddRoadmap() {
+        const bluredOne = this.elements.setRoadmapContainer;
+        const fieldset = this.elements.uiPanel;
+  
+        await this.animationManager.hideAnimation(fieldset,'bounceOutDown','1s');
+        await this.animationManager.blurOutElement(bluredOne);
+
+        
         this.FormErr.clearAllErrors()
         this.elements.setInputTitle.value = '';
     }

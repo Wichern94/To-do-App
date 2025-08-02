@@ -55,7 +55,8 @@ export class NodeElement {
         //tworze html noda
         li.innerHTML =`
         
-          
+          <div class="active-border hidden"></div>
+          <div class="roadmap-node__content">
           <div class="title-roudmap">
               <span class="node-text">${title}</span>
               <span class="node-time"></span>
@@ -111,8 +112,11 @@ export class NodeElement {
             <ul id ="${subUlID}" class="subtask-list hidden">
                     
                 </ul>
+                </div>
             `;
         this.ui.root = li;
+        this.ui.nodeContent = li.querySelector('.roadmap-node__content');
+        this.ui.activeBorder = li.querySelector('.active-border');
         this.ui.timer = li.querySelector('.node-time');
         this.ui.progressBarCont = li.querySelector('.progress-container');
         this.ui.accordionBtn = li.querySelector('.node-acc-btn');
@@ -125,6 +129,7 @@ export class NodeElement {
         this.ui.progressText = li.querySelector('.progress-text');
         this.ui.progressFill = li.querySelector('.progress-fill');
         this.ui.timer = li.querySelector('.node-time')
+        
         
 
         
@@ -200,10 +205,15 @@ export class NodeElement {
     }
     disableNode(){
         
-        this.ui.root?.classList.add('disabled-node');
-        this.ui.root?.classList.add('expand-disabled');
+        this.ui.nodeContent?.classList.add('disabled-node');
+        
         hideElement(this.ui.btnContainer);
         hideElement(this.ui.timer);
+        const checkboxes = this.ui.root.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+        cb.disabled = true;
+        });
+        
 
         this.setupAccordeons();
 
@@ -217,16 +227,16 @@ export class NodeElement {
          
         this.isActive = true;
         this.nodeData.wasActive = true;
-        
-        this.ui.root.classList.add('active-border');
+        this.ui.nodeContent.classList.remove('disabled-node')
+        showElement(this.ui.activeBorder);
         
         
         showElement(this.ui.timer);
         hideElement(this.ui.startBtn);
         showElement(this.ui.pauseBtn);
 
-        this.setupCheckBoxes()
-        this.drawConnectionLines()
+        this.setupCheckBoxes();
+        this.drawConnectionLines();
 
         if(!this.nodeData.paused) {
           this.startTimer();  
@@ -251,14 +261,14 @@ export class NodeElement {
 
         const btn = this.ui.accordionBtn;
         const content = this.ui.subtaskList;
-        const li = this.ui.root;
+        const node = this.ui.nodeContent;
 
-        if(!btn || !content ||!li) {
+        if(!btn || !content ||!node) {
             console.warn('nie mozna ustawic Akordeonu - brak elementów');
             return
         }
         btn?.addEventListener('click',() => {
-            this.animationManager.toggleAccordeon(btn, content, li);
+            this.animationManager.toggleAccordeon(btn, content, node);
         });
          this.isAccordionReady = true; 
          
@@ -275,6 +285,7 @@ export class NodeElement {
         updateProgress() {
             const checkedCount = Array.from(this.ui.checkBoxList).filter(cb => cb.checked).length;
             const percent = Math.round(checkedCount * this.progressStep);
+            
             
             if(this.ui.progressText) {
                 this.ui.progressText.textContent = `${percent}%`;
@@ -299,6 +310,7 @@ export class NodeElement {
             if(this.nodeData.checkedSubtasks.length === this.ui.checkBoxList.length) {
                 this.nodeData.subtasksDone = true;
                 showElement(this.ui.stopBtn);
+                
                 this.animationManager.buttonOneAnimation(this.ui.stopBtn, 'rubberBand');
                  this.ui.checkBoxList?.forEach(cb => {
                 cb.disabled = true;
@@ -663,6 +675,7 @@ export class NodeElement {
 
     async setAndLaunchLineAnimation(allNodeInstances){
         try{
+        
         const sortedInstances = [...allNodeInstances].sort((a,b) => {
             return a.nodeData.order - b.nodeData.order
         });
@@ -673,17 +686,21 @@ export class NodeElement {
             const currentNode = sortedInstances[i];
             const nextNode = sortedInstances[i + 1];
 
+            const currentBorder =currentNode.ui.activeBorder;
+            
+
             
             
-        if(currentNode.ui.root.classList.contains('active-border')){
+        if(!currentBorder.classList.contains('hidden')){
             if(!nextNode) {
                 
 
-                await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
+                await this.animationManager.hideAnimation(currentNode.ui.root,'fadeOut');
 
-                currentNode.ui.root.classList.add('hidden');
+                
                 await this.getCompletedata();
-                currentNode.ui.root.classList.remove('active-border');
+                
+                hideElement(currentBorder);
                 this.plumbManager.jsPlumbInstance.deleteEveryConnection();
                 this.plumbManager.jsPlumbInstance.deleteEveryEndpoint();
 
@@ -697,27 +714,23 @@ export class NodeElement {
                
                 await this.animationManager.plumbLineAnimation(currentNode.ui.root.id, nextNode.ui.root.id);
 
-                currentNode.ui.root.classList.remove('active-border');
-                await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
-                currentNode.ui.root.classList.add('hidden');
-                 
-                //   await this.animationManager.slideUpElement(nextNode.ui.root);
-
                 
-                 await this.animationManager.addElementAnimation(nextNode.ui.root,'slideInUp', '1.5s');
-                 await this.animationManager.widthAndHeight(nextNode.ui.root);
-
+                hideElement(currentBorder);
+                await this.animationManager.removeElementAnimation(currentNode.ui.root,'fadeOut');
+                
+                
+                await this.animationManager.hideAnimation(currentNode.ui.root,'flipOutX', '1s');
+                
             
                 await this.getCompletedata();
-                await this.animationManager.addElementAnimation(nextNode.ui.root,'pulse', '.7s');
-                this.plumbManager?.jsPlumbInstance?.repaintEverything();
+               
+                
 
                 this.isActive = false;
                 await this.activateNextNode(this.allNodeInstances);
                 
                 console.log('teraz lista nodów:', this.allNodeInstances);
-                
-
+               
                 break;
                 
        } } }   
@@ -738,20 +751,33 @@ export class NodeElement {
             return a.nodeData.order - b.nodeData.order
         });
 
-        instancesAfterDelete.forEach((node,index) => {
+        instancesAfterDelete.forEach(async( node,index) => {
             if(index === 0) {
-                node.enableNode();
-                if(this.plumbManagers?.[this.nodeData.roadmapID]) {
-                this.plumbManagers[this.nodeData.roadmapID].destroy();
-                delete this.plumbManagers[this.nodeData.roadmapID];
-            }
+                 node.enableNode();
+                 if(this.plumbManagers?.[this.nodeData.roadmapID]) {
+                 this.plumbManagers[this.nodeData.roadmapID].destroy();
+                 delete this.plumbManagers[this.nodeData.roadmapID];
+                }
+                hideElement(node.ui.startBtn)
                 node.setActive();
+                const interval = setInterval(() => {
+                        this.plumbManager?.jsPlumbInstance?.revalidate(node.ui.root);
+                        this.plumbManager?.jsPlumbInstance?.repaintEverything();
+                    }, 10); // 
+                   
+                    setTimeout(() => {
+                        clearInterval(interval);
+                    }, 1500); // 
+                await this.animationManager.addElementAnimation(node.ui.root,'flipInX', '1.2s');
+               
+                
             } else {
                 node.disableNode();
+                
             }
         });
         resolve('nodes ok');
-        // this.plumbManager?.jsPlumbInstance?.repaintEverything();
+         
             
     } catch (err) {
         reject(err);
