@@ -6,12 +6,7 @@
   --color-text-primary: #ffffff;
   --color-text-secondary: #aaaaaa;
   --color-divider: rgba(117, 112, 112, 0.404);
-  --color-cards-bg: linear-gradient(
-    120deg,
-    rgba(26, 31, 41, 1) 64%,
-    rgba(107, 205, 206, 1) 95%,
-    rgba(107, 205, 206, 1) 86%
-  );
+  
   /*  Akcenty */
   --color-accent: #6bcdce;
   --color-accent-light: #9be5ec;
@@ -53,11 +48,10 @@
   --color-border-medium:#ffa857;
   --color-border-height:#f53434;
   --box-shadow-white:rgba(255, 255, 255, 0.219);
-
-  /*  Efekt glass */
-  --glass-blur: blur(16px);
-  --glass-radius: 12px;
 }
+
+ 
+  
 
 html {
   height: 100%;

@@ -1,0 +1,13 @@
+{
+  "name": "power-task",
+  "version": "1.0.0",
+  "description": "ToDo app with calendar view",
+  "scripts": {
+    "scss": "sass scss/calendar.scss css/calendar.css --watch --no-error-css"
+  },
+  "devDependencies": {
+    "sass": "^1.89.2"
+  }
+}
+
+

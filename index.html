@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/roudmap.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/utils.css">
+    <link rel="stylesheet" href="css/calendar.css">
     <!-- biblioteki: -->
         <!-- Animate.css: -->
          <link
@@ -490,6 +491,7 @@
                     
                 </div>
         </section>
+        <!-- tryb Roadmapy -->
         <section id="roadmap-view" class=" modes roadmap-section hidden" aria-labelledby="roadmap-section-title">
   
      <dialog  id="create-roud-menu" class="roud-modal  hidden" >
@@ -756,18 +758,121 @@
       
      
         </section>
-        <section id ="calendar-view" class="modes hidden" aria-labelledby="calendar-section-title" >
-        </section>
+        <!-- Calendar mode using BEM methodology --> 
+        <section id ="calendar-view" class="modes hidden calendar__section" aria-labelledby="calendar-section-title" >
+            <main class="calendar ">
+                <!--  Month Selector Nav -->
+                <section class="calendar__months">
+                    <!-- Previous button -->
+                    <button class="calendar__months-nav calendar__months-nav--prev" aria-label="Previous month">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                    </button>
+                    <!-- Month list -->
+
+                    <ul class="calendar__months-carousel">
+                        <li class="calendar__month" data-month="0">January</li>
+                        <li class="calendar__month" data-month="1">February</li>
+                        <li class="calendar__month calendar__month--active" data-month="2">March</li>
+                        <li class="calendar__month" data-month="3">April</li>
+                        <li class="calendar__month" data-month="4">May</li>
+                        <li class="calendar__month" data-month="5">June</li>
+                        <li class="calendar__month" data-month="6">July</li>
+                        <li class="calendar__month" data-month="7">August</li>
+                        <li class="calendar__month" data-month="8">September</li>
+                        <li class="calendar__month" data-month="9">October</li>
+                        <li class="calendar__month" data-month="10">November</li>
+                        <li class="calendar__month" data-month="11">December</li>
+                    </ul>
+                    <!-- Next button -->
+                    <button class="calendar__months-nav calendar__months-nav--next" aria-label="Next month">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </button>
+                </section>
+                <!-- Day Section -->
+                <section class="calendar__days">
+                    <!-- Previous button -->
+                    <button class="calendar__days-nav calendar__days-nav--prev" aria-label="Previous days">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                    </button>
+                    <!-- Day list -->
+                    <ul class="calendar__days-carousel">
+                        <li class="calendar__day" data-date="2025-11-07">Mon 01</li>
+                        <li class="calendar__day" data-date="2025-11-08">Tue 02</li>
+                        <li class="calendar__day calendar__day--active" data-date="2025-11-09">Wed 03</li>
+                        <li class="calendar__day" data-date="2025-11-10">Thu 04</li>
+                        <li class="calendar__day" data-date="2025-11-11">Fri 05</li>
+                        <li class="calendar__day" data-date="2025-11-12">Sat 09</li>
+                        <li class="calendar__day" data-date="2025-11-13">Sun 10</li>
+                    </ul>
+                        
+                    <!-- Next button -->
+                    <button class="calendar__days-nav calendar__days-nav--next" aria-label="Next days">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </button>
+
+                </section>
+
+                <!-- Hour grid (6:00 AM to 10:00 PM) -->
+                <section class="calendar__grid" data-date="2025-11-07">
+                    <div class="calendar__hour-slot" data-hour="6">06:00</div>
+                    <div class="calendar__hour-slot" data-hour="7">07:00</div>
+                    <div class="calendar__hour-slot" data-hour="8">08:00</div>
+                    <div class="calendar__hour-slot" data-hour="9">09:00</div>
+                    <div class="calendar__hour-slot" data-hour="10">10:00</div>
+                    <div class="calendar__hour-slot" data-hour="11">11:00</div>
+                    <div class="calendar__hour-slot" data-hour="12">12:00</div>
+                    <div class="calendar__hour-slot" data-hour="13">13:00</div>
+                    <div class="calendar__hour-slot" data-hour="14">14:00</div>
+                    <div class="calendar__hour-slot" data-hour="15">15:00</div>
+                    <div class="calendar__hour-slot" data-hour="16">16:00</div>
+                    <div class="calendar__hour-slot" data-hour="17">17:00</div>
+                    <div class="calendar__hour-slot" data-hour="18">18:00</div>
+                    <div class="calendar__hour-slot" data-hour="19">19:00</div>
+                    <div class="calendar__hour-slot" data-hour="20">20:00</div>
+                    <div class="calendar__hour-slot" data-hour="21">21:00</div>
+                    <div class="calendar__hour-slot" data-hour="22">22:00</div>
+                </section>
+                    
+                <!-- Modal for adding a calendar task -->
+                <dialog class="calendar__modal hidden">
+                    <div class="calendar__task"  >
+                        <span class="calendar__task-title">Dentysta</span>
+                        <span class="calendar__task-time">9:00–10:00</span>
+                    </div>
+                </dialog>
+
+            </main>
+            </section>
+               
+
+               
+
+
+
+
+                    
+
+                    
+
+                
+
+        
             
 
-    </section>
+    
 
 
         
 
-    </main>
-
-</section>
+  
 
 <!-- EKRAN REJSETRACJI -->
  <section id ="register-screen" class = "screen apk-look hidden register-tab">

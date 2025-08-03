@@ -1,0 +1,82 @@
+/* Karty, modale */
+/* Glassmorphic okna */
+/*  Akcenty */
+/*------------------------------------------------------------------------------------*/
+.calendar__section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  font-family: "Oxanium", sans-serif;
+  color: #aaaaaa;
+  width: 100%;
+  top: 4rem;
+}
+.calendar__months {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.calendar__months-carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  width: 4.5rem;
+}
+.calendar__months-carousel > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+.calendar__months-carousel::-webkit-scrollbar {
+  display: none;
+}
+.calendar__months-carousel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.calendar__days {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.calendar__days-carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  width: 90%;
+}
+.calendar__days-carousel > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+.calendar__days-carousel::-webkit-scrollbar {
+  display: none;
+}
+.calendar__days-carousel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*# sourceMappingURL=calendar.css.map */
