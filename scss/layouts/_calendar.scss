@@ -1,0 +1,38 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+
+.calendar__section{
+    @include mixins.flex-center;
+}
+
+.calendar{
+    @include mixins.flex-center-column;
+    font-family: var.$mainFont;
+    color: var.$textSecondary;
+    top: 4rem;   
+    
+    //months
+    &__months{
+        @include mixins.flex-center;
+        &-carousel {
+            @include mixins.horizontal-carousel;
+            width: 4.5rem;   
+        }
+    }
+            
+    //days
+    &__days{
+        @include mixins.flex-center;
+        &-carousel{
+            @include mixins.horizontal-carousel;
+            &{
+             width: 90%;   
+            }
+            
+        }
+    }
+}
+            
+            
+    
+    

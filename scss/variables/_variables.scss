@@ -1,0 +1,33 @@
+// Colors:
+$primary:#0d0d0d; //tło głowne
+$bgSoft: #1c1c1e; /* Karty, modale */
+$glassBg: rgba(22, 22, 22, 0.6); /* Glassmorphic okna */
+$textPrimary: #ffffff; 
+$textSecondary: #aaaaaa;
+$divider: rgba(117, 112, 112, 0.404);
+$bgMajor: #262629;
+
+/*  Akcenty */
+$accent: #6bcdce;
+$accentLight: #9be5ec;
+$accentBorder: #44787c;
+
+// Spacing
+$space-xs: 0.25rem;
+$space-sm: 0.5rem;
+$space-md: 1rem;
+$space-lg: 2rem;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+//Fonts and weights
+$mainFont: "Oxanium", sans-serif;
+$font-weights: (
+  "light": 300,
+  "regular": 400,
+  "medium": 500,
+  "bold": 700
+);

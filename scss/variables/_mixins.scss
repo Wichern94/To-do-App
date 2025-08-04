@@ -1,0 +1,48 @@
+// Mixins:
+@mixin flex-center($full-size:true) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    @if $full-size {
+        width: 100%;
+        height: 100%;
+    }
+   
+    
+}
+@mixin flex-center-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+@mixin flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+@mixin horizontal-carousel($gap: 1rem, $scrollSnap: true) {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: $gap;
+    scroll-behavior: smooth;
+
+    @if $scrollSnap{
+        scroll-snap-type: x mandatory;
+        > * {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+    }
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    & {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    }
+}
