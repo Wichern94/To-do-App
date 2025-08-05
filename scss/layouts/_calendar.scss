@@ -15,23 +15,25 @@
     &__months{
         @include mixins.flex-center;
         &-carousel {
-            @include mixins.horizontal-carousel;
-            width: 4.5rem;   
+            @include mixins.horizontal-carousel($width:4.5rem);
+            @include mixins.set-text('medium','main');
+              
         }
     }
             
     //days
     &__days{
         @include mixins.flex-center;
-        &-carousel{
-            @include mixins.horizontal-carousel;
-            &{
-             width: 90%;   
-            }
+        margin:1rem 0;
+        overflow-x: auto;
+       &-selector{
+        @include mixins.flex-between(90%);
+       }
+           
             
         }
     }
-}
+
             
             
     

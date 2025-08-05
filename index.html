@@ -764,7 +764,7 @@
                 <!--  Month Selector Nav -->
                 <section class="calendar__months">
                     <!-- Previous button -->
-                    <button class="calendar__months-nav calendar__months-nav--prev" aria-label="Previous month">
+                    <button  type="button" class="calendar__button calendar__months-nav calendar__months-nav--prev" aria-label="Previous month">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                         </svg>
@@ -786,7 +786,7 @@
                         <li class="calendar__month" data-month="11">December</li>
                     </ul>
                     <!-- Next button -->
-                    <button class="calendar__months-nav calendar__months-nav--next" aria-label="Next month">
+                    <button type="button" class="calendar__button calendar__months-nav calendar__months-nav--next" aria-label="Next month">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                         </svg>
@@ -794,29 +794,16 @@
                 </section>
                 <!-- Day Section -->
                 <section class="calendar__days">
-                    <!-- Previous button -->
-                    <button class="calendar__days-nav calendar__days-nav--prev" aria-label="Previous days">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                        </svg>
-                    </button>
-                    <!-- Day list -->
-                    <ul class="calendar__days-carousel">
-                        <li class="calendar__day" data-date="2025-11-07">Mon 01</li>
-                        <li class="calendar__day" data-date="2025-11-08">Tue 02</li>
-                        <li class="calendar__day calendar__day--active" data-date="2025-11-09">Wed 03</li>
-                        <li class="calendar__day" data-date="2025-11-10">Thu 04</li>
-                        <li class="calendar__day" data-date="2025-11-11">Fri 05</li>
-                        <li class="calendar__day" data-date="2025-11-12">Sat 09</li>
-                        <li class="calendar__day" data-date="2025-11-13">Sun 10</li>
-                    </ul>
-                        
-                    <!-- Next button -->
-                    <button class="calendar__days-nav calendar__days-nav--next" aria-label="Next days">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
-                    </button>
+                    <div class="calendar__days-selector">
+                        <button class="calendar__weekday-btn is-active" data-day="mon">Mon</button>
+                        <button class="calendar__weekday-btn" data-day="tue">Tue</button>
+                        <button class="calendar__weekday-btn" data-day="wed">Wed</button>
+                        <button class="calendar__weekday-btn" data-day="thu">Thu</button>
+                        <button class="calendar__weekday-btn" data-day="fri">Fri</button>
+                        <button class="calendar__weekday-btn" data-day="sat">Sat</button>
+                        <button class="calendar__weekday-btn" data-day="sun">Sun</button>
+                    </div>
+
 
                 </section>
 

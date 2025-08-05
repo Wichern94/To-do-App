@@ -6,6 +6,7 @@ $textPrimary: #ffffff;
 $textSecondary: #aaaaaa;
 $divider: rgba(117, 112, 112, 0.404);
 $bgMajor: #262629;
+$activedayBG: rgba(107, 205, 206, 0.1);
 
 /*  Akcenty */
 $accent: #6bcdce;
@@ -24,10 +25,10 @@ $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
 //Fonts and weights
-$mainFont: "Oxanium", sans-serif;
+$mainFont: 'Oxanium', sans-serif;
 $font-weights: (
-  "light": 300,
-  "regular": 400,
-  "medium": 500,
-  "bold": 700
+  'light': 300,
+  'regular': 400,
+  'medium': 500,
+  'bold': 700
 );
