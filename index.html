@@ -809,33 +809,95 @@
 
                 <!-- Hour grid (6:00 AM to 10:00 PM) -->
                 <section class="calendar__grid" data-date="2025-11-07">
-                    <div class="calendar__hour-slot" data-hour="6">06:00</div>
-                    <div class="calendar__hour-slot" data-hour="7">07:00</div>
-                    <div class="calendar__hour-slot" data-hour="8">08:00</div>
-                    <div class="calendar__hour-slot" data-hour="9">09:00</div>
-                    <div class="calendar__hour-slot" data-hour="10">10:00</div>
-                    <div class="calendar__hour-slot" data-hour="11">11:00</div>
-                    <div class="calendar__hour-slot" data-hour="12">12:00</div>
-                    <div class="calendar__hour-slot" data-hour="13">13:00</div>
-                    <div class="calendar__hour-slot" data-hour="14">14:00</div>
-                    <div class="calendar__hour-slot" data-hour="15">15:00</div>
-                    <div class="calendar__hour-slot" data-hour="16">16:00</div>
-                    <div class="calendar__hour-slot" data-hour="17">17:00</div>
-                    <div class="calendar__hour-slot" data-hour="18">18:00</div>
-                    <div class="calendar__hour-slot" data-hour="19">19:00</div>
-                    <div class="calendar__hour-slot" data-hour="20">20:00</div>
-                    <div class="calendar__hour-slot" data-hour="21">21:00</div>
-                    <div class="calendar__hour-slot" data-hour="22">22:00</div>
+                    <ul class="calendar__grid-list">
+                        <li class="calendar__grid-hour-slot" data-hour="6">
+                            <span class="calendar__grid-hour-label">06:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="7">
+                            <span class="calendar__grid-hour-label">07:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="8">
+                            <span class="calendar__grid-hour-label">08:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="9">
+                            <span class="calendar__grid-hour-label">09:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="10">
+                            <span class="calendar__grid-hour-label">10:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="11">
+                            <span class="calendar__grid-hour-label">11:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="12">
+                            <span class="calendar__grid-hour-label">12:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="13">
+                            <span class="calendar__grid-hour-label">13:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="14">
+                            <span class="calendar__grid-hour-label">14:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="15">
+                            <span class="calendar__grid-hour-label">15:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="16">
+                            <span class="calendar__grid-hour-label">16:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="17">
+                            <span class="calendar__grid-hour-label">17:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+
+                        <li class="calendar__grid-hour-slot" data-hour="18">
+                            <span class="calendar__grid-hour-label">18:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="19">
+                            <span class="calendar__grid-hour-label">19:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="20">
+                            <span class="calendar__grid-hour-label">20:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="21">
+                            <span class="calendar__grid-hour-label">21:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                        <li class="calendar__grid-hour-slot" data-hour="22">
+                            <span class="calendar__grid-hour-label">22:00</span>
+                            <ul class="calendar__grid-task-list hidden"></ul>
+                        </li>
+                    </ul>
                 </section>
                     
                 <!-- Modal for adding a calendar task -->
-                <dialog class="calendar__modal hidden">
-                    <div class="calendar__task"  >
-                        <span class="calendar__task-title">Dentysta</span>
-                        <span class="calendar__task-time">9:00–10:00</span>
-                    </div>
-                </dialog>
+                
+                    <section class="task-drawer__modal hidden">
+                        <button class="task-drawer__btn" aria-label="Open task tray">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                            </svg>
+                        </button>
 
+                        <ul class="task-drawer__task-list"  >
+                            <li class="task-drawer__task-item">Dentysta</li>
+                            <li class="task-drawer__task-item">Dentysta2</li>
+                        </ul>
+                    </section>
+                            
+                
             </main>
             </section>
                
