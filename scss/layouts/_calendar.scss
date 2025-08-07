@@ -15,10 +15,28 @@
     &__months{
         @include mixins.flex-center;
         &-carousel {
-            @include mixins.horizontal-carousel($width:4.5rem);
+            @include mixins.horizontal-carousel($width:6rem);
             @include mixins.set-text('medium','main');
-              
+            &-month{ // all childs
+                justify-content: center;
+                display: flex;
+                scroll-snap-align: center;
+                flex: 0 0 100%;
+                text-align: center;
+                width:4.5rem;
+                
+                &.--active{
+                color:var.$accentLight;
+                text-decoration: underline;
+                text-underline-offset:.4rem 
+                
+                
+            }
+            }
+            
         }
+               
+              
     }
     //days
     &__days{

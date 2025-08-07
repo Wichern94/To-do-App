@@ -772,18 +772,18 @@
                     <!-- Month list -->
 
                     <ul class="calendar__months-carousel">
-                        <li class="calendar__month" data-month="0">January</li>
-                        <li class="calendar__month" data-month="1">February</li>
-                        <li class="calendar__month calendar__month--active" data-month="2">March</li>
-                        <li class="calendar__month" data-month="3">April</li>
-                        <li class="calendar__month" data-month="4">May</li>
-                        <li class="calendar__month" data-month="5">June</li>
-                        <li class="calendar__month" data-month="6">July</li>
-                        <li class="calendar__month" data-month="7">August</li>
-                        <li class="calendar__month" data-month="8">September</li>
-                        <li class="calendar__month" data-month="9">October</li>
-                        <li class="calendar__month" data-month="10">November</li>
-                        <li class="calendar__month" data-month="11">December</li>
+                        <li class="calendar__months-carousel-month" data-month="0">January</li>
+                        <li class="calendar__months-carousel-month" data-month="1">February</li>
+                        <li class="calendar__months-carousel-month --active" data-month="2">March</li>
+                        <li class="calendar__months-carousel-month" data-month="3">April</li>
+                        <li class="calendar__months-carousel-month" data-month="4">May</li>
+                        <li class="calendar__months-carousel-month" data-month="5">June</li>
+                        <li class="calendar__months-carousel-month" data-month="6">July</li>
+                        <li class="calendar__months-carousel-month" data-month="7">August</li>
+                        <li class="calendar__months-carousel-month" data-month="8">September</li>
+                        <li class="calendar__months-carousel-month" data-month="9">October</li>
+                        <li class="calendar__months-carousel-month" data-month="10">November</li>
+                        <li class="calendar__months-carousel-month" data-month="11">December</li>
                     </ul>
                     <!-- Next button -->
                     <button type="button" class="calendar__button calendar__months-nav calendar__months-nav--next" aria-label="Next month">
@@ -894,26 +894,43 @@
                         </div>
                         <ul class="task-drawer__task-list "  >
                             <li class="task-drawer__task-list-item ">
-                                <div class="task-drawer__task-list-item__drag-handle prio-medium">prioMedium</div>
+                                <div class="task-drawer__drag-handle prio-medium">
+                                    <div class="task-drawer__drag-title " >
+                                        <span>prioMedium</span>
+                                    </div>
+                                </div>
+                                <button class="task-drawer__task-info-btn prio-medium">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                                    </svg>
+                                </button>
+
                             </li>
-                            <li class="task-drawer__task-list-item">
-                                <div class="task-drawer__task-list-item__drag-handle prio-height">Prio height</div>
+                             <li class="task-drawer__task-list-item ">
+                                <div class="task-drawer__drag-handle ">
+                                    <div class="task-drawer__drag-title marquee" >
+                                        <span>Lorem ipsum dolor sit amet.</span>
+                                    </div>
+                                </div>
+                                 <button class="task-drawer__task-info-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                                    </svg>
+                                </button>
                             </li>
-                            <li class="task-drawer__task-list-item">
-                                <div class="task-drawer__task-list-item__drag-handle">Dentysta</div>
+                             <li class="task-drawer__task-list-item ">
+                                <div class="task-drawer__drag-handle prio-height">
+                                    <div class="task-drawer__drag-title " >
+                                        <span>prioMedium</span>
+                                    </div>
+                                </div>
+                                 <button class="task-drawer__task-info-btn prio-height">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                                    </svg>
+                                </button>
                             </li>
-                            <li class="task-drawer__task-list-item">
-                                <div class="task-drawer__task-list-item__drag-handle">Dentysta2</div>
-                            </li>
-                            <li class="task-drawer__task-list-item">
-                                <div class="task-drawer__task-list-item__drag-handle">Dentysta</div>
-                            </li>
-                            <li class="task-drawer__task-list-item">
-                                <div class="task-drawer__task-list-item__drag-handle">Dentysta</div>
-                            </li>
-                            <li class="task-drawer__task-list-item">
-                                <div class="task-drawer__task-list-item__drag-handle">Dentysta</div>
-                            </li>
+                           
                         </ul>
                     </section>
                             

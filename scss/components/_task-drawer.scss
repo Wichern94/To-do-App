@@ -27,37 +27,91 @@
     &__task-list{
         gap: 1rem;
         @include mixins.horizontal-carousel($width:75%);
-        padding: 1rem;
-        
+        padding: 2rem;
+        flex-wrap: nowrap;
         &-item{
-            overflow-wrap: break-word;
-            
+             overflow: hidden;
             min-width: 6rem;
             min-height: 4rem;
             border-radius: 5px;
             padding: .5rem;
             @include mixins.glass-modal($minor: true);
-            &__drag-handle{
-                width: 100%;
-                padding: .1rem;
-                font-size: 13px;
-                color: #000;
-                font-weight: 600;
-                background-color: var.$filterGreen;
-                position: absolute;
-                border-radius: 5px 5px 0 0;
-                top: 0;
-                left: 0;
-                &.prio-medium{
-                    background-color: var.$itemMedium;
-                }
-                &.prio-height{
-                    background-color: var.$itemHigh;
-                }
-            }
+                 }
         }
-
+            
+            
+    &__drag-handle{
+        width: 100%;
+        
+        overflow: hidden;
+        background-color: var.$filterGreen;
+        position: absolute;
+        border-radius: 5px 5px 0 0;
+        top: 0;
+        left: 0;
+        &.prio-medium{
+            background-color: var.$itemMedium;
+        }
+        &.prio-height{
+            background-color: var.$itemHigh;
+        }
     }
+        
+    &__drag-title{
+        display: inline-block;
+        color: var.$textBlack;
+        font-weight: 600;
+        font-size: 13px;
+        position: relative;
+        white-space: nowrap;
+    }
+    .marquee{
+           animation: scroll-left 10s linear infinite;
+       }
+    &__task-info-btn{
+        position: absolute;
+        @include mixins.no-text-btn(1.5rem,var.$textBlack);
+        background-color: var.$filterGreen;
+        height: 2.5rem;
+        
+        right: -.8rem;
+        
+        transform: skewX(-45deg);
+        bottom: -.8rem;
+         &.prio-medium{
+            background-color: var.$itemMedium;
+        }
+        &.prio-height{
+            background-color: var.$itemHigh;
+        }
+        svg{
+            
+             margin-top: .3rem;
+            
+            transform: skewX(45deg);
+            width: 1rem;
+        }
+        
+    }
+    
+     }  
+        
+                
+        
+        
+       
+    
+
+                
+       
 
 
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
