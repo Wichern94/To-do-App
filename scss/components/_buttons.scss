@@ -1,5 +1,5 @@
 @use "../variables/variables" as var;
 @use "../variables/mixins";
-.calendar__button {
-  @include mixins.calendar-button(1rem, 1rem, "medium", "secondary");
+.calendar__months-nav {
+  @include mixins.styled-button($size-w: 1rem, $color: var.$textSecondary);
 }

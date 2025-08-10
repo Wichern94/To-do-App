@@ -23,21 +23,34 @@ $accentLight: #9be5ec;
 $accentBorder: #44787c;
 
 // Spacing
-$space-xs: 0.25rem;
-$space-sm: 0.5rem;
-$space-md: 1rem;
-$space-lg: 2rem;
+$spaceXs: 0.25rem;
+$spaceSm: 0.5rem;
+$spaceMd: 1rem;
+$spaceLg: 2rem;
 
 // Breakpoints
-$breakpoint-sm: 576px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 992px;
-$breakpoint-xl: 1200px;
+$breakpointSm: 576px;
+$breakpointMd: 768px;
+$breakpointLg: 992px;
+$breakpointXl: 1200px;
 //Fonts and weights
 $mainFont: "Oxanium", sans-serif;
-$font-weights: (
+
+$fontWeights: (
   "light": 300,
   "regular": 400,
   "medium": 500,
   "bold": 700,
+);
+$fontSize: (
+  "sm": 10px,
+  "md": 12px,
+  "reg": 14px,
+  "lg": 16px,
+  "xl": 18px,
+);
+$textColors: (
+  "main": $textPrimary,
+  "secondary": $textSecondary,
+  "emphasized": $textBlack,
 );

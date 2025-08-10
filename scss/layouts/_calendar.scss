@@ -1,22 +1,24 @@
 @use "../variables/variables" as var;
 @use "../variables/mixins";
+@use "sass:map";
 
 .calendar__section {
-  @include mixins.flex-center;
+  @include mixins.flex;
 }
 
 .calendar {
-  @include mixins.flex-center-column;
+  @include mixins.flex($width: 100%);
   font-family: var.$mainFont;
   color: var.$textSecondary;
   top: 4rem;
 
   //months
   &__months {
-    @include mixins.flex-center;
+    @include mixins.flex($direction: row, $width: 100%);
     &-carousel {
+      @include mixins.set-text("main", "medium", "xl");
       @include mixins.horizontal-carousel($width: 6rem);
-      @include mixins.set-text("medium", "main");
+
       &-month {
         // all childs
         justify-content: center;
@@ -24,7 +26,6 @@
         scroll-snap-align: center;
         flex: 0 0 100%;
         text-align: center;
-        width: 4.5rem;
 
         &--active {
           color: var.$accentLight;
@@ -40,11 +41,15 @@
   }
   //days
   &__days {
-    @include mixins.flex-center;
+    @include mixins.flex($direction: row, $width: 100%);
     margin: 1rem 0;
     overflow-x: auto;
     &-selector {
-      @include mixins.flex-between(90%);
+      @include mixins.flex(
+        $direction: row,
+        $width: 90%,
+        $justify: space-between
+      );
     }
   }
   //Hour grid

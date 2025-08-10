@@ -2,7 +2,7 @@
 @use "../variables/mixins";
 // bottom task drawer
 .task-drawer {
-  @include mixins.flex-center-column;
+  @include mixins.flex($width: 100%);
   @include mixins.glass-modal;
   width: 100%;
   position: fixed;
@@ -14,21 +14,24 @@
   border-top: 1px solid rgba(255, 255, 255, 0.185);
 
   &__btn-container {
-    @include mixins.flex-center-column;
+    @include mixins.flex($width: 100%);
     position: absolute;
     top: 0.5rem;
   }
   &__btn {
-    @include mixins.no-text-btn(1.5rem, var.$filterGreen);
+    @include mixins.styled-button(
+      $size-w: 1.5rem,
+      $color: var.$filterGreen,
+      $margin: 0.5rem
+    );
   }
   &.is-open {
     transform: translateY(-0%);
   }
   &__task-list {
-    gap: 1rem;
-    @include mixins.horizontal-carousel($width: 75%);
     padding: 2rem;
-    flex-wrap: nowrap;
+    @include mixins.horizontal-carousel($width: 75%);
+
     &-item {
       overflow: hidden;
       min-width: 6rem;
@@ -69,7 +72,8 @@
   }
   &__task-info-btn {
     position: absolute;
-    @include mixins.no-text-btn(1.5rem, var.$textBlack);
+    @include mixins.styled-button($size-w: 1.5rem, $color: var.$textBlack);
+
     background-color: var.$filterGreen;
     height: 2.5rem;
     right: -0.8rem;
@@ -83,9 +87,12 @@
       background-color: var.$itemHigh;
     }
     svg {
+      position: relative;
       margin-top: 0.3rem;
       transform: skewX(45deg);
       width: 1rem;
+      top: 0.1rem;
+      left: -0.3rem;
     }
   }
   &__tooltip {
