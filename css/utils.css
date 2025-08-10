@@ -1,12 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap");
 body {
-   font-family: "Oxanium", sans-serif;
-  
+  font-family: "Oxanium", sans-serif;
 }
 
 .hidden {
-    display: none;
+  display: none !important;
 }
 .open {
-    display: block;
+  display: block;
+}
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
 }

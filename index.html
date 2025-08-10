@@ -762,10 +762,11 @@
         <section id ="calendar-view" class="modes hidden calendar__section" aria-labelledby="calendar-section-title" >
             <main class="calendar ">
                 <!--  Month Selector Nav -->
+                <h2 id="calendar-section-title" class="visually-hidden">Calendar view</h2>
                 <section class="calendar__months">
                     <!-- Previous button -->
                     <button  type="button" class="calendar__button calendar__months-nav calendar__months-nav--prev" aria-label="Previous month">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                         </svg>
                     </button>
@@ -774,11 +775,11 @@
                     <ul class="calendar__months-carousel">
                         <li class="calendar__months-carousel-month" data-month="0">January</li>
                         <li class="calendar__months-carousel-month" data-month="1">February</li>
-                        <li class="calendar__months-carousel-month --active" data-month="2">March</li>
+                        <li class="calendar__months-carousel-month" data-month="2">March</li>
                         <li class="calendar__months-carousel-month" data-month="3">April</li>
                         <li class="calendar__months-carousel-month" data-month="4">May</li>
                         <li class="calendar__months-carousel-month" data-month="5">June</li>
-                        <li class="calendar__months-carousel-month" data-month="6">July</li>
+                        <li class="calendar__months-carousel-month calendar__months-carousel-month--active" data-month="6">July</li>
                         <li class="calendar__months-carousel-month" data-month="7">August</li>
                         <li class="calendar__months-carousel-month" data-month="8">September</li>
                         <li class="calendar__months-carousel-month" data-month="9">October</li>
@@ -787,7 +788,7 @@
                     </ul>
                     <!-- Next button -->
                     <button type="button" class="calendar__button calendar__months-nav calendar__months-nav--next" aria-label="Next month">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                         </svg>
                     </button>
@@ -795,13 +796,13 @@
                 <!-- Day Section -->
                 <section class="calendar__days">
                     <div class="calendar__days-selector">
-                        <button class="calendar__weekday-btn is-active" data-day="mon">Mon</button>
-                        <button class="calendar__weekday-btn" data-day="tue">Tue</button>
-                        <button class="calendar__weekday-btn" data-day="wed">Wed</button>
-                        <button class="calendar__weekday-btn" data-day="thu">Thu</button>
-                        <button class="calendar__weekday-btn" data-day="fri">Fri</button>
-                        <button class="calendar__weekday-btn" data-day="sat">Sat</button>
-                        <button class="calendar__weekday-btn" data-day="sun">Sun</button>
+                        <button type="button" class="calendar__weekday-btn is-active" data-day="mon" aria-pressed="true">Mon</button>
+                        <button type="button" class="calendar__weekday-btn" data-day="tue" aria-pressed="false">Tue</button>
+                        <button type="button" class="calendar__weekday-btn" data-day="wed" aria-pressed="false">Wed</button>
+                        <button type="button" class="calendar__weekday-btn" data-day="thu" aria-pressed="false">Thu</button>
+                        <button type="button" class="calendar__weekday-btn" data-day="fri" aria-pressed="false">Fri</button>
+                        <button type="button" class="calendar__weekday-btn" data-day="sat" aria-pressed="false">Sat</button>
+                        <button type="button" class="calendar__weekday-btn" data-day="sun" aria-pressed="false">Sun</button>
                     </div>
 
 
@@ -811,72 +812,72 @@
                 <section class="calendar__grid" data-date="2025-11-07">
                     <ul class="calendar__grid-list">
                         <li class="calendar__grid-hour-slot" data-hour="6">
-                            <span class="calendar__grid-hour-label">06:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="06:00">06:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="7">
-                            <span class="calendar__grid-hour-label">07:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="07:00">07:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="8">
-                            <span class="calendar__grid-hour-label">08:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="08:00">08:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="9">
-                            <span class="calendar__grid-hour-label">09:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="09:00">09:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="10">
-                            <span class="calendar__grid-hour-label">10:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="10:00">10:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="11">
-                            <span class="calendar__grid-hour-label">11:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="11:00">11:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="12">
-                            <span class="calendar__grid-hour-label">12:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="12:00">12:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="13">
-                            <span class="calendar__grid-hour-label">13:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="13:00">13:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="14">
-                            <span class="calendar__grid-hour-label">14:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="14:00">14:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="15">
-                            <span class="calendar__grid-hour-label">15:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="15:00">15:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="16">
-                            <span class="calendar__grid-hour-label">16:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="16:00">16:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="17">
-                            <span class="calendar__grid-hour-label">17:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="17:00">17:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
 
                         <li class="calendar__grid-hour-slot" data-hour="18">
-                            <span class="calendar__grid-hour-label">18:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="18:00">18:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="19">
-                            <span class="calendar__grid-hour-label">19:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="19:00">19:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="20">
-                            <span class="calendar__grid-hour-label">20:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="20:00">20:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="21">
-                            <span class="calendar__grid-hour-label">21:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="21:00">21:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                         <li class="calendar__grid-hour-slot" data-hour="22">
-                            <span class="calendar__grid-hour-label">22:00</span>
+                            <span class="calendar__grid-hour-label"><time datetime="22:00">22:00</time></span>
                             <ul class="calendar__grid-task-list hidden"></ul>
                         </li>
                     </ul>
@@ -886,11 +887,14 @@
                 
                     <section class="task-drawer is-open">
                         <div class="task-drawer__btn-container">
-                            <button class="task-drawer__btn" aria-label="Open task tray">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <button type="button" class="task-drawer__btn" aria-label="Open task tray">
+                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                                 </svg>
                             </button>
+                        </div>
+                        <div class="task-drawer__tooltip hidden">
+                                <p></p>
                         </div>
                         <ul class="task-drawer__task-list "  >
                             <li class="task-drawer__task-list-item ">
@@ -899,36 +903,61 @@
                                         <span>prioMedium</span>
                                     </div>
                                 </div>
-                                <button class="task-drawer__task-info-btn prio-medium">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                                    </svg>
+                                <button type="button" class="task-drawer__task-info-btn prio-medium">
+                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                         <path d="M11 19H8V16H11V19Z" fill="#1F2328"></path>
+                                         <path d="M11 13.5H8V10.5H11V13.5Z" fill="#1F2328"></path>
+                                         <path d="M11 8H8V5H11V8Z" fill="#1F2328"></path>
+                                         <path d="M16 19H13V16H16V19Z" fill="#1F2328">
+                                        </path> <path d="M16 13.5H13V10.5H16V13.5Z" fill="#1F2328"></path>
+                                        <path d="M16 8H13V5H16V8Z" fill="#1F2328"></path> </g></svg>
                                 </button>
+                            </li>    
+                            
 
-                            </li>
+                            
                              <li class="task-drawer__task-list-item ">
                                 <div class="task-drawer__drag-handle ">
                                     <div class="task-drawer__drag-title marquee" >
                                         <span>Lorem ipsum dolor sit amet.</span>
                                     </div>
                                 </div>
-                                 <button class="task-drawer__task-info-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                                    </svg>
+                                 <button type="button" class="task-drawer__task-info-btn">
+                                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                         <path d="M11 19H8V16H11V19Z" fill="#1F2328"></path>
+                                         <path d="M11 13.5H8V10.5H11V13.5Z" fill="#1F2328"></path>
+                                         <path d="M11 8H8V5H11V8Z" fill="#1F2328"></path>
+                                         <path d="M16 19H13V16H16V19Z" fill="#1F2328">
+                                        </path> <path d="M16 13.5H13V10.5H16V13.5Z" fill="#1F2328"></path>
+                                        <path d="M16 8H13V5H16V8Z" fill="#1F2328"></path> </g></svg>
                                 </button>
                             </li>
                              <li class="task-drawer__task-list-item ">
-                                <div class="task-drawer__drag-handle prio-height">
+                                <div class="task-drawer__drag-handle prio-high">
                                     <div class="task-drawer__drag-title " >
                                         <span>prioMedium</span>
                                     </div>
                                 </div>
-                                 <button class="task-drawer__task-info-btn prio-height">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                                    </svg>
-                                </button>
+                                 <button type="button" class="task-drawer__task-info-btn prio-high">
+                                   <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                         <path d="M11 19H8V16H11V19Z" fill="#1F2328"></path>
+                                         <path d="M11 13.5H8V10.5H11V13.5Z" fill="#1F2328"></path>
+                                         <path d="M11 8H8V5H11V8Z" fill="#1F2328"></path>
+                                         <path d="M16 19H13V16H16V19Z" fill="#1F2328">
+                                        </path> <path d="M16 13.5H13V10.5H16V13.5Z" fill="#1F2328"></path>
+                                        <path d="M16 8H13V5H16V8Z" fill="#1F2328"></path> </g></svg>
+                                    </button>
+                                            
+
                             </li>
                            
                         </ul>

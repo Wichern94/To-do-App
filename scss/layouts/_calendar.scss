@@ -1,98 +1,87 @@
-@use '../variables/variables' as var;
-@use '../variables/mixins';
+@use "../variables/variables" as var;
+@use "../variables/mixins";
 
-.calendar__section{
-    @include mixins.flex-center;
+.calendar__section {
+  @include mixins.flex-center;
 }
 
-.calendar{
-    @include mixins.flex-center-column;
-    font-family: var.$mainFont;
-    color: var.$textSecondary;
-    top: 4rem;   
-    
-    //months
-    &__months{
-        @include mixins.flex-center;
-        &-carousel {
-            @include mixins.horizontal-carousel($width:6rem);
-            @include mixins.set-text('medium','main');
-            &-month{ // all childs
-                justify-content: center;
-                display: flex;
-                scroll-snap-align: center;
-                flex: 0 0 100%;
-                text-align: center;
-                width:4.5rem;
-                
-                &.--active{
-                color:var.$accentLight;
-                text-decoration: underline;
-                text-underline-offset:.4rem 
-                
-                
-            }
-            }
-            
-        }
-               
-              
-    }
-    //days
-    &__days{
-        @include mixins.flex-center;
-        margin:1rem 0;
-        overflow-x: auto;
-       &-selector{
-        @include mixins.flex-between(90%);
-       }
-    }
-    //Hour grid
-    &__grid{
-        position: relative;
-        height: calc(100vh - 25rem);
-        overflow-y: auto;
-        scroll-snap-type: y mandatory;
-        scroll-behavior: smooth;
-        overscroll-behavior: contain;
-        width: 80%;
-        margin-top: .5rem;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        &::-webkit-scrollbar {
-           display: none;
-        };
-        &-list{
-            position: relative;
-            display: grid;
-            grid-template-rows: repeat(17,4rem);
-            row-gap: 1px;
-            border-top: 1px solid var.$divider;
-            border-image: linear-gradient(to left, transparent 1%, var.$divider,) 1;
-        }
-        &:first-child{
-            padding-top: 2rem;
-        }
-        &-hour-slot{
-            position: relative;
-            padding-left: 1rem;
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            color: var.$textSecondary;
-            border-bottom: 1px solid var.$divider;
-            border-image: linear-gradient(to left, transparent 1%, var.$divider,) 1;
-        }
-    }
-           
-            
-    }
-        
-        
- 
-            
+.calendar {
+  @include mixins.flex-center-column;
+  font-family: var.$mainFont;
+  color: var.$textSecondary;
+  top: 4rem;
 
-            
-            
-    
-    
+  //months
+  &__months {
+    @include mixins.flex-center;
+    &-carousel {
+      @include mixins.horizontal-carousel($width: 6rem);
+      @include mixins.set-text("medium", "main");
+      &-month {
+        // all childs
+        justify-content: center;
+        display: flex;
+        scroll-snap-align: center;
+        flex: 0 0 100%;
+        text-align: center;
+        width: 4.5rem;
+
+        &--active {
+          color: var.$accentLight;
+          text-decoration: underline;
+          text-underline-offset: 0.4rem;
+          display: flex;
+          text-align: center;
+          justify-content: center;
+          width: 4.5rem;
+        }
+      }
+    }
+  }
+  //days
+  &__days {
+    @include mixins.flex-center;
+    margin: 1rem 0;
+    overflow-x: auto;
+    &-selector {
+      @include mixins.flex-between(90%);
+    }
+  }
+  //Hour grid
+  &__grid {
+    position: relative;
+    height: calc(100vh - 25rem);
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+    width: 80%;
+    margin-top: 0.5rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    &-list {
+      position: relative;
+      display: grid;
+      grid-template-rows: repeat(17, 4rem);
+      row-gap: 1px;
+      border-top: 1px solid var.$divider;
+      border-image: linear-gradient(to left, transparent 1%, var.$divider) 1;
+    }
+    &:first-child {
+      padding-top: 2rem;
+    }
+    &-hour-slot {
+      position: relative;
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: var.$textSecondary;
+      border-bottom: 1px solid var.$divider;
+      border-image: linear-gradient(to left, transparent 1%, var.$divider) 1;
+    }
+  }
+}

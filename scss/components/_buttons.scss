@@ -1,34 +1,5 @@
-@use '../variables/variables' as var;
-@use '../variables/mixins';
+@use "../variables/variables" as var;
+@use "../variables/mixins";
 .calendar__button {
-    @include mixins.calendar-button(1rem,1rem,'medium','secondary');
-}
-.calendar__weekday-btn{
-    @include mixins.calendar-button(3rem,2rem, 'light','emphasized');
-    font-size: 12px;
-    line-height: 2rem;
-    padding-bottom: .25rem;
-    border-right: 1px solid var.$divider;
-    transition: border-color 0.2s ease;
-    transition: width 0.2s ease;
-    border-image: linear-gradient(to bottom, transparent 30%, var.$divider,) 1;
-    margin: 0;
-&.is-active {
-    width: 4rem;
-    color: var.$accent;
-    background: linear-gradient(to bottom, transparent , var.$activedayBG );
-    font-size: 14px;
-   
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-    border-bottom: 2px solid transparent;
-    border-image: linear-gradient(to bottom, transparent 50%, var.$accent,) 1;
-    border-radius: 0 0 7px 7px;
-    border-bottom-color: var.$accent;
-    font-weight: map-get(var.$font-weights, 'regular');
-    filter: drop-shadow(1px 2px 5px var.$accentBorder);
-  }
-  &:last-child {
-    border-right: none;
-  }
+  @include mixins.calendar-button(1rem, 1rem, "medium", "secondary");
 }
