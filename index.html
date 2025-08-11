@@ -763,34 +763,50 @@
             <main class="calendar ">
                 <!--  Month Selector Nav -->
                 <h2 id="calendar-section-title" class="visually-hidden">Calendar view</h2>
-                <section class="calendar__months">
-                    <!-- Previous button -->
-                    <button  type="button" class="calendar__button calendar__months-nav calendar__months-nav--prev" aria-label="Previous month">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                        </svg>
-                    </button>
-                    <!-- Month list -->
+                <section class= "calendar__bar">
+                    <section class="calendar__months">
+                        <!-- Previous button -->
+                        <button  type="button" class="calendar__button calendar__months-nav calendar__months-nav--prev" aria-label="Previous month">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                        </button>
+                        <!-- Month list -->
 
-                    <ul class="calendar__months-carousel">
-                        <li class="calendar__months-carousel-month" data-month="0">January</li>
-                        <li class="calendar__months-carousel-month" data-month="1">February</li>
-                        <li class="calendar__months-carousel-month" data-month="2">March</li>
-                        <li class="calendar__months-carousel-month" data-month="3">April</li>
-                        <li class="calendar__months-carousel-month" data-month="4">May</li>
-                        <li class="calendar__months-carousel-month" data-month="5">June</li>
-                        <li class="calendar__months-carousel-month calendar__months-carousel-month--active" data-month="6">July</li>
-                        <li class="calendar__months-carousel-month" data-month="7">August</li>
-                        <li class="calendar__months-carousel-month" data-month="8">September</li>
-                        <li class="calendar__months-carousel-month" data-month="9">October</li>
-                        <li class="calendar__months-carousel-month" data-month="10">November</li>
-                        <li class="calendar__months-carousel-month" data-month="11">December</li>
-                    </ul>
-                    <!-- Next button -->
-                    <button type="button" class="calendar__button calendar__months-nav calendar__months-nav--next" aria-label="Next month">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
+                        <ul class="calendar__months-carousel">
+                            <li class="calendar__months-carousel-month" data-month="0">January</li>
+                            <li class="calendar__months-carousel-month" data-month="1">February</li>
+                            <li class="calendar__months-carousel-month" data-month="2">March</li>
+                            <li class="calendar__months-carousel-month" data-month="3">April</li>
+                            <li class="calendar__months-carousel-month" data-month="4">May</li>
+                            <li class="calendar__months-carousel-month" data-month="5">June</li>
+                            <li class="calendar__months-carousel-month calendar__months-carousel-month--active" data-month="6">July</li>
+                            <li class="calendar__months-carousel-month" data-month="7">August</li>
+                            <li class="calendar__months-carousel-month" data-month="8">September</li>
+                            <li class="calendar__months-carousel-month" data-month="9">October</li>
+                            <li class="calendar__months-carousel-month" data-month="10">November</li>
+                            <li class="calendar__months-carousel-month" data-month="11">December</li>
+                        </ul>
+                        <!-- Next button -->
+                        <button type="button" class="calendar__button calendar__months-nav calendar__months-nav--next" aria-label="Next month">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                            </svg>
+                        </button>
+                    </section>
+                    <button type="button"
+                            class="calendar__meta" 
+                            aria-label="Open Week and year"
+                            aria-expanded="false"
+                            aria-controls="calendar-meta-popover">
+                        <span class="calendar__week">
+                            <span class="visually-hidden">ISO week</span>
+                            <time datetime="2025-W32">Wk 32</time>
+                        </span>
+
+                        <span class="calendar__year">
+                            <time datetime="2025">2025</time>
+                        </span>
                     </button>
                 </section>
                 <!-- Day Section -->

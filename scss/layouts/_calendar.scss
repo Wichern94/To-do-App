@@ -7,25 +7,66 @@
 }
 
 .calendar {
+  --nav-w: 1.2rem;
+  --months-rail: 50%;
+
   @include mixins.flex($width: 100%);
   font-family: var.$mainFont;
   color: var.$textSecondary;
   top: 4rem;
+  min-width: 0;
+  &__bar {
+    display: grid;
+    grid-template-columns: minmax(0, var(--months-rail)) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    padding-inline: 2rem;
+    column-gap: 2.75rem;
+    align-items: center;
+    inline-size: 100%;
+    min-width: 0;
+  }
 
   //months
   &__months {
-    @include mixins.flex($direction: row, $width: 100%);
+    display: grid;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    grid-template-columns: var(--nav-w) 1fr var(--nav-w);
+    min-width: 0;
+
+    align-items: center;
+    gap: 0.5rem;
+    &-nav {
+      grid-row: 1;
+      inline-size: var(--nav-w);
+      &--prev {
+        grid-column: 1;
+      }
+      &--next {
+        grid-column: 3;
+      }
+    }
+
     &-carousel {
+      grid-column: 2;
+      min-width: 0;
       @include mixins.set-text("main", "medium", "xl");
-      @include mixins.horizontal-carousel($width: 6rem);
+      @include mixins.horizontal-carousel();
+
+      scroll-snap-type: x mandatory;
+      > * {
+        scroll-snap-align: center;
+      }
+      overscroll-behavior-x: contain;
+      scroll-padding-inline: 0px;
 
       &-month {
-        // all childs
-        justify-content: center;
-        display: flex;
-        scroll-snap-align: center;
         flex: 0 0 100%;
+        display: flex;
+        justify-content: center;
         text-align: center;
+        padding-block: 0.25rem;
+        scroll-snap-stop: always;
 
         &--active {
           color: var.$accentLight;
@@ -34,10 +75,29 @@
           display: flex;
           text-align: center;
           justify-content: center;
-          width: 4.5rem;
         }
       }
     }
+  }
+  &__meta {
+    @include mixins.flex($direction: column-reverse);
+    @include mixins.styled-button($size-w: 100%);
+  }
+  &__week {
+    display: grid;
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: center;
+    min-width: 0;
+    @include mixins.set-text("secondary", "light", "sm");
+  }
+  &__year {
+    display: grid;
+    grid-column: 2;
+    grid-row: 2;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    @include mixins.set-text("main", "bold", "xl");
   }
   //days
   &__days {
@@ -68,6 +128,7 @@
       display: none;
     }
     &-list {
+      padding-top: 0.5rem;
       position: relative;
       display: grid;
       grid-template-rows: repeat(17, 4rem);
@@ -75,10 +136,9 @@
       border-top: 1px solid var.$divider;
       border-image: linear-gradient(to left, transparent 1%, var.$divider) 1;
     }
-    &:first-child {
-      padding-top: 2rem;
-    }
+
     &-hour-slot {
+      scroll-snap-align: start;
       position: relative;
       padding-left: 1rem;
       display: flex;
