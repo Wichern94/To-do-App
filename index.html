@@ -794,21 +794,69 @@
                             </svg>
                         </button>
                     </section>
-                    <button type="button"
-                            class="calendar__meta" 
-                            aria-label="Open Week and year"
-                            aria-expanded="false"
-                            aria-controls="calendar-meta-popover">
-                        <span class="calendar__week">
-                            <span class="visually-hidden">ISO week</span>
-                            <time datetime="2025-W32">Wk 32</time>
-                        </span>
+                       <div class="calendar__meta" aria-label="Week and year">
+                        <!-- GROUP: Week -->
+                        <div class="calendar__meta-group calendar__meta-group--week" role="group" aria-label="ISO week">
 
-                        <span class="calendar__year">
-                            <time datetime="2025">2025</time>
-                        </span>
-                    </button>
+                            <button type="button" class="calendar__meta-nav calendar__meta-nav--prev" aria-label="Previous week">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </button>
+
+                            <ul class="calendar__meta-carousel calendar__meta-carousel--week">
+                                <li class="calendar__meta-item calendar__meta-item--active" data-week="32">
+                                    <span class="visually-hidden">ISO week</span>
+                                    <time datetime="2025-W32">Wk 32</time>
+                                </li>
+                                 <li class="calendar__meta-item calendar__meta-item--active" data-week="33">
+                                    <span class="visually-hidden">ISO week</span>
+                                    <time datetime="2025-W32">Wk 33</time>
+                                </li>
+                            
+                            </ul>
+
+                            <button type="button" class="calendar__meta-nav calendar__meta-nav--next" aria-label="Next week">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </button>
+
+                        </div>
+
+                        <!-- GROUP: Year -->
+                        <div class="calendar__meta-group calendar__meta-group--year" role="group" aria-label="Year">
+
+                            <button type="button" class="calendar__meta-nav calendar__meta-nav--prev" aria-label="Previous year">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </button>
+
+                            <ul class="calendar__meta-carousel calendar__meta-carousel--year">
+                                <li class="calendar__meta-item calendar__meta-item--active" data-year="2025">
+                                    <time datetime="2025">2025</time>
+                                </li>
+                                 <li class="calendar__meta-item calendar__meta-item--active" data-year="2026">
+                                    <time datetime="2026">2026</time>
+                                </li>
+                            </ul>
+
+                            <button type="button" class="calendar__meta-nav calendar__meta-nav--next" aria-label="Next year">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </button>
+
+                            </div>
+                        </div>
+
                 </section>
+
+               
+
+                
+                </div>
                 <!-- Day Section -->
                 <section class="calendar__days">
                     <div class="calendar__days-selector">

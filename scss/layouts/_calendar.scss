@@ -81,7 +81,6 @@
   }
   &__meta {
     @include mixins.flex($direction: column-reverse);
-    @include mixins.styled-button($size-w: 100%);
   }
   &__week {
     display: grid;
