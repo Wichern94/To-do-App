@@ -3,7 +3,7 @@
 .calendar {
   --meta-nav-w: 2.25rem;
 }
-
+/*YEAR AND WEEK =============================================*/
 .calendar__meta {
   grid-column: 2;
   grid-row: 1 / span 2;
@@ -42,11 +42,10 @@
   }
 }
 .calendar__meta-carousel {
-  /* jak Twoje karuzele: 1 element = 100% */
   min-width: 0;
-  @include mixins.horizontal-carousel(); /* bez $width */
+  @include mixins.horizontal-carousel();
   overscroll-behavior-x: contain;
-  scroll-padding-inline: 0; /* ważne: brak dryfu */
+  scroll-padding-inline: 0;
   > * {
     scroll-snap-align: center;
   }

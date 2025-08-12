@@ -1,6 +1,6 @@
 @use "../variables/variables" as var;
 @use "../variables/mixins";
-// bottom task drawer
+/*TASK DRAWER MODAL =============================================*/
 .task-drawer {
   @include mixins.flex($width: 100%);
   @include mixins.glass-modal;

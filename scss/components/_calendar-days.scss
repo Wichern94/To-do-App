@@ -2,7 +2,7 @@
 @use "../variables/variables" as var;
 @use "../variables/mixins";
 
-// days navbar
+/*DAY NAVBAR =============================================*/
 .calendar__weekday-btn {
   @include mixins.styled-button($size-w: 3rem, $size-h: 2rem);
   @include mixins.set-text("secondary", "light", "md");
