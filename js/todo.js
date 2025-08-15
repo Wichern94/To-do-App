@@ -16,7 +16,7 @@ import { NodeElement } from "./components/node-component.js";
 import { RoadmapPlumbManager } from "./Services/plumb-manager.js";
 import { AnimationManager } from "./Services/animation-manager.js";
 import { ToastManager } from "./Services/toastify-manger.js";
-import { DateCore } from "./Services/calendar-core.js";
+import { DateCore } from "./Services/date-core.js";
 
 export class TodoApp {
   constructor(user, viewManager) {
