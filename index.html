@@ -35,7 +35,7 @@
 
     
     <!-- MOj JavaScript: -->
-    <script type="module" src="js/main.js" defer></script>
+    <script defer type="module" src="js/main.js" ></script>
 
  
 </head>
@@ -760,7 +760,7 @@
         </section>
         <!-- Calendar mode using BEM methodology --> 
         <section id ="calendar-view" class="modes hidden calendar__section" aria-labelledby="calendar-section-title" >
-            <main class="calendar ">
+            <main class="calendar">
                 <!--  Month Selector Nav -->
                 <h2 id="calendar-section-title" class="visually-hidden">Calendar view</h2>
                 <section class= "calendar__bar">
@@ -798,7 +798,7 @@
                         <!-- GROUP: Week -->
                         <div class="calendar__meta-group calendar__meta-group--week" role="group" aria-label="ISO week">
 
-                            <button type="button" class="calendar__meta-nav calendar__meta-nav--prev" aria-label="Previous week">
+                            <button type="button" class="calendar__meta-nav calendar__meta-nav-week-prev" aria-label="Previous week">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
@@ -816,7 +816,7 @@
                             
                             </ul>
 
-                            <button type="button" class="calendar__meta-nav calendar__meta-nav--next" aria-label="Next week">
+                            <button type="button" class="calendar__meta-nav calendar__meta-nav-week-next" aria-label="Next week">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
@@ -827,7 +827,7 @@
                         <!-- GROUP: Year -->
                         <div class="calendar__meta-group calendar__meta-group--year" role="group" aria-label="Year">
 
-                            <button type="button" class="calendar__meta-nav calendar__meta-nav--prev" aria-label="Previous year">
+                            <button type="button" class="calendar__meta-nav calendar__meta-nav-year-prev" aria-label="Previous year">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
@@ -842,7 +842,7 @@
                                 </li>
                             </ul>
 
-                            <button type="button" class="calendar__meta-nav calendar__meta-nav--next" aria-label="Next year">
+                            <button type="button" class="calendar__meta-nav calendar__meta-nav-year-next" aria-label="Next year">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>

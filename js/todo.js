@@ -16,7 +16,8 @@ import { NodeElement } from "./components/node-component.js";
 import { RoadmapPlumbManager } from "./Services/plumb-manager.js";
 import { AnimationManager } from "./Services/animation-manager.js";
 import { ToastManager } from "./Services/toastify-manger.js";
-import { DateCore } from "./Services/date-core.js";
+
+import { CalendarView } from "./components/calendar-view.js";
 
 export class TodoApp {
   constructor(user, viewManager) {
@@ -24,7 +25,7 @@ export class TodoApp {
     this.viewManger = viewManager;
     this.carusel = new GetCaruselPosition("carousel-cont", ".carousel-item");
     this.firestoreService = new FirestoreService(this.user.uid);
-
+    this.CalendarView = new CalendarView();
     this.carusel.setCaruselToMiddle();
     this.initCarusel();
     this.nodesByRoadmap = {};
@@ -199,6 +200,9 @@ export class TodoApp {
           });
       } else {
         this.roudmapModal?.deactivate();
+      }
+      if (mode.sectionId === "calendar-view") {
+        this.CalendarView.activate();
       }
     };
   }
