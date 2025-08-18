@@ -289,193 +289,208 @@
                 
 
             
-        <section  id="li-sctn" class=" modes list-section" aria-labelledby="tasks-section">
-                 <h4 id="tasks-section" class="tasks">Zadania:</h4>
+       <!-- TODO LIST SECTION -->
+<section id="list-view" class="todo modes" aria-labelledby="tasks-section-title">
+  <h2 id="tasks-section-title" class="todo__heading">Tasks</h2>
 
-                <dialog  id="create-task-menu" class="task-modal hidden " >
-                    <form id="new-task-form" method="post" class=" task-modal-cont" aria-labbeledby ="modal-title">
-                        <span class="new-task-title">
-                            <h3 id="modal-title">Nowe zadanie</h2>
-                        </span>
+  <!-- TASK CREATION MODAL -->
+  <dialog id="create-task-menu"
+          class="task-modal hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title">
+    <form id="new-task-form" class="task-modal__form" method="post">
+      <header class="task-modal__title-wrap">
+        <h3 id="modal-title" class="task-modal__title">New Task</h3>
+      </header>
 
-                        <section class="modal-section-form">
-                            <input class="task-title" type="text" id="title" name="tytuł" autocomplete="off" placeholder="Podaj Tytuł..." >
-                            <p class="err-message err-msg-new-task hidden" data-for="tytuł"></p>
-                             <fieldset class="element-carusel-container">
-                                    <div class="tag-container  "><span class="tag-lbl">Tagi</span>
-                                        
-                                        <button type="button" id="tag-toggle-btn" class="tag-btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-                                    </button>
-                                    <ul id="tag-body" class=" tag hidden">
-                                        
-                                        <li class="task-tag " >
-                                            <label for="tag-praca" class="label-tag-element label-fisrt"> 
-                                                <input type="radio" class="input-tag-element" id="tag-praca" name="tag-choice" value="#Praca">
-                                                <span class="checkmark"></span>
-                                                #Praca
-                                            </label>
-                                           </li>
-                                        <li class="task-tag">
-                                            <label for="tag-dom" class="label-tag-element"> 
-                                                <input type="radio" class="input-tag-element" id="tag-dom" name="tag-choice" value="#Dom">
-                                                <span class="checkmark"></span>
-                                                #Dom
-                                            </label>
-                                            </li>
-                                        <li class="task-tag">
-                                            <label for="tag-hobby" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="tag-hobby" name="tag-choice" value="#Hobby">
-                                                <span class="checkmark"></span>
-                                                #Hobby 
-                                            </label>
-                                            </li>
-                                        <li class="task-tag">
-                                            <label for="tag-nauka" class="label-tag-element"> 
-                                                <input type="radio" class="input-tag-element" id="tag-nauka" name="tag-choice" value ="#Nauka">
-                                                <span class="checkmark"></span>
-                                                #Nauka
-                                            </label>
-                                            </li>
-                                    </ul>
-                                </div>
-                                <div class="tag-container "><span class="tag-lbl">Dziś</span>
-                                    <button type="button" id="day-toggle-btn" class="tag-btn">
-                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-                                    </button>
-                                    <ul  id="day-body" class="task-tag tag hidden">
-                                        
-                                        <li class="task-tag " >
-                                            <label for="day-today" class="label-tag-element label-fisrt"> 
-                                                <input type="radio" class="input-tag-element" id="day-today" name="day-choice" value="Dzis" checked>
-                                                <span class="checkmark"></span>
-                                                Dziś
-                                            </label>
-                                           </li>
-                                        <li class="task-tag">
-                                            <label for="day-tommarow" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="day-tommarow" name="day-choice" value="Jutro">
-                                                <span class="checkmark"></span>
-                                                Jutro 
-                                            </label>
-                                            </li>
-                                        <li class="task-tag">
-                                            <label for="day-yesteday" class="label-tag-element"> 
-                                                <input type="radio" class="input-tag-element" id="day-yesteday" name="day-choice" value="Wczoraj">
-                                                <span class="checkmark"></span>
-                                                Wczoraj
-                                            </label>
-                                            </li>
-                                        <li class="task-tag">
-                                            <label for="this-week" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="this-week" name="day-choice" value="w tygodniu">
-                                                <span class="checkmark"></span>
-                                                W tygodniu 
-                                            </label>
-                                            </li>
-                                    </ul>
-                                </div>
-                                <div class="tag-container "><span class="tag-lbl">Priorytet</span>
-                                    <button type="button" id="prio-toggle-btn" class="tag-btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-                                    </button>
-                                    <ul id="prio-body" class="task-tag tag hidden">
-                                        
-                                        <li class="task-tag " >
-                                            <label for="low" class="label-tag-element label-fisrt">
-                                                <input type="radio" class="input-tag-element" id="low" name="prio-choice" value="Maly">
-                                                <span class="checkmark"></span>
-                                                Mały
-                                            </label>
-                                        </li>
-                                        <li class="task-tag">
-                                            <label for="medium" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="medium" name="prio-choice" value="Sredni">
-                                                <span class="checkmark"></span>
-                                                Średni
-                                            </label>
-                                        </li>
-                                        <li class="task-tag">
-                                            <label for="hard" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="hard" name="prio-choice" value="Duzy">
-                                                <span class="checkmark"></span>
-                                                Duży
-                                            </label>
-                                        </li>
-                                        
-                                    </ul>
-                                </div>
-                                <div class="tag-errors">
-                                    <p class=" err-message error-msg  err1 hidden" data-for="tag-choice"></p>
-                                    
-                                    <p class=" err-message error-msg err2 hidden" data-for="prio-choice"></p>
-                                </div>
-                                
-                                    
-                            </fieldset>
+      <section class="task-modal__section">
+        <!-- Title -->
+        <label class="visually-hidden" for="title">Title</label>
+        <input class="task-modal__input-title task-title"
+               type="text"
+               id="title"
+               name="title"
+               autocomplete="off"
+               placeholder="Enter title…" />
+        <p class="task-modal__error task-modal__error--title err-message err-msg-new-task hidden"
+           data-for="title"
+           role="alert"
+           aria-live="polite"></p>
 
-                            <textarea id="task-desc" name="desc" class="task-discription" placeholder="Napisz opis..."></textarea>
-                            <div class="task-btns">
-                                <button type="button" id="submit-task" class="task-handler-btn aprove">Dodaj
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                                </button>
-                                <button type="button" id="abandon-btn" class="task-handler-btn abandon">Anuluj
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                                </button>
-                            </div>
-                        </section>
-                           
-                        
-                    </form>
-                </dialog>
+        
 
+          
 
-                
-                   <div class="list-box">
-                    <ul  id="task-contener" class="task-list"></ul>
-                        
-                                
+          
+        
 
-                        <button id="ad-tsk" class="add-task">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-                            <!-- Ramka -->
-                            <rect x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#6BCDCE" stroke-width="2"/>
+        <!-- Description -->
+        <label class="visually-hidden" for="task-desc">Description</label>
+        <textarea id="task-desc"
+                  name="desc"
+                  class="task-modal__textarea "
+                  placeholder="Write description…"></textarea>
+
+        <!-- Modal actions -->
+        <div class="task-modal__actions task-btns">
+          <button type="button"
+                  id="submit-task"
+                  class="task-modal__btn task-modal__btn--submit task-handler-btn aprove">
+            Add
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button"
+                  id="abandon-btn"
+                  class="task-modal__btn task-modal__btn--cancel task-handler-btn abandon">
+            Cancel
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </section>
+    </form>
+  </dialog>
+
+  <!-- LIST + ADD BUTTON -->
+  <div class="todo__box list-box">
+    <ul id="task-container" class="todo__list" aria-live="polite">
+    <li class="task">
+        <div class="task__main">
+             <button type="button"
+                     class="task__main--toggle"
+                     aria-label="mark task as done">
+
+                 <svg aria-hidden="true" 
+                          
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                 <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                       stroke="currentColor"
+                       stroke-width="2"
+                       stroke-linecap="round"
+                       stroke-linejoin="round"/>
+                 </svg>
+ 
+              </button>
+                    
+                <span class="task__main--title">Task title</span>
+                    <button type="button"
                             
-                            <!-- Plus -->
-                            <line x1="24" y1="16" x2="24" y2="32" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
-                            <line x1="16" y1="24" x2="32" y2="24" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
+                            class="task__main--accordion-btn"
+                            
+                            aria-label = "expand task"
+                            aria-expanded="false">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
+                                fill="none" 
+                                viewBox="0 0 24 24" 
+                                stroke-width="1.5" 
+                                stroke="currentColor" 
+                                class="size-6">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
+                    </button>
+            </div>
+            <div id="task__details-cont" class="task__details " >
+                <p class="task__description">
+                    Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur.                
+                </p>
+                                
+            </div>
+            
+            </li>
+            <li class="task">
+        <div class="task__main">
+             <button type="button"
+                     class="task__main--toggle"
+                     aria-label="mark task as done">
 
-                        </button>
-                                
-
-                                
-                            
-                                
-                            
-                        
-                                
-
-                                
-
-                                
-                            
-                            
-                        
-                        
-                                
-
-                                
-
-                           
-
-                            
-                      
+                 <svg aria-hidden="true" 
+                          
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                 <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                       stroke="currentColor"
+                       stroke-width="2"
+                       stroke-linecap="round"
+                       stroke-linejoin="round"/>
+                 </svg>
+ 
+              </button>
                     
-                    
-                    
-                </div>
-        </section>
+                <span class="task__main--title">Task title</span>
+                    <button type="button"
+                            
+                            class="task__main--accordion-btn"
+                            
+                            aria-label = "expand task"
+                            aria-expanded="false">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
+                                fill="none" 
+                                viewBox="0 0 24 24" 
+                                stroke-width="1.5" 
+                                stroke="currentColor" 
+                                class="size-6">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                    </button>
+            </div>
+            <div id="task__details-cont" class="task__details " >
+                <p class="task__description">
+                    Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur.                
+                </p>
+                                
+            </div>
+            
+            </li>
+        </ul>
+    <button id="todo__open-modal"
+            class="todo__add-btn add-task"
+            type="button"
+            aria-label="Add task">
+
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                 width="48"
+                 height="48"
+                 aria-hidden="true"
+                 viewBox="0 0 48 48">
+
+            <rect x="4"
+                  y="4"
+                  width="40"
+                  height="40"
+                  rx="6"
+                  ry="6"
+                  fill="none"
+                  stroke="#6BCDCE"
+                  stroke-width="2"/>
+
+            <line x1="24"
+                  y1="16"
+                  x2="24"
+                  y2="32"
+                  stroke="#6BCDCE"
+                  stroke-width="3"
+                  stroke-linecap="round"/>
+
+            <line x1="16"
+                  y1="24"
+                  x2="32"
+                  y2="24"
+                  stroke="#6BCDCE"
+                  stroke-width="3"
+                  stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+</section>
+                 
+
         <!-- tryb Roadmapy -->
         <section id="roadmap-view" class=" modes roadmap-section hidden" aria-labelledby="roadmap-section-title">
   

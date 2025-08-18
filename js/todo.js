@@ -298,7 +298,7 @@ export class TodoApp {
 
     //  await this.renderNodesForRoadmap(this.activeRoadmapId);
   }
-
+  // lista--------------------------------------------------------------
   async loadAndRenderUserTasks() {
     try {
       const storagedTasks = await this.taskManager.loadUserTasks(this.user.uid);

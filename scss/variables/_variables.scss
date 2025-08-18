@@ -34,23 +34,24 @@ $breakpointMd: 768px;
 $breakpointLg: 992px;
 $breakpointXl: 1200px;
 //Fonts and weights
-$mainFont: "Oxanium", sans-serif;
+$mainFont: 'Oxanium', sans-serif;
 
 $fontWeights: (
-  "light": 300,
-  "regular": 400,
-  "medium": 500,
-  "bold": 700,
+  'light': 300,
+  'regular': 400,
+  'medium': 500,
+  'semibold': 600,
+  'bold': 700,
 );
 $fontSize: (
-  "sm": 10px,
-  "md": 12px,
-  "reg": 14px,
-  "lg": 16px,
-  "xl": 18px,
+  'sm': 10px,
+  'md': 12px,
+  'reg': 14px,
+  'lg': 16px,
+  'xl': 18px,
 );
 $textColors: (
-  "main": $textPrimary,
-  "secondary": $textSecondary,
-  "emphasized": $textBlack,
+  'main': $textPrimary,
+  'secondary': $textSecondary,
+  'emphasized': $textBlack,
 );

@@ -15,7 +15,7 @@ export class GetCaruselPosition {
       },
       list: {
         index: 1,
-        sectionId: 'li-sctn',
+        sectionId: 'list-view',
         indicatorId: 'sep-l',
         label: 'Lista',
       },

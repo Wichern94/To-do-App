@@ -1,0 +1,26 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+.task {
+  @include mixins.flex($justify: space-around);
+  background: var.$bgSoft;
+  border: 0.5px solid var(--glass-border);
+  border-radius: 8px;
+  width: 20rem;
+  min-height: 2rem;
+  position: relative;
+  scroll-snap-align: start;
+  padding: 0.5rem;
+  &__main {
+    @include mixins.flex($direction: row, $height: 30%, $width: 100%);
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    &--title {
+      margin-right: auto;
+      @include mixins.set-text(main, medium, lg);
+    }
+    &--toggle {
+      @include mixins.styled-button($size-w: 1.5rem, $color: var.$filterGreen);
+      padding: 0.2rem;
+    }
+  }
+}
