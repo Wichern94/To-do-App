@@ -1,9 +1,6 @@
-@use "variables/variables" as var;
-@use "variables/mixins";
-@use "components/buttons";
-@use "layouts/calendar";
-@use "layouts/list";
-@use "layouts/roadmap";
-@use "components/task-drawer";
-@use "components/calendar-days";
-@use "components/calendar-meta";
+@use 'variables/variables' as var;
+@use 'variables/mixins';
+@use 'components/buttons';
+
+@use 'layouts/list';
+@use 'layouts/roadmap';
