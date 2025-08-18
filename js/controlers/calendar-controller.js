@@ -1,4 +1,4 @@
-import { DateCore } from "./Services/date-core.js";
+import { DateCore } from './Services/date-core.js';
 
 export class CalendarController {
   constructor(view, callbacks = {}, options = {}) {
@@ -14,6 +14,30 @@ export class CalendarController {
   }
   init(options = {}) {
     this.state = this._computeInitialState(options);
+    this.view.bind({
+      onMonthPrev: () => this.goPrevMonth(),
+      onMonthNext: () => this.goNextMonth(),
+      // onYearPrev: () => this.goPrevYear(),
+      // onYearNext: () => this.goNextYear(),
+      // onWeekSelectPrev: () => this.goWeekSelectPrev(),
+      // onWeekSelectNext: () => this.goWeekSelectNext(),
+      // onWeekdayClick: (iso) => this.selectWeekday(iso),
+    });
+    this.view.activate();
+
+    const year = DateCore.getYear(this.state.currentDate);
+    const monthIndex = DateCore.getMonthIndex(this.state.currentDate);
+
+    this.view.renderMonths({ year, activeMonthIndex: monthIndex });
+
+    this.view.renderWeekdays({ activeIsoDay: this.state.selectedIsoDay });
+
+    this.view.renderHourGrid({ date: this.state.selectedDate });
+
+    this.view.scrollActiveMonthIntoView();
+
+    this.onMonthChange({ year, monthIndex });
+    this.onDateChange(this.state.selectedDate);
   }
 
   _computeInitialState({ initialDate, initialISODay } = {}) {
