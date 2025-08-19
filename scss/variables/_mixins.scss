@@ -1,7 +1,7 @@
 // Mixins:
-@use "../variables/variables" as var;
-@use "sass:map";
-@use "sass:color";
+@use '../variables/variables' as var;
+@use 'sass:map';
+@use 'sass:color';
 
 @mixin flex(
   $direction: column,
@@ -55,7 +55,14 @@
   font-size: map.get(var.$fontSize, $sizeName);
 }
 
-@mixin styled-button($size-w, $size-h: null, $color: null, $margin: 0) {
+@mixin styled-button(
+  $size-w,
+  $size-h: null,
+  $color: null,
+  $margin: 0,
+  $margin-r: null,
+  $margin-l: null
+) {
   border: none;
   outline: none;
   background: transparent;
@@ -68,18 +75,143 @@
     height: $size-h;
   }
   margin: $margin;
+  @if $margin-r != null {
+    margin-right: $margin-r;
+  }
+  @if $margin-l != null {
+    margin-left: $margin-l;
+  }
   @if $color != null {
     color: $color;
-    filter: drop-shadow(5px 8px 15px color.adjust($color, $lightness: -20%));
+    filter: drop-shadow(1px 1px 5px color.adjust($color, $lightness: -30%));
   }
 }
-@mixin glass-modal($minor: false) {
-  background: rgba(65, 65, 65, 0.089);
-  backdrop-filter: blur(20px) saturate(120%);
-  -webkit-backdrop-filter: blur(20px) saturate(120%) brightness(1.4);
-  box-shadow: var.$shadow-light;
+@mixin glass-BG() {
+  background: linear-gradient(60deg, #16273648 0%, #23313b8e 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+@mixin glass-panel(
+  $tint: rgba(20, 20, 20, 0.02),
+  $blur: 8px,
+  $radius: 14px,
+  $border: rgba(255, 255, 255, 0.08),
+  $shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
+  $top-glow: rgba(255, 255, 255, 0.06)
+) {
+  background: linear-gradient(180deg, $top-glow 0%, rgba(255, 255, 255, 0) 30%),
+    $tint;
 
-  @if $minor {
-    background: rgba(65, 65, 65, 0.164);
+  backdrop-filter: saturate(1.1) blur($blur);
+  -webkit-backdrop-filter: saturate(1.1) blur($blur);
+
+  border: 1px solid $border;
+  border-radius: $radius;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), $shadow;
+}
+@mixin glass-input(
+  $bg: rgba(255, 255, 255, 0.05),
+  $border: rgba(255, 255, 255, 0.1),
+  $radius: 7px,
+  $text: #ddd,
+  $placeholder: #777,
+  $focus: var.$accent
+) {
+  background: $bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  color: $text;
+  &::placeholder {
+    color: $placeholder;
+    transition: all 0.8s ease;
+  }
+  &:focus {
+    outline: 1px solid $focus;
+    box-shadow: 0 0 0 3px rgba($focus, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    &::placeholder {
+      transform: translateX(5rem);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin glass-button($from, $to, $text: #fff, $ring: rgba(0, 0, 0, 0.25)) {
+  background: linear-gradient(135deg, $from, $to);
+  color: $text;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px $ring, inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.8s ease, filter 0.15s ease;
+
+  &:hover {
+    filter: brightness(1.06);
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+@mixin dividier(
+  $mode: 'normal',
+  $line: 1px,
+  $color: var(--glass-border),
+  $width: 100%
+) {
+  display: block;
+  width: $width;
+  height: $line;
+  border: 0;
+
+  @if $mode == 'none' {
+    height: 0;
+
+    background: none;
+  } @else if $mode == 'normal' {
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+
+      currentColor 50%,
+
+      transparent 100%
+    );
+  } @else if $mode == 'border' {
+    background: linear-gradient(90deg, currentColor, currentColor)
+      bottom
+      left /
+      100%
+      $line
+      no-repeat;
+  } @else if $mode == 'fancy' {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+
+      currentColor 20%,
+
+      currentColor 80%,
+
+      transparent 100%
+    );
+  }
+}
+@mixin open-modal($color, $drop: true) {
+  outline: none;
+  border: none;
+  color: $color;
+  cursor: pointer;
+  position: fixed;
+  bottom: 8rem;
+  right: 5rem;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  @if $drop {
+    $shadow-color: color.adjust($color, $lightness: -20%);
+
+    filter: drop-shadow(0 0 5px rgba($shadow-color, 0.2))
+      drop-shadow(2px 2px 10px rgba($shadow-color, 0.4));
   }
 }

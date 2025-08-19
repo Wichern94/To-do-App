@@ -1,0 +1,71 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+.task-modal {
+  @include mixins.flex($height: 100dvh, $width: 100dvw);
+  @include mixins.glass-BG();
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  &__section {
+    @include mixins.flex($height: 35%, $width: 80%);
+  }
+
+  &__form {
+    @include mixins.glass-panel;
+    @include mixins.flex($height: 100%, $width: 100%);
+    gap: 1rem;
+
+    margin-bottom: auto;
+  }
+  &__input-title {
+    position: relative;
+    margin-top: 3rem;
+    line-height: 1.5;
+    padding: 1rem;
+    width: 80%;
+    height: 2rem;
+    @include mixins.glass-input();
+  }
+  &__textarea {
+    @include mixins.glass-input();
+    width: 80%;
+    padding: 1rem;
+    height: 30%;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  &__actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    flex-direction: row-reverse;
+    &:first-child {
+      @include mixins.glass-button(
+        var.$modal-btn-green-from,
+        var.$modal-btn-green-to
+      );
+    }
+  }
+  & &__title-wrap {
+    @include mixins.flex($width: 100%);
+    top: 20%;
+    z-index: 1;
+    left: 0;
+  }
+
+  &__title {
+    @include mixins.set-text(main, semibold, xl);
+
+    &-divider {
+      color: var.$modal-btn-green-from;
+      @include mixins.dividier('fancy', 1px, $width: 90%);
+      margin-bottom: 0.2rem;
+
+      box-shadow: -4px -6px 14px 7px rgba(255, 255, 255, 5%),
+        0 7px 11px 4px rgba(0, 0, 0, 0.6);
+    }
+  }
+}
