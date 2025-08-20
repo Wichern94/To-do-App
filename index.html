@@ -6,7 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/theme.css">
+    
     <link rel="stylesheet" href="css/buttons.css">
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/register.css">
@@ -295,20 +295,20 @@
 
   <!-- TASK CREATION MODAL -->
   <dialog id="create-task-menu"
-          class="task-modal "
+          class="task-modal hidden"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title">
    
       
 
-      <section class="task-modal__section">
+      <section class="task-modal__section hidden">
         <!-- Title -->
         <header class="task-modal__title-wrap">
             <h3 id="modal-title" class="task-modal__title">Add new task</h3>
             <div class="task-modal__title-divider"></div>
         </header>
-         <form id="new-task-form" class="task-modal__form" method="post">
+         <form id="task-form" class="task-modal__form" method="post">
         <input class="task-modal__input-title task-title"
                type="text"
                id="title"
@@ -331,13 +331,13 @@
            <div class="task-modal__actions ">
              <button type="button"
                      id="submit-task"
-                     class="task-modal__btn task-modal__btn--submit task-handler-btn aprove">
+                     class="task-modal__btn task-modal__btn--submit task-handler-btn ">
                Add
                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
              </button>
              <button type="button"
                      id="abandon-btn"
-                     class="task-modal__btn task-modal__btn--cancel task-handler-btn abandon">
+                     class="task-modal__btn task-modal__btn--cancel task-handler-btn ">
                Cancel
                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
              </button>
@@ -362,8 +362,8 @@
         <div class="task__main">
              <button type="button"
                      class="task__main--toggle"
-                     aria-label="mark task as done">
-
+                     aria-label="mark task as done"
+                     data-action="toggle-task">
                  <svg aria-hidden="true" 
                           
                           viewBox="0 0 24 24"
@@ -380,7 +380,7 @@
                     
                 <span class="task__main--title">Task title</span>
                     <button type="button"
-                            
+                            data-action="open-modal"
                             class="task__main--accordion-btn"
                             
                             aria-label = "expand task"
@@ -398,7 +398,7 @@
                     </button>
             </div>
             <div class="task__divider"></div>
-            <div id="task__details-cont" class="task__details " >
+            <div id="task__details-cont" class="task__details hidden" data-action="accordion-container">
                 <p class="task__description">
                     Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur.                
                 </p>
@@ -410,8 +410,8 @@
         <div class="task__main">
              <button type="button"
                      class="task__main--toggle"
-                     aria-label="mark task as done">
-
+                     aria-label="mark task as done"
+                     data-action="toggle-task">
                  <svg aria-hidden="true" 
                           
                           viewBox="0 0 24 24"
@@ -428,7 +428,7 @@
                     
                 <span class="task__main--title">Task title</span>
                     <button type="button"
-                            
+                            data-action="open-modal"
                             class="task__main--accordion-btn"
                             
                             aria-label = "expand task"
@@ -446,7 +446,7 @@
                     </button>
             </div>
             <div class="task__divider"></div>
-            <div id="task__details-cont" class="task__details " >
+            <div id="task__details-cont" class="task__details hidden" data-action="accordion-container">
                 <p class="task__description">
                     Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur.
                     Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet consectetur.

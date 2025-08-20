@@ -136,13 +136,16 @@
   }
 }
 
-@mixin glass-button($from, $to, $text: #fff, $ring: rgba(0, 0, 0, 0.25)) {
+@mixin glass-button($from, $to, $text: #fff, $ring: rgba(0, 0, 0, 0.35)) {
   background: linear-gradient(135deg, $from, $to);
   color: $text;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  box-shadow: 0 6px 18px $ring, inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.301);
+  border-radius: 5px;
+  box-shadow: 0 6px 18px $ring,
+    inset -3px -2px 6px 4px rgba(255, 255, 255, 0.08);
   transition: transform 0.8s ease, filter 0.15s ease;
+  backdrop-filter: saturate(1.1) blur(12px);
+  -webkit-backdrop-filter: saturate(1.1) blur(12px);
 
   &:hover {
     filter: brightness(1.06);

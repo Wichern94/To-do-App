@@ -24,10 +24,10 @@ $shadow-in-light: inset -1px 0px 20px 5px rgba(200, 220, 255, 0.35),
 $shadow-out-main: -4px -6px 14px 7px rgba(255, 255, 255, 5%),
   0 7px 11px 4px rgba(0, 0, 0, 0.6);
 //modal colors:
-$modal-btn-green-from: #00c9a7;
-$modal-btn-green-to: #008f73;
-$modal-btn-red-from: #e63946;
-$modal-btn-red-to: #a4161a;
+$modal-btn-green-from: rgba(30, 90, 80, 0.7);
+$modal-btn-green-to: rgba(50, 160, 140, 0.7);
+$modal-btn-red-from: rgba(110, 30, 30, 0.7);
+$modal-btn-red-to: rgba(180, 60, 60, 0.7);
 //  Accents
 $accent: #6bcdce;
 $accentLight: #9be5ec;

@@ -16,7 +16,7 @@ import { NodeElement } from './components/node-component.js';
 import { RoadmapPlumbManager } from './Services/plumb-manager.js';
 import { AnimationManager } from './Services/animation-manager.js';
 import { ToastManager } from './Services/toastify-manger.js';
-
+import { ListView } from './components/list/list-view.js';
 export class TodoApp {
   constructor(user, viewManager) {
     this.user = user;
@@ -26,6 +26,7 @@ export class TodoApp {
 
     this.carusel.setCaruselToMiddle();
     this.initCarusel();
+
     this.nodesByRoadmap = {};
     this.activeRoadmapId = null;
     this.activeRoadmapInstance = null;
@@ -169,17 +170,18 @@ export class TodoApp {
       'open-user-settings',
       'logout-btn'
     );
-    this.taskManager = new TaskManager('task-contener', this.user);
 
-    this.taskCreator = new CreateTaskHandler(
-      'ad-tsk',
-      'abandon-btn',
-      'create-task-menu',
-      'submit-task',
-      this.taskManager,
-      this.user
-    );
-    this.loadAndRenderUserTasks();
+    //   this.taskManager = new TaskManager('task-contener', this.user);
+
+    //   this.taskCreator = new CreateTaskHandler(
+    //     'ad-tsk',
+    //     'abandon-btn',
+    //     'create-task-menu',
+    //     'submit-task',
+    //     this.taskManager,
+    //     this.user
+    //   );
+    //   this.loadAndRenderUserTasks();
   }
   initCarusel() {
     this.carusel.onViewChange = (mode) => {
@@ -199,9 +201,27 @@ export class TodoApp {
       } else {
         this.roudmapModal?.deactivate();
       }
+      if (mode.sectionId === 'list-view') {
+        if (!this.listView) {
+          const section = document.getElementById('list-view'); // sekcja slajdu
+          const root = section?.matches('.todo')
+            ? section
+            : section?.querySelector('.todo'); // KONKRETNY root widoku
+          if (!root) {
+            console.error('Brak .todo w #list-view');
+            return;
+          }
+          console.log('manger', this.AnimationManager);
+
+          this.listView = new ListView(root, {
+            animationManager: this.AnimationManager,
+          });
+
+          this.listView.activate();
+        }
+      }
     };
   }
-
   async renderNodesForRoadmap(roadmapID, newNodeID = null) {
     try {
       this.activeRoadmapId = roadmapID;
@@ -295,8 +315,6 @@ export class TodoApp {
     if (index === -1) return;
 
     nodeList.splice(index, 1);
-
-    //  await this.renderNodesForRoadmap(this.activeRoadmapId);
   }
   // lista--------------------------------------------------------------
   async loadAndRenderUserTasks() {
@@ -373,270 +391,270 @@ export class SettingsMenuHandler extends ToggleableMenu {
   }
 }
 
-//klasa przycisku dodaj task
-export class CreateTaskHandler extends ToggleableMenu {
-  constructor(openBtnID, closeBtnID, mainMenuID, addBtnID, taskManager, user) {
-    super(openBtnID, closeBtnID, mainMenuID);
-    {
-      this.taskManager = taskManager;
-      this.user = user;
-      this.handleNewTask = document.getElementById(addBtnID);
-      this.form = document.getElementById('new-task-form');
-      this.accordions = [];
-      this.setupAccordeons();
-      this.setupLabelUpdates();
-      this.setupValidation();
-      this.handleAddTask();
-      this.taskdata = this.taskManager.loadUserTasks(this.user.uid);
+// //klasa przycisku dodaj task
+// export class CreateTaskHandler extends ToggleableMenu {
+//   constructor(openBtnID, closeBtnID, mainMenuID, addBtnID, taskManager, user) {
+//     super(openBtnID, closeBtnID, mainMenuID);
+//     {
+//       this.taskManager = taskManager;
+//       this.user = user;
+//       this.handleNewTask = document.getElementById(addBtnID);
+//       this.form = document.getElementById('new-task-form');
+//       this.accordions = [];
+//       this.setupAccordeons();
+//       this.setupLabelUpdates();
+//       this.setupValidation();
+//       this.handleAddTask();
+//       this.taskdata = this.taskManager.loadUserTasks(this.user.uid);
 
-      this.errorHandler = new FormErrors('new-task-form');
-    }
-    //1. AKORDEONY
-    //1.A) metoda  ustawiajaca akordeony
-  }
-  setupAccordeons() {
-    this.accordions = [
-      {
-        btn: document.getElementById('tag-toggle-btn'),
-        ul: document.getElementById('tag-body'),
-      },
-      {
-        btn: document.getElementById('day-toggle-btn'),
-        ul: document.getElementById('day-body'),
-      },
-      {
-        btn: document.getElementById('prio-toggle-btn'),
-        ul: document.getElementById('prio-body'),
-      },
-    ];
-    this.accordions.forEach((accordeon, idx, arr) => {
-      accordeon.btn.addEventListener('click', (e) => {
-        arr.forEach((other, i) => {
-          if (i !== idx) {
-            other.ul.classList.add('hidden');
-          }
-        });
-        this.errorHandler.clearError(e.target.name);
-        accordeon.ul.classList.toggle('hidden');
-      });
-    });
-  }
-  //1.B) Tutaj ustawiam wybrany etykiete akordeonu,w zaleznosci co wybierze uzytkownik.
-  setupLabelUpdates() {
-    const inputs = [
-      ...document.querySelectorAll('input[name="tag-choice"]'),
-      ...document.querySelectorAll('input[name="day-choice"]'),
-      ...document.querySelectorAll('input[name="prio-choice"]'),
-    ];
-    inputs.forEach((input) => {
-      input.addEventListener('change', function (event) {
-        const container = event.target.closest('.tag-container');
+//       this.errorHandler = new FormErrors('new-task-form');
+//     }
+//     //1. AKORDEONY
+//     //1.A) metoda  ustawiajaca akordeony
+//   }
+//   setupAccordeons() {
+//     this.accordions = [
+//       {
+//         btn: document.getElementById('tag-toggle-btn'),
+//         ul: document.getElementById('tag-body'),
+//       },
+//       {
+//         btn: document.getElementById('day-toggle-btn'),
+//         ul: document.getElementById('day-body'),
+//       },
+//       {
+//         btn: document.getElementById('prio-toggle-btn'),
+//         ul: document.getElementById('prio-body'),
+//       },
+//     ];
+//     this.accordions.forEach((accordeon, idx, arr) => {
+//       accordeon.btn.addEventListener('click', (e) => {
+//         arr.forEach((other, i) => {
+//           if (i !== idx) {
+//             other.ul.classList.add('hidden');
+//           }
+//         });
+//         this.errorHandler.clearError(e.target.name);
+//         accordeon.ul.classList.toggle('hidden');
+//       });
+//     });
+//   }
+//   //1.B) Tutaj ustawiam wybrany etykiete akordeonu,w zaleznosci co wybierze uzytkownik.
+//   setupLabelUpdates() {
+//     const inputs = [
+//       ...document.querySelectorAll('input[name="tag-choice"]'),
+//       ...document.querySelectorAll('input[name="day-choice"]'),
+//       ...document.querySelectorAll('input[name="prio-choice"]'),
+//     ];
+//     inputs.forEach((input) => {
+//       input.addEventListener('change', function (event) {
+//         const container = event.target.closest('.tag-container');
 
-        const label = container.querySelector('.tag-lbl');
-        const body = container.querySelector('.tag');
-        if (label) {
-          label.textContent = event.target.value;
-          body.classList.add('hidden');
-        }
-      });
-    });
-  }
-  async handleAddTask() {
-    this.handleNewTask.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const formData = this.collectFormData();
-      const isvalid = this.validateFormData(formData);
-      if (!isvalid) return;
-      const data = {
-        ...formData,
-        uid: this.user.uid,
-        createdAt: serverTimestamp(),
-      };
+//         const label = container.querySelector('.tag-lbl');
+//         const body = container.querySelector('.tag');
+//         if (label) {
+//           label.textContent = event.target.value;
+//           body.classList.add('hidden');
+//         }
+//       });
+//     });
+//   }
+//   async handleAddTask() {
+//     this.handleNewTask.addEventListener('click', async (e) => {
+//       e.preventDefault();
+//       const formData = this.collectFormData();
+//       const isvalid = this.validateFormData(formData);
+//       if (!isvalid) return;
+//       const data = {
+//         ...formData,
+//         uid: this.user.uid,
+//         createdAt: serverTimestamp(),
+//       };
 
-      const firebaseID = await this.taskManager.saveTaskToFirestore(data);
+//       const firebaseID = await this.taskManager.saveTaskToFirestore(data);
 
-      if (firebaseID) {
-        this.taskManager.addTaskToUI({ ...data, id: firebaseID });
-        this.resetForm();
-        this.hide();
-      } else {
-        alert('Nie udało sie zapisac zadania w bazie');
-      }
-    });
-  }
+//       if (firebaseID) {
+//         this.taskManager.addTaskToUI({ ...data, id: firebaseID });
+//         this.resetForm();
+//         this.hide();
+//       } else {
+//         alert('Nie udało sie zapisac zadania w bazie');
+//       }
+//     });
+//   }
 
-  resetForm() {
-    this.form.reset();
-  }
+//   resetForm() {
+//     this.form.reset();
+//   }
 
-  // 2. validacja i pobieranie danych z formularzy
-  // 2.A) tutaj usuwam błedy do pustych formularzy
-  setupValidation() {
-    this.form
-      .querySelectorAll('input[type="text"], input[type="radio"]')
-      .forEach((el) => {
-        const eventType = el.type === 'radio' ? 'change' : 'click';
-        el.addEventListener(eventType, (e) => {
-          const name = e.target.name;
-          this.errorHandler.clearError(name);
-        });
-      });
-  }
+//   // 2. validacja i pobieranie danych z formularzy
+//   // 2.A) tutaj usuwam błedy do pustych formularzy
+//   setupValidation() {
+//     this.form
+//       .querySelectorAll('input[type="text"], input[type="radio"]')
+//       .forEach((el) => {
+//         const eventType = el.type === 'radio' ? 'change' : 'click';
+//         el.addEventListener(eventType, (e) => {
+//           const name = e.target.name;
+//           this.errorHandler.clearError(name);
+//         });
+//       });
+//   }
 
-  //2.B)  pobieram wartosci z inputów
-  collectFormData() {
-    const formData = {};
+//   //2.B)  pobieram wartosci z inputów
+//   collectFormData() {
+//     const formData = {};
 
-    const inputs = this.form.querySelectorAll('input, textarea');
-    inputs.forEach((input) => {
-      if (input.type === 'radio') {
-        if (input.checked) {
-          formData[input.name] = input.value;
-        }
-      } else {
-        formData[input.name] = input.value;
-      }
-    });
+//     const inputs = this.form.querySelectorAll('input, textarea');
+//     inputs.forEach((input) => {
+//       if (input.type === 'radio') {
+//         if (input.checked) {
+//           formData[input.name] = input.value;
+//         }
+//       } else {
+//         formData[input.name] = input.value;
+//       }
+//     });
 
-    return formData;
-  }
-  //2.C) tutaj DODAJE Błedy dla pustych formularzy
-  validateFormData(formData) {
-    let isvalid = true;
-    this.errorHandler.clearAllErrors();
+//     return formData;
+//   }
+//   //2.C) tutaj DODAJE Błedy dla pustych formularzy
+//   validateFormData(formData) {
+//     let isvalid = true;
+//     this.errorHandler.clearAllErrors();
 
-    if (!formData['tytuł']?.trim()) {
-      this.errorHandler.showError('tytuł', 'Podaj tytuł!');
-      isvalid = false;
-    }
-    if (!formData['tag-choice']) {
-      this.errorHandler.showError('tag-choice', 'Wybierz tag!');
-      isvalid = false;
-    }
-    if (!formData['prio-choice']) {
-      this.errorHandler.showError('prio-choice', 'Wybierz priorytet');
-      isvalid = false;
-    }
-    return isvalid;
-  }
-}
-//nowa klasa obsługujaca Dodawanie Taskow
-export class TaskManager {
-  constructor(ulID, user) {
-    this.taskContainer = document.getElementById(ulID);
-    this.user = user;
-  }
+//     if (!formData['tytuł']?.trim()) {
+//       this.errorHandler.showError('tytuł', 'Podaj tytuł!');
+//       isvalid = false;
+//     }
+//     if (!formData['tag-choice']) {
+//       this.errorHandler.showError('tag-choice', 'Wybierz tag!');
+//       isvalid = false;
+//     }
+//     if (!formData['prio-choice']) {
+//       this.errorHandler.showError('prio-choice', 'Wybierz priorytet');
+//       isvalid = false;
+//     }
+//     return isvalid;
+//   }
+// }
+// //nowa klasa obsługujaca Dodawanie Taskow
+// export class TaskManager {
+//   constructor(ulID, user) {
+//     this.taskContainer = document.getElementById(ulID);
+//     this.user = user;
+//   }
 
-  addTaskToUI(data) {
-    const li = document.createElement('li');
-    li.classList.add('task-item');
-    if (data.id) {
-      li.dataset.id = data.id;
-    }
-    li.innerHTML = `
-            <div class="title-and-acrdon">
-                <span class="task-text"></span>
-                    <button class="task-acc-btn" id="task-accordeon-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                            </svg>
-                    </button>
-            </div>
-            <div class="item-container">
-                <p class="task-details">
-                                    
-                </p>
-                                
-            </div>
-            <div class="task-btn-container">
-                <div class="summary">
-                    <small class="task-date"></small>
-                    <small class ="task-group"></small>
-                    <small class ="task-prio hidden"></small>
-                </div>
-                <button class="delete-btn list-btns" aria-label="delete task">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                    </svg>
-                </button>
-            </div>`;
-    this.taskContainer.appendChild(li);
-    this.bindTaskEvents(li);
+//   addTaskToUI(data) {
+//     const li = document.createElement('li');
+//     li.classList.add('task-item');
+//     if (data.id) {
+//       li.dataset.id = data.id;
+//     }
+//     li.innerHTML = `
+//             <div class="title-and-acrdon">
+//                 <span class="task-text"></span>
+//                     <button class="task-acc-btn" id="task-accordeon-btn">
+//                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+//                             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+//                             </svg>
+//                     </button>
+//             </div>
+//             <div class="item-container">
+//                 <p class="task-details">
 
-    const fieldMap = {
-      tytuł: '.task-text',
-      desc: '.task-details',
-      'tag-choice': '.task-group',
-      'day-choice': '.task-date',
-      'prio-choice': '.task-prio',
-    };
-    Object.entries(data).forEach(([key, value]) => {
-      const selector = fieldMap[key];
+//                 </p>
 
-      if (selector) {
-        const element = li.querySelector(selector);
-        if (element) element.textContent = value;
-        if (key === 'prio-choice') {
-          li.classList.add(`prio-${value.toLowerCase()}`);
-        }
-      }
-    });
-    return li;
-  }
-  async saveTaskToFirestore(data) {
-    try {
-      const userTaskRef = collection(db, `users/${data.uid}/tasks`);
-      const docRef = await addDoc(userTaskRef, data);
-      return docRef.id;
-    } catch (error) {
-      console.error('błąd przy zapisie do Firestore:', error);
-      return null;
-    }
-  }
-  async loadUserTasks(uid) {
-    try {
-      const TaskRef = collection(db, `users/${uid}/tasks`);
-      const docQuery = await getDocs(TaskRef);
-      const tasks = [];
-      docQuery.forEach((doc) => {
-        tasks.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-      console.log('zadania uzytkownika:', tasks);
+//             </div>
+//             <div class="task-btn-container">
+//                 <div class="summary">
+//                     <small class="task-date"></small>
+//                     <small class ="task-group"></small>
+//                     <small class ="task-prio hidden"></small>
+//                 </div>
+//                 <button class="delete-btn list-btns" aria-label="delete task">
+//                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+//                     <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+//                     </svg>
+//                 </button>
+//             </div>`;
+//     this.taskContainer.appendChild(li);
+//     this.bindTaskEvents(li);
 
-      return tasks;
-    } catch (error) {
-      console.error('błąd przy odczycie  od firestore:', error);
-      return [];
-    }
-  }
-  async deleteTask(id, li) {
-    try {
-      const docRef = doc(db, `users/${this.user.uid}/tasks/${id}`);
-      await deleteDoc(docRef);
-      li.remove();
-    } catch (error) {
-      console.error('bład przy usuwaniu zadania:', error);
-    }
-  }
-  bindTaskEvents(li) {
-    //pobieram Elementy
-    const deleteBtn = li.querySelector('.delete-btn');
-    const accBtn = li.querySelector('.task-acc-btn');
-    const descContainer = li.querySelector('.task-details');
+//     const fieldMap = {
+//       tytuł: '.task-text',
+//       desc: '.task-details',
+//       'tag-choice': '.task-group',
+//       'day-choice': '.task-date',
+//       'prio-choice': '.task-prio',
+//     };
+//     Object.entries(data).forEach(([key, value]) => {
+//       const selector = fieldMap[key];
 
-    //1.Akordeon tasków
-    if (accBtn && descContainer) {
-      accBtn.addEventListener('click', () => {
-        descContainer.classList.toggle('hidden');
-      });
-    }
-    //2. Usuwanie
-    deleteBtn?.addEventListener('click', () => {
-      const id = li.dataset.id;
-      this.deleteTask(id, li);
-    });
-  }
-}
+//       if (selector) {
+//         const element = li.querySelector(selector);
+//         if (element) element.textContent = value;
+//         if (key === 'prio-choice') {
+//           li.classList.add(`prio-${value.toLowerCase()}`);
+//         }
+//       }
+//     });
+//     return li;
+//   }
+//   async saveTaskToFirestore(data) {
+//     try {
+//       const userTaskRef = collection(db, `users/${data.uid}/tasks`);
+//       const docRef = await addDoc(userTaskRef, data);
+//       return docRef.id;
+//     } catch (error) {
+//       console.error('błąd przy zapisie do Firestore:', error);
+//       return null;
+//     }
+//   }
+//   async loadUserTasks(uid) {
+//     try {
+//       const TaskRef = collection(db, `users/${uid}/tasks`);
+//       const docQuery = await getDocs(TaskRef);
+//       const tasks = [];
+//       docQuery.forEach((doc) => {
+//         tasks.push({
+//           id: doc.id,
+//           ...doc.data(),
+//         });
+//       });
+//       console.log('zadania uzytkownika:', tasks);
+
+//       return tasks;
+//     } catch (error) {
+//       console.error('błąd przy odczycie  od firestore:', error);
+//       return [];
+//     }
+//   }
+//   async deleteTask(id, li) {
+//     try {
+//       const docRef = doc(db, `users/${this.user.uid}/tasks/${id}`);
+//       await deleteDoc(docRef);
+//       li.remove();
+//     } catch (error) {
+//       console.error('bład przy usuwaniu zadania:', error);
+//     }
+//   }
+//   bindTaskEvents(li) {
+//     //pobieram Elementy
+//     const deleteBtn = li.querySelector('.delete-btn');
+//     const accBtn = li.querySelector('.task-acc-btn');
+//     const descContainer = li.querySelector('.task-details');
+
+//     //1.Akordeon tasków
+//     if (accBtn && descContainer) {
+//       accBtn.addEventListener('click', () => {
+//         descContainer.classList.toggle('hidden');
+//       });
+//     }
+//     //2. Usuwanie
+//     deleteBtn?.addEventListener('click', () => {
+//       const id = li.dataset.id;
+//       this.deleteTask(id, li);
+//     });
+//   }
+// }
