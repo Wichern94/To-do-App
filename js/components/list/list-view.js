@@ -17,12 +17,17 @@ export class ListView {
     };
 
     this.ui.modal = {
-      openModalBtn: this._q('#todo-open-modal-ID'),
+      //window
       modalDialog: this._q('.task-modal'),
       modalFieldset: this._q('.task-modal__section'),
+      //form elements
       form: this._q('#task-form'),
+      titleInput: this._q('#title'),
+      detailsInput: this._q('#task-desc'),
+      //buttons
       submitBtn: this._q('.task-modal__btn--submit'),
       cancelBtn: this._q('.task-modal__btn--cancel'),
+      openModalBtn: this._q('#todo-open-modal-ID'),
     };
     //local state:
     this.localStates = {
@@ -55,6 +60,11 @@ export class ListView {
         el: this.ui.modal.cancelBtn,
         event: 'click',
         handler: this.handleCloseModal.bind(this),
+      },
+      {
+        el: this.ui.modal.submitBtn,
+        event: 'click',
+        handler: this.handleSubmit.bind(this),
       },
     ];
   }
@@ -129,7 +139,7 @@ export class ListView {
     if (!actions) return;
 
     switch (actions) {
-      case 'open-modal':
+      case 'accordion-toggle':
         this.setupAccordion(btn);
         break;
 
@@ -147,9 +157,40 @@ export class ListView {
 
     await this.animationManager.toggleAccordeon(btn, details, li);
   }
+  setupConfettti(item) {
+    const container = document.getElementById('view-standard');
+    if (!container) return;
+
+    const rect = item.getBoundingClientRect();
+    const contRect = container.getBoundingClientRect();
+
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const relX = (centerX - contRect.left) / contRect.width;
+    const relY = (centerY - contRect.top) / contRect.height;
+
+    this.animationManager.launchConfetti(container, relX, relY);
+  }
 
   handleToggletask(btn) {
-    console.log('kliknieto w:', this.animationManager);
+    const li = btn.closest('.task');
+    const taskID = li?.dataset.id;
+
+    btn.disabled = true;
+    btn.setAttribute('aria-disabled', 'true');
+    btn.setAttribute('aria-pressed', 'true');
+
+    const finishedDetails = {
+      id: taskID,
+      isDone: true,
+      finishedAt: Date.now(),
+    };
+    this.setupConfettti(btn);
+    this.animationManager.buttonOneAnimation(btn, 'rubberBand');
+    if (typeof this.handlers.onToggle === 'function') {
+      this.handlers.onToggle(finishedDetails);
+    }
   }
 
   async handleOpenModal() {
@@ -166,5 +207,85 @@ export class ListView {
 
     await this.animationManager.hideAnimation(fieldset, 'bounceOutDown', '1s');
     await this.animationManager.blurOutElement(bluredOne);
+  }
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const nameInputData = this.ui.modal.titleInput.value.trim(); //<- usuwam białe znaki
+      if (!nameInputData) {
+        this.formManager.showError('title', 'Name it!');
+        return;
+      }
+
+      const detailsInputData = this.ui.modal.detailsInput.value.trim();
+
+      const listData = {
+        title: nameInputData,
+        desc: detailsInputData || '',
+      };
+
+      if (typeof this.handlers.onAdd === 'function') {
+        this.handlers.onAdd(listData);
+      }
+    } catch (err) {
+      console.error('Form sending error:', err);
+    }
+  }
+  render(taskData) {
+    const li = document.createElement('li');
+    li.className = 'task';
+    li.dataset.id = taskData.id;
+
+    li.innerHTML = `<div class="task__main">
+             <button type="button"
+                     class="task__main--toggle"
+                     aria-label="mark task as done"
+                     aria-pressed="false"
+                     data-action="toggle-task">
+
+                 <svg aria-hidden="true" 
+                          
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
+                 <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                       stroke="currentColor"
+                       stroke-width="2"
+                       stroke-linecap="round"
+                       stroke-linejoin="round"/>
+                 </svg>
+ 
+              </button>
+                    
+                <span class="task__main--title">${taskData.title}</span>
+                    <button type="button"
+                            data-action="accordion-toggle"
+                            class="task__main--accordion-btn"
+                            aria-controls="details-${taskData.a11yId}"
+                            aria-label = "expand task"
+                            aria-expanded="false">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
+                                fill="none" 
+                                viewBox="0 0 24 24" 
+                                stroke-width="1.5" 
+                                stroke="currentColor" 
+                                class="size-6">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                    </button>
+            </div>
+            <div class="task__divider"></div>
+            <div  class="task__details hidden" id="details-${
+              taskData.a11yId
+            }" role="region">
+                <p class="task__description">
+                    ${taskData.discription ?? ''}                
+                </p>
+                                
+            </div>`;
+    this.ui.task.list.appendChild(li);
   }
 }

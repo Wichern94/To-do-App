@@ -107,6 +107,7 @@ export class AnimationManager {
         li.style.height = `${heightStart}px`;
 
         requestAnimationFrame(() => {
+          btn.setAttribute('aria-pressed', 'true');
           li.style.width = `${widthEnd}px`;
           li.style.height = `${heightEnd}px`;
 
@@ -140,6 +141,7 @@ export class AnimationManager {
         li.style.height = `${heightStart}px`;
         li.style.width = `${widthStart}px`;
         requestAnimationFrame(() => {
+          btn.setAttribute('aria-pressed', 'false');
           li.style.width = `${widthEnd}px`;
           li.style.height = `${heightEnd}px`;
 
