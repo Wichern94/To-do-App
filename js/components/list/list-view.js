@@ -1,4 +1,5 @@
 import { FormErrors } from '../../uiErrorHandler.js';
+import { FormValidator } from '../../Services/form-validator.js';
 export class ListView {
   constructor(root = '.todo', { animationManager } = {}) {
     const rootEl =
@@ -6,7 +7,11 @@ export class ListView {
     if (!rootEl) {
       throw new Error('List root not found (selector or element invalid)');
     }
-    // UI roots
+    /**
+     * ========================================
+     * ROOT + QUERYHELPER
+     * ========================================
+     */
     this.ui = { root: rootEl };
 
     this._q = (sel) => this.ui.root.querySelector(sel);
@@ -17,33 +22,63 @@ export class ListView {
     };
 
     this.ui.modal = {
-      //window
+      /**
+       * ========================================
+       *  MODAL WINDOWS
+       * ========================================
+       */
       modalDialog: this._q('.task-modal'),
       modalFieldset: this._q('.task-modal__section'),
-      //form elements
-      form: this._q('#task-form'),
-      titleInput: this._q('#title'),
-      detailsInput: this._q('#task-desc'),
-      //buttons
+
+      /**
+       * ========================================
+       * FORM ELEMENTS
+       * ========================================
+       */
+
+      form: this._q('#list-form'),
+      titleInput: this._q('#list-input'),
+      detailsInput: this._q('#list-description'),
+
+      /**
+       * ========================================
+       * BUTTONS
+       * ========================================
+       */
+
       submitBtn: this._q('.task-modal__btn--submit'),
       cancelBtn: this._q('.task-modal__btn--cancel'),
       openModalBtn: this._q('#todo-open-modal-ID'),
     };
-    //local state:
+
+    /**
+     * ========================================
+     * LOCAL STATES
+     * ========================================
+     */
     this.localStates = {
       bound: false,
       isLoading: false,
     };
-    //handlers
+
+    /**
+     * ========================================
+     * HANDLERS
+     * ========================================
+     */
     this.handlers = {
       onAdd: null,
       onToggle: null,
       onDelete: null,
       onEdit: null,
     };
-    //services
+    /**
+     * ========================================
+     * SERVICES
+     * ========================================
+     */
     this.animationManager = animationManager || null;
-    this.formManager = new FormErrors('task-form');
+    this.formErrors = new FormErrors('list-form');
 
     this.listeners = [
       {
@@ -66,8 +101,18 @@ export class ListView {
         event: 'click',
         handler: this.handleSubmit.bind(this),
       },
+      {
+        el: this.ui.modal.form,
+        event: 'click',
+        handler: this.handleClearError.bind(this),
+      },
     ];
   }
+  /**
+   * ========================================
+   * INITIALIZATION METHODS
+   * ========================================
+   */
   // Private, recursive method that loops through the entire this.ui object
   _findAndValidateUiElements(obj, parentKey = '') {
     Object.entries(obj).forEach(([key, el]) => {
@@ -116,6 +161,10 @@ export class ListView {
     this.localStates.bound = true;
   }
 
+  bind(handlers = {}) {
+    this.handlers = { ...this.handlers, ...handlers };
+  }
+
   deactivate() {
     if (!this.localStates.bound) return;
     this.listeners.forEach(({ el, event, handler }) => {
@@ -126,9 +175,11 @@ export class ListView {
     this.localStates.bound = false;
   }
 
-  bind(handlers = {}) {
-    this.handlers = { ...this.handlers, ...handlers };
-  }
+  /**
+   * ========================================
+   * UI SETUP METHODS
+   * ========================================
+   */
 
   listActions(e) {
     const btn = e.target.closest('button[data-action]');
@@ -155,7 +206,7 @@ export class ListView {
 
     if (!details) return;
 
-    await this.animationManager.toggleAccordeon(btn, details, li);
+    await this.animationManager?.toggleAccordeon(btn, details, li);
   }
   setupConfettti(item) {
     const container = document.getElementById('view-standard');
@@ -170,7 +221,101 @@ export class ListView {
     const relX = (centerX - contRect.left) / contRect.width;
     const relY = (centerY - contRect.top) / contRect.height;
 
-    this.animationManager.launchConfetti(container, relX, relY);
+    this.animationManager?.launchConfetti(container, relX, relY);
+  }
+
+  setupCharacterCounter() {
+    const formElements = this._qa('input[maxlength], textarea[maxlength]');
+
+    formElements.forEach((element) => {
+      const counterSpan = this._q(`.char-counter[data-for="${element.id}"]`);
+
+      if (counterSpan) {
+        element.addEventListener('input', () => {
+          const currentLength = element.value.length;
+          const maxlength = element.getAttribute('maxlength');
+
+          counterSpan.textContent = `${currentLength}/${maxlength}`;
+
+          if (currentLength >= maxlength) {
+            counterSpan.classList.add('exceeded');
+            this.animationManager?.buttonOneAnimation(counterSpan, 'shakeX');
+          } else {
+            counterSpan.classList.remove('exceeded');
+            this.animationManager?.buttonOneAnimation(counterSpan, 'jello');
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * ========================================
+   * OPEN/CLOSE HANDLERS METHODS
+   * ========================================
+   */
+  async handleOpenModal(e) {
+    const btn = e.target;
+    const bluredOne = this.ui.modal.modalDialog;
+    const fieldset = this.ui.modal.modalFieldset;
+
+    this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
+    await this.animationManager?.blurInElement(bluredOne);
+    await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
+    this.setupCharacterCounter();
+  }
+
+  async handleCloseModal(e) {
+    const btn = e.target;
+    const bluredOne = this.ui.modal.modalDialog;
+    const fieldset = this.ui.modal.modalFieldset;
+
+    this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
+    await this.animationManager?.hideAnimation(fieldset, 'bounceOutDown', '1s');
+    await this.animationManager?.blurOutElement(bluredOne);
+
+    this.formErrors.clearAllErrors();
+    this.ui.modal.titleInput.value = '';
+    this.ui.modal.detailsInput.value = '';
+    this.handlerClearCounters();
+  }
+  /**
+   * ========================================
+   * FORM SUBMIT/DELETE METHODS
+   * ========================================
+   */
+  async handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target;
+    this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
+
+    try {
+      const nameInputData = this.ui.modal.titleInput.value.trim();
+      const isValid = FormValidator.validateOneInput(
+        nameInputData,
+        'title',
+        this.formErrors
+      );
+      if (!isValid) return;
+      // if (!nameInputData) {
+      //   this.formErrors.showError('title', 'Name it!');
+      //   return;
+      // }
+
+      const detailsInputData = this.ui.modal.detailsInput.value.trim();
+
+      const listData = {
+        title: nameInputData,
+        desc: detailsInputData || '',
+      };
+
+      if (typeof this.handlers.onAdd === 'function') {
+        this.handlers.onAdd(listData);
+      }
+      await this.handleCloseModal();
+    } catch (err) {
+      console.error('Form sending error:', err);
+    }
   }
 
   handleToggletask(btn) {
@@ -187,51 +332,18 @@ export class ListView {
       finishedAt: Date.now(),
     };
     this.setupConfettti(btn);
-    this.animationManager.buttonOneAnimation(btn, 'rubberBand');
+    this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     if (typeof this.handlers.onToggle === 'function') {
       this.handlers.onToggle(finishedDetails);
     }
   }
 
-  async handleOpenModal() {
-    const bluredOne = this.ui.modal.modalDialog;
-    const fieldset = this.ui.modal.modalFieldset;
+  /**
+   * ========================================
+   * RENDER METHOD
+   * ========================================
+   */
 
-    await this.animationManager.blurInElement(bluredOne);
-    await this.animationManager.showAnimation(fieldset, 'bounceInUp', '1s');
-  }
-
-  async handleCloseModal() {
-    const bluredOne = this.ui.modal.modalDialog;
-    const fieldset = this.ui.modal.modalFieldset;
-
-    await this.animationManager.hideAnimation(fieldset, 'bounceOutDown', '1s');
-    await this.animationManager.blurOutElement(bluredOne);
-  }
-
-  async handleSubmit(e) {
-    e.preventDefault();
-    try {
-      const nameInputData = this.ui.modal.titleInput.value.trim(); //<- usuwam białe znaki
-      if (!nameInputData) {
-        this.formManager.showError('title', 'Name it!');
-        return;
-      }
-
-      const detailsInputData = this.ui.modal.detailsInput.value.trim();
-
-      const listData = {
-        title: nameInputData,
-        desc: detailsInputData || '',
-      };
-
-      if (typeof this.handlers.onAdd === 'function') {
-        this.handlers.onAdd(listData);
-      }
-    } catch (err) {
-      console.error('Form sending error:', err);
-    }
-  }
   render(taskData) {
     const li = document.createElement('li');
     li.className = 'task';
@@ -258,7 +370,9 @@ export class ListView {
  
               </button>
                     
-                <span class="task__main--title">${taskData.title}</span>
+                <span class="task__main--title" id="title-${taskData.a11yId}">${
+      taskData.title
+    }</span>
                     <button type="button"
                             data-action="accordion-toggle"
                             class="task__main--accordion-btn"
@@ -280,12 +394,30 @@ export class ListView {
             <div class="task__divider"></div>
             <div  class="task__details hidden" id="details-${
               taskData.a11yId
-            }" role="region">
+            }" role="region" aria-labelledby="title-${taskData.a11yId}">
                 <p class="task__description">
-                    ${taskData.discription ?? ''}                
+                    ${taskData.desc ?? ''}                
                 </p>
                                 
             </div>`;
     this.ui.task.list.appendChild(li);
+  }
+
+  /**
+   * ========================================
+   * HELPER METHODS
+   * ========================================
+   */
+  handleClearError(e) {
+    if (e.target.tagName === 'INPUT') {
+      this.formErrors.clearError(e.target.name);
+    } else return;
+  }
+
+  handlerClearCounters() {
+    const counterSpans = this._qa('.char-counter');
+    counterSpans.forEach((span) => {
+      span.textContent = '';
+    });
   }
 }

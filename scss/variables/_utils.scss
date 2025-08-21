@@ -1,0 +1,24 @@
+@use './variables' as var;
+.input-error {
+  border-bottom: 1px solid var.$formError !important;
+}
+body {
+  font-family: 'Oxanium', sans-serif;
+}
+
+.hidden {
+  display: none !important;
+}
+.open {
+  display: block;
+}
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+}

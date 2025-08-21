@@ -16,9 +16,16 @@
     @include mixins.glass-panel;
     @include mixins.flex($height: 100%, $width: 100%);
     gap: 1rem;
-
     margin-bottom: auto;
   }
+  &__error {
+    color: var.$formError;
+    font-size: 12px;
+    font-weight: 500;
+    position: absolute;
+    top: 30%;
+  }
+
   &__input-title {
     position: relative;
     margin-top: 3rem;
@@ -77,5 +84,22 @@
       box-shadow: -4px -6px 14px 7px rgba(255, 255, 255, 5%),
         0 7px 11px 4px rgba(0, 0, 0, 0.6);
     }
+  }
+}
+.char-counter {
+  @include mixins.set-text(muted, regular, md);
+  position: absolute;
+  &[data-for='list-input'] {
+    top: 32%;
+    left: 80%;
+  }
+  &[data-for='list-description'] {
+    top: 68%;
+    left: 78%;
+  }
+
+  &.exceeded {
+    color: var.$formError;
+    filter: drop-shadow(0px 1px 1px rgba(238, 94, 91, 0.1));
   }
 }

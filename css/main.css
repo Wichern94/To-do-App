@@ -1,3 +1,30 @@
+.input-error {
+  border-bottom: 1px solid #ff5f5f !important;
+}
+
+body {
+  font-family: "Oxanium", sans-serif;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.open {
+  display: block;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+}
+
 /**
  * ========================================
  * LIST
@@ -205,6 +232,13 @@
   gap: 1rem;
   margin-bottom: auto;
 }
+.task-modal__error {
+  color: #ff5f5f;
+  font-size: 12px;
+  font-weight: 500;
+  position: absolute;
+  top: 30%;
+}
 .task-modal__input-title {
   position: relative;
   margin-top: 3rem;
@@ -321,6 +355,25 @@
   background: linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%);
   margin-bottom: 0.2rem;
   box-shadow: -4px -6px 14px 7px rgba(255, 255, 255, 0.05), 0 7px 11px 4px rgba(0, 0, 0, 0.6);
+}
+
+.char-counter {
+  color: #cccccc;
+  font-weight: 400;
+  font-size: 12px;
+  position: absolute;
+}
+.char-counter[data-for=list-input] {
+  top: 32%;
+  left: 80%;
+}
+.char-counter[data-for=list-description] {
+  top: 68%;
+  left: 78%;
+}
+.char-counter.exceeded {
+  color: #ff5f5f;
+  filter: drop-shadow(0px 1px 1px rgba(238, 94, 91, 0.1));
 }
 
 /**

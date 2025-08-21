@@ -308,24 +308,28 @@
             <h3 id="modal-title" class="task-modal__title">Add new task</h3>
             <div class="task-modal__title-divider"></div>
         </header>
-         <form id="task-form" class="task-modal__form" method="post">
+         <form id="list-form" class="task-modal__form" method="post">
         <input class="task-modal__input-title task-title"
                type="text"
-               id="title"
+               id="list-input"
                name="title"
                autocomplete="off"
+               maxlength="25"
                placeholder="Enter title…" />
-        <p class="task-modal__error task-modal__error--title err-message err-msg-new-task hidden"
+        <span class="char-counter" data-for="list-input"></span>
+        <p class="task-modal__error task-modal__error--title err-message  hidden"
            data-for="title"
            role="alert"
            aria-live="polite"></p>
         
            <!-- Description -->
-           <label class="visually-hidden" for="task-desc">Description</label>
-           <textarea id="task-desc"
+           <label class="visually-hidden" for="desc">Description</label>
+           <textarea id="list-description"
                      name="desc"
-                     class="task-modal__textarea "
+                     class="task-modal__textarea"
+                     maxlength="100"
                      placeholder="Write description…"></textarea>
+            <span class="char-counter" data-for="list-description"></span>
    
            <!-- Modal actions -->
            <div class="task-modal__actions ">
