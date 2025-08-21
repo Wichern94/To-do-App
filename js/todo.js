@@ -17,6 +17,8 @@ import { RoadmapPlumbManager } from './Services/plumb-manager.js';
 import { AnimationManager } from './Services/animation-manager.js';
 import { ToastManager } from './Services/toastify-manger.js';
 import { ListView } from './components/list/list-view.js';
+import { ListController } from './components/list/list-controller.js';
+import { ListModel } from './components/list/list.model.js';
 export class TodoApp {
   constructor(user, viewManager) {
     this.user = user;
@@ -211,13 +213,16 @@ export class TodoApp {
             console.error('Brak .todo w #list-view');
             return;
           }
-          console.log('manger', this.AnimationManager);
+          this.listModel = new ListModel(this.firestoreService);
 
           this.listView = new ListView(root, {
             animationManager: this.AnimationManager,
           });
-
-          this.listView.activate();
+          this.ListController = new ListController(
+            this.listModel,
+            this.listView
+          );
+          this.ListController.init();
         }
       }
     };

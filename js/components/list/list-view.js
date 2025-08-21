@@ -286,8 +286,8 @@ export class ListView {
    */
   async handleSubmit(e) {
     e.preventDefault();
-    const btn = e.target;
-    this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
+    // const btn = e.target;
+    // this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
 
     try {
       const nameInputData = this.ui.modal.titleInput.value.trim();

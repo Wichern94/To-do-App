@@ -37,6 +37,23 @@ export class FirestoreService {
       return null;
     }
   }
+
+  async updateCollection(updateObj, collectionName, docId) {
+    if (!collectionName || !updateObj) {
+      throw new Error('Nazwa Kolekcji, docid ,oraz obiekt zdanymi są wymagane');
+    }
+
+    try {
+      const collectionRef = doc(
+        db,
+        `users/${this.uid}/${collectionName}/${docId}`
+      );
+      const docQuery = await updateDoc(collectionRef, updateObj);
+      console.log('obiekt zaktualizowano!', updateObj);
+    } catch (err) {
+      console.error('bład podczas updatu:', err);
+    }
+  }
   //Metoda odczytu Kolekcji
   async loadUserCollection(collectionName) {
     if (!collectionName) {
