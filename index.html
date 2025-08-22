@@ -406,15 +406,26 @@
 </section>
                  
 
-        <!-- tryb Roadmapy -->
-        <section id="roadmap-view" class=" modes roadmap-section hidden" aria-labelledby="roadmap-section-title">
-  
-     <dialog  id="create-roud-menu" class="roud-modal  hidden" >
-        <fieldset  id="modal-ui-panel" class="modal-section hidden">
-        <div class="modal-tab-bar">
-            <button id="hand-button" class="tab-btn hand-btn" data-mode="manual">Dodaj Ręcznie</button>
-            <button id="import-button" class="tab-btn import-btn" data-mode="import">Importuj</button>
-        </div>
+        <!-- ROADMAP SECTION-->
+<section id="roadmap-view"
+         class="modes roadmap-section hidden roadmap" 
+         aria-labelledby="roadmap-section-title"
+         data-roadmap-id="">
+    
+    <h2 id="roadmap-section-title" class="visually-hidden">Roadmaps</h2>
+
+    <dialog id="create-roud-menu"
+            class="roud-modal hidden selector-modal"
+            data-role="selector-modal" 
+            aria-labelledby="create-modal-title"
+            aria-modal="true">
+
+        <fieldset id="modal-ui-panel"
+                  class="modal-section hidden selector-modal__panel">
+            <div class="modal-tab-bar">
+                <button id="hand-button" class="tab-btn hand-btn" data-mode="manual">Dodaj Ręcznie</button>
+                <button id="import-button" class="tab-btn import-btn" data-mode="import">Importuj</button>
+            </div>
         <form id="manual-node-form" class="manual-content ">
             <span class="new-roud-title">
                 <h3 id="modal-title">Dodaj Element</h3>
