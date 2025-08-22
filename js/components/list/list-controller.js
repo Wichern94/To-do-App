@@ -2,14 +2,15 @@ export class ListController {
   constructor(model, view) {
     this.model = model;
     this.view = view;
+    this.renderedIds = new Set();
   }
   async init() {
     this.view.activate();
 
     this.view.bind({
-      onAdd: async ({ title, desc }) => {
+      onAdd: async (listData) => {
         try {
-          const tasks = await this.model.createTask({ title, desc });
+          const tasks = await this.model.createTask(listData);
           this._renderTasks(tasks);
         } catch (err) {
           console.error('Add failed:', err);
@@ -30,6 +31,11 @@ export class ListController {
   _renderTasks(tasks) {
     const visible = tasks.filter((t) => !t.done);
     this.view.ui.task.list.innerHTML = '';
-    visible.forEach((t) => this.view.render(t));
+
+    for (const t of visible) {
+      const isNew = !this.renderedIds.has(t.id);
+      this.view.render(t, { isNew });
+      this.renderedIds.add(t.id);
+    }
   }
 }

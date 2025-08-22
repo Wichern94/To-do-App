@@ -331,11 +331,10 @@ export class ListView {
     };
     this.setupConfettti(btn);
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
-
+    await this.animationManager.hideAnimation(li, 'bounceOutRight', '1s');
     if (typeof this.handlers.onToggle === 'function') {
       this.handlers.onToggle(finishedDetails);
     }
-    await this.animationManager.addElementAnimation(li, 'bounceOutRight', '1s');
   }
 
   /**
@@ -344,7 +343,9 @@ export class ListView {
    * ========================================
    */
 
-  async render(taskData) {
+  async render(taskData, opts = {}) {
+    const { isNew = false } = opts;
+
     const li = document.createElement('li');
     li.className = 'task';
     li.dataset.id = taskData.id;
@@ -401,7 +402,7 @@ export class ListView {
                                 
             </div>`;
     this.ui.task.list.appendChild(li);
-    if (taskData.isNew) {
+    if (isNew) {
       await this.animationManager.addElementAnimation(li, 'bounceInLeft', '1s');
     }
   }
