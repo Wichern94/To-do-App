@@ -21,8 +21,6 @@ export class FirestoreService {
     if (!data || !collectionName) {
       throw new Error('data i nazwa Kolekcji jest wymagana');
     }
-    console.log('typeof data.title:', typeof this.uid);
-    console.log('data.title:', data.title);
 
     try {
       const ref = collection(db, `users/${this.uid}/${collectionName}`);
@@ -49,7 +47,6 @@ export class FirestoreService {
         `users/${this.uid}/${collectionName}/${docId}`
       );
       const docQuery = await updateDoc(collectionRef, updateObj);
-      console.log('obiekt zaktualizowano!', updateObj);
     } catch (err) {
       console.error('bład podczas updatu:', err);
     }
@@ -73,7 +70,6 @@ export class FirestoreService {
         });
       });
 
-      console.log(`kolekcje ${this.uid}:`, collections);
       return collections;
     } catch (error) {
       console.error('błąd przy odczycie  od firestore:', error);
@@ -89,7 +85,7 @@ export class FirestoreService {
     try {
       const docRef = doc(db, `users/${this.uid}/${collectionName}/${docId}`);
       await deleteDoc(docRef);
-      console.log(`Usunięto dokument ${docId} z kolekcji ${collectionName}`);
+
       return true;
     } catch (error) {
       console.error('bład przy usuwaniu zadania:', error);

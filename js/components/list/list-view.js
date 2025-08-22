@@ -331,7 +331,7 @@ export class ListView {
     };
     this.setupConfettti(btn);
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
-    await this.animationManager.hideAnimation(li, 'bounceOutRight', '1s');
+
     if (typeof this.handlers.onToggle === 'function') {
       this.handlers.onToggle(finishedDetails);
     }
@@ -344,7 +344,7 @@ export class ListView {
    */
 
   async render(taskData, opts = {}) {
-    const { isNew = false } = opts;
+    const { isNew = false, isInitial = false, index = 0 } = opts;
 
     const li = document.createElement('li');
     li.className = 'task';
@@ -404,6 +404,9 @@ export class ListView {
     this.ui.task.list.appendChild(li);
     if (isNew) {
       await this.animationManager.addElementAnimation(li, 'bounceInLeft', '1s');
+    } else if (isInitial) {
+      const anim = index % 2 === 0 ? 'backInLeft' : 'backInRight';
+      this.animationManager?.addElementAnimation(li, anim, '1s');
     }
   }
 
@@ -423,5 +426,16 @@ export class ListView {
     counterSpans.forEach((span) => {
       span.textContent = '';
     });
+  }
+  async animatePromote({ oldEl, newEl }) {
+    // const oldElement = this._q(`[data-id="${oldId}"]`);
+    // const newElement = this._q(`[data-id="${promoteId}"]`);
+    console.log(oldEl, newEl);
+
+    await this.animationManager.hideAnimation(oldEl, 'flipOutX', '1s');
+    await this.animationManager.addElementAnimation(newEl, 'flipInX', '1s');
+  }
+  findItemEl(id) {
+    return this.ui.task.list.querySelector(`[data-id="${id}"]`) || null;
   }
 }

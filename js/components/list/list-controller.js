@@ -3,6 +3,8 @@ export class ListController {
     this.model = model;
     this.view = view;
     this.renderedIds = new Set();
+    this.isInitialPaint = true;
+    this.SEEN_KEY = 'seenTaskIds';
   }
   async init() {
     this.view.activate();
@@ -18,24 +20,59 @@ export class ListController {
       },
       onToggle: async ({ id }) => {
         try {
+          const order = [...this.view.ui.task.list.children].map(
+            (li) => li.dataset.id
+          );
+          const removedIndex = order.indexOf(id);
+
           const tasks = await this.model.finishTask(id);
-          this._renderTasks(tasks);
+          const visible = tasks.filter((t) => !t.done);
+
+          const promoteDomId = order[removedIndex + 1] ?? null;
+
+          const oldEl = this.view.findItemEL(id);
+          const newEl = promoteDomId
+            ? this.view.findItemEL(promoteDomId)
+            : null;
+
+          this.renderedIds.delete(id);
+          sessionStorage.setItem(
+            this.SEEN_KEY,
+            JSON.stringify([...this.renderedIds])
+          );
+
+          this._renderTasks(visible);
+          await this.view.animatePromote({ oldEl, newEl });
         } catch (err) {
           console.error('finish failed');
         }
       },
     });
+
     const tasks = await this.model.loadAll();
+    const seenFromSession = JSON.parse(
+      sessionStorage.getItem(this.SEEN_KEY) || '[]'
+    );
+    this.renderedIds = new Set(seenFromSession);
+
+    tasks.forEach((t) => this.renderedIds.add(t.id));
+
     this._renderTasks(tasks);
+    this.isInitialPaint = false;
   }
   _renderTasks(tasks) {
     const visible = tasks.filter((t) => !t.done);
     this.view.ui.task.list.innerHTML = '';
 
-    for (const t of visible) {
+    visible.forEach((t, i) => {
       const isNew = !this.renderedIds.has(t.id);
-      this.view.render(t, { isNew });
+      this.view.render(t, { isNew, isInitial: this.isInitialPaint, index: i });
       this.renderedIds.add(t.id);
-    }
+    });
+
+    sessionStorage.setItem(
+      this.SEEN_KEY,
+      JSON.stringify([...this.renderedIds])
+    );
   }
 }
