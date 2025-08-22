@@ -53,7 +53,6 @@ export class AnimationManager {
 
   bounceBtn(element) {
     if (!element) {
-      console.log('brak przycisku do animacji');
       return;
     }
 
@@ -86,7 +85,6 @@ export class AnimationManager {
   }
   async toggleAccordeon(btn, contentBox, li) {
     if (!btn || !contentBox || !li) {
-      console.log('brakdanych do akordeonu');
       return;
     }
     const wasHidden = contentBox.classList.contains('hidden');
@@ -206,7 +204,6 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         const connections = this.plumbManager.jsPlumbInstance.getConnections();
-        console.log('połączenia to:', connections);
 
         const targetConnection = connections.find(
           (conn) => conn.sourceId === sourceID && conn.targetId === targetID
@@ -253,7 +250,6 @@ export class AnimationManager {
 
         animation.onfinish = () => {
           clonedPath?.remove();
-          console.log('czy jest usuniety:?', clonedPath);
         };
 
         requestAnimationFrame(() => {
@@ -276,7 +272,6 @@ export class AnimationManager {
             resolve('Animacja zakończona poprawnie');
             const connectionsAfter =
               this.plumbManager.jsPlumbInstance.getConnections();
-            console.log('After połączenia to:', connectionsAfter);
           };
         });
       } catch (err) {
@@ -306,10 +301,7 @@ export class AnimationManager {
               `animate__${animation}`
             );
             element.removeEventListener('animationend', handleAnimationEnd);
-            console.log(
-              'Dodaję klasy:',
-              `animate__animated animate__${animation}`
-            );
+
             resolve('Animcja node ok');
           };
           element.addEventListener('animationend', handleAnimationEnd);
@@ -380,10 +372,7 @@ export class AnimationManager {
             );
             element.style.removeProperty('--animate-duration');
             element.removeEventListener('animationend', handleAnimationEnd);
-            console.log(
-              'Dodaję klasy:',
-              `animate__animated animate__${animation}`
-            );
+
             resolve('Animcja node ok');
           };
           element.addEventListener('animationend', handleAnimationEnd);
@@ -415,8 +404,7 @@ export class AnimationManager {
 
         element.style.width = `${widthStart}px`;
         element.style.height = `${heightStart}px`;
-        console.log('start', widthStart, heightStart);
-        console.log('end', widthEnd, heightEnd);
+
         requestAnimationFrame(() => {
           const interval = setInterval(() => {
             this.plumbManager?.jsPlumbInstance?.revalidate(element);
@@ -433,8 +421,6 @@ export class AnimationManager {
             element.style.height = `${heightEnd}px`;
 
             const clean = () => {
-              console.log('uruchomiono clean odwidthandheight!');
-
               element.style.height = '';
               element.style.width = '';
               element.style.transition = '';
@@ -472,7 +458,7 @@ export class AnimationManager {
             element.classList.remove('animate__animated', `animate__fadeIn`);
             element.style.removeProperty('--animate-duration');
             element.removeEventListener('animationend', handleAnimationEnd);
-            console.log('Dodaję klasy:', `animate__animated animate__fadeIn`);
+
             resolve('Animcja node ok');
           };
           element.addEventListener('animationend', handleAnimationEnd);
@@ -504,7 +490,7 @@ export class AnimationManager {
             hideElement(element);
 
             element.removeEventListener('animationend', handleAnimationEnd);
-            console.log('Dodaję klasy:', `animate__animated animate__fadeOut`);
+
             resolve('Animcja node ok');
           };
           element.addEventListener('animationend', handleAnimationEnd);
@@ -537,10 +523,7 @@ export class AnimationManager {
             );
             element.style.removeProperty('--animate-duration');
             element.removeEventListener('animationend', handleAnimationEnd);
-            console.log(
-              'Dodaję klasy:',
-              `animate__animated animate__${animation}`
-            );
+
             resolve('animacja ok!');
           };
           element.addEventListener('animationend', handleAnimationEnd);

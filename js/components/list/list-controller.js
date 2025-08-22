@@ -23,17 +23,22 @@ export class ListController {
           const order = [...this.view.ui.task.list.children].map(
             (li) => li.dataset.id
           );
+
           const removedIndex = order.indexOf(id);
+
+          const promoteDomId = order[removedIndex + 1] ?? null;
+
+          const oldEl = this.view.findItemEl(id);
 
           const tasks = await this.model.finishTask(id);
           const visible = tasks.filter((t) => !t.done);
 
-          const promoteDomId = order[removedIndex + 1] ?? null;
+          if (!oldEl) throw new Error('oldEl is not valid');
+          await this.view.animateOldTask(oldEl);
 
-          const oldEl = this.view.findItemEL(id);
-          const newEl = promoteDomId
-            ? this.view.findItemEL(promoteDomId)
-            : null;
+          if (!promoteDomId) throw new Error('promoteDomId is not valid');
+          const newEl = this.view.findItemEl(promoteDomId);
+          await this.view.animateNewTask(newEl);
 
           this.renderedIds.delete(id);
           sessionStorage.setItem(
@@ -42,7 +47,6 @@ export class ListController {
           );
 
           this._renderTasks(visible);
-          await this.view.animatePromote({ oldEl, newEl });
         } catch (err) {
           console.error('finish failed');
         }

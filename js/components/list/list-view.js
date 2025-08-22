@@ -107,6 +107,7 @@ export class ListView {
         handler: this.handleClearError.bind(this),
       },
     ];
+    this.bouncingBtn();
   }
   /**
    * ========================================
@@ -427,15 +428,19 @@ export class ListView {
       span.textContent = '';
     });
   }
-  async animatePromote({ oldEl, newEl }) {
-    // const oldElement = this._q(`[data-id="${oldId}"]`);
-    // const newElement = this._q(`[data-id="${promoteId}"]`);
-    console.log(oldEl, newEl);
-
+  async animateOldTask(oldEl) {
     await this.animationManager.hideAnimation(oldEl, 'flipOutX', '1s');
+  }
+  async animateNewTask(newEl) {
     await this.animationManager.addElementAnimation(newEl, 'flipInX', '1s');
   }
   findItemEl(id) {
     return this.ui.task.list.querySelector(`[data-id="${id}"]`) || null;
+  }
+  bouncingBtn() {
+    const btn = this.ui.modal.openModalBtn;
+    if (btn) {
+      this.animationManager?.bounceBtn(btn);
+    }
   }
 }
