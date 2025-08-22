@@ -97,8 +97,8 @@ export class ListView {
         handler: this.handleCloseModal.bind(this),
       },
       {
-        el: this.ui.modal.submitBtn,
-        event: 'click',
+        el: this.ui.modal.form,
+        event: 'submit',
         handler: this.handleSubmit.bind(this),
       },
       {
@@ -201,7 +201,10 @@ export class ListView {
   }
 
   async setupAccordion(btn) {
+    console.log('klknieto w akordeon');
+
     const li = btn.closest('.task');
+
     const details = li.querySelector('[data-action="accordion-container"]');
 
     if (!details) return;
@@ -266,7 +269,8 @@ export class ListView {
   }
 
   async handleCloseModal(e) {
-    const btn = e.target;
+    e?.preventDefault?.();
+    const btn = this._q('.task-modal__btn--submit');
     const bluredOne = this.ui.modal.modalDialog;
     const fieldset = this.ui.modal.modalFieldset;
 
@@ -286,8 +290,6 @@ export class ListView {
    */
   async handleSubmit(e) {
     e.preventDefault();
-    // const btn = e.target;
-    // this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
 
     try {
       const nameInputData = this.ui.modal.titleInput.value.trim();
@@ -297,10 +299,6 @@ export class ListView {
         this.formErrors
       );
       if (!isValid) return;
-      // if (!nameInputData) {
-      //   this.formErrors.showError('title', 'Name it!');
-      //   return;
-      // }
 
       const detailsInputData = this.ui.modal.detailsInput.value.trim();
 
@@ -318,7 +316,7 @@ export class ListView {
     }
   }
 
-  handleToggletask(btn) {
+  async handleToggletask(btn) {
     const li = btn.closest('.task');
     const taskID = li?.dataset.id;
 
@@ -333,9 +331,11 @@ export class ListView {
     };
     this.setupConfettti(btn);
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
+
     if (typeof this.handlers.onToggle === 'function') {
       this.handlers.onToggle(finishedDetails);
     }
+    await this.animationManager.addElementAnimation(li, 'bounceOutRight', '1s');
   }
 
   /**
@@ -344,7 +344,7 @@ export class ListView {
    * ========================================
    */
 
-  render(taskData) {
+  async render(taskData) {
     const li = document.createElement('li');
     li.className = 'task';
     li.dataset.id = taskData.id;
@@ -392,7 +392,7 @@ export class ListView {
                     </button>
             </div>
             <div class="task__divider"></div>
-            <div  class="task__details hidden" id="details-${
+            <div  class="task__details hidden" data-action="accordion-container" id="details-${
               taskData.a11yId
             }" role="region" aria-labelledby="title-${taskData.a11yId}">
                 <p class="task__description">
@@ -401,6 +401,9 @@ export class ListView {
                                 
             </div>`;
     this.ui.task.list.appendChild(li);
+    if (taskData.isNew) {
+      await this.animationManager.addElementAnimation(li, 'bounceInLeft', '1s');
+    }
   }
 
   /**
