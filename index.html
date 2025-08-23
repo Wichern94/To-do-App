@@ -422,246 +422,344 @@
 
         <fieldset id="modal-ui-panel"
                   class="modal-section hidden selector-modal__panel">
-            <div class="modal-tab-bar">
-                <button id="hand-button" class="tab-btn hand-btn" data-mode="manual">Dodaj Ręcznie</button>
-                <button id="import-button" class="tab-btn import-btn" data-mode="import">Importuj</button>
+
+            <div class="modal-tab-bar  selector-modal__tabs selector-modal__panel-nav"
+                 role="tablist"
+                 aria-label="Selector modal modes">
+
+                <button id="hand-button"
+                        class="tab-btn hand-btn selector-modal__tab-btn selector-modal__tab-btn--manual"
+                        data-mode="manual"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="manual-node-form">Add Manually
+                </button>
+
+                <button id="import-button"
+                        class="tab-btn import-btn selector-modal__tab-btn selector-modal__tab-btn--import"
+                        data-mode="import"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="import-node-form">Import
+                </button>
             </div>
-        <form id="manual-node-form" class="manual-content ">
-            <span class="new-roud-title">
-                <h3 id="modal-title">Dodaj Element</h3>
-            </span> 
-                <div class="roud-input-container">
-                    <input class="roudnode-title" type="text" id="r-title" name="roud-title" autocomplete="off" placeholder="Podaj Tytuł..." >
-                    <p class="err-message err-msg-new-task hidden" data-for="roud-title"></p>
-                </div>
-            <label class="modal-subtask">
-                <input type="checkbox" class = "roud-disabld-checkbox" id="roud-checkbox" />
-                <span class="modal-custom-check"></span>
-                <span class="modal-subtask-text">Chce dodać Sub-Element'y</span>
+
+            <form id="manual-node-form"
+                  class="manual-content selector-modal__form selector-modal__form--manual"
+                  autocomplete="off"
+                  role="tabpanel"
+                  aria-labelledby="hand-button">
+                  
+            <span class="new-roud-title selector-modal__title-wrap">
+                <h3 id="modal-title"
+                    class="selector-modal__title">Create Roadmap</h3>
+            </span>
+
+            <div class="roud-input-container selector-modal__input-wrap">
+                <input class="roudnode-title selector-modal__input"
+                       type="text"
+                       id="r-title"
+                       name="create-map-title"
+                       autocomplete="off"
+                       placeholder="Enter title..." >
+
+                <p class="err-message err-msg-new-task hidden selector-modal__error selector-modal__error--title"
+                   data-for="create-map-title"></p>
+            </div>
+
+            <label class="modal-subtask selector-modal__subtask-label-wrap">
+
+                <input type="checkbox"
+                       class ="roud-disabld-checkbox selector-modal__subtask-disabled-checkbox"
+                       id="roud-checkbox" />
+
+                <span class="modal-custom-check selector-modal__subtask-checkbox"></span>
+                <span class="modal-subtask-text selector-modal__subtask-label">I want to add sub-items</span>
             </label>
-            <div class = "sub-element-container  hidden" id="sub-container">
-                <input class="roudnode-title" type="text" id="r-sub" name="roud-sub" autocomplete="off" placeholder="Nazwa..." >
-                <p class="err-message err-msg-new-task hidden" data-for="roud-sub"></p>
-                <button class="modal-roud-btn" id="add-subtask-btn" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
+
+            <div class ="sub-element-container hidden selector-modal__subtask-wrap"
+                 id="sub-container">
+
+                <input class="roudnode-title selector-modal__subtask-input-title"
+                       type="text"
+                       id="r-sub"
+                       name="roadmap-subelements"
+                       autocomplete="off"
+                       placeholder="Title..." >
+
+                <p class="err-message err-msg-new-task hidden selector-modal__error selector-modal__error--subtasks"
+                   data-for="roadmap-subelements"></p>
+
+                <button class="modal-roud-btn selector-modal__btn selector-modal__subtask-add-btn"
+                        id="add-subtask-btn"
+                        type="button"
+                        aria-label="Add sub-item">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke-width="1.5"
+                         stroke="currentColor"
+                         class="size-6" aria-hidden="true">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
                     </svg>
                 </button>
+
+
                 </div>
-                <ul class="modal-sub-task-list hidden" id="subtask-list">
+                <ul class="modal-sub-task-list selector-modal__subtask-list hidden"
+                    id="subtask-list"></ul>
                    
-                </ul>
-                <div class="task-btns">
-                    <button type="button" id="manual-submit-btn" class="task-handler-btn aprove">Dodaj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                
+                <div class="task-btns selector-modal__actions"
+                     role="group"
+                     aria-label="Create roadmap actions">
+
+                    <button type="button"
+                            id="manual-submit-btn"
+                            class="task-handler-btn aprove  selector-modal__btn selector-modal__btn--confirm">Add
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-check-icon lucide-check">
+                            <path d="M20 6 9 17l-5-5"/></svg>
                     </button>
-                    <button type="button" id="manual-abandon-btn" class="task-handler-btn abandon">Anuluj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+
+                    <button type="button"
+                            id="manual-abandon-btn"
+                            class="task-handler-btn abandon selector-modal__btn selector-modal__btn--cancel">Cancel
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="20"
+                                 height="20"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="lucide lucide-x-icon lucide-x">
+                                 <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                            </svg>
                     </button>
                 </div>
+            </form>
 
+            <form id="import-node-form"
+                  class="import-content hidden selector-modal__form selector-modal__form--import"
+                  role="tabpanel"
+                  aria-labelledby="import-button">
+                  
+                  <span class="new-import-title selector-modal__title-wrap">
+                      <h3 id="import-modal-title"
+                          class="selector-modal__title">Import Roadmap!
+                     </h3>
+                  </span> 
             
             
+                  <div class="import-text selector-modal__form-import--textarea-wrap">
+                      <p class="err-message err-msg-import hidden selector-modal__error selector-modal__error--import" data-for="import"></p>
+                      <textarea id="import-desc"
+                                name="import"
+                                class="import-discription selector-modal__form-import-textarea"
+                                placeholder="Paste here..."></textarea>
+                  </div>
             
-            
+                  <div class="task-btns selector-modal__actions selector-modal__actions--import"
+                       role="group"
+                       aria-label="Import actions">
                      
-                     
-                
-
-        </form>
-        <form id="import-node-form" class="import-content hidden">
-            <span class="new-import-title">
-                <h3 id="import-modal-title">Importuj RoadMapę!</h3>
-            </span> 
-            
-            <div class="import-text">
-                <p class="err-message err-msg-import hidden" data-for="import"></p>
-                <textarea id="import-desc" name="import" class="import-discription" placeholder="Wklej..."></textarea>
-            </div>
-            
-            <div class="task-btns">
-                    <button type="button" id="import-submit-node" class="task-handler-btn aprove">Dodaj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                    </button>
-                    <button type="button" id="import-abandon-btn" class="task-handler-btn abandon">Anuluj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                    </button>
-            </div>
-            <div class="helper-footer">
-                <p>Mozesz użyc chatGPT do wygenerowania roudmapy!<br><button type ="button" id="promt-btn"class="text-button">kliknij!</button> aby skopiowac promt.</p>
-            </div>
-        </form>
-            </fieldset>
-
-                    
-                        
-                        
-                           
-    </dialog>
-  
-  <div class="roadmap-box">
-    <div id ="list-toggler-ID"class="list-toggler ">
-        <h4 id="roadmap-section-title" class="roud-title">Nie masz Roadmap!</h4>
-        <div class="roadmap-select-bar">
-            <button id="new-map-btn" class="add-roadmap-btn" type="button">Nowa
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-            </button>
-        </div>
-        <div class="roadmap-list-container">
-            <ul id="ul-container" class="roadmap-list-selector">
-                <!-- <li  class="roadmap-list-item">
-                    <p class="roadmap-list-item-text">Javascrpit</p>
-                    <div class="list-bttns">
-                         <button  class="delete-road-btn roud-list-btns" aria-label="delete task">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
+                      <button type="button"
+                              id="import-submit-node"
+                              class="task-handler-btn aprove selector-modal__btn selector-modal__btn--confirm">Add
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="20"
+                                     height="20"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round"
+                                     class="lucide lucide-check-icon lucide-check">
+                                     <path d="M20 6 9 17l-5-5"/>
+                                </svg>
                         </button>
-                        <button class="enter-road-btn roud-list-btns">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                            </svg>
-
+                      
+                        <button type="button"
+                                id="import-abandon-btn"
+                                class="task-handler-btn abandon selector-modal__btn selector-modal__btn--cancel">Cancel
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="20"
+                                     height="20"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round"
+                                     class="lucide lucide-x-icon lucide-x">
+                                     <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                                </svg>
                         </button>
                     </div>
-                </li> -->
-                
-            </ul>
-        </div>
-    </div>
-        <dialog id="add-main-roadmap" class="roud-modal hidden">
-            <fieldset id="creator-panel" class="modal-section create-modal hidden">
-                <form  id="create-map-form" class="manual-content ">
-            <span class="new-roud-title">
-                <h3 id="modal-title">Stwórz Roudmape</h3>
-            </span> 
-                <div class="roud-input-container">
-                    <input class="roudnode-title" type="text" id="create-title" name="create-map-title" autocomplete="off" placeholder="Podaj Tytuł..." >
-                    <p class="err-message err-msg-new-task hidden" data-for="create-map-title"></p>
-                </div>
+                     
+                    <div class="helper-footer selector-modal__footer">
+                        <p>You can use chatGPT to generate a roadmap!<br>
+                            <button type="button"
+                                    id="promt-btn"
+                                    class="text-button"
+                                    data-action="copy-promt">CLICK   
+                            </button> to copy the promt.</p>
+                    </div>
                 </form>
-                <div class="task-btns">
-                    <button type="button" id="create-submit-btn" class="task-handler-btn aprove">Dodaj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+            </fieldset>
+        </dialog>
+                
+    <div class="roadmap-box roadmap-selector">
+        <div id ="list-toggler-ID"
+             class="list-toggler roadmap-selector__panel">
+
+             <h4 id="roadmap-section-title"
+                 class="roud-title roadmap-selector__empty">You don't have any roadmaps!
+            </h4>
+        
+            <div class="roadmap-select-bar roadmap-selector__actions">
+            
+                <button id="new-map-btn"
+                        class="add-roadmap-btn roadmap-selector__btn roadmap-selector__btn--create"
+                        type="button"
+                        data-action="create-raodmap">New
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke-width="2.5"
+                         stroke="currentColor"
+                         class="size-6">
+                        <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="roadmap-list-container roadmap-selector__list-wrap">
+                <ul id="ul-container"
+                    class="roadmap-list-selector roadmap-selector__list"
+                    role="list"
+                    aria-live="polite">
+                </ul>
+            </div>
+        </div>
+        
+        <dialog id="add-main-roadmap"
+                class="roud-modal hidden selector-modal"
+                aria-labelledby="create-modal-title"
+                aria-modal="true">
+                    
+            <fieldset id="creator-panel"
+                      class="modal-section create-modal hidden selector-modal__panel">
+
+                <form  id="create-map-form"
+                       class="manual-content selector-modal__form"
+                       autocomplete="off">
+
+                    <span class="new-roud-title selector-modal__title-wrap">
+                        <h3 id="modal-title selector-modal__title">Create Roadmap</h3>
+                    </span>
+                        
+                    <div class="roud-input-container selector-modal__input-wrap">
+                        <input class="roudnode-title selector-modal__input"
+                               type="text"
+                               id="create-title"
+                               name="create-map-title"
+                               autocomplete="off"
+                               placeholder="Enter title..."/>
+                
+                        <p class="err-message err-msg-new-task hidden selector-modal__error"
+                           data-for="create-map-title"></p>
+                   </div>
+               </form>
+
+                <div class="task-btns selector-modal__actions"
+                     role="group"
+                     aria-label="Create roadmap actions">
+
+                    <button type="button"
+                            id="create-submit-btn"
+                            class="task-handler-btn aprove selector-modal__btn selector-modal__btn--confirm">Add
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="20"
+                             height="20"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             class="lucide lucide-check-icon lucide-check">
+                             <path d="M20 6 9 17l-5-5"/>
+                        </svg>
                     </button>
-                    <button type="button" id="create-abandon-btn" class="task-handler-btn abandon">Anuluj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+
+                    <button type="button"
+                            id="create-abandon-btn"
+                            class="task-handler-btn abandon selector-modal__btn selector-modal__btn--cancel">Cancel
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="20"
+                             height="20"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             class="lucide lucide-x-icon lucide-x">
+                             <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                        </svg>
                     </button>
                 </div>
             </fieldset>
         </dialog>
 
     
-    <div  id ="Ul-cont-div"class="roadmap-content-area hidden">
-        <!-- <div class="go-back-btn-container">
-            <button id="roadmaps-back-btn" class="roud-list-btns">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+    <div  id ="Ul-cont-div"class="roadmap-content-area hidden roadmap__content"></div>
+    
+    <div id="add-node-btn-cont" class="add-btn-container hidden" aria-hidden="true">
+        <button id="add-roadmap-task"
+                class="add-task roadmap__btn roadmap__btn--add-node"
+                data-action="add-node"
+                aria-label="Add new node">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="48"
+                     height="48"
+                     viewBox="0 0 48 48">
+                     <rect  x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#4fa859" stroke-width="2"/>
+                     <line  x1="24" y1="16" x2="24" y2="32" stroke="#4fa859" stroke-width="3" stroke-linecap="round" />
+                     <line  x1="16" y1="24" x2="32" y2="24" stroke="#4fa859" stroke-width="3" stroke-linecap="round" />
                 </svg>
-            </button>
-        </div> -->
+        </button>
     </div>
-        
-
-        <div id="add-node-btn-cont" class="add-btn-container hidden">
-                <button id="add-roadmap-task" class="add-task">
-               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-                    <rect  x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#4fa859" stroke-width="2"/>
-                    <line  x1="24" y1="16" x2="24" y2="32" stroke="#4fa859" stroke-width="3" stroke-linecap="round" />
-                    <line  x1="16" y1="24" x2="32" y2="24" stroke="#4fa859" stroke-width="3" stroke-linecap="round" />
-                </svg>
-                </button>
-            </div>
-       
-        <!-- <ul id="roadmap-container" class="roadmap-list hidden">
-    
-    
-      <li class="roadmap-node active-border">
-          
-          <div class="title-roudmap">
-              <span class="node-text">Nauka JavaScript</span>
-              <button class="node-acc-btn " id="roadmap-accordeon-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                      stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                  </svg>
-              </button>
-              </div>
-        
-            
-              
-            <div class="node-btn-container">
-                <button class="stop-btn roud-btns" aria-label="stop timer">Zatrzymaj
-                    <svg class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
-                    </svg>
-                </button>
-                  <div class="timer">Czas
-                    <small class="node-time">0:00</small>
-                </div>
-                  <button class="play-btn roud-btns" aria-label="start timer">Rozpocznij
-                    <svg  class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                    </svg>
-                </button>
-            </div>
-                
-            <div class="progress-container">
-                <span class="progress-text">20%</span>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                
-            </div>
-    
-            <ul class="subtask-list hidden">
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Utworzyć formularz</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Obsłużyć błędy</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check">
-                            
-                        </span>
-                        <span class="subtask-text">Dodać walidację</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Połączyć z backendem</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Testy jednostkowe</span>
-                    </label>
-                    </li>
-                </ul>
-            </li>
-       
-            
-        </ul> -->
-
-    
 </div>
+</section>
+            
+    
+        
+
+       
+       
+
+    
             
         
               
@@ -683,7 +781,6 @@
 
       
      
-        </section>
       
                
 
