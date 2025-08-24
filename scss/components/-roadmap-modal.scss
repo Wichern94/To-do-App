@@ -66,4 +66,26 @@
     @extend .selector-modal__form--manual;
     top: 0%;
   }
+
+  &__input-wrap {
+    @include mixins.flex($width: 100%);
+    input {
+      @include mixins.glass-input();
+      width: 80%;
+      height: 2rem;
+    }
+  }
+
+  &__subtask {
+    &-label-wrap {
+      @include mixins.flex($width: 90%, $direction: row, $justify: flex-start);
+    }
+
+    &-disabled-checkbox {
+      @include mixins.checkbox($hiddenOrigin: true);
+    }
+    &-checkbox {
+      @include mixins.checkbox($hiddenOrigin: false);
+    }
+  }
 }

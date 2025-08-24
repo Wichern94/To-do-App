@@ -346,7 +346,7 @@ body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 .task-modal__title-divider {
-  color: rgba(30, 90, 80, 0.7);
+  color: #6bcdce;
   display: block;
   width: 90%;
   height: 2px;
@@ -534,6 +534,56 @@ body {
 }
 .selector-modal__form--import {
   top: 0%;
+}
+.selector-modal__input-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+.selector-modal__input-wrap input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  color: #ddd;
+  width: 80%;
+  height: 2rem;
+}
+.selector-modal__input-wrap input::placeholder {
+  color: #777;
+  transition: all 0.8s ease;
+}
+.selector-modal__input-wrap input:focus {
+  outline: 1px solid #6bcdce;
+  box-shadow: 0 0 0 3px rgba(107, 205, 206, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.selector-modal__input-wrap input:focus::placeholder {
+  transform: translateX(5rem);
+  opacity: 0;
+}
+.selector-modal__subtask-label-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  width: 90%;
+}
+.selector-modal__subtask-disabled-checkbox {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.selector-modal__subtask-checkbox {
+  height: 0.8rem;
+  width: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  position: relative;
+  display: inline-block;
+  background: transparent;
 }
 
 /**
