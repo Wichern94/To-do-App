@@ -1,287 +1,260 @@
 /* przyciski gornej skecji */
 
 .apk-ui-btn {
-   
-    background-color: transparent;
-    width: 1.5rem;
-    height: 1.5rem;
-    color: var(--text-secondary);
-    outline: none;
-    border: none;
-    opacity: .7;
-    cursor: pointer;
-    position: relative;
+  background-color: transparent;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--text-secondary);
+  outline: none;
+  border: none;
+  opacity: 0.7;
+  cursor: pointer;
+  position: relative;
 }
-.add-task{
-    outline: none;
-    border: none;
-    cursor: pointer;
-    position: fixed;
-    bottom: 8rem;
-    right: 5rem;
-    background-color: transparent;
-    backdrop-filter: blur(5px);
-    border-radius: 5px;
-    filter: drop-shadow(0 0 6px rgba(126, 255, 158, 0.5));
-    z-index:2;
-    
-    
+.add-task {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 8rem;
+  right: 5rem;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  filter: drop-shadow(0 0 6px rgba(126, 255, 158, 0.5));
+  z-index: 2;
 }
-.carusel-btn{
-    outline: none;
-    border: none;
-    background-color: transparent;
-    color: var(--text-secondary);
-    display: flex;
-    flex-direction: column;
-    font-size: 20px;
-    font-weight: 600;
+.carusel-btn {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  font-weight: 600;
 }
-.task-acc-btn{
-    background-color: transparent;
-    width: 1rem;
-    height: 1rem;
-    color: var(--text-secondary);
-    outline: none;
-    border: none;
+.task-acc-btn {
+  background-color: transparent;
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-secondary);
+  outline: none;
+  border: none;
 }
-.node-acc-btn{
-    
-    background-color: transparent;
-    width: 1.2rem;
-    height: 1.2rem;
-    color: var(--text-secondary);
-    outline: none;
-    border: none;
-    margin:  .8rem .5rem 0 .5rem;
-    
+.node-acc-btn {
+  background-color: transparent;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--text-secondary);
+  outline: none;
+  border: none;
+  margin: 0.8rem 0.5rem 0 0.5rem;
 }
-.roud-btns-svg{
-    
-    width: 1rem;
-    height: 1rem;
-    color: var(--text-secondary);
-    
-    
+.roud-btns-svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-secondary);
 }
 
-    
-
-
-.search-toggle{
-    margin-top: .3rem;
+.search-toggle {
+  margin-top: 0.3rem;
 }
-.user-menu{
-    display: flex;
-    flex-direction: row-reverse;
-    position: relative;
-    min-height: 2.5rem;
-    min-width: 2.5rem;
-    margin: .5rem;
-    background: var(--color-btns);
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    align-self:self-start ;
-    
+.user-menu {
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+  margin: 0.5rem;
+  background: var(--color-btns);
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  align-self: self-start;
 }
 
+.user-settings {
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
+  right: 0.8rem;
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+  margin: 0.5rem;
+  background: var(--color-btns);
+  align-items: center;
 
-    
+  justify-content: center;
 
-.user-settings{
-    display: flex;
-    flex-direction: row-reverse;
-    position: relative;
-    right: .8rem;
-    min-height: 2.5rem;
-    min-width: 2.5rem;
-    margin: .5rem ;
-    background: var(--color-btns);
-    align-items: center;
-    
-    justify-content: center;
-    
-    border-radius: 5px;
-    align-self:self-start ;
+  border-radius: 5px;
+  align-self: self-start;
 }
-.user-icon{
-     color: var(--text-secondary);
-     display: flex;
-     height: auto;
-     flex-direction: row-reverse;
-     align-items: center;
+.user-icon {
+  color: var(--text-secondary);
+  display: flex;
+  height: auto;
+  flex-direction: row-reverse;
+  align-items: center;
 }
-.user-portrait{
-    width: 1.5rem;
-    height: 1.5rem;
+.user-portrait {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
-
-.dropdown-btn{
-    color: var(--color-text-secondary);
-    outline: none;
-    border: none;
-    width: 100%;
-    background-color: transparent;
-    margin-top: .5rem;
-    font-size: 12px;
-   
+.dropdown-btn {
+  color: var(--color-text-secondary);
+  outline: none;
+  border: none;
+  width: 100%;
+  background-color: transparent;
+  margin-top: 0.5rem;
+  font-size: 12px;
 }
-.dropdown-exit-btn,.exit-btn {
-    width: 1rem;
-    height: 1rem;
-    color: var(--color-text-secondary);
-    outline: none;
-    border: none;
-    margin: .2rem;
-    cursor: pointer;
-    position: relative;
-    background-color: transparent;
-    align-self:self-end ;
-    height: auto;
+.dropdown-exit-btn,
+.exit-btn {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-text-secondary);
+  outline: none;
+  border: none;
+  margin: 0.2rem;
+  cursor: pointer;
+  position: relative;
+  background-color: transparent;
+  align-self: self-end;
+  height: auto;
 }
 .exit-btn {
-    margin: 0 1rem 1rem 0;
+  margin: 0 1rem 1rem 0;
 }
-.exit-btn2{
-    margin: 0;
+.exit-btn2 {
+  margin: 0;
 }
-.search-btn{
-    width: 1rem;
-    height: 1rem;
-    color: var(--color-text-secondary);
-    outline: none;
-    border: none;
-    right:1rem;
-    cursor: pointer;
-    position: relative;
-    background-color: transparent;
+.search-btn {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-text-secondary);
+  outline: none;
+  border: none;
+  right: 1rem;
+  cursor: pointer;
+  position: relative;
+  background-color: transparent;
 }
-.goback-btn-container{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin:0 .5rem .5rem .5rem;
-    
+.goback-btn-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 0.5rem 0.5rem 0.5rem;
 }
-.user-nav-section{
-    display: flex;
-    flex-direction: column;
+.user-nav-section {
+  display: flex;
+  flex-direction: column;
 }
-.tag-btn{
-     width: 5px;
-    height: 5px;
-    color: var(--color-btns);
-    outline: none;
-    border: none;
-    
-    cursor: pointer;
-    position: relative;
-    background-color: transparent;
+.tag-btn {
+  width: 5px;
+  height: 5px;
+  color: var(--color-btns);
+  outline: none;
+  border: none;
+
+  cursor: pointer;
+  position: relative;
+  background-color: transparent;
 }
-.task-handler-btn{
-    outline: none;
-    border: none;
-    display: flex;
-    width: 5rem;
-    cursor: pointer;
-    position: relative;
-    background-color: transparent;
-    flex-direction: row-reverse;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    
+.task-handler-btn {
+  outline: none;
+  border: none;
+  display: flex;
+  width: 5rem;
+  cursor: pointer;
+  position: relative;
+  background-color: transparent;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
 }
-.aprove{
-    background: var(--color-done);
-    
+.aprove {
+  background: var(--color-done);
 }
-.abandon{
-    background: var(--color-danger);
-    
+.abandon {
+  background: var(--color-danger);
 }
-    
+
 .dot {
-    fill: #444;
+  fill: #444;
 }
 .dot.active {
-    fill: #6BCDCE
+  fill: #6bcdce;
 }
 
-.roud-btns,.add-roadmap-btn {
-    
-    border: .5px solid var(--glass-border);
-    background: var(--color-subtask);
-    outline: none;
-    padding: .2rem .4rem .2rem .4rem;
-    border-radius: 10px;
-    color: var(--text-secondary);
-    font-size: 10px;
-    letter-spacing: .5px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: column-reverse;
-    font-weight: 600;
+.roud-btns,
+.add-roadmap-btn {
+  border: 0.5px solid var(--glass-border);
+  background: var(--color-subtask);
+  outline: none;
+  padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column-reverse;
+  font-weight: 600;
 }
-.roud-btns{
-    min-width: 4.5rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 1s ease;
+.roud-btns {
+  min-width: 4.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
 }
 
-.play-btn{
-    color: var(--play-btn-light);
-    border: 2px solid var(--play-btn-border);
-    background-color: var(--play-btn-bg);
+.play-btn {
+  color: var(--play-btn-light);
+  border: 2px solid var(--play-btn-border);
+  background-color: var(--play-btn-bg);
 }
-.play-btn svg{
-    color: var(--color-accent-light);
-   
+.play-btn svg {
+  color: var(--color-accent-light);
 }
-.pause-btn{
-    color: var(--pause-btn-main);
-    border: 2px solid var(--pause-btn-border);
-    background-color: var(--pause-btn-background);
+.pause-btn {
+  color: var(--pause-btn-main);
+  border: 2px solid var(--pause-btn-border);
+  background-color: var(--pause-btn-background);
 }
 .pause-btn svg {
-     color: var(--pause-btn-main);
+  color: var(--pause-btn-main);
 }
 .continue-btn {
-    color: var(--continue-btn-light);
-    border: 2px solid var(--continue-btn-border);
-    background-color: var(--continue-btn-bg);
+  color: var(--continue-btn-light);
+  border: 2px solid var(--continue-btn-border);
+  background-color: var(--continue-btn-bg);
 }
 .continue-btn svg {
-    color: var(--continue-btn-light);
+  color: var(--continue-btn-light);
 }
-
-
-    
-    
 
 .stop-btn {
-    color: var(--color-red-btn);
-    border: 2px solid var(--color-red-btn);
-    
-    background-color: rgba(238, 94, 91, 0.1);
+  color: var(--color-red-btn);
+  border: 2px solid var(--color-red-btn);
+
+  background-color: rgba(238, 94, 91, 0.1);
 }
 .stop-btn svg {
-    color: var(--color-red-btn);
+  color: var(--color-red-btn);
 }
-.tab-btn {
-    
-    color: var(--color-text-primary);
-    height: 2rem;
-    
-    border: none;
-    outline: none;
-    
-}
-.hand-btn{
+/* .tab-btn {
+  color: var(--color-text-primary);
+  height: 2rem;
+
+  border: none;
+  outline: none;
+} */
+/* .hand-btn{
     background-color: var(--color-hamburger);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(10px);
@@ -297,68 +270,64 @@
     color: var(--pause-btn-main);
     width: 50%;
     border-radius: 0 10px 0 0 ;
-}
+} */
 .modal-roud-btn {
-    border: none;
-    outline: none;
-    background: transparent;
-    
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-left: 1rem;
-    color:var(--color-text-secondary)
+  border: none;
+  outline: none;
+  background: transparent;
+
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 1rem;
+  color: var(--color-text-secondary);
 }
 .sub-elements {
-    gap:.5rem;
+  gap: 0.5rem;
 }
 
 .add-roadmap-btn {
-    height: 2.5rem;
-    width: 6rem;
-    
-    background: var(--color-done);
-    outline: none;
-    letter-spacing: 1px;
-    border-radius: 10px;
-    color: var(--color-text-primiary-contrast);
-    font-size: 12px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: row-reverse;
-    font-weight: 600;
-    justify-content: space-evenly;
-    padding: .2rem;
+  height: 2.5rem;
+  width: 6rem;
+
+  background: var(--color-done);
+  outline: none;
+  letter-spacing: 1px;
+  border-radius: 10px;
+  color: var(--color-text-primiary-contrast);
+  font-size: 12px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row-reverse;
+  font-weight: 600;
+  justify-content: space-evenly;
+  padding: 0.2rem;
 }
 .add-roadmap-btn svg {
-    height: 1.5rem;
-    width: 1.5rem;
+  height: 1.5rem;
+  width: 1.5rem;
 }
-.roud-list-btns{
-    border: none;
-    outline: none;
-    background: transparent;
-    width: 1.5rem;
-    height: 1.5rem;
-    color: var(--color-text-secondary);
-    
+.roud-list-btns {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-text-secondary);
 }
 .disabled-btn {
-    opacity: .4;
-    filter: grayscale(1);
-    pointer-events: none;
+  opacity: 0.4;
+  filter: grayscale(1);
+  pointer-events: none;
 }
-#btn-back{
-    position: absolute;
+#btn-back {
+  position: absolute;
 }
 .text-button {
-    border: none;
-    outline: none;
-    background: transparent;
-    color: var(--color-accent-light);
-    font-size: 12px;
-    font-family: "Oxanium", sans-serif;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-accent-light);
+  font-size: 12px;
+  font-family: 'Oxanium', sans-serif;
 }
-    
-    
-

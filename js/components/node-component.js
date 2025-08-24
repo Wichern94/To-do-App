@@ -199,9 +199,9 @@ export class NodeElement {
         subLi.dataset.id = `subLi-${this.nodeData.id}`;
         subLi.innerHTML = `
                     <label class="subtask subtask-item__label">
-                            <input type="checkbox" class = "roud-disabld-checkbox subtask-item__checbox--disabled" />
-                            <span class="custom-check subtask-item__checbox--custom"></span>
-                            <span class="subtask-text subtask-item__checbox--text">${subtask}</span>
+                            <input type="checkbox" class = "roud-disabld-checkbox subtask-item__checkbox--disabled" />
+                            <span class="custom-check subtask-item__checkbox--custom"></span>
+                            <span class="subtask-text subtask-item__checkbox--text">${subtask}</span>
                     </label>`;
 
         getSubUL.appendChild(subLi);

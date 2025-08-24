@@ -2,10 +2,12 @@
 $primary: #0d0d0d;
 $bgSoft: #1c1c1e;
 $bgMajor: #262629;
+$subBG: #262629;
 
 $glassBg: rgba(22, 22, 22, 0.6);
 $activedayBG: rgba(107, 205, 206, 0.1);
 $borderOne: rgba(107, 106, 106, 0.1);
+$borderTwo: rgba(255, 255, 255, 0.1);
 
 $textPrimary: #ffffff;
 $textSecondary: #aaaaaa;
@@ -17,7 +19,9 @@ $filterGreen: #62c76b;
 $itemMedium: #ff8c32;
 $itemHigh: #db5656;
 $formError: #ff5f5f;
-
+//helpers
+$top-glow: rgba(255, 255, 255, 0.06);
+$tint: rgba(20, 20, 20, 0.02);
 //  shadows:
 //shadow inset
 $shadow-in-main: inset 0 1px 1px rgba(255, 255, 255, 0.05),

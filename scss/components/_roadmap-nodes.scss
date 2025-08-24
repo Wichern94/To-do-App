@@ -1,0 +1,198 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+.roadmap-node {
+  & {
+    position: relative;
+  }
+  &.right {
+    align-self: flex-start;
+  }
+  &.left {
+    align-self: flex-end;
+  }
+  &__header {
+    @include mixins.flex($height: 2rem, $direction: row);
+    @include mixins.set-text(main, semibold, lg);
+    border-radius: 8px 8px 0 0;
+    padding: 0.2rem 0 0.5rem 0;
+  }
+  &__content {
+    @include mixins.flex($justify: space-around);
+    background: var.$bgSoft;
+    border: 0.5px solid var.$borderTwo;
+    overflow: visible;
+    max-width: 18rem;
+    width: auto;
+    max-height: initial;
+    height: auto;
+    transition: transform 0.4s ease;
+    scroll-snap-align: start;
+    border-radius: 8px;
+  }
+  &__active-border {
+    box-sizing: content-box;
+    border-radius: 8px;
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(
+      from var(--angle),
+      transparent 80%,
+      var.$accent
+    );
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 2px;
+    animation: 2.5s spin linear infinite;
+  }
+  &__actions {
+    @include mixins.flex(
+      $width: 100%,
+      $justify: space-around,
+      $direction: row-reverse
+    );
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0 0.5rem 0;
+  }
+  &__time {
+    @include mixins.flex($direction: row);
+    font-weight: 500;
+    font-size: 9px;
+    border-radius: 0 0 10px 10px;
+    letter-spacing: 1px;
+    padding: 0.1rem;
+    position: absolute;
+    margin-top: 0.5rem;
+    top: 1rem;
+    right: 6%;
+  }
+  &__title {
+    display: flex;
+    position: relative;
+    width: 100%;
+    min-height: 2rem;
+    margin: 0.5rem 0 0 1rem;
+    padding: 0.1rem 0 0.1rem 0;
+    border-radius: 10px 10px 0 0;
+    @include mixins.set-text(main, semibold, reg);
+    line-height: 1.5;
+  }
+  &__progress {
+    @include mixins.flex($width: 100%);
+    margin-bottom: 0.5rem;
+
+    &-bar {
+      @include mixins.flex($width: 80%, $height: 12px, $direction: row);
+      background-color: var.$subBG;
+      border: 0.5px solid var.$borderTwo;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    &-text {
+      @include mixins.set-text(secondary, light, sm);
+      margin-top: 4px;
+      position: absolute;
+    }
+    &-fill {
+      height: 100%;
+      width: 0%;
+      background-color: var.$accent;
+      filter: blur(10px);
+      transition: width 1s ease-in-out;
+    }
+  }
+  &__subtasks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem 0.5rem;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    max-height: 15rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+.disabled-node {
+  @extend .roadmap-node;
+  opacity: 0.5;
+  filter: grayscale(1);
+  pointer-events: none;
+  min-width: 6rem;
+  min-height: 3rem;
+  .roadmap-node__title {
+    font-size: 12px;
+  }
+  .roadmap-node__header {
+    align-items: stretch;
+    padding: 0;
+  }
+  .roadmap-node__content {
+    justify-content: center;
+  }
+}
+
+.subtask-item {
+  display: flex;
+  padding: 0.2rem 0 0.2rem 0;
+  font-size: 11px;
+  font-weight: 500;
+  flex-wrap: wrap;
+  &__label {
+    display: flex;
+  }
+  &__checkbox--disabled {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+  &__checkbox--custom {
+    height: 0.8rem;
+    width: 0.8rem;
+    border: 1px solid var.$borderTwo;
+    border-radius: 2px;
+    position: relative;
+    min-width: 0.8rem;
+    min-height: 0.8rem;
+    margin-right: 0.5rem;
+    flex: 0 0 auto;
+  }
+  &__checkbox--text {
+    @include mixins.set-text(main, regular, sm);
+    flex-wrap: wrap;
+  }
+  &__checkbox--disabled:checked + .subtask-item__checkbox--custom::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 12px;
+    border: solid var(--color-done);
+    transform: rotate(45deg);
+    border-width: 0 2px 2px 0;
+  }
+  &__checkbox--disabled:checked ~ .subtask-item__checkbox--text {
+    color: var.$filterGreen;
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}

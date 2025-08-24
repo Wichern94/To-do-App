@@ -1,0 +1,28 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+.roadmap {
+  @include mixins.flex($align: stretch, $height: 100%);
+  flex-grow: 1;
+  margin-top: 5rem;
+
+  &__list {
+    @include mixins.flex($align: stretch, $height: 100%, $justify: flex-start);
+    gap: 4rem;
+    padding: 3rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  &-selector {
+    @include mixins.flex($align: stretch, $height: 70dvh, $justify: flex-start);
+    flex-grow: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 2rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &__empty {
+      @include mixins.set-text(main, semibold, xl);
+      line-height: 1.5;
+    }
+  }
+}

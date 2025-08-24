@@ -109,6 +109,37 @@
   border-radius: $radius;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), $shadow;
 }
+@mixin glass-tab(
+  $variant: normal,
+  $blur: 8px,
+  $radius: 14px 14px 0 0,
+  $shadow: -2px 9px 18px 5px rgba(0, 0, 0, 0.3),
+  $border: rgba(255, 255, 255, 0.08)
+) {
+  $radius: 14px 0 0 0;
+  $tint: rgba(20, 20, 20, 0.04);
+  $top-glow: rgba(255, 255, 255, 0.08);
+
+  @if $variant == dark {
+    $radius: 0 14px 0 0;
+    $tint: rgba(10, 10, 10, 0.25);
+    $top-glow: rgba(255, 255, 255, 0.03);
+    background: linear-gradient(
+        180deg,
+        $top-glow 0%,
+        rgba(255, 255, 255, 0) 40%
+      ),
+      $tint;
+  }
+  @if $variant== normal {
+    background: transparent;
+  }
+
+  border: 1px solid $border;
+  border-bottom: none;
+  border-radius: $radius;
+  box-shadow: inset 3px 7px 14px 9px rgba(255, 255, 255, 0.04), $shadow;
+}
 @mixin glass-input(
   $bg: rgba(255, 255, 255, 0.05),
   $border: rgba(255, 255, 255, 0.1),

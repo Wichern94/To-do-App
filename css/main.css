@@ -381,5 +381,387 @@ body {
  * ROADMAP
  * ========================================
  */
+.roadmap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  position: relative;
+  height: 100%;
+  flex-grow: 1;
+  margin-top: 5rem;
+}
+.roadmap__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  position: relative;
+  height: 100%;
+  gap: 4rem;
+  padding: 3rem 1.5rem 1.5rem 1.5rem;
+}
+.roadmap-selector {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  position: relative;
+  height: 70dvh;
+  flex-grow: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 2rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.roadmap-selector__empty {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/**
+ * ========================================
+ *  SELECTOR MODAL
+ * ========================================
+ */
+/**
+ * ========================================
+ * ROADMAP MODAL
+ * ========================================
+ */
+.selector-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100dvw;
+  height: 100dvh;
+  background: linear-gradient(60deg, rgba(22, 39, 54, 0.2823529412) 0%, rgba(35, 49, 59, 0.5568627451) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.selector-modal__tab-btn {
+  height: 2rem;
+  border: none;
+  outline: none;
+  color: #cccccc;
+  font-weight: 500;
+  font-size: 14px;
+}
+.selector-modal__panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 80%;
+  height: 35%;
+  border-radius: 14px;
+  border: none;
+}
+.selector-modal__panel-nav {
+  display: flex;
+  width: 100%;
+  height: 10%;
+  position: relative;
+  top: -45%;
+  z-index: 1;
+}
+.selector-modal__panel-nav button[data-mode=manual] {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: none;
+  border-radius: 14px 0 0 0;
+  box-shadow: inset 3px 7px 14px 9px rgba(255, 255, 255, 0.04), -2px 9px 18px 5px rgba(0, 0, 0, 0.3);
+  width: 50%;
+}
+.selector-modal__panel-nav button[data-mode=manual].pressed {
+  box-shadow: none;
+}
+.selector-modal__panel-nav button[data-mode=import] {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 40%), rgba(10, 10, 10, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: none;
+  border-radius: 0 14px 0 0;
+  box-shadow: inset 3px 7px 14px 9px rgba(255, 255, 255, 0.04), -2px 9px 18px 5px rgba(0, 0, 0, 0.3);
+  width: 50%;
+}
+.selector-modal__panel-nav button[data-mode=import].pressed {
+  box-shadow: none;
+}
+.selector-modal__form--manual, .selector-modal__form--import {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 30%), rgba(20, 20, 20, 0.02);
+  backdrop-filter: saturate(1.1) blur(8px);
+  -webkit-backdrop-filter: saturate(1.1) blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: opacity 1s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  position: absolute;
+  margin-bottom: auto;
+}
+.selector-modal__title-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  top: -5%;
+  left: 0;
+}
+.selector-modal__title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 18px;
+}
+.selector-modal__form--import {
+  top: 0%;
+}
+
+/**
+ * ========================================
+ * ROADMAP NODES
+ * ========================================
+ */
+.roadmap-node, .disabled-node {
+  position: relative;
+}
+.roadmap-node.right, .right.disabled-node {
+  align-self: flex-start;
+}
+.roadmap-node.left, .left.disabled-node {
+  align-self: flex-end;
+}
+.roadmap-node__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 2rem;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 8px 8px 0 0;
+  padding: 0.2rem 0 0.5rem 0;
+}
+.roadmap-node__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  background: #1c1c1e;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  overflow: visible;
+  max-width: 18rem;
+  width: auto;
+  max-height: initial;
+  height: auto;
+  transition: transform 0.4s ease;
+  scroll-snap-align: start;
+  border-radius: 8px;
+}
+.roadmap-node__active-border {
+  box-sizing: content-box;
+  border-radius: 8px;
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: conic-gradient(from var(--angle), transparent 80%, #6bcdce);
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  padding: 2px;
+  animation: 2.5s spin linear infinite;
+}
+.roadmap-node__actions {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0 0.5rem 0;
+}
+.roadmap-node__time {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-weight: 500;
+  font-size: 9px;
+  border-radius: 0 0 10px 10px;
+  letter-spacing: 1px;
+  padding: 0.1rem;
+  position: absolute;
+  margin-top: 0.5rem;
+  top: 1rem;
+  right: 6%;
+}
+.roadmap-node__title {
+  display: flex;
+  position: relative;
+  width: 100%;
+  min-height: 2rem;
+  margin: 0.5rem 0 0 1rem;
+  padding: 0.1rem 0 0.1rem 0;
+  border-radius: 10px 10px 0 0;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.roadmap-node__progress {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+.roadmap-node__progress-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 80%;
+  height: 12px;
+  background-color: #262629;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.roadmap-node__progress-text {
+  color: #aaaaaa;
+  font-weight: 300;
+  font-size: 10px;
+  margin-top: 4px;
+  position: absolute;
+}
+.roadmap-node__progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: #6bcdce;
+  filter: blur(10px);
+  transition: width 1s ease-in-out;
+}
+.roadmap-node__subtasks {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem 0.5rem;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  max-height: 15rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+}
+
+.disabled-node {
+  opacity: 0.5;
+  filter: grayscale(1);
+  pointer-events: none;
+  min-width: 6rem;
+  min-height: 3rem;
+}
+.disabled-node .roadmap-node__title {
+  font-size: 12px;
+}
+.disabled-node .roadmap-node__header {
+  align-items: stretch;
+  padding: 0;
+}
+.disabled-node .roadmap-node__content {
+  justify-content: center;
+}
+
+.subtask-item {
+  display: flex;
+  padding: 0.2rem 0 0.2rem 0;
+  font-size: 11px;
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+.subtask-item__label {
+  display: flex;
+}
+.subtask-item__checkbox--disabled {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.subtask-item__checkbox--custom {
+  height: 0.8rem;
+  width: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  position: relative;
+  min-width: 0.8rem;
+  min-height: 0.8rem;
+  margin-right: 0.5rem;
+  flex: 0 0 auto;
+}
+.subtask-item__checkbox--text {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 10px;
+  flex-wrap: wrap;
+}
+.subtask-item__checkbox--disabled:checked + .subtask-item__checkbox--custom::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 6px;
+  height: 12px;
+  border: solid var(--color-done);
+  transform: rotate(45deg);
+  border-width: 0 2px 2px 0;
+}
+.subtask-item__checkbox--disabled:checked ~ .subtask-item__checkbox--text {
+  color: #62c76b;
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
 
 /*# sourceMappingURL=main.css.map */

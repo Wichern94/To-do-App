@@ -1,0 +1,69 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+
+.selector-modal {
+  @include mixins.flex($height: 100dvh, $width: 100dvw);
+  @include mixins.glass-BG();
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  &__tab-btn {
+    height: 2rem;
+    border: none;
+    outline: none;
+    @include mixins.set-text(muted, medium, reg);
+  }
+  &__panel {
+    @include mixins.flex($height: 35%, $width: 80%);
+
+    border-radius: 14px;
+    border: none;
+
+    &-nav {
+      display: flex;
+      width: 100%;
+      height: 10%;
+      position: relative;
+      top: -45%;
+      z-index: 1;
+
+      button[data-mode='manual'] {
+        @include mixins.glass-tab();
+        width: 50%;
+        &.pressed {
+          box-shadow: none;
+        }
+      }
+      button[data-mode='import'] {
+        @include mixins.glass-tab($variant: dark);
+        width: 50%;
+
+        &.pressed {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  &__form--manual {
+    @include mixins.glass-panel;
+    transition: opacity 1s ease;
+    @include mixins.flex($height: 100%, $width: 100%);
+    gap: 1rem;
+    position: absolute;
+    margin-bottom: auto;
+  }
+  &__title-wrap {
+    @include mixins.flex($width: 100%);
+    top: -5%;
+    left: 0;
+  }
+  &__title {
+    @include mixins.set-text(main, semibold, xl);
+  }
+
+  &__form--import {
+    @extend .selector-modal__form--manual;
+    top: 0%;
+  }
+}
