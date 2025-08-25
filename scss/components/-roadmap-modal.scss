@@ -55,7 +55,7 @@
   }
   &__title-wrap {
     @include mixins.flex($width: 100%);
-    top: -5%;
+    top: -15%;
     left: 0;
   }
   &__title {
@@ -69,23 +69,43 @@
 
   &__input-wrap {
     @include mixins.flex($width: 100%);
-    input {
-      @include mixins.glass-input();
-      width: 80%;
-      height: 2rem;
-    }
+    top: -10%;
+    @include mixins.glass-input-label;
+    // input {
+    //   @include mixins.glass-input();
+    //   width: 80%;
+    //   height: 2rem;
+    // }
+    // label {
+    //   position: absolute;
+    //   transition: all 0.8s ease;
+    //   color: #777;
+    // }
   }
 
   &__subtask {
     &-label-wrap {
-      @include mixins.flex($width: 90%, $direction: row, $justify: flex-start);
+      @include mixins.flex($width: 80%, $direction: row, $justify: flex-start);
+    }
+    &-label {
+      @include mixins.set-text(secondary, light, md);
+      margin-left: 1rem;
+    }
+    &-list {
+      position: absolute;
     }
 
-    &-disabled-checkbox {
-      @include mixins.checkbox($hiddenOrigin: true);
+    &-wrap {
+      @include mixins.flex($width: 100%, $direction: row);
+      position: absolute;
+      top: 55%;
+
+      @include mixins.glass-input-label($width: 58%);
     }
-    &-checkbox {
-      @include mixins.checkbox($hiddenOrigin: false);
-    }
+  }
+  &__actions {
+    position: fixed;
+    @include mixins.flex($width: 100%, $direction: row, $justify: space-evenly);
+    top: 25%;
   }
 }

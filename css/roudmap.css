@@ -28,7 +28,7 @@
   transform: translateX(5rem);
   opacity: 0;
 } */
-.modal-subtask,
+/* .modal-subtask,
 .modal-subtask-text {
   display: flex;
   flex-wrap: wrap;
@@ -58,16 +58,16 @@
   border: solid var(--color-done);
   transform: rotate(45deg);
   border-width: 0 2px 2px 0;
-}
-.roud-disabld-checkbox:checked ~ .modal-subtask-text {
+} */
+/* .roud-disabld-checkbox:checked ~ .modal-subtask-text {
   color: var(--color-done);
   text-decoration: underline;
   opacity: 0.5;
-}
-.sub-element-container {
+} */
+/* .sub-element-container {
   display: flex;
   position: relative;
-}
+} */
 .modal-sub-task-list {
   display: flex;
   flex-direction: column;

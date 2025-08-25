@@ -167,6 +167,49 @@
   }
 }
 
+@mixin glass-input-label(
+  $bg: rgba(255, 255, 255, 0.05),
+  $border: rgba(255, 255, 255, 0.1),
+  $radius: 7px,
+  $text: #ddd,
+  $label: var.$textSecondary,
+  $focus: var.$accent,
+  $width: 70%,
+  $height: 2rem,
+  $fontSize: 0.8rem
+) {
+  input {
+    background: $bg;
+    border-bottom: 1px solid $border;
+    border-radius: $radius;
+    color: $text;
+    width: $width;
+    height: $height;
+
+    &:focus {
+      border-bottom: 1px solid $focus;
+      background: linear-gradient(to bottom, transparent, var.$activedayBG);
+    }
+    &:focus + label,
+    &:not(:placeholder-shown) + label {
+      transform: translateY(-1rem);
+      font-size: 0.6rem;
+      color: $focus;
+    }
+  }
+  label {
+    position: absolute;
+    font-size: $fontSize;
+    color: $label;
+    pointer-events: none;
+    transition: 0.3s ease-in-out all;
+    left: 4rem;
+    background: transparent;
+
+    padding: 0.1rem;
+  }
+}
+
 @mixin glass-button($from, $to, $text: #fff, $ring: rgba(0, 0, 0, 0.35)) {
   background: linear-gradient(135deg, $from, $to);
   color: $text;
@@ -276,7 +319,7 @@
   top: 0px;
   width: 5px;
   height: 12px;
-  border: solid var.$color;
+  border: solid $color;
   transform: rotate(45deg);
   border-width: 0 2px 2px 0;
 }

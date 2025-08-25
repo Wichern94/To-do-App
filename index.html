@@ -462,23 +462,19 @@
                        id="r-title"
                        name="create-map-title"
                        autocomplete="off"
-                       placeholder="Enter title..." >
+                       placeholder=" ">
+                
+                <label class="selector-modal__input-label--title"
+                       for="r-title">Title</label>
+                       
 
                 <p class="err-message err-msg-new-task hidden selector-modal__error selector-modal__error--title"
                    data-for="create-map-title"></p>
             </div>
 
-            <label class="modal-subtask selector-modal__subtask-label-wrap">
+            
 
-                <input type="checkbox"
-                       class ="roud-disabld-checkbox selector-modal__subtask-disabled-checkbox"
-                       id="roud-checkbox" />
-
-                <span class="modal-custom-check selector-modal__subtask-checkbox"></span>
-                <span class="modal-subtask-text selector-modal__subtask-label">I want to add sub-items</span>
-            </label>
-
-            <div class ="sub-element-container hidden selector-modal__subtask-wrap"
+            <div class ="sub-element-container  selector-modal__subtask-wrap"
                  id="sub-container">
 
                 <input class="roudnode-title selector-modal__subtask-input-title"
@@ -486,7 +482,8 @@
                        id="r-sub"
                        name="roadmap-subelements"
                        autocomplete="off"
-                       placeholder="Title..." >
+                       placeholder=" ">
+                <label class="selector-modal__input-label--subtask" for="r-sub">Subtask Title</label>
 
                 <p class="err-message err-msg-new-task hidden selector-modal__error selector-modal__error--subtasks"
                    data-for="roadmap-subelements"></p>
@@ -510,11 +507,11 @@
 
 
                 </div>
-                <ul class="modal-sub-task-list selector-modal__subtask-list hidden"
+                <ul class="modal-sub-task-list selector-modal__subtask-list "
                     id="subtask-list"></ul>
                    
                 
-                <div class="task-btns selector-modal__actions"
+                <div class="selector-modal__actions"
                      role="group"
                      aria-label="Create roadmap actions">
 

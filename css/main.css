@@ -524,7 +524,7 @@ body {
   align-items: center;
   position: relative;
   width: 100%;
-  top: -5%;
+  top: -15%;
   left: 0;
 }
 .selector-modal__title {
@@ -542,26 +542,34 @@ body {
   align-items: center;
   position: relative;
   width: 100%;
+  top: -10%;
 }
 .selector-modal__input-wrap input {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 7px;
   color: #ddd;
-  width: 80%;
+  width: 70%;
   height: 2rem;
 }
-.selector-modal__input-wrap input::placeholder {
-  color: #777;
-  transition: all 0.8s ease;
-}
 .selector-modal__input-wrap input:focus {
-  outline: 1px solid #6bcdce;
-  box-shadow: 0 0 0 3px rgba(107, 205, 206, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid #6bcdce;
+  background: linear-gradient(to bottom, transparent, rgba(107, 205, 206, 0.1));
 }
-.selector-modal__input-wrap input:focus::placeholder {
-  transform: translateX(5rem);
-  opacity: 0;
+.selector-modal__input-wrap input:focus + label, .selector-modal__input-wrap input:not(:placeholder-shown) + label {
+  transform: translateY(-1rem);
+  font-size: 0.6rem;
+  color: #6bcdce;
+}
+.selector-modal__input-wrap label {
+  position: absolute;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  pointer-events: none;
+  transition: 0.3s ease-in-out all;
+  left: 4rem;
+  background: transparent;
+  padding: 0.1rem;
 }
 .selector-modal__subtask-label-wrap {
   display: flex;
@@ -569,21 +577,63 @@ body {
   justify-content: flex-start;
   align-items: center;
   position: relative;
-  width: 90%;
+  width: 80%;
 }
-.selector-modal__subtask-disabled-checkbox {
-  opacity: 0;
+.selector-modal__subtask-label {
+  color: #aaaaaa;
+  font-weight: 300;
+  font-size: 12px;
+  margin-left: 1rem;
+}
+.selector-modal__subtask-list {
   position: absolute;
-  pointer-events: none;
 }
-.selector-modal__subtask-checkbox {
-  height: 0.8rem;
-  width: 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
+.selector-modal__subtask-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  display: inline-block;
+  width: 100%;
+  position: absolute;
+  top: 55%;
+}
+.selector-modal__subtask-wrap input {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  color: #ddd;
+  width: 58%;
+  height: 2rem;
+}
+.selector-modal__subtask-wrap input:focus {
+  border-bottom: 1px solid #6bcdce;
+  background: linear-gradient(to bottom, transparent, rgba(107, 205, 206, 0.1));
+}
+.selector-modal__subtask-wrap input:focus + label, .selector-modal__subtask-wrap input:not(:placeholder-shown) + label {
+  transform: translateY(-1rem);
+  font-size: 0.6rem;
+  color: #6bcdce;
+}
+.selector-modal__subtask-wrap label {
+  position: absolute;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  pointer-events: none;
+  transition: 0.3s ease-in-out all;
+  left: 4rem;
   background: transparent;
+  padding: 0.1rem;
+}
+.selector-modal__actions {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  top: 25%;
 }
 
 /**
