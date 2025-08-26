@@ -38,6 +38,7 @@
       button[data-mode='import'] {
         @include mixins.glass-tab($variant: dark);
         width: 50%;
+        background: transparent;
 
         &.pressed {
           box-shadow: none;
@@ -62,25 +63,13 @@
     @include mixins.set-text(main, semibold, xl);
   }
 
-  &__form--import {
-    @extend .selector-modal__form--manual;
-    top: 0%;
-  }
-
   &__input-wrap {
     @include mixins.flex($width: 100%);
     top: -10%;
     @include mixins.glass-input-label;
-    // input {
-    //   @include mixins.glass-input();
-    //   width: 80%;
-    //   height: 2rem;
-    // }
-    // label {
-    //   position: absolute;
-    //   transition: all 0.8s ease;
-    //   color: #777;
-    // }
+    p {
+      left: 50%;
+    }
   }
 
   &__subtask {
@@ -91,21 +80,95 @@
       @include mixins.set-text(secondary, light, md);
       margin-left: 1rem;
     }
+    &-add-btn {
+      @include mixins.styled-button($size-w: 1.5rem, $color: var.$filterGreen);
+      margin-left: 0.6rem;
+    }
     &-list {
       position: absolute;
+      @include mixins.set-text(secondary, light, sm);
+      display: grid;
+      justify-items: center;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.8rem 1rem;
+      width: 80%;
+      top: 70%;
+      height: 3rem;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      &li {
+        scroll-snap-align: center;
+      }
     }
 
     &-wrap {
       @include mixins.flex($width: 100%, $direction: row);
       position: absolute;
       top: 55%;
-
       @include mixins.glass-input-label($width: 58%);
+      p {
+        left: 50%;
+      }
     }
   }
   &__actions {
     position: fixed;
-    @include mixins.flex($width: 100%, $direction: row, $justify: space-evenly);
+    @include mixins.flex(
+      $width: 100%,
+      $direction: row-reverse,
+      $justify: space-evenly
+    );
     top: 25%;
+    > button:first-child {
+      box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+      @include mixins.glass-button(
+        var.$modal-btn-green-from,
+        var.$modal-btn-green-to
+      );
+    }
+    > button:last-child {
+      box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+      @include mixins.glass-button(
+        var.$modal-btn-red-from,
+        var.$modal-btn-red-to
+      );
+    }
+  }
+  &__form--import {
+    @extend .selector-modal__form--manual;
+    top: 0%;
+
+    background: linear-gradient(
+        180deg,
+        var.$top-glow 0%,
+        rgba(255, 255, 255, 0) 50%
+      ),
+      var.$tint;
+    span {
+      top: -15%;
+      align-items: stretch;
+
+      div {
+        width: 90%;
+        margin: 0 auto;
+      }
+    }
+    > div:first-of-type {
+      @include mixins.flex($width: 100%, $direction: row, $align: stretch);
+      @include mixins.glass-input-label($is-textarea: true);
+      position: absolute;
+      top: 35%;
+      p {
+        left: 60%;
+      }
+    }
+    > div:nth-of-type(2) {
+      top: 28%;
+    }
+  }
+  &__footer {
+    @include mixins.flex($width: 80%);
+    @include mixins.set-text(muted, light, sm);
+    top: 29%;
   }
 }

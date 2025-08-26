@@ -17,6 +17,16 @@
     @include mixins.flex($height: 100%, $width: 100%);
     gap: 1rem;
     margin-bottom: auto;
+    &-title-wrap {
+      @include mixins.flex($width: 100%);
+      margin-top: 2rem;
+      @include mixins.glass-input-label($width: 80%);
+    }
+    &-textarea-wrap {
+      @include mixins.flex($width: 100%, $justify: flex-start);
+
+      @include mixins.glass-input-label($is-textarea: true, $width: 80%);
+    }
   }
   &__error {
     color: var.$formError;
@@ -27,19 +37,14 @@
   }
 
   &__input-title {
-    position: relative;
-    margin-top: 3rem;
-    line-height: 1.5;
-    padding: 1rem;
     width: 80%;
     height: 2rem;
-    @include mixins.glass-input();
   }
   &__textarea {
-    @include mixins.glass-input();
-    width: 80%;
-    padding: 1rem;
-    height: 30%;
+    // @include mixins.glass-input();
+    // width: 80%;
+    // padding: 1rem;
+    // height: 30%;
     scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;

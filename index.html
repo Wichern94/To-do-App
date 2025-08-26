@@ -309,13 +309,16 @@
             <div class="task-modal__title-divider"></div>
         </header>
          <form id="list-form" class="task-modal__form" method="post">
-        <input class="task-modal__input-title task-title"
-               type="text"
-               id="list-input"
-               name="title"
-               autocomplete="off"
-               maxlength="25"
-               placeholder="Enter title…" />
+         <div class="task-modal__form-title-wrap">  
+            <input class="task-modal__input-title task-title"
+                type="text"
+                id="list-input"
+                name="title"
+                autocomplete="off"
+                maxlength="25"
+                placeholder=" " />
+            <label  for="list-input">Subtask Title</label>
+        </div> 
         <span class="char-counter" data-for="list-input"></span>
         <p class="task-modal__error task-modal__error--title err-message  hidden"
            data-for="title"
@@ -323,14 +326,15 @@
            aria-live="polite"></p>
         
            <!-- Description -->
-           <label class="visually-hidden" for="desc">Description</label>
+        <div class="task-modal__form-textarea-wrap">   
            <textarea id="list-description"
                      name="desc"
                      class="task-modal__textarea"
                      maxlength="100"
-                     placeholder="Write description…"></textarea>
+                     placeholder=" "></textarea>
+            <label  for="list-description">Description</label>         
             <span class="char-counter" data-for="list-description"></span>
-   
+        </div>
            <!-- Modal actions -->
            <div class="task-modal__actions ">
              <button type="submit"
@@ -428,7 +432,7 @@
                  aria-label="Selector modal modes">
 
                 <button id="hand-button"
-                        class="tab-btn hand-btn selector-modal__tab-btn selector-modal__tab-btn--manual pressed"
+                        class="tab-btn hand-btn selector-modal__tab-btn selector-modal__tab-btn--manual "
                         data-mode="manual"
                         role="tab"
                         aria-selected="true"
@@ -436,7 +440,7 @@
                 </button>
 
                 <button id="import-button"
-                        class="tab-btn import-btn selector-modal__tab-btn selector-modal__tab-btn--import "
+                        class="tab-btn import-btn selector-modal__tab-btn selector-modal__tab-btn--import pressed"
                         data-mode="import"
                         role="tab"
                         aria-selected="false"
@@ -468,7 +472,7 @@
                        for="r-title">Title</label>
                        
 
-                <p class="err-message err-msg-new-task hidden selector-modal__error selector-modal__error--title"
+                <p class="err-message  hidden selector-modal__error selector-modal__error--title"
                    data-for="create-map-title"></p>
             </div>
 
@@ -485,7 +489,7 @@
                        placeholder=" ">
                 <label class="selector-modal__input-label--subtask" for="r-sub">Subtask Title</label>
 
-                <p class="err-message err-msg-new-task hidden selector-modal__error selector-modal__error--subtasks"
+                <p class="err-message  hidden selector-modal__error selector-modal__error--subtasks"
                    data-for="roadmap-subelements"></p>
 
                 <button class="modal-roud-btn selector-modal__btn selector-modal__subtask-add-btn"
@@ -563,12 +567,13 @@
                   </span> 
             
             
-                  <div class="import-text selector-modal__form-import--textarea-wrap">
-                      <p class="err-message err-msg-import hidden selector-modal__error selector-modal__error--import" data-for="import"></p>
+                  <div class=" selector-modal__form-import--textarea-wrap">
+                      <p class="err-message  hidden selector-modal__error selector-modal__error--import" data-for="import"></p>
                       <textarea id="import-desc"
                                 name="import"
                                 class="import-discription selector-modal__form-import-textarea"
-                                placeholder="Paste here..."></textarea>
+                                placeholder=" "></textarea>
+                      <label class="selector-modal__form-import-label" for="import-desc">Paste Here...</label>
                   </div>
             
                   <div class="task-btns selector-modal__actions selector-modal__actions--import"

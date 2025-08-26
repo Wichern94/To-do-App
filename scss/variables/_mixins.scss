@@ -176,25 +176,51 @@
   $focus: var.$accent,
   $width: 70%,
   $height: 2rem,
-  $fontSize: 0.8rem
+  $fontSize: 0.8rem,
+  $is-textarea: false
 ) {
-  input {
-    background: $bg;
-    border-bottom: 1px solid $border;
-    border-radius: $radius;
-    color: $text;
-    width: $width;
-    height: $height;
-
-    &:focus {
-      border-bottom: 1px solid $focus;
-      background: linear-gradient(to bottom, transparent, var.$activedayBG);
+  @if $is-textarea {
+    textarea {
+      background: $bg;
+      border-bottom: 1px solid $border;
+      border-radius: $radius;
+      color: $text;
+      width: 80%;
+      height: calc($height + 4rem);
+      padding-left: 0.5rem;
+      outline: none;
+      border: none;
+      &:focus {
+        border-bottom: 1px solid $focus;
+        background: linear-gradient(to bottom, transparent, var.$activedayBG);
+      }
+      &:focus + label,
+      &:not(:placeholder-shown) + label {
+        transform: translateY(-1rem);
+        font-size: 0.6rem;
+        color: $focus;
+      }
     }
-    &:focus + label,
-    &:not(:placeholder-shown) + label {
-      transform: translateY(-1rem);
-      font-size: 0.6rem;
-      color: $focus;
+  } @else {
+    input {
+      background: $bg;
+      border-bottom: 1px solid $border;
+      border-radius: $radius;
+      color: $text;
+      width: $width;
+      height: $height;
+      padding-left: 0.5rem;
+
+      &:focus {
+        border-bottom: 1px solid $focus;
+        background: linear-gradient(to bottom, transparent, var.$activedayBG);
+      }
+      &:focus + label,
+      &:not(:placeholder-shown) + label {
+        transform: translateY(-1rem);
+        font-size: 0.6rem;
+        color: $focus;
+      }
     }
   }
   label {

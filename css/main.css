@@ -232,6 +232,81 @@ body {
   gap: 1rem;
   margin-bottom: auto;
 }
+.task-modal__form-title-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-top: 2rem;
+}
+.task-modal__form-title-wrap input {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  color: #ddd;
+  width: 80%;
+  height: 2rem;
+  padding-left: 0.5rem;
+}
+.task-modal__form-title-wrap input:focus {
+  border-bottom: 1px solid #6bcdce;
+  background: linear-gradient(to bottom, transparent, rgba(107, 205, 206, 0.1));
+}
+.task-modal__form-title-wrap input:focus + label, .task-modal__form-title-wrap input:not(:placeholder-shown) + label {
+  transform: translateY(-1rem);
+  font-size: 0.6rem;
+  color: #6bcdce;
+}
+.task-modal__form-title-wrap label {
+  position: absolute;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  pointer-events: none;
+  transition: 0.3s ease-in-out all;
+  left: 4rem;
+  background: transparent;
+  padding: 0.1rem;
+}
+.task-modal__form-textarea-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+.task-modal__form-textarea-wrap textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  color: #ddd;
+  width: 80%;
+  height: 6rem;
+  padding-left: 0.5rem;
+  outline: none;
+  border: none;
+}
+.task-modal__form-textarea-wrap textarea:focus {
+  border-bottom: 1px solid #6bcdce;
+  background: linear-gradient(to bottom, transparent, rgba(107, 205, 206, 0.1));
+}
+.task-modal__form-textarea-wrap textarea:focus + label, .task-modal__form-textarea-wrap textarea:not(:placeholder-shown) + label {
+  transform: translateY(-1rem);
+  font-size: 0.6rem;
+  color: #6bcdce;
+}
+.task-modal__form-textarea-wrap label {
+  position: absolute;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  pointer-events: none;
+  transition: 0.3s ease-in-out all;
+  left: 4rem;
+  background: transparent;
+  padding: 0.1rem;
+}
 .task-modal__error {
   color: #ff5f5f;
   font-size: 12px;
@@ -240,50 +315,11 @@ body {
   top: 30%;
 }
 .task-modal__input-title {
-  position: relative;
-  margin-top: 3rem;
-  line-height: 1.5;
-  padding: 1rem;
   width: 80%;
   height: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 7px;
-  color: #ddd;
-}
-.task-modal__input-title::placeholder {
-  color: #777;
-  transition: all 0.8s ease;
-}
-.task-modal__input-title:focus {
-  outline: 1px solid #6bcdce;
-  box-shadow: 0 0 0 3px rgba(107, 205, 206, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-.task-modal__input-title:focus::placeholder {
-  transform: translateX(5rem);
-  opacity: 0;
 }
 .task-modal__textarea {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 7px;
-  color: #ddd;
-  width: 80%;
-  padding: 1rem;
-  height: 30%;
   scrollbar-width: none;
-}
-.task-modal__textarea::placeholder {
-  color: #777;
-  transition: all 0.8s ease;
-}
-.task-modal__textarea:focus {
-  outline: 1px solid #6bcdce;
-  box-shadow: 0 0 0 3px rgba(107, 205, 206, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-.task-modal__textarea:focus::placeholder {
-  transform: translateX(5rem);
-  opacity: 0;
 }
 .task-modal__textarea::-webkit-scrollbar {
   display: none;
@@ -494,6 +530,7 @@ body {
   border-radius: 0 14px 0 0;
   box-shadow: inset 3px 7px 14px 9px rgba(255, 255, 255, 0.04), -2px 9px 18px 5px rgba(0, 0, 0, 0.3);
   width: 50%;
+  background: transparent;
 }
 .selector-modal__panel-nav button[data-mode=import].pressed {
   box-shadow: none;
@@ -532,9 +569,6 @@ body {
   font-weight: 600;
   font-size: 18px;
 }
-.selector-modal__form--import {
-  top: 0%;
-}
 .selector-modal__input-wrap {
   display: flex;
   flex-direction: column;
@@ -551,6 +585,7 @@ body {
   color: #ddd;
   width: 70%;
   height: 2rem;
+  padding-left: 0.5rem;
 }
 .selector-modal__input-wrap input:focus {
   border-bottom: 1px solid #6bcdce;
@@ -571,6 +606,9 @@ body {
   background: transparent;
   padding: 0.1rem;
 }
+.selector-modal__input-wrap p {
+  left: 50%;
+}
 .selector-modal__subtask-label-wrap {
   display: flex;
   flex-direction: row;
@@ -585,8 +623,34 @@ body {
   font-size: 12px;
   margin-left: 1rem;
 }
+.selector-modal__subtask-add-btn {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  color: #62c76b;
+  filter: drop-shadow(1px 1px 5px rgb(37.8591549296, 106.1408450704, 43.9436619718));
+  margin-left: 0.6rem;
+}
 .selector-modal__subtask-list {
   position: absolute;
+  color: #aaaaaa;
+  font-weight: 300;
+  font-size: 10px;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem 1rem;
+  width: 80%;
+  top: 70%;
+  height: 3rem;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+.selector-modal__subtask-listli {
+  scroll-snap-align: center;
 }
 .selector-modal__subtask-wrap {
   display: flex;
@@ -605,6 +669,7 @@ body {
   color: #ddd;
   width: 58%;
   height: 2rem;
+  padding-left: 0.5rem;
 }
 .selector-modal__subtask-wrap input:focus {
   border-bottom: 1px solid #6bcdce;
@@ -625,15 +690,122 @@ body {
   background: transparent;
   padding: 0.1rem;
 }
+.selector-modal__subtask-wrap p {
+  left: 50%;
+}
 .selector-modal__actions {
   position: fixed;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   justify-content: space-evenly;
   align-items: center;
   position: relative;
   width: 100%;
   top: 25%;
+}
+.selector-modal__actions > button:first-child {
+  box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(30, 90, 80, 0.7), rgba(50, 160, 140, 0.7));
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.301);
+  border-radius: 5px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset -3px -2px 6px 4px rgba(255, 255, 255, 0.08);
+  transition: transform 0.8s ease, filter 0.15s ease;
+  backdrop-filter: saturate(1.1) blur(12px);
+  -webkit-backdrop-filter: saturate(1.1) blur(12px);
+}
+.selector-modal__actions > button:first-child:hover {
+  filter: brightness(1.06);
+}
+.selector-modal__actions > button:first-child:active {
+  transform: translateY(1px);
+}
+.selector-modal__actions > button:last-child {
+  box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(110, 30, 30, 0.7), rgba(180, 60, 60, 0.7));
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.301);
+  border-radius: 5px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset -3px -2px 6px 4px rgba(255, 255, 255, 0.08);
+  transition: transform 0.8s ease, filter 0.15s ease;
+  backdrop-filter: saturate(1.1) blur(12px);
+  -webkit-backdrop-filter: saturate(1.1) blur(12px);
+}
+.selector-modal__actions > button:last-child:hover {
+  filter: brightness(1.06);
+}
+.selector-modal__actions > button:last-child:active {
+  transform: translateY(1px);
+}
+.selector-modal__form--import {
+  top: 0%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 50%), rgba(20, 20, 20, 0.04);
+}
+.selector-modal__form--import span {
+  top: -15%;
+  align-items: stretch;
+}
+.selector-modal__form--import span div {
+  width: 90%;
+  margin: 0 auto;
+}
+.selector-modal__form--import > div:first-of-type {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  position: relative;
+  width: 100%;
+  position: absolute;
+  top: 35%;
+}
+.selector-modal__form--import > div:first-of-type textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  color: #ddd;
+  width: 80%;
+  height: 6rem;
+  padding-left: 0.5rem;
+  outline: none;
+  border: none;
+}
+.selector-modal__form--import > div:first-of-type textarea:focus {
+  border-bottom: 1px solid #6bcdce;
+  background: linear-gradient(to bottom, transparent, rgba(107, 205, 206, 0.1));
+}
+.selector-modal__form--import > div:first-of-type textarea:focus + label, .selector-modal__form--import > div:first-of-type textarea:not(:placeholder-shown) + label {
+  transform: translateY(-1rem);
+  font-size: 0.6rem;
+  color: #6bcdce;
+}
+.selector-modal__form--import > div:first-of-type label {
+  position: absolute;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  pointer-events: none;
+  transition: 0.3s ease-in-out all;
+  left: 4rem;
+  background: transparent;
+  padding: 0.1rem;
+}
+.selector-modal__form--import > div:first-of-type p {
+  left: 60%;
+}
+.selector-modal__form--import > div:nth-of-type(2) {
+  top: 28%;
+}
+.selector-modal__footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 80%;
+  color: #cccccc;
+  font-weight: 300;
+  font-size: 10px;
+  top: 29%;
 }
 
 /**

@@ -271,7 +271,7 @@
     width: 50%;
     border-radius: 0 10px 0 0 ;
 } */
-.modal-roud-btn {
+/* .modal-roud-btn {
   border: none;
   outline: none;
   background: transparent;
@@ -280,7 +280,7 @@
   height: 1.5rem;
   margin-left: 1rem;
   color: var(--color-text-secondary);
-}
+} */
 .sub-elements {
   gap: 0.5rem;
 }
