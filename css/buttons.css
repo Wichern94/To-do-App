@@ -285,7 +285,7 @@
   gap: 0.5rem;
 }
 
-.add-roadmap-btn {
+/* .add-roadmap-btn {
   height: 2.5rem;
   width: 6rem;
 
@@ -302,7 +302,7 @@
   font-weight: 600;
   justify-content: space-evenly;
   padding: 0.2rem;
-}
+} */
 .add-roadmap-btn svg {
   height: 1.5rem;
   width: 1.5rem;

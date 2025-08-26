@@ -157,6 +157,7 @@ export class RoadmapSelector {
       li.dataset.id = data.id;
     }
     li.innerHTML = `<p class="roadmap-list-item-text roadmap-selector__title">${data.title}</p>
+                    <div class="roadmap-selector__title-divider"></div>
                     <div class="list-bttns roadmap-selector__item-actions">
                          <button  class="delete-road-btn roud-list-btns roadmap-selector__btn roadmap-selector__btn--delete" aria-label="Delete roadmap" data-action = "delete">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -169,6 +170,10 @@ export class RoadmapSelector {
                             </svg>
 
                         </button>
+                    </div>
+                    <div class="roadmap-selector__item-time">
+                      <span class="roadmap-selector__item-time--title">Total time:</span>
+                      <p class ="roadmap-selector__item-time--node">00:00:00</p>
                     </div>`;
     this.elements.ulContainer.appendChild(li);
     if (data.isNew) {

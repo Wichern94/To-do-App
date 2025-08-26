@@ -24,5 +24,77 @@
       @include mixins.set-text(main, semibold, xl);
       line-height: 1.5;
     }
+    &__title-divider {
+      @include mixins.dividier($mode: border);
+      color: var.$accent;
+      margin: 0.5rem 0;
+      width: 90%;
+      box-shadow: -4px -6px 14px 7px rgba(255, 255, 255, 5%),
+        1px 20px 20px 10px rgba(0, 0, 0, 0.6);
+    }
+    &__actions {
+      @include mixins.flex($direction: row, $width: 100%);
+      margin-top: 0.5rem;
+      button {
+        @include mixins.flex($direction: row, $justify: space-evenly);
+        @include mixins.styled-button(
+          $size-w: 6rem,
+          $size-h: 3rem,
+          $color: #41c94d
+        );
+
+        background: rgba(98, 199, 107, 0.1);
+        font-size: 12px;
+        box-shadow: inset -1px -6px 12px 13px rgba(0, 0, 0, 0.97),
+          -1px -1px 20px 0px rgba(101, 247, 134, 0.18);
+      }
+    }
+    &__item-actions {
+      @include mixins.flex($direction: column-reverse);
+      position: absolute;
+      gap: 1.7rem;
+      left: 90%;
+    }
+    &__list-wrap {
+      @include mixins.flex($width: 100%);
+      padding: 1rem 0;
+
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      ul {
+        @include mixins.flex($width: 80%);
+        gap: 2.5rem;
+        margin-top: 1rem;
+
+        li {
+          @include mixins.flex(
+            $width: 100%,
+            $height: 6rem,
+            $justify: flex-start
+          );
+          padding: 0.5rem;
+          background: var.$bgSoft;
+          @include mixins.set-text(main, medium, lg);
+          border-radius: 10px;
+          border: 1px solid var.$borderTwo;
+          p {
+            margin: 0 auto 0 1rem;
+          }
+        }
+      }
+    }
+    &__item-time {
+      @include mixins.flex($width: 100%, $direction: row);
+      margin-left: 2rem;
+      &--title {
+        @include mixins.set-text(secondary, regular, reg);
+      }
+      &--node {
+        @include mixins.set-text(secondary, regular, md);
+      }
+    }
   }
 }
