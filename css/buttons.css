@@ -190,7 +190,7 @@
   fill: #6bcdce;
 }
 
-.roud-btns,
+/* .roud-btns,
 .add-roadmap-btn {
   border: 0.5px solid var(--glass-border);
   background: var(--color-subtask);
@@ -246,7 +246,7 @@
 }
 .stop-btn svg {
   color: var(--color-red-btn);
-}
+} */
 /* .tab-btn {
   color: var(--color-text-primary);
   height: 2rem;
@@ -281,9 +281,9 @@
   margin-left: 1rem;
   color: var(--color-text-secondary);
 } */
-.sub-elements {
+/* .sub-elements {
   gap: 0.5rem;
-}
+} */
 
 /* .add-roadmap-btn {
   height: 2.5rem;

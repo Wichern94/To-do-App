@@ -189,7 +189,7 @@ export class RoadmapSelector {
     const existingBackBtn = this.elements.ulContDiv.querySelector('#btn-back');
     if (!existingBackBtn) {
       const backContDiv = document.createElement('div');
-      backContDiv.classList.add('go-back-btn-container');
+      backContDiv.classList.add('roadmap__content-action-wrap');
 
       backContDiv.innerHTML = `
          

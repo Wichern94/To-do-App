@@ -9,6 +9,24 @@
     @include mixins.flex($align: stretch, $height: 100%, $justify: flex-start);
     gap: 4rem;
     padding: 3rem 1.5rem 1.5rem 1.5rem;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    li {
+      scroll-snap-align: center;
+    }
+  }
+  &__content {
+    &-action-wrap {
+      display: flex;
+      margin-left: 1rem;
+      position: fixed;
+      cursor: pointer;
+      z-index: 5;
+    }
   }
 
   &-selector {
@@ -40,13 +58,13 @@
         @include mixins.styled-button(
           $size-w: 6rem,
           $size-h: 3rem,
-          $color: #41c94d
+          $color: var.$accent
         );
-
-        background: rgba(98, 199, 107, 0.1);
+        border-radius: 10px;
+        background: rgba(107, 205, 206, 0.1);
         font-size: 12px;
-        box-shadow: inset -1px -6px 12px 13px rgba(0, 0, 0, 0.97),
-          -1px -1px 20px 0px rgba(101, 247, 134, 0.18);
+        box-shadow: inset 0px -5px 16px 19px rgba(0, 0, 0, 0.97),
+          -1px -1px 6px 0px rgba(56, 248, 225, 0.18);
       }
     }
     &__item-actions {
@@ -97,4 +115,19 @@
       }
     }
   }
+}
+.leader-line {
+  z-index: 999;
+  pointer-events: none;
+}
+.connection-glow {
+  filter: drop-shadow(2px 2px 6px #6bcdce);
+}
+
+.error-border {
+  border: 0.5px solid var(--btn-danger);
+}
+.visible {
+  opacity: 1;
+  pointer-events: all;
 }

@@ -52,7 +52,8 @@ export class NodeElement {
                 <div class="title-roudmap roadmap-node__header">
 
                     <span class="node-text roadmap-node__title" data-role ="title">${title}</span>
-                    <span class="node-time roadmap-node__time"></span>
+                    
+                    
 
                     <button class="node-acc-btn roadmap-node__accordion-btn" 
                       type="button"
@@ -70,8 +71,11 @@ export class NodeElement {
                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                     </svg>
                 </button>
-            </div>         
-              
+            </div>
+                   
+            <div class="roadmap-node__header-divider">
+              <span class="node-time roadmap-node__time"></span>
+            </div>
             <div class="node-btn-container roadmap-node__actions"
                  role="group"
                  aria-label="Node Controls">

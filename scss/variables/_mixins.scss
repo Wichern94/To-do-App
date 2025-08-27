@@ -61,7 +61,8 @@
   $color: null,
   $margin: 0,
   $margin-r: null,
-  $margin-l: null
+  $margin-l: null,
+  $mode: null
 ) {
   border: none;
   outline: none;
@@ -84,6 +85,13 @@
   @if $color != null {
     color: $color;
     filter: drop-shadow(1px 1px 5px color.adjust($color, $lightness: -30%));
+  }
+  @if $mode == lux-btn {
+    gap: 0.2rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    font-size: 12px;
+    filter: none;
   }
 }
 @mixin glass-BG() {

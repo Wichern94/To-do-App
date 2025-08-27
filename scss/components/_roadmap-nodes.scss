@@ -11,10 +11,21 @@
     align-self: flex-end;
   }
   &__header {
-    @include mixins.flex($height: 2rem, $direction: row);
+    @include mixins.flex($height: 2rem, $direction: row, $width: 100%);
     @include mixins.set-text(main, semibold, lg);
     border-radius: 8px 8px 0 0;
     padding: 0.2rem 0 0.5rem 0;
+    &-divider {
+      color: var.$accent;
+      display: flex;
+      position: relative;
+      @include mixins.dividier('fancy', 2px, $width: 90%);
+      margin-bottom: 0.2rem;
+      transition: transform all 0.3s ease-in-out;
+
+      box-shadow: -4px -6px 14px 7px rgba(255, 255, 255, 5%),
+        0 7px 11px 4px rgba(0, 0, 0, 0.6);
+    }
   }
   &__content {
     @include mixins.flex($justify: space-around);
@@ -28,6 +39,7 @@
     transition: transform 0.4s ease;
     scroll-snap-align: start;
     border-radius: 8px;
+    padding: 0.5rem;
   }
   &__active-border {
     box-sizing: content-box;
@@ -55,21 +67,93 @@
       $direction: row-reverse
     );
     flex-wrap: wrap;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.2rem;
     padding: 0.5rem 0 0.5rem 0;
+    > button:first-of-type {
+      @include mixins.flex();
+      @include mixins.styled-button(
+        $color: #db5656,
+        $size-w: 4rem,
+        $size-h: 2rem,
+        $mode: lux-btn
+      );
+      background: rgba(238, 94, 91, 0.1);
+      border: 1px solid #db5656;
+      box-shadow: inset 1px 8px 12px 4px rgba(255, 255, 255, 5%),
+        -2px -4px 20px 3px rgba(0, 0, 0, 0.6);
+      svg {
+        color: #db5656;
+      }
+    }
+    > button:nth-of-type(2) {
+      @include mixins.flex();
+      @include mixins.styled-button(
+        $color: #9be5ec,
+        $size-w: 4rem,
+        $size-h: 2rem,
+        $mode: lux-btn
+      );
+
+      background: rgba(107, 205, 206, 0.1);
+      border: 1px solid #9be5ec;
+      box-shadow: inset 1px 8px 12px 4px rgba(255, 255, 255, 5%),
+        -2px -4px 20px 3px rgba(0, 0, 0, 0.6);
+      svg {
+        color: #9be5ec;
+      }
+    }
+    > button:nth-of-type(3) {
+      @include mixins.flex();
+      @include mixins.styled-button(
+        $color: #e3b341,
+        $size-w: 4rem,
+        $size-h: 2rem,
+        $mode: lux-btn
+      );
+
+      background: rgba(227, 179, 65, 0.1);
+      border: 1px solid #e3b341;
+      box-shadow: inset 1px 8px 12px 4px rgba(255, 255, 255, 5%),
+        -2px -4px 20px 3px rgba(0, 0, 0, 0.6);
+
+      svg {
+        color: #e3b341;
+      }
+    }
+    > button:nth-of-type(4) {
+      @include mixins.flex();
+      @include mixins.styled-button(
+        $color: #62c76b,
+        $size-w: 4rem,
+        $size-h: 2rem,
+        $mode: lux-btn
+      );
+      background: rgba(98, 199, 107, 0.1);
+      border: 1px solid #62c76b;
+      box-shadow: inset 1px 8px 12px 4px rgba(255, 255, 255, 5%),
+        -2px -4px 20px 3px rgba(0, 0, 0, 0.6);
+      svg {
+        color: #62c76b;
+      }
+    }
   }
   &__time {
-    @include mixins.flex($direction: row);
+    @include mixins.set-text(muted, regular, md);
+    background: transparent;
+    backdrop-filter: blur(20px);
     font-weight: 500;
     font-size: 9px;
-    border-radius: 0 0 10px 10px;
+    border-radius: 5px;
+    border: 2px solid var.$accent;
+    z-index: 5;
     letter-spacing: 1px;
-    padding: 0.1rem;
+    padding: 0.3rem;
     position: absolute;
-    margin-top: 0.5rem;
-    top: 1rem;
-    right: 6%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    pointer-events: none;
   }
   &__title {
     display: flex;
@@ -84,7 +168,7 @@
   }
   &__progress {
     @include mixins.flex($width: 100%);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
 
     &-bar {
       @include mixins.flex($width: 80%, $height: 12px, $direction: row);
@@ -95,7 +179,7 @@
     }
     &-text {
       @include mixins.set-text(secondary, light, sm);
-      margin-top: 4px;
+
       position: absolute;
     }
     &-fill {
@@ -103,6 +187,7 @@
       width: 0%;
       background-color: var.$accent;
       filter: blur(10px);
+
       transition: width 1s ease-in-out;
     }
   }
@@ -113,7 +198,7 @@
     flex-wrap: wrap;
     overflow-y: auto;
     max-height: 15rem;
-    margin-top: 0.5rem;
+    margin-top: 0.1rem;
     padding: 0.5rem;
   }
 }
@@ -124,6 +209,9 @@
   pointer-events: none;
   min-width: 6rem;
   min-height: 3rem;
+  .roadmap-node__accordion-btn {
+    pointer-events: all;
+  }
   .roadmap-node__title {
     font-size: 12px;
   }
