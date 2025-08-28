@@ -523,6 +523,15 @@ body {
   gap: 1.7rem;
   left: 90%;
 }
+.roadmap-selector__item-actions button {
+  color: #aaaaaa;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 1.3rem;
+  height: 1.3rem;
+  margin: 0;
+}
 .roadmap-selector__list-wrap {
   display: flex;
   flex-direction: column;
@@ -680,7 +689,7 @@ body {
 .selector-modal__panel-nav button[data-mode=import].pressed {
   box-shadow: none;
 }
-.selector-modal__form--manual, .selector-modal__form--import {
+.selector-modal__form--manual, .selector-modal__form--create, .selector-modal__form--import {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 30%), rgba(20, 20, 20, 0.02);
   backdrop-filter: saturate(1.1) blur(8px);
   -webkit-backdrop-filter: saturate(1.1) blur(8px);
@@ -752,7 +761,12 @@ body {
   padding: 0.1rem;
 }
 .selector-modal__input-wrap p {
-  left: 50%;
+  left: 45%;
+  color: #ff5f5f;
+  font-size: 10px;
+  font-weight: 500;
+  position: absolute;
+  top: 30%;
 }
 .selector-modal__subtask-label-wrap {
   display: flex;
@@ -951,6 +965,18 @@ body {
   font-weight: 300;
   font-size: 10px;
   top: 29%;
+}
+.selector-modal__form--create {
+  height: auto;
+  padding: 1rem 0;
+}
+.selector-modal__form--create h3 {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 18px;
+}
+.selector-modal__form--create span[data-for=create-map-input] {
+  left: 72%;
 }
 
 /**

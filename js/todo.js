@@ -19,6 +19,9 @@ import { ToastManager } from './Services/toastify-manger.js';
 import { ListView } from './components/list/list-view.js';
 import { ListController } from './components/list/list-controller.js';
 import { ListModel } from './components/list/list.model.js';
+import { selectorView } from './components/roadmap/selector-view.js';
+import { SelectorModel } from './components/roadmap/selector-model.js';
+import { SelectorPresenter } from './components/roadmap/selector-presenter.js';
 export class TodoApp {
   constructor(user, viewManager) {
     this.user = user;
@@ -34,131 +37,139 @@ export class TodoApp {
     this.activeRoadmapInstance = null;
     this.plumbManagers = {};
     this.AnimationManager = new AnimationManager();
-    this.roudmapModal = new RoudMapModal({
-      elements: {
-        //przyciski
-        openBtnID: 'add-roadmap-task',
-        closeBtnID: 'manual-abandon-btn',
-        importCloseBtnID: 'import-abandon-btn',
-        promtCopyBtnID: 'promt-btn',
-        handBtnID: 'hand-button',
-        importBtnID: 'import-button',
-        subTaskBtnID: 'add-subtask-btn',
-        importSubmitBtnID: 'import-submit-node',
-        manualSubmitBtnID: 'manual-submit-btn',
-        //formularze
-        importFormID: 'import-node-form',
-        manualFormID: 'manual-node-form',
-        subTaskInputID: 'r-sub',
-        roudNodeInputID: 'r-title',
-        importDescID: 'import-desc',
-        //kontenery
-        modalID: 'create-roud-menu',
-        modalCheckBoxID: 'roud-checkbox',
-        checkBoxContainerID: 'sub-container',
-        subTaskUlID: 'subtask-list',
-        uiPanelID: 'modal-ui-panel',
-      },
-
-      callbacks: {
-        //callback po wejsciu:
-        onOpen: () => {
-          this.roudmapModal.setRoadmapId(this.activeRoadmapId);
-        },
-
-        // callback po dodaniu Manualnym:
-        onSubmitSuccess: async (fullData) => {
-          await this.renderNodesForRoadmap(fullData.roadmapID, fullData.id);
-          ToastManager.success('👍 Dodanie pojedynczego Elmentu Udane!');
-        },
-        onImportSubmit: async (allData) => {
-          const length = allData.length;
-          for (const node of allData) {
-            await this.renderNodesForRoadmap(node.roadmapID, node.id);
-          }
-          ToastManager.success(`👍 Dodano ${length} Elementów!`);
-        },
-        onPromtCopy: () => {
-          ToastManager.info(`Skopiowano do schowka!`);
-        },
-      },
-      //Serwisy
-      services: {
-        firestoreService: this.firestoreService,
-        animationManager: this.AnimationManager,
-      },
+    this.SelectorModel = new SelectorModel(this.firestoreService);
+    this.selectorView = new selectorView('roadmap-view', {
+      animationManager: this.AnimationManager,
     });
+    this.SelectorPresenter = new SelectorPresenter(
+      this.SelectorModel,
+      this.selectorView
+    );
+    // this.roudmapModal = new RoudMapModal({
+    //   elements: {
+    //     //przyciski
+    //     openBtnID: 'add-roadmap-task',
+    //     closeBtnID: 'manual-abandon-btn',
+    //     importCloseBtnID: 'import-abandon-btn',
+    //     promtCopyBtnID: 'promt-btn',
+    //     handBtnID: 'hand-button',
+    //     importBtnID: 'import-button',
+    //     subTaskBtnID: 'add-subtask-btn',
+    //     importSubmitBtnID: 'import-submit-node',
+    //     manualSubmitBtnID: 'manual-submit-btn',
+    //     //formularze
+    //     importFormID: 'import-node-form',
+    //     manualFormID: 'manual-node-form',
+    //     subTaskInputID: 'r-sub',
+    //     roudNodeInputID: 'r-title',
+    //     importDescID: 'import-desc',
+    //     //kontenery
+    //     modalID: 'create-roud-menu',
+    //     modalCheckBoxID: 'roud-checkbox',
+    //     checkBoxContainerID: 'sub-container',
+    //     subTaskUlID: 'subtask-list',
+    //     uiPanelID: 'modal-ui-panel',
+    //   },
 
-    this.isroadmapcreated = false;
-    this.roadmapSelector = new RoadmapSelector({
-      elements: {
-        titleContainerID: 'roadmap-section-title',
-        newMapBtnID: 'new-map-btn',
-        uiPanelID: 'creator-panel',
-        setRoadmapContainerID: 'add-main-roadmap',
-        setRoadmapFormID: 'create-map-form',
-        setInputTitleID: 'create-title',
-        setRoadmapSubmitBtnID: 'create-submit-btn',
-        abandonRoadmapSubmitBtnID: 'create-abandon-btn',
-        ulContainerID: 'ul-container',
-        ulContDivID: 'Ul-cont-div',
-        listTogglerID: 'list-toggler-ID',
-        addBtnContainerID: 'add-node-btn-cont',
-      },
-      callbacks: {
-        // calback tworzenia Roadmapy
-        onSubmit: (fullData) => {
-          console.log(
-            console.log(
-              '%cDodanie Roadmapy Udane!',
-              'color: green; font-weight: bold;',
-              fullData
-            )
-          );
-          ToastManager.success('👍 Dodanie Roadmapy Udane!');
-        },
-        // calback Kasowania roadmapy
-        onDelete: async (roadmapID) => {
-          console.log(
-            console.log(
-              '%cUsuniecie Roadmapy Udane!',
-              'color: green; font-weight: bold;',
-              roadmapID
-            )
-          );
-          ToastManager.info('🗑️ Usunięto roadmapę!');
-        },
+    //   callbacks: {
+    //     //callback po wejsciu:
+    //     onOpen: () => {
+    //       this.roudmapModal.setRoadmapId(this.activeRoadmapId);
+    //     },
 
-        //calback z do wchodzenia w roadmape
-        onEnterRoadmap: async (roadmapID) => {
-          await this.renderNodesForRoadmap(roadmapID);
-          const interval = setInterval(() => {
-            // <-naprawiam linie zeby sie nie rozjechały
-            this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(
-              roadmapID
-            );
-            this.plumbManagers[roadmapID]?.jsPlumbInstance?.repaintEverything();
-          }, 10); // co 10ms przez 300ms
+    //     // callback po dodaniu Manualnym:
+    //     onSubmitSuccess: async (fullData) => {
+    //       await this.renderNodesForRoadmap(fullData.roadmapID, fullData.id);
+    //       ToastManager.success('👍 Dodanie pojedynczego Elmentu Udane!');
+    //     },
+    //     onImportSubmit: async (allData) => {
+    //       const length = allData.length;
+    //       for (const node of allData) {
+    //         await this.renderNodesForRoadmap(node.roadmapID, node.id);
+    //       }
+    //       ToastManager.success(`👍 Dodano ${length} Elementów!`);
+    //     },
+    //     onPromtCopy: () => {
+    //       ToastManager.info(`Skopiowano do schowka!`);
+    //     },
+    //   },
+    //   //Serwisy
+    //   services: {
+    //     firestoreService: this.firestoreService,
+    //     animationManager: this.AnimationManager,
+    //   },
+    // });
 
-          setTimeout(() => {
-            clearInterval(interval);
-          }, 1500); // zatrzymaj po 300ms
-        },
-        //callback do wychodenia z roadmapy
-        onQuitRoadmap: (roadmapID) => {
-          console.log('callback z on quit to:', roadmapID);
+    // this.isroadmapcreated = false;
+    // this.roadmapSelector = new RoadmapSelector({
+    //   elements: {
+    //     titleContainerID: 'roadmap-section-title',
+    //     newMapBtnID: 'new-map-btn',
+    //     uiPanelID: 'creator-panel',
+    //     setRoadmapContainerID: 'add-main-roadmap',
+    //     setRoadmapFormID: 'create-map-form',
+    //     setInputTitleID: 'create-title',
+    //     setRoadmapSubmitBtnID: 'create-submit-btn',
+    //     abandonRoadmapSubmitBtnID: 'create-abandon-btn',
+    //     ulContainerID: 'ul-container',
+    //     ulContDivID: 'Ul-cont-div',
+    //     listTogglerID: 'list-toggler-ID',
+    //     addBtnContainerID: 'add-node-btn-cont',
+    //   },
+    //   callbacks: {
+    //     // calback tworzenia Roadmapy
+    //     onSubmit: (fullData) => {
+    //       console.log(
+    //         console.log(
+    //           '%cDodanie Roadmapy Udane!',
+    //           'color: green; font-weight: bold;',
+    //           fullData
+    //         )
+    //       );
+    //       ToastManager.success('👍 Dodanie Roadmapy Udane!');
+    //     },
+    //     // calback Kasowania roadmapy
+    //     onDelete: async (roadmapID) => {
+    //       console.log(
+    //         console.log(
+    //           '%cUsuniecie Roadmapy Udane!',
+    //           'color: green; font-weight: bold;',
+    //           roadmapID
+    //         )
+    //       );
+    //       ToastManager.info('🗑️ Usunięto roadmapę!');
+    //     },
 
-          if (this.plumbManagers?.[roadmapID]) {
-            this.plumbManagers[roadmapID].destroy();
-            delete this.plumbManagers[roadmapID];
-          }
-        },
-      },
-      services: {
-        firestoreService: this.firestoreService,
-        animationManager: this.AnimationManager,
-      },
-    });
+    //     //calback z do wchodzenia w roadmape
+    //     onEnterRoadmap: async (roadmapID) => {
+    //       await this.renderNodesForRoadmap(roadmapID);
+    //       const interval = setInterval(() => {
+    //         // <-naprawiam linie zeby sie nie rozjechały
+    //         this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(
+    //           roadmapID
+    //         );
+    //         this.plumbManagers[roadmapID]?.jsPlumbInstance?.repaintEverything();
+    //       }, 10); // co 10ms przez 300ms
+
+    //       setTimeout(() => {
+    //         clearInterval(interval);
+    //       }, 1500); // zatrzymaj po 300ms
+    //     },
+    //     //callback do wychodenia z roadmapy
+    //     onQuitRoadmap: (roadmapID) => {
+    //       console.log('callback z on quit to:', roadmapID);
+
+    //       if (this.plumbManagers?.[roadmapID]) {
+    //         this.plumbManagers[roadmapID].destroy();
+    //         delete this.plumbManagers[roadmapID];
+    //       }
+    //     },
+    //   },
+    //   services: {
+    //     firestoreService: this.firestoreService,
+    //     animationManager: this.AnimationManager,
+    //   },
+    // });
 
     this.mainHamburger = new MainMenuHandler(
       'main-hamburger',
@@ -190,16 +201,17 @@ export class TodoApp {
       this.viewManger.showMode(mode.sectionId, mode.indicatorId);
       if (mode.sectionId === 'roadmap-view') {
         this.roudmapModal?.activate();
-        this.roadmapSelector?.activate();
+        this.SelectorPresenter.init();
+        // this.roadmapSelector?.activate();
 
-        this.firestoreService
-          .loadUserCollection('roadmaps')
-          .then((roadmapData) => {
-            this.roadmapSelector.loadRoadmapList(roadmapData);
-          })
-          .catch((err) => {
-            console.error('błąd przy ładowaniu roudmap:', err);
-          });
+        // this.firestoreService
+        //   .loadUserCollection('roadmaps')
+        //   .then((roadmapData) => {
+        //     this.roadmapSelector.loadRoadmapList(roadmapData);
+        //   })
+        //   .catch((err) => {
+        //     console.error('błąd przy ładowaniu roudmap:', err);
+        //   });
       } else {
         this.roudmapModal?.deactivate();
       }

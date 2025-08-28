@@ -384,11 +384,6 @@ export class RoadmapSelector {
     //1)ukrywam pojemnik na wybor roadmap:
     await this.animationManager.showAnimation(mapMenu, 'fadeInLeft', '.5s');
 
-    // // this.elements.listToggler.classList.remove('hidden');
-    // this.elements.ulContDiv.classList.add('hidden');
-    // targetUl?.classList.add('hidden');
-    // this.elements.addBtnContainer.classList.add('hidden');
-
     if (typeof this.onQuitRoadmap === 'function') {
       this.onQuitRoadmap(roadmapID);
     }

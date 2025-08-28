@@ -68,7 +68,12 @@
     top: -10%;
     @include mixins.glass-input-label;
     p {
-      left: 50%;
+      left: 45%;
+      color: var.$formError;
+      font-size: 10px;
+      font-weight: 500;
+      position: absolute;
+      top: 30%;
     }
   }
 
@@ -170,5 +175,16 @@
     @include mixins.flex($width: 80%);
     @include mixins.set-text(muted, light, sm);
     top: 29%;
+  }
+  &__form--create {
+    @extend .selector-modal__form--manual;
+    height: auto;
+    padding: 1rem 0;
+    h3 {
+      @include mixins.set-text(main, semibold, xl);
+    }
+    span[data-for='create-map-input'] {
+      left: 72%;
+    }
   }
 }

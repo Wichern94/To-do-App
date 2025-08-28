@@ -628,8 +628,8 @@
         </dialog>
                 
     <div class="roadmap-box roadmap-selector">
-        <div id ="list-toggler-ID"
-             class="list-toggler roadmap-selector__panel">
+        <div id ="roadmap-toggler-ID"
+             class="roadmap-selector__panel">
 
              <h4 id="roadmap-section-title"
                  class="roud-title roadmap-selector__empty">
@@ -637,7 +637,7 @@
         
             <div class="roadmap-select-bar roadmap-selector__actions">
             
-                <button id="new-map-btn"
+                <button id="roadmap-open-modal-ID"
                         class="add-roadmap-btn roadmap-selector__btn roadmap-selector__btn--create"
                         type="button"
                         data-action="create-raodmap">New
@@ -664,41 +664,44 @@
             </div>
         </div>
         
-        <dialog id="add-main-roadmap"
-                class="roud-modal hidden selector-modal"
+        <dialog id="add-roadmap-dialog"
+                class="hidden selector-modal"
                 aria-labelledby="create-modal-title"
                 aria-modal="true">
                     
-            <fieldset id="creator-panel"
-                      class="modal-section create-modal hidden selector-modal__panel">
+            <fieldset id="add-roadmap-fieldset"
+                      class="hidden selector-modal__panel">
 
                 <form  id="create-map-form"
-                       class="manual-content selector-modal__form"
+                       class="manual-content selector-modal__form--create"
                        autocomplete="off">
 
                     <span class="new-roud-title selector-modal__title-wrap">
                         <h3 id="modal-title selector-modal__title">Create Roadmap</h3>
+                        <div class="task-modal__title-divider"></div>
                     </span>
                         
                     <div class="roud-input-container selector-modal__input-wrap">
                         <input class="roudnode-title selector-modal__input"
                                type="text"
-                               id="create-title"
+                               id="create-map-input"
                                name="create-map-title"
                                autocomplete="off"
-                               placeholder="Enter title..."/>
-                
-                        <p class="err-message err-msg-new-task hidden selector-modal__error"
+                               placeholder=" "
+                               maxlength="25"/>
+                        <label  for="create-map-input">Enter Title</label>
+                        <span class="char-counter" data-for="create-map-input"></span>
+                        <p class="err-message  hidden selector-modal__error"
                            data-for="create-map-title"></p>
                    </div>
-               </form>
+               
 
                 <div class="task-btns selector-modal__actions"
                      role="group"
                      aria-label="Create roadmap actions">
 
-                    <button type="button"
-                            id="create-submit-btn"
+                    <button type="submit"
+                            id="create-map-submit-btn"
                             class="task-handler-btn aprove selector-modal__btn selector-modal__btn--confirm">Add
 
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -716,7 +719,7 @@
                     </button>
 
                     <button type="button"
-                            id="create-abandon-btn"
+                            id="create-map-cancel-btn"
                             class="task-handler-btn abandon selector-modal__btn selector-modal__btn--cancel">Cancel
                         <svg xmlns="http://www.w3.org/2000/svg"
                              width="20"
@@ -732,11 +735,12 @@
                         </svg>
                     </button>
                 </div>
+                </form>
             </fieldset>
         </dialog>
 
     
-    <div  id ="Ul-cont-div"class="roadmap-content-area hidden roadmap__content"></div>
+    <div  id ="roadmap-content"class=" hidden roadmap__content"></div>
     
     <div id="add-node-btn-cont" class="add-btn-container hidden" aria-hidden="true">
         <button id="add-roadmap-task"

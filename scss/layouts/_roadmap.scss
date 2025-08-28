@@ -72,6 +72,10 @@
       position: absolute;
       gap: 1.7rem;
       left: 90%;
+      button {
+        color: var.$textSecondary;
+        @include mixins.styled-button($size-w: 1.3rem);
+      }
     }
     &__list-wrap {
       @include mixins.flex($width: 100%);
