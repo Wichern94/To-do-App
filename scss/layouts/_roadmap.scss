@@ -26,6 +26,12 @@
       position: fixed;
       cursor: pointer;
       z-index: 5;
+      button {
+        @include mixins.styled-button(
+          $size-w: 1.5rem,
+          $color: var.$textPrimary
+        );
+      }
     }
   }
 
@@ -74,7 +80,7 @@
       left: 90%;
       button {
         color: var.$textSecondary;
-        @include mixins.styled-button($size-w: 1.3rem);
+        @include mixins.styled-button($size-w: 1.5rem);
       }
     }
     &__list-wrap {

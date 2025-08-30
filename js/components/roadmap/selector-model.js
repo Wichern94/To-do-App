@@ -21,10 +21,15 @@ export class SelectorModel {
     return await this.loadAll();
   }
 
-  //   async finishTask(id) {
-  //     await this.FsS.deleteDocument(id, this.COL);
-  //     return await this.loadAll();
-  //   }
+  async finishRoadmap(roadmapID) {
+    if (roadmapID.startsWith('ul-')) {
+      const slicedID = roadmapID.slice(3);
+      await this.FsS.deleteDocument(slicedID, this.COL);
+    } else {
+      await this.FsS.deleteDocument(roadmapID, this.COL);
+      return await this.loadAll();
+    }
+  }
 
   _normalize = (raw) => ({
     id: raw.id,
