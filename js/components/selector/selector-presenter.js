@@ -6,7 +6,7 @@ export class SelectorPresenter {
     this.renderedIds = new Set();
     this.isInitialPaint = true;
     this.SEEN_KEY = 'seenRoadmapsIds';
-    this.state = {};
+
     this.onRenderRequest = callbacks.onRenderRequest || null;
   }
   /**
@@ -26,7 +26,6 @@ export class SelectorPresenter {
             'create-map-title',
             this.view.formErrors
           );
-          console.log(roadmapData);
 
           if (!isValid) return;
 
@@ -38,30 +37,29 @@ export class SelectorPresenter {
         }
       },
 
-      onEnterRoadmap: async (roadmapID) => {
+      onEnterRoadmap: async (roadmapId) => {
         try {
-          if (typeof roadmapID !== 'string') {
+          if (typeof roadmapId !== 'string') {
             throw new Error('RoadmapID is not a String!');
           }
-          this.state = { activeRoadmapID: roadmapID };
 
           if (typeof this.onRenderRequest === 'function') {
-            this.onRenderRequest(this.state.activeRoadmapID);
+            this.onRenderRequest(roadmapId);
           }
         } catch (err) {
           console.error('Pressenter error when entering the roadmap!');
         }
       },
 
-      onDelete: async (roadmapID) => {
+      onDelete: async (roadmapId) => {
         try {
-          const oldEl = this.view.findItemEl(roadmapID);
-          const roadmaps = await this.model.finishRoadmap(roadmapID);
+          const oldEl = this.view.findItemEl(roadmapId);
+          const roadmaps = await this.model.finishRoadmap(roadmapId);
 
           if (!oldEl) throw new Error('oldEl is not valid');
-          await this.view.animateOldRoadmap(oldEl);
+          await this.view.onDeleteAnimation(oldEl);
 
-          this.renderedIds.delete(roadmapID);
+          this.renderedIds.delete(roadmapId);
           sessionStorage.setItem(
             this.SEEN_KEY,
             JSON.stringify([...this.renderedIds])
@@ -70,17 +68,6 @@ export class SelectorPresenter {
           this._renderRoadmaps(roadmaps);
         } catch (err) {
           console.error('finish failed');
-        }
-      },
-
-      onQuitRoadmap: async () => {
-        try {
-          console.log(this.state.activeRoadmapID);
-
-          await this.view.setupQuitAnimation(this.state.activeRoadmapID);
-          this.state.activeRoadmapID = null;
-        } catch (err) {
-          console.error('Error while Quiting Roadmap!');
         }
       },
     });
@@ -109,7 +96,6 @@ export class SelectorPresenter {
       this.view.ui.roadmap.content.querySelector('#btn-back');
     if (!existingBackBtn) {
       this.view.renderBackBtn();
-      this.view.activeBackButton();
     }
 
     const visible = roadmaps.filter((r) => !r.done);
@@ -121,7 +107,6 @@ export class SelectorPresenter {
       this._renderULforNodes(r);
       this.renderedIds.add(r.id);
     });
-    console.log('rendered ids:', this.renderedIds);
 
     sessionStorage.setItem(
       this.SEEN_KEY,

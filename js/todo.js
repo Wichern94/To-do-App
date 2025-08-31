@@ -19,9 +19,9 @@ import { ToastManager } from './Services/toastify-manger.js';
 import { ListView } from './components/list/list-view.js';
 import { ListController } from './components/list/list-controller.js';
 import { ListModel } from './components/list/list.model.js';
-import { selectorView } from './components/roadmap/selector-view.js';
-import { SelectorModel } from './components/roadmap/selector-model.js';
-import { SelectorPresenter } from './components/roadmap/selector-presenter.js';
+import { SelectorView } from './components/selector/selector-view.js';
+import { SelectorModel } from './components/selector/selector-model.js';
+import { SelectorPresenter } from './components/selector/selector-presenter.js';
 export class TodoApp {
   constructor(user, viewManager) {
     this.user = user;
@@ -31,30 +31,36 @@ export class TodoApp {
 
     this.carusel.setCaruselToMiddle();
     this.initCarusel();
+    this.state = {};
 
     this.nodesByRoadmap = {};
-    this.activeRoadmapId = null;
-    this.activeRoadmapInstance = null;
+
     this.plumbManagers = {};
     this.AnimationManager = new AnimationManager();
     this.SelectorModel = new SelectorModel(this.firestoreService);
-    this.selectorView = new selectorView('roadmap-view', {
+    this.selectorView = new SelectorView('roadmap-view', {
       animationManager: this.AnimationManager,
     });
     this.SelectorPresenter = new SelectorPresenter(
       this.SelectorModel,
       this.selectorView,
       {
-        onRenderRequest: async (roadmapID) => {
-          await this.selectorView.setupEnterAnimaton(roadmapID);
-          await this.renderNodesForRoadmap(roadmapID);
+        onRenderRequest: async (roadmapId) => {
+          this.state = { activeRoadmapID: `ul-${roadmapId}` };
+
+          await this.selectorView.setupEnterAnimaton(
+            this.state.activeRoadmapID
+          );
+          await this.renderNodesForRoadmap(this.state.activeRoadmapID);
 
           const interval = setInterval(() => {
             // <-naprawiam linie zeby sie nie rozjechały
-            this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(
-              roadmapID
-            );
-            this.plumbManagers[roadmapID]?.jsPlumbInstance?.repaintEverything();
+            this.plumbManagers[
+              this.state.activeRoadmapID
+            ]?.jsPlumbInstance?.revalidate(this.state.activeRoadmapID);
+            this.plumbManagers[
+              this.state.activeRoadmapID
+            ]?.jsPlumbInstance?.repaintEverything();
           }, 10); // co 10ms przez 300ms
 
           setTimeout(() => {
@@ -122,7 +128,6 @@ export class TodoApp {
   }
   async renderNodesForRoadmap(roadmapID, newNodeID = null) {
     try {
-      this.activeRoadmapId = roadmapID;
       const ul = document.getElementById(roadmapID);
       // sprawdze czy jest ul zanim utowrze plumbmangera, aby uniknac problemu
       if (!ul) {

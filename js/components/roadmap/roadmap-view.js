@@ -1,21 +1,28 @@
 import { FormErrors } from '../../uiErrorHandler.js';
 
 import { showElement, hideElement, toggleElement } from '../../utils/helper.js';
-export class selectorView {
-  constructor(root = 'roadmap-view', { animationManager } = {}) {
+export class RoadmapView {
+  constructor(root = 'roadmap-view', roadmapRoot, { animationManager } = {}) {
     const rootEl =
       typeof root === 'string' ? document.getElementById(root) : root;
-    if (!rootEl) {
-      throw new Error('Roadmap root not found (selector or element invalid)');
+    const rootRo =
+      typeof roadmapRoot === 'string'
+        ? document.getElementById(roadmapRoot)
+        : roadmapRoot;
+    if (!rootEl || !rootRo) {
+      throw new Error(
+        'Roadmap ID Section root not found (selector or element invalid)'
+      );
     }
     /**
      * ========================================
      * ROOT + QUERYHELPER
      * ========================================
      */
-    this.ui = { root: rootEl };
+    this.ui = { root: rootEl, rootR: rootRo };
 
     this._q = (sel) => this.ui.root.querySelector(sel);
+    this._qr = (sel) => this.ui.rootR.querySelector(sel);
     this._qa = (sel) => this.ui.root.querySelectorAll(sel);
 
     /**
@@ -46,8 +53,8 @@ export class selectorView {
        *  MODAL WINDOWS
        * ========================================
        */
-      modalDialog: this._q('#add-roadmap-dialog'),
-      modalFieldset: this._q('#add-roadmap-fieldset'),
+      modalDialog: this._q('#add-node-element-dialog'),
+      modalFieldset: this._q('#add-node-element-fieldset'),
 
       /**
        * ========================================
@@ -55,8 +62,9 @@ export class selectorView {
        * ========================================
        */
 
-      form: this._q('#create-map-form'),
-      titleInput: this._q('#create-map-input'),
+      manualForm: this._q('#add-node-form--manual'),
+      titleInput: this._q('#form--manual-input-title'),
+      subtaskInput: this._q('#form--manual-input-subelements'),
 
       /**
        * ========================================
@@ -64,7 +72,7 @@ export class selectorView {
        * ========================================
        */
 
-      submitBtn: this._q('#create-map-submit-btn'),
+      manualSubmitBtn: this._q('#form--manual-submit-btn'),
       cancelBtn: this._q('#create-map-cancel-btn'),
       openModalBtn: this._q('#roadmap-open-modal-ID'),
     };
@@ -231,7 +239,7 @@ export class selectorView {
 
     hideElement(backBtn); // I hide it earlier to show it at the end of the sequence and so that it doesn't get in the way
 
-    content.querySelectorAll('.roadmap-list').forEach(
+    this._qa('.roadmap__list').forEach(
       (
         ul // I hide all roadmap containers
       ) => ul.classList.add('hidden')
@@ -239,50 +247,49 @@ export class selectorView {
     //Animated Show/Hide Sequence
 
     //1)I hide the container for selecting the roadmap:
-    await this.animationManager.hideAnimation(panel, 'fadeOutRight', '.5s');
+    await this.animationManager?.hideAnimation(panel, 'fadeOutRight', '.5s');
 
     //2)shows the content container, all are hidden here!
-    await this.animationManager.showAnimation(content, 'fadeInRight', '.1s');
+    await this.animationManager?.showAnimation(content, 'fadeInRight', '.1s');
 
     //3) shows the correct ul according to the ID
-    await this.animationManager.showAnimation(targetUl, 'fadeInRight', '.5s');
+    await this.animationManager?.showAnimation(targetUl, 'fadeInRight', '.5s');
 
     //4) Buttons:
 
     //back
-    await this.animationManager.showBtns(backBtn, '.2s');
+    await this.animationManager?.showBtns(backBtn, '.2s');
 
     // shows the global button for adding nodes
-    await this.animationManager.showBtns(addBtnContainer, '.2s');
+    await this.animationManager?.showBtns(addBtnContainer, '.2s');
   }
 
   async setupQuitAnimation(roadmapID) {
     const { panel } = this.ui.selector;
     const { content, addBtnContainer } = this.ui.roadmap;
     // preparing elements:
-    const targetUl = document.querySelector(`ul[id="${roadmapID}"]`);
-    const backBtn = content.querySelector('#btn-back');
+    const targetUl = this._q(`ul[id="${roadmapID}"]`);
+    const backBtn = this._q('#btn-back');
 
     //Animated Show/Hide Sequence
     //1) Buttons:
 
     //back
-    await this.animationManager.hideBtns(backBtn, '.2s');
+    await this.animationManager?.hideBtns(backBtn, '.2s');
 
     // I hide the global button for adding nodes
-    await this.animationManager.hideBtns(addBtnContainer, '.2s');
+    await this.animationManager?.hideBtns(addBtnContainer, '.2s');
 
     //2) I hide the correct container according to the ID
-    await this.animationManager.hideAnimation(targetUl, 'fadeOutLeft', '.5s');
-    console.log('log pohide target ul');
+    await this.animationManager?.hideAnimation(targetUl, 'fadeOutLeft', '.5s');
 
     //3) I'm hiding the  UL container  they're all hidden here!
-    await this.animationManager.hideAnimation(content, 'fadeOutLeft', '.1s');
+    await this.animationManager?.hideAnimation(content, 'fadeOutLeft', '.1s');
     //4) I hide the container for selecting the roadmap:
-    await this.animationManager.showAnimation(panel, 'fadeInLeft', '.5s');
+    await this.animationManager?.showAnimation(panel, 'fadeInLeft', '.5s');
   }
 
-  /**
+  /**?
    * ========================================
    * HANDLER METHODS
    * ========================================
@@ -292,24 +299,23 @@ export class selectorView {
     try {
       if (!btn) throw new Error('cant find button!');
       const li = btn.closest('.roadmap-selector__item');
-      console.log('li to:', li);
 
       if (!li) throw new Error('the li element is invalid');
-      const roadmapID = `ul-${li.dataset.id}`;
+      const roadmapId = `${li.dataset.id}`;
 
       if (typeof this.handlers.onEnterRoadmap === 'function') {
-        this.handlers.onEnterRoadmap(roadmapID);
+        this.handlers.onEnterRoadmap(roadmapId);
       }
     } catch (err) {
       console.error('error when entering the roadmap:', err);
     }
   }
 
-  handleGoBack() {
-    if (typeof this.handlers.onQuitRoadmap === 'function') {
-      this.handlers.onQuitRoadmap();
-    }
-  }
+  // handleGoBack() {
+  //   if (typeof this.handlers.onQuitRoadmap === 'function') {
+  //     this.handlers.onQuitRoadmap();
+  //   }
+  // }
 
   async handleDeleteRoadmap(btn) {
     try {
@@ -372,7 +378,7 @@ export class selectorView {
 
   async handleCloseModal(e) {
     e?.preventDefault?.();
-    const btn = this._q('.task-modal__btn--submit');
+    const btn = this._q('.selector-modal__btn--confirm');
     const bluredOne = this.ui.modal.modalDialog;
     const fieldset = this.ui.modal.modalFieldset;
 
@@ -465,10 +471,6 @@ export class selectorView {
     }
 
     this.ui.roadmap.content.appendChild(ul);
-
-    if (this.ui.roadmap.content.querySelector('ul')) {
-      console.log('utworzono nowy ul:', ul);
-    }
   }
   /**
    * ========================================
@@ -507,8 +509,8 @@ export class selectorView {
       span.textContent = '';
     });
   }
-  async animateOldRoadmap(oldEl) {
-    await this.animationManager.hideAnimation(oldEl, 'flipOutX', '1s');
+  async onDeleteAnimation(oldEl) {
+    await this.animationManager?.hideAnimation(oldEl, 'flipOutX', '1s');
     oldEl.remove();
   }
 
@@ -524,12 +526,12 @@ export class selectorView {
     }
   }
 
-  activeBackButton() {
-    const backBtn = document.getElementById('btn-back');
-    if (backBtn) {
-      backBtn.removeEventListener('click', this.handleGoBack);
-      backBtn.addEventListener('click', this.handleGoBack.bind(this));
-      console.log('kliknieto w back');
-    }
-  }
+  // activeBackButton() {
+  //   const backBtn = document.getElementById('btn-back');
+  //   if (backBtn) {
+  //     backBtn.removeEventListener('click', this.handleGoBack);
+  //     backBtn.addEventListener('click', this.handleGoBack.bind(this));
+  //     console.log('kliknieto w back');
+  //   }
+  // }
 }

@@ -418,29 +418,29 @@
     
     <h2 id="roadmap-section-title" class="visually-hidden">Roadmaps</h2>
 
-    <dialog id="create-roud-menu"
-            class="roud-modal hidden selector-modal"
+    <dialog id="add-node-element-dialog"
+            class="hidden selector-modal"
             data-role="selector-modal" 
             aria-labelledby="create-modal-title"
             aria-modal="true">
 
-        <fieldset id="modal-ui-panel"
-                  class="modal-section hidden selector-modal__panel">
+        <fieldset id="add-node-element-fieldset"
+                  class="hidden selector-modal__panel">
 
-            <div class="modal-tab-bar  selector-modal__tabs selector-modal__panel-nav"
+            <div class="selector-modal__tabs selector-modal__panel-nav"
                  role="tablist"
                  aria-label="Selector modal modes">
 
-                <button id="hand-button"
-                        class="tab-btn hand-btn selector-modal__tab-btn selector-modal__tab-btn--manual "
+                <button id="manual-btn"
+                        class="selector-modal__tab-btn selector-modal__tab-btn--manual "
                         data-mode="manual"
                         role="tab"
                         aria-selected="true"
                         aria-controls="manual-node-form">Add Manually
                 </button>
 
-                <button id="import-button"
-                        class="tab-btn import-btn selector-modal__tab-btn selector-modal__tab-btn--import pressed"
+                <button id="import-btn"
+                        class="selector-modal__tab-btn selector-modal__tab-btn--import pressed"
                         data-mode="import"
                         role="tab"
                         aria-selected="false"
@@ -448,28 +448,28 @@
                 </button>
             </div>
 
-            <form id="manual-node-form"
-                  class="manual-content selector-modal__form selector-modal__form--manual"
+            <form id="add-node-form--manual"
+                  class="selector-modal__form selector-modal__form--manual"
                   autocomplete="off"
                   role="tabpanel"
                   aria-labelledby="hand-button">
                   
-            <span class="new-roud-title selector-modal__title-wrap">
+            <span class="selector-modal__title-wrap">
                 <h3 id="modal-title"
                     class="selector-modal__title">Create Roadmap</h3>
                     <div class="task-modal__title-divider"></div>
             </span>
 
-            <div class="roud-input-container selector-modal__input-wrap">
-                <input class="roudnode-title selector-modal__input"
+            <div class="selector-modal__input-wrap">
+                <input class="selector-modal__input"
                        type="text"
-                       id="r-title"
+                       id="form--manual-input-title"
                        name="create-map-title"
                        autocomplete="off"
                        placeholder=" ">
                 
                 <label class="selector-modal__input-label--title"
-                       for="r-title">Title</label>
+                       for="add-node-form--manual-input">Title</label>
                        
 
                 <p class="err-message  hidden selector-modal__error selector-modal__error--title"
@@ -478,22 +478,22 @@
 
             
 
-            <div class ="sub-element-container  selector-modal__subtask-wrap"
+            <div class ="selector-modal__subtask-wrap"
                  id="sub-container">
 
-                <input class="roudnode-title selector-modal__subtask-input-title"
+                <input class="selector-modal__subtask-input-title"
                        type="text"
-                       id="r-sub"
+                       id="form--manual-input-subelements"
                        name="roadmap-subelements"
                        autocomplete="off"
                        placeholder=" ">
-                <label class="selector-modal__input-label--subtask" for="r-sub">Subtask Title</label>
+                <label class="selector-modal__input-label--subtask" for="form--manual-input-subelements">Subtask Title</label>
 
                 <p class="err-message  hidden selector-modal__error selector-modal__error--subtasks"
                    data-for="roadmap-subelements"></p>
 
-                <button class="modal-roud-btn selector-modal__btn selector-modal__subtask-add-btn"
-                        id="add-subtask-btn"
+                <button class="selector-modal__btn selector-modal__subtask-add-btn"
+                        id="subel-add-btn"
                         type="button"
                         aria-label="Add sub-item">
 
@@ -511,7 +511,7 @@
 
 
                 </div>
-                <ul class="modal-sub-task-list selector-modal__subtask-list "
+                <ul class="selector-modal__subtask-list "
                     id="subtask-list"></ul>
                    
                 
@@ -520,8 +520,8 @@
                      aria-label="Create roadmap actions">
 
                     <button type="button"
-                            id="manual-submit-btn"
-                            class="task-handler-btn aprove  selector-modal__btn selector-modal__btn--confirm">Add
+                            id="form--manual-submit-btn"
+                            class="aprove  selector-modal__btn selector-modal__btn--confirm">Add
                         <svg xmlns="http://www.w3.org/2000/svg"
                             width="20"
                             height="20"
@@ -537,7 +537,7 @@
 
                     <button type="button"
                             id="manual-abandon-btn"
-                            class="task-handler-btn abandon selector-modal__btn selector-modal__btn--cancel">Cancel
+                            class="abandon selector-modal__btn selector-modal__btn--cancel">Cancel
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="20"
                                  height="20"
@@ -555,11 +555,11 @@
             </form>
 
             <form id="import-node-form"
-                  class="import-content hidden selector-modal__form selector-modal__form--import"
+                  class="hidden selector-modal__form selector-modal__form--import"
                   role="tabpanel"
                   aria-labelledby="import-button">
                   
-                  <span class="new-import-title selector-modal__title-wrap">
+                  <span class="selector-modal__title-wrap">
                       <h3 id="import-modal-title"
                           class="selector-modal__title">Import Roadmap!
                           <div class="task-modal__title-divider"></div>
@@ -576,13 +576,13 @@
                       <label class="selector-modal__form-import-label" for="import-desc">Paste Here...</label>
                   </div>
             
-                  <div class="task-btns selector-modal__actions selector-modal__actions--import"
+                  <div class="selector-modal__actions selector-modal__actions--import"
                        role="group"
                        aria-label="Import actions">
                      
                       <button type="button"
                               id="import-submit-node"
-                              class="task-handler-btn aprove selector-modal__btn selector-modal__btn--confirm">Add
+                              class="aprove selector-modal__btn selector-modal__btn--confirm">Add
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="20"
                                      height="20"
@@ -599,7 +599,7 @@
                       
                         <button type="button"
                                 id="import-abandon-btn"
-                                class="task-handler-btn abandon selector-modal__btn selector-modal__btn--cancel">Cancel
+                                class="abandon selector-modal__btn selector-modal__btn--cancel">Cancel
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="20"
                                      height="20"
@@ -702,7 +702,7 @@
 
                     <button type="submit"
                             id="create-map-submit-btn"
-                            class="task-handler-btn aprove selector-modal__btn selector-modal__btn--confirm">Add
+                            class=" aprove selector-modal__btn selector-modal__btn--confirm">Add
 
                         <svg xmlns="http://www.w3.org/2000/svg"
                              width="20"
