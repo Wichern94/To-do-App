@@ -79,4 +79,7 @@ export class ListController {
       JSON.stringify([...this.renderedIds])
     );
   }
+  destroy() {
+    this.view.deactivate();
+  }
 }

@@ -43,18 +43,18 @@ export class RoadmapView {
      * ========================================
      */
     this.ui.roadmap = {
-      content: this._q('.roadmap__content'),
-      addBtnContainer: this._q('#add-node-btn-cont'),
+      backBtn: this._q('.roadmap__btn--back'),
     };
 
+    /**
+     * ========================================
+     *  MODAL WINDOWS
+     * ========================================
+     */
+
     this.ui.modal = {
-      /**
-       * ========================================
-       *  MODAL WINDOWS
-       * ========================================
-       */
-      modalDialog: this._q('#add-node-element-dialog'),
-      modalFieldset: this._q('#add-node-element-fieldset'),
+      dialog: this._q('#add-node-element-dialog'),
+      fieldset: this._q('#add-node-element-fieldset'),
 
       /**
        * ========================================
@@ -65,6 +65,8 @@ export class RoadmapView {
       manualForm: this._q('#add-node-form--manual'),
       titleInput: this._q('#form--manual-input-title'),
       subtaskInput: this._q('#form--manual-input-subelements'),
+      importForm: this._q('#add-node-form--import'),
+      textArea: this._q('#form--import-textarea'),
 
       /**
        * ========================================
@@ -72,9 +74,11 @@ export class RoadmapView {
        * ========================================
        */
 
+      imporSubmitBtn: this._q('#form--import-submit-btn'),
       manualSubmitBtn: this._q('#form--manual-submit-btn'),
-      cancelBtn: this._q('#create-map-cancel-btn'),
+      cancelBtn: this._q('.selector-modal__btn--cancel'),
       openModalBtn: this._q('#roadmap-open-modal-ID'),
+      promtBtN: this._q('#form--import-promt-btn'),
     };
 
     /**
@@ -85,6 +89,7 @@ export class RoadmapView {
     this.localStates = {
       bound: false,
       isLoading: false,
+      modalCurrentMode: this.ui.modal.manualForm,
     };
 
     /**
@@ -108,9 +113,9 @@ export class RoadmapView {
 
     this.listeners = [
       {
-        el: this.ui.selector.list,
+        el: this.ui.modal.fieldset,
         event: 'click',
-        handler: this.listActions.bind(this),
+        handler: this.modalMode.bind(this),
       },
       {
         el: this.ui.modal.openModalBtn,
@@ -122,16 +127,16 @@ export class RoadmapView {
         event: 'click',
         handler: this.handleCloseModal.bind(this),
       },
-      {
-        el: this.ui.modal.form,
-        event: 'submit',
-        handler: this.handleSubmit.bind(this),
-      },
-      {
-        el: this.ui.modal.form,
-        event: 'click',
-        handler: this.handleClearError.bind(this),
-      },
+      // {
+      //   el: this.ui.modal.form,
+      //   event: 'submit',
+      //   handler: this.handleSubmit.bind(this),
+      // },
+      // {
+      //   el: this.ui.modal.form,
+      //   event: 'click',
+      //   handler: this.handleClearError.bind(this),
+      // },
     ];
     this.bouncingBtn();
   }
@@ -188,9 +193,9 @@ export class RoadmapView {
     this.localStates.bound = true;
   }
 
-  bind(handlers = {}) {
-    this.handlers = { ...this.handlers, ...handlers };
-  }
+  // bind(handlers = {}) {
+  //   this.handlers = { ...this.handlers, ...handlers };
+  // }
 
   deactivate() {
     if (!this.localStates.bound) return;
@@ -208,60 +213,27 @@ export class RoadmapView {
    * ========================================
    */
 
-  listActions(e) {
-    const btn = e.target.closest('button[data-action]');
-    if (!btn || btn.disabled || btn.getAttribute('aria-disabled') === 'true')
+  modalMode(e) {
+    const modeBtn = e.target.closest('button[data-mode]');
+    if (
+      !modeBtn ||
+      modeBtn.disabled ||
+      modeBtn.getAttribute('aria-disabled') === 'true'
+    )
       return;
 
-    const actions = btn.dataset.action;
-    if (!actions) return;
+    const mode = modeBtn.dataset.mode;
+    if (!mode) return;
 
-    switch (actions) {
-      case 'enter-roadmap':
-        this.handleEnterRoadmap(btn);
+    switch (mode) {
+      case 'manual':
+        this.handleManualSwitch(modeBtn);
         break;
 
-      case 'delete-roadmap':
-        this.handleDeleteRoadmap(btn);
+      case 'import':
+        this.handleImportSwitch(modeBtn);
         break;
     }
-  }
-
-  async setupEnterAnimaton(roadmapID) {
-    const { panel } = this.ui.selector;
-    const { content, addBtnContainer } = this.ui.roadmap;
-
-    const targetUl = content.querySelector(`ul[id="${roadmapID}"]`);
-    if (!targetUl) throw new Error('Cant find targetUl!');
-
-    const backBtn = content.querySelector('#btn-back');
-    if (!backBtn) throw new Error('Cant find backBtn!');
-
-    hideElement(backBtn); // I hide it earlier to show it at the end of the sequence and so that it doesn't get in the way
-
-    this._qa('.roadmap__list').forEach(
-      (
-        ul // I hide all roadmap containers
-      ) => ul.classList.add('hidden')
-    );
-    //Animated Show/Hide Sequence
-
-    //1)I hide the container for selecting the roadmap:
-    await this.animationManager?.hideAnimation(panel, 'fadeOutRight', '.5s');
-
-    //2)shows the content container, all are hidden here!
-    await this.animationManager?.showAnimation(content, 'fadeInRight', '.1s');
-
-    //3) shows the correct ul according to the ID
-    await this.animationManager?.showAnimation(targetUl, 'fadeInRight', '.5s');
-
-    //4) Buttons:
-
-    //back
-    await this.animationManager?.showBtns(backBtn, '.2s');
-
-    // shows the global button for adding nodes
-    await this.animationManager?.showBtns(addBtnContainer, '.2s');
   }
 
   async setupQuitAnimation(roadmapID) {
@@ -295,45 +267,11 @@ export class RoadmapView {
    * ========================================
    */
 
-  async handleEnterRoadmap(btn) {
-    try {
-      if (!btn) throw new Error('cant find button!');
-      const li = btn.closest('.roadmap-selector__item');
-
-      if (!li) throw new Error('the li element is invalid');
-      const roadmapId = `${li.dataset.id}`;
-
-      if (typeof this.handlers.onEnterRoadmap === 'function') {
-        this.handlers.onEnterRoadmap(roadmapId);
-      }
-    } catch (err) {
-      console.error('error when entering the roadmap:', err);
-    }
-  }
-
   // handleGoBack() {
   //   if (typeof this.handlers.onQuitRoadmap === 'function') {
   //     this.handlers.onQuitRoadmap();
   //   }
   // }
-
-  async handleDeleteRoadmap(btn) {
-    try {
-      const li = btn.closest('.roadmap-selector__item');
-      if (!li) throw new Error('Cant find LI!');
-      const roadmapID = li.dataset.id;
-
-      btn.disabled = true;
-      btn.setAttribute('aria-disabled', 'true');
-      btn.setAttribute('aria-pressed', 'true');
-
-      if (typeof this.handlers.onDelete === 'function') {
-        this.handlers.onDelete(roadmapID);
-      }
-    } catch (err) {
-      console.error('Error while deleting the roadmap--View:');
-    }
-  }
 
   setupCharacterCounter() {
     const formElements = this._qa('input[maxlength], textarea[maxlength]');
@@ -367,8 +305,8 @@ export class RoadmapView {
    */
   async handleOpenModal(e) {
     const btn = e.target;
-    const bluredOne = this.ui.modal.modalDialog;
-    const fieldset = this.ui.modal.modalFieldset;
+    const bluredOne = this.ui.modal.dialog;
+    const fieldset = this.ui.modal.fieldset;
 
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.blurInElement(bluredOne);
@@ -379,8 +317,8 @@ export class RoadmapView {
   async handleCloseModal(e) {
     e?.preventDefault?.();
     const btn = this._q('.selector-modal__btn--confirm');
-    const bluredOne = this.ui.modal.modalDialog;
-    const fieldset = this.ui.modal.modalFieldset;
+    const bluredOne = this.ui.modal.dialog;
+    const fieldset = this.ui.modal.fieldset;
 
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.hideAnimation(fieldset, 'bounceOutDown', '1s');
@@ -391,6 +329,46 @@ export class RoadmapView {
 
     this.handlerClearCounters();
   }
+  /**
+   * ========================================
+   * MODAL UI METHODS
+   * ========================================
+   */
+  async handleManualSwitch(btn) {
+    const { importForm, manualForm } = this.ui.modal;
+    const importBtn = this._q('button[data-mode="import"]');
+
+    if (this.localStates.modalCurrentMode === manualForm) return;
+    manualForm.disabled = false;
+    importForm.disabled = true;
+    if (!btn || !importBtn) throw new Error('cant find button!');
+
+    importBtn.classList.remove('pressed');
+    btn.classList.add('pressed');
+
+    hideElement(importForm);
+    await this.animationManager.showAnimation(manualForm, 'fadeIn', '.5s');
+
+    this.localStates.modalCurrentMode = manualForm;
+  }
+  async handleImportSwitch(btn) {
+    const { importForm, manualForm } = this.ui.modal;
+    const manualBtn = this._q('button[data-mode="manual"]');
+
+    if (this.localStates.modalCurrentMode === importForm) return;
+    manualForm.disabled = true;
+    importForm.disabled = false;
+    if (!btn || !manualBtn) throw new Error('cant find button!');
+
+    manualBtn.classList.remove('pressed');
+    btn.classList.add('pressed');
+
+    hideElement(manualForm);
+    await this.animationManager.showAnimation(importForm, 'fadeIn', '.5s');
+
+    this.localStates.modalCurrentMode = importForm;
+  }
+
   /**
    * ========================================
    * FORM SUBMIT METHOD
@@ -415,50 +393,6 @@ export class RoadmapView {
 
   /**
    * ========================================
-   * RENDER ROADMAP SELECTOR METHOD
-   * ========================================
-   */
-
-  async render(data, opts = {}) {
-    const { isNew = false, isInitial = false, index = 0 } = opts;
-    const li = document.createElement('li');
-    li.classList.add('roadmap-selector__item');
-    if (data.id) {
-      li.dataset.id = data.id;
-    }
-    li.innerHTML = `<p class=" roadmap-selector__title">${data.title}</p>
-                    <div class="roadmap-selector__title-divider"></div>
-                    <div class="roadmap-selector__item-actions">
-                         <button  class="roadmap-selector__btn roadmap-selector__btn--delete"
-                                  aria-label="Delete roadmap"
-                                  data-action = "delete-roadmap">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
-                        </button>
-                        <button class="roadmap-selector__btn roadmap-selector__btn--enter"
-                                aria-label = "Enter roadmap"
-                                data-action ="enter-roadmap">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                            </svg>
-
-                        </button>
-                    </div>
-                    <div class="roadmap-selector__item-time">
-                      <span class="roadmap-selector__item-time--title">Total time:</span>
-                      <p class ="roadmap-selector__item-time--node">00:00:00</p>
-                    </div>`;
-    this.ui.selector.list.appendChild(li);
-    if (isNew) {
-      await this.animationManager.addElementAnimation(li, 'bounceInLeft', '1s');
-    } else if (isInitial) {
-      const anim = index % 2 === 0 ? 'backInLeft' : 'backInRight';
-      this.animationManager?.addElementAnimation(li, anim, '1s');
-    }
-  }
-  /**
-   * ========================================
    * RENDER ROADMAP CAONTAINER METHOD
    * ========================================
    */
@@ -471,25 +405,6 @@ export class RoadmapView {
     }
 
     this.ui.roadmap.content.appendChild(ul);
-  }
-  /**
-   * ========================================
-   * RENDER ROADMAP BACKBUTTON AND ITS CONTAINER
-   * ========================================
-   */
-
-  renderBackBtn() {
-    const backContDiv = document.createElement('div');
-    backContDiv.classList.add('roadmap__content-action-wrap');
-
-    backContDiv.innerHTML = `
-         
-            <button id="btn-back" class="roadmap__btn roadmap__btn--back" data-action="back" aria-label="Back to roadmaps">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                </svg>
-            </button>`;
-    this.ui.roadmap.content.appendChild(backContDiv);
   }
 
   /**

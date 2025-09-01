@@ -432,7 +432,7 @@
                  aria-label="Selector modal modes">
 
                 <button id="manual-btn"
-                        class="selector-modal__tab-btn selector-modal__tab-btn--manual "
+                        class="selector-modal__tab-btn selector-modal__tab-btn--manual pressed"
                         data-mode="manual"
                         role="tab"
                         aria-selected="true"
@@ -440,7 +440,7 @@
                 </button>
 
                 <button id="import-btn"
-                        class="selector-modal__tab-btn selector-modal__tab-btn--import pressed"
+                        class="selector-modal__tab-btn selector-modal__tab-btn--import "
                         data-mode="import"
                         role="tab"
                         aria-selected="false"
@@ -493,7 +493,7 @@
                    data-for="roadmap-subelements"></p>
 
                 <button class="selector-modal__btn selector-modal__subtask-add-btn"
-                        id="subel-add-btn"
+                        id="subtask-add-btn"
                         type="button"
                         aria-label="Add sub-item">
 
@@ -536,7 +536,7 @@
                     </button>
 
                     <button type="button"
-                            id="manual-abandon-btn"
+                            id="form--manual-cancel-btn"
                             class="abandon selector-modal__btn selector-modal__btn--cancel">Cancel
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="20"
@@ -554,7 +554,7 @@
                 </div>
             </form>
 
-            <form id="import-node-form"
+            <form id="add-node-form--import"
                   class="hidden selector-modal__form selector-modal__form--import"
                   role="tabpanel"
                   aria-labelledby="import-button">
@@ -567,13 +567,13 @@
                   </span> 
             
             
-                  <div class=" selector-modal__form-import--textarea-wrap">
+                  <div class="selector-modal__form-import--textarea-wrap">
                       <p class="err-message  hidden selector-modal__error selector-modal__error--import" data-for="import"></p>
-                      <textarea id="import-desc"
+                      <textarea id="form--import-textarea"
                                 name="import"
                                 class="import-discription selector-modal__form-import-textarea"
                                 placeholder=" "></textarea>
-                      <label class="selector-modal__form-import-label" for="import-desc">Paste Here...</label>
+                      <label class="selector-modal__form-import-label" for="form--import-textarea">Paste Here...</label>
                   </div>
             
                   <div class="selector-modal__actions selector-modal__actions--import"
@@ -581,7 +581,7 @@
                        aria-label="Import actions">
                      
                       <button type="button"
-                              id="import-submit-node"
+                              id="form--import-submit-btn"
                               class="aprove selector-modal__btn selector-modal__btn--confirm">Add
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="20"
@@ -598,7 +598,7 @@
                         </button>
                       
                         <button type="button"
-                                id="import-abandon-btn"
+                                id="form--import-cancel-btn"
                                 class="abandon selector-modal__btn selector-modal__btn--cancel">Cancel
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="20"
@@ -618,7 +618,7 @@
                     <div class="helper-footer selector-modal__footer">
                         <p>You can use chatGPT to generate a roadmap!<br>
                             <button type="button"
-                                    id="promt-btn"
+                                    id="form--import-promt-btn"
                                     class="text-button"
                                     data-action="copy-promt">CLICK   
                             </button> to copy the promt.</p>
@@ -637,7 +637,7 @@
         
             <div class="roadmap-select-bar roadmap-selector__actions">
             
-                <button id="roadmap-open-modal-ID"
+                <button id="selector-open-modal-ID"
                         class="add-roadmap-btn roadmap-selector__btn roadmap-selector__btn--create"
                         type="button"
                         data-action="create-raodmap">New
@@ -720,7 +720,7 @@
 
                     <button type="button"
                             id="create-map-cancel-btn"
-                            class="task-handler-btn abandon selector-modal__btn selector-modal__btn--cancel">Cancel
+                            class="selector-modal__btn selector-modal__btn--cancel">Cancel
                         <svg xmlns="http://www.w3.org/2000/svg"
                              width="20"
                              height="20"
@@ -742,8 +742,8 @@
     
     <div  id ="roadmap-content"class=" hidden roadmap__content"></div>
     
-    <div id="add-node-btn-cont" class="add-btn-container hidden" aria-hidden="true">
-        <button id="add-roadmap-task"
+    <div id="add-node-btn-cont" class="add-btn-container hidden" >
+        <button id="roadmap-open-modal-ID"
                 class="add-task roadmap__btn roadmap__btn--add-node"
                 data-action="add-node"
                 aria-label="Add new node">

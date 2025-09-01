@@ -872,6 +872,15 @@ body {
   width: 100%;
   top: 25%;
 }
+.selector-modal__actions button {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 5rem;
+  cursor: pointer;
+}
 .selector-modal__actions > button:first-child {
   box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
   background: linear-gradient(135deg, rgba(30, 90, 80, 0.7), rgba(50, 160, 140, 0.7));

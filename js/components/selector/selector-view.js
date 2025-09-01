@@ -66,7 +66,7 @@ export class SelectorView {
 
       submitBtn: this._q('#create-map-submit-btn'),
       cancelBtn: this._q('#create-map-cancel-btn'),
-      openModalBtn: this._q('#roadmap-open-modal-ID'),
+      openModalBtn: this._q('#selector-open-modal-ID'),
     };
 
     /**
@@ -192,6 +192,7 @@ export class SelectorView {
       }
     });
     this.localStates.bound = false;
+    console.log('roadmap selector destoryed!');
   }
 
   /**

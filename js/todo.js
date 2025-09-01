@@ -1,16 +1,5 @@
-import { FormErrors } from './uiErrorHandler.js';
-import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  deleteDoc,
-} from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
-import { db } from './firebase-init.js';
-import { serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
 import { GetCaruselPosition } from './components/carousel-settings.js';
-import { RoudMapModal } from './components/roud-modal.js';
-import { RoadmapSelector } from './components/roadmap-selector.js';
+
 import { FirestoreService } from './Services/Service.js';
 import { NodeElement } from './components/node-component.js';
 import { RoadmapPlumbManager } from './Services/plumb-manager.js';
@@ -22,6 +11,7 @@ import { ListModel } from './components/list/list.model.js';
 import { SelectorView } from './components/selector/selector-view.js';
 import { SelectorModel } from './components/selector/selector-model.js';
 import { SelectorPresenter } from './components/selector/selector-presenter.js';
+import { RoadmapView } from './components/roadmap/roadmap-view.js';
 export class TodoApp {
   constructor(user, viewManager) {
     this.user = user;
@@ -37,92 +27,24 @@ export class TodoApp {
 
     this.plumbManagers = {};
     this.AnimationManager = new AnimationManager();
-    this.SelectorModel = new SelectorModel(this.firestoreService);
-    this.selectorView = new SelectorView('roadmap-view', {
-      animationManager: this.AnimationManager,
-    });
-    this.SelectorPresenter = new SelectorPresenter(
-      this.SelectorModel,
-      this.selectorView,
-      {
-        onRenderRequest: async (roadmapId) => {
-          this.state = { activeRoadmapID: `ul-${roadmapId}` };
-
-          await this.selectorView.setupEnterAnimaton(
-            this.state.activeRoadmapID
-          );
-          await this.renderNodesForRoadmap(this.state.activeRoadmapID);
-
-          const interval = setInterval(() => {
-            // <-naprawiam linie zeby sie nie rozjechały
-            this.plumbManagers[
-              this.state.activeRoadmapID
-            ]?.jsPlumbInstance?.revalidate(this.state.activeRoadmapID);
-            this.plumbManagers[
-              this.state.activeRoadmapID
-            ]?.jsPlumbInstance?.repaintEverything();
-          }, 10); // co 10ms przez 300ms
-
-          setTimeout(() => {
-            clearInterval(interval);
-          }, 1500); // zatrzymaj po 300ms
-        },
-      }
-    );
-
-    this.mainHamburger = new MainMenuHandler(
-      'main-hamburger',
-      'main-burger-exit',
-      'main-burger-menu'
-    );
-
-    this.userSettings = new SettingsMenuHandler(
-      'user-menu-btn',
-      'user-menu-exit',
-      'open-user-settings',
-      'logout-btn'
-    );
   }
   initCarusel() {
     this.carusel.onViewChange = (mode) => {
       this.viewManger.showMode(mode.sectionId, mode.indicatorId);
       if (mode.sectionId === 'roadmap-view') {
-        this.roudmapModal?.activate();
-        this.SelectorPresenter.init();
-        // this.roadmapSelector?.activate();
-
-        // this.firestoreService
-        //   .loadUserCollection('roadmaps')
-        //   .then((roadmapData) => {
-        //     this.roadmapSelector.loadRoadmapList(roadmapData);
-        //   })
-        //   .catch((err) => {
-        //     console.error('błąd przy ładowaniu roudmap:', err);
-        //   });
+        this.setupSelector(mode.sectionId);
+        this.state.view = 'selector';
       } else {
-        this.roudmapModal?.deactivate();
+        this.teardownSelector();
+        this.state.view = null;
       }
       if (mode.sectionId === 'list-view') {
-        if (!this.listView) {
-          const section = document.getElementById('list-view'); // sekcja slajdu
-          const root = section?.matches('.todo')
-            ? section
-            : section?.querySelector('.todo'); // KONKRETNY root widoku
-          if (!root) {
-            console.error('Brak .todo w #list-view');
-            return;
-          }
-          this.listModel = new ListModel(this.firestoreService);
+        this.setupList(mode.sectionId);
 
-          this.listView = new ListView(root, {
-            animationManager: this.AnimationManager,
-          });
-          this.ListController = new ListController(
-            this.listModel,
-            this.listView
-          );
-          this.ListController.init();
-        }
+        this.state.view = 'list';
+      } else {
+        this.teardownList();
+        this.state.view = null;
       }
     };
   }
@@ -219,77 +141,145 @@ export class TodoApp {
 
     nodeList.splice(index, 1);
   }
-  // lista--------------------------------------------------------------
-  async loadAndRenderUserTasks() {
-    try {
-      const storagedTasks = await this.taskManager.loadUserTasks(this.user.uid);
-      storagedTasks.forEach((task) => this.taskManager.addTaskToUI(task));
-    } catch (error) {
-      console.error('błąd przy ładowaniu i renderowaniu zadań:', error);
+
+  setupList(sectionId) {
+    if (this.listController) {
+      this.listController?.init();
+    } else {
+      this.listModel = new ListModel(this.firestoreService);
+      this.listView = new ListView(sectionId, {
+        animationManager: this.AnimationManager,
+      });
+      this.listController = new ListController(this.listModel, this.listView);
+      this.listController?.init();
     }
   }
-}
-//klasa do obsługi przycisku wyloguj
-export class LogoutButtonHandler {
-  constructor(buttonID) {
-    this.button = document.getElementById(buttonID);
-    this.setLogoutListener();
+  teardownList() {
+    this.listController?.destroy();
   }
-  setLogoutListener() {
-    if (this.button) {
-      this.button.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.dispatchEvent(new CustomEvent('auth:logout'));
-        window.location.reload();
+  teardownSelector() {
+    this.selectorPresenter?.destroy();
+  }
+
+  setupSelector(sectionId) {
+    if (this.selectorPresenter) {
+      this.selectorPresenter.init();
+    } else {
+      this.selectorModel = new SelectorModel(this.firestoreService);
+      this.selectorView = new SelectorView(sectionId, {
+        animationManager: this.AnimationManager,
+      });
+      this.selectorPresenter = new SelectorPresenter(
+        this.selectorModel,
+        this.selectorView,
+        {
+          onRenderRequest: async (roadmapId) => {
+            this.state = { activeRoadmapID: `ul-${roadmapId}` };
+
+            await this.selectorView.setupEnterAnimaton(
+              this.state.activeRoadmapID
+            );
+            this.state.view = 'roadmap';
+            this.repairPlumb(this.state.activeRoadmapID);
+            await this.renderNodesForRoadmap(this.state.activeRoadmapID);
+            this.setupRoadmap(sectionId, this.state.activeRoadmapID);
+          },
+        }
+      );
+      this.selectorPresenter.init();
+    }
+  }
+  setupRoadmap(sectionId, roadmapID) {
+    if (this.state.activeRoadmapID && this.state.view === 'roadmap') {
+      this.roadmapView = new RoadmapView(sectionId, roadmapID, {
+        animationManager: this.AnimationManager,
       });
     }
+    this.roadmapView?.activate();
+  }
+  repairPlumb(roadmapID) {
+    const interval = setInterval(() => {
+      this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(roadmapID);
+      this.plumbManagers[roadmapID]?.jsPlumbInstance?.repaintEverything();
+    }, 10);
+
+    setTimeout(() => {
+      clearInterval(interval);
+    }, 1500);
   }
 }
+
+// lista--------------------------------------------------------------
+//   async loadAndRenderUserTasks() {
+//     try {
+//       const storagedTasks = await this.taskManager.loadUserTasks(this.user.uid);
+//       storagedTasks.forEach((task) => this.taskManager.addTaskToUI(task));
+//     } catch (error) {
+//       console.error('błąd przy ładowaniu i renderowaniu zadań:', error);
+//     }
+//   }
+// }
+// //klasa do obsługi przycisku wyloguj
+// export class LogoutButtonHandler {
+//   constructor(buttonID) {
+//     this.button = document.getElementById(buttonID);
+//     this.setLogoutListener();
+//   }
+//   setLogoutListener() {
+//     if (this.button) {
+//       this.button.addEventListener('click', (e) => {
+//         e.preventDefault();
+//         document.dispatchEvent(new CustomEvent('auth:logout'));
+//         window.location.reload();
+//       });
+//     }
+//   }
+// }
 
 // szablon Okienek ktore pokazuje/ukrywam
 
-export class ToggleableMenu {
-  constructor(openBtnID, closeBtnID, mainMenuID) {
-    this.openBtn = document.getElementById(openBtnID);
-    this.closeBtn = document.getElementById(closeBtnID);
-    this.menu = document.getElementById(mainMenuID);
-    this.bindEvents();
-  }
+// export class ToggleableMenu {
+//   constructor(openBtnID, closeBtnID, mainMenuID) {
+//     this.openBtn = document.getElementById(openBtnID);
+//     this.closeBtn = document.getElementById(closeBtnID);
+//     this.menu = document.getElementById(mainMenuID);
+//     this.bindEvents();
+//   }
 
-  //metoda łapiąca eventy
-  bindEvents() {
-    this.openBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.menu.classList.remove('hidden');
-    });
+//   //metoda łapiąca eventy
+//   bindEvents() {
+//     this.openBtn?.addEventListener('click', (e) => {
+//       e.preventDefault();
+//       this.menu.classList.remove('hidden');
+//     });
 
-    this.closeBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.menu?.classList.add('hidden');
-    });
-  }
-  show() {
-    this.menu?.classList.remove('hidden');
-  }
-  hide() {
-    this.menu?.classList.add('hidden');
-  }
-}
-// klasa obsługi main menu dziedziczona z szablonu menu
+//     this.closeBtn?.addEventListener('click', (e) => {
+//       e.preventDefault();
+//       this.menu?.classList.add('hidden');
+//     });
+//   }
+//   show() {
+//     this.menu?.classList.remove('hidden');
+//   }
+//   hide() {
+//     this.menu?.classList.add('hidden');
+//   }
+// }
+// // klasa obsługi main menu dziedziczona z szablonu menu
 
-export class MainMenuHandler extends ToggleableMenu {
-  constructor(openBtnID, closeBtnID, mainMenuID) {
-    super(openBtnID, closeBtnID, mainMenuID);
-    {
-    }
-  }
-}
-// to samo tylk  do Usersettingsow
-export class SettingsMenuHandler extends ToggleableMenu {
-  constructor(openBtnID, closeBtnID, mainMenuID, logoutBtnID) {
-    super(openBtnID, closeBtnID, mainMenuID);
-    {
-      this.logoutBtn = new LogoutButtonHandler(logoutBtnID);
-    }
-  }
-}
+// export class MainMenuHandler extends ToggleableMenu {
+//   constructor(openBtnID, closeBtnID, mainMenuID) {
+//     super(openBtnID, closeBtnID, mainMenuID);
+//     {
+//     }
+//   }
+// }
+// // to samo tylk  do Usersettingsow
+// export class SettingsMenuHandler extends ToggleableMenu {
+//   constructor(openBtnID, closeBtnID, mainMenuID, logoutBtnID) {
+//     super(openBtnID, closeBtnID, mainMenuID);
+//     {
+//       this.logoutBtn = new LogoutButtonHandler(logoutBtnID);
+//     }
+//   }
+// }

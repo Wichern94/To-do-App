@@ -142,12 +142,7 @@
   position: relative;
   background-color: transparent;
 }
-.goback-btn-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: 0 0.5rem 0.5rem 0.5rem;
-}
+
 .user-nav-section {
   display: flex;
   flex-direction: column;
@@ -320,9 +315,7 @@
   filter: grayscale(1);
   pointer-events: none;
 }
-#btn-back {
-  position: absolute;
-}
+
 .text-button {
   border: none;
   outline: none;

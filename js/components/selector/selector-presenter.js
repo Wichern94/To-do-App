@@ -121,4 +121,8 @@ export class SelectorPresenter {
     if (existingUl) return;
     this.view.createNodeUl(roadmap);
   }
+
+  destroy() {
+    this.view.deactivate();
+  }
 }

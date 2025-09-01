@@ -1,9 +1,9 @@
 import { FormErrors } from '../../uiErrorHandler.js';
 import { FormValidator } from '../../Services/form-validator.js';
 export class ListView {
-  constructor(root = '.todo', { animationManager } = {}) {
+  constructor(root = 'list-view', { animationManager } = {}) {
     const rootEl =
-      typeof root === 'string' ? document.querySelector(root) : root;
+      typeof root === 'string' ? document.getElementById(root) : root;
     if (!rootEl) {
       throw new Error('List root not found (selector or element invalid)');
     }
@@ -174,6 +174,7 @@ export class ListView {
       }
     });
     this.localStates.bound = false;
+    console.log('list deactivated!');
   }
 
   /**
