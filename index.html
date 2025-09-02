@@ -452,7 +452,8 @@
                   class="selector-modal__form selector-modal__form--manual"
                   autocomplete="off"
                   role="tabpanel"
-                  aria-labelledby="hand-button">
+                  aria-labelledby="hand-button"
+                  data-mode="manual">
                   
             <span class="selector-modal__title-wrap">
                 <h3 id="modal-title"
@@ -519,7 +520,7 @@
                      role="group"
                      aria-label="Create roadmap actions">
 
-                    <button type="button"
+                    <button type="submit"
                             id="form--manual-submit-btn"
                             class="aprove  selector-modal__btn selector-modal__btn--confirm">Add
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -537,7 +538,9 @@
 
                     <button type="button"
                             id="form--manual-cancel-btn"
-                            class="abandon selector-modal__btn selector-modal__btn--cancel">Cancel
+                            class="abandon selector-modal__btn selector-modal__btn--cancel"
+                            data-action="cancel"
+                            data-mode="manual">Cancel
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="20"
                                  height="20"
@@ -557,7 +560,8 @@
             <form id="add-node-form--import"
                   class="hidden selector-modal__form selector-modal__form--import"
                   role="tabpanel"
-                  aria-labelledby="import-button">
+                  aria-labelledby="import-button"
+                  data-mode="import">
                   
                   <span class="selector-modal__title-wrap">
                       <h3 id="import-modal-title"
@@ -580,7 +584,7 @@
                        role="group"
                        aria-label="Import actions">
                      
-                      <button type="button"
+                      <button type="submit"
                               id="form--import-submit-btn"
                               class="aprove selector-modal__btn selector-modal__btn--confirm">Add
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -599,7 +603,9 @@
                       
                         <button type="button"
                                 id="form--import-cancel-btn"
-                                class="abandon selector-modal__btn selector-modal__btn--cancel">Cancel
+                                class="abandon selector-modal__btn selector-modal__btn--cancel"
+                                data-action="cancel"
+                                data-mode="import">Cancel
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="20"
                                      height="20"

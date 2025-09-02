@@ -98,10 +98,11 @@ export class RoadmapView {
      * ========================================
      */
     this.handlers = {
-      onAdd: null,
-      onEnterRoadmap: null,
-      onDelete: null,
-      onQuitRoadmap: null,
+      onBack: null,
+      onModalOpen: null,
+      onModalClose: null,
+      onManualSubmit: null,
+      onImportSubmit: null,
     };
     /**
      * ========================================
@@ -109,34 +110,35 @@ export class RoadmapView {
      * ========================================
      */
     this.animationManager = animationManager || null;
-    this.formErrors = new FormErrors('create-map-form');
+    this.importFormErrors = new FormErrors('add-node-form--import');
+    this.manualFormErrors = new FormErrors('add-node-form--manual');
 
     this.listeners = [
       {
         el: this.ui.modal.fieldset,
         event: 'click',
-        handler: this.modalMode.bind(this),
+        handler: this.setupModal.bind(this),
       },
       {
         el: this.ui.modal.openModalBtn,
         event: 'click',
         handler: this.handleOpenModal.bind(this),
       },
-      {
-        el: this.ui.modal.cancelBtn,
-        event: 'click',
-        handler: this.handleCloseModal.bind(this),
-      },
       // {
-      //   el: this.ui.modal.form,
-      //   event: 'submit',
-      //   handler: this.handleSubmit.bind(this),
-      // },
-      // {
-      //   el: this.ui.modal.form,
+      //   el: this.ui.modal.cancelBtn,
       //   event: 'click',
-      //   handler: this.handleClearError.bind(this),
+      //   handler: this.handleCloseModal.bind(this),
       // },
+      {
+        el: this.ui.modal.manualForm,
+        event: 'submit',
+        handler: this.handleManualSubmit.bind(this),
+      },
+      {
+        el: this.ui.modal.importForm,
+        event: 'submit',
+        handler: this.handleImportSubmit.bind(this),
+      },
     ];
     this.bouncingBtn();
   }
@@ -193,9 +195,9 @@ export class RoadmapView {
     this.localStates.bound = true;
   }
 
-  // bind(handlers = {}) {
-  //   this.handlers = { ...this.handlers, ...handlers };
-  // }
+  bind(handlers = {}) {
+    this.handlers = { ...this.handlers, ...handlers };
+  }
 
   deactivate() {
     if (!this.localStates.bound) return;
@@ -213,7 +215,7 @@ export class RoadmapView {
    * ========================================
    */
 
-  modalMode(e) {
+  setupModal(e) {
     const modeBtn = e.target.closest('button[data-mode]');
     if (
       !modeBtn ||
@@ -233,6 +235,12 @@ export class RoadmapView {
       case 'import':
         this.handleImportSwitch(modeBtn);
         break;
+    }
+    const cancelbtn = e.target.closest('[data-action="cancel"]');
+    if (!cancelbtn) return;
+
+    if (typeof this.handlers.onModalClose === 'function') {
+      this.handlers.onModalClose(e);
     }
   }
 
@@ -315,17 +323,20 @@ export class RoadmapView {
   }
 
   async handleCloseModal(e) {
-    e?.preventDefault?.();
-    const btn = this._q('.selector-modal__btn--confirm');
+    e.preventDefault();
+
     const bluredOne = this.ui.modal.dialog;
     const fieldset = this.ui.modal.fieldset;
 
-    this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.hideAnimation(fieldset, 'bounceOutDown', '1s');
     await this.animationManager?.blurOutElement(bluredOne);
 
-    this.formErrors.clearAllErrors();
+    this.importFormErrors.clearAllErrors();
+    this.manualFormErrors.clearAllErrors();
+
     this.ui.modal.titleInput.value = '';
+    this.ui.modal.subtaskInput.value = '';
+    this.ui.modal.textArea.value = '';
 
     this.handlerClearCounters();
   }
@@ -339,8 +350,6 @@ export class RoadmapView {
     const importBtn = this._q('button[data-mode="import"]');
 
     if (this.localStates.modalCurrentMode === manualForm) return;
-    manualForm.disabled = false;
-    importForm.disabled = true;
     if (!btn || !importBtn) throw new Error('cant find button!');
 
     importBtn.classList.remove('pressed');
@@ -351,13 +360,12 @@ export class RoadmapView {
 
     this.localStates.modalCurrentMode = manualForm;
   }
+
   async handleImportSwitch(btn) {
     const { importForm, manualForm } = this.ui.modal;
     const manualBtn = this._q('button[data-mode="manual"]');
 
     if (this.localStates.modalCurrentMode === importForm) return;
-    manualForm.disabled = true;
-    importForm.disabled = false;
     if (!btn || !manualBtn) throw new Error('cant find button!');
 
     manualBtn.classList.remove('pressed');
@@ -374,18 +382,27 @@ export class RoadmapView {
    * FORM SUBMIT METHOD
    * ========================================
    */
-  async handleSubmit(e) {
+  async handleImportSubmit(e) {
     e.preventDefault();
     try {
-      const nameInputData = this.ui.modal.titleInput.value.trim() || '';
+      console.log('import submit');
+    } catch (err) {
+      console.error('import Submit Error:');
+    }
+  }
+  async handleManualSubmit(e) {
+    e.preventDefault();
+    try {
+      // const nameInputData = this.ui.modal.titleInput.value.trim() || '';
+      console.log('manual submit');
 
-      const roadmapData = {
-        title: nameInputData,
-      };
+      // const roadmapData = {
+      //   title: nameInputData,
+      // };
 
-      if (typeof this.handlers.onAdd === 'function') {
-        this.handlers.onAdd(roadmapData);
-      }
+      // if (typeof this.handlers.onAdd === 'function') {
+      //   this.handlers.onAdd(roadmapData);
+      // }
     } catch (err) {
       console.error('Form sending error:', err);
     }
