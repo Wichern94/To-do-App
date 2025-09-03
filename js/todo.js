@@ -5,13 +5,19 @@ import { NodeElement } from './components/node-component.js';
 import { RoadmapPlumbManager } from './Services/plumb-manager.js';
 import { AnimationManager } from './Services/animation-manager.js';
 import { ToastManager } from './Services/toastify-manger.js';
+
 import { ListView } from './components/list/list-view.js';
 import { ListController } from './components/list/list-controller.js';
 import { ListModel } from './components/list/list.model.js';
+
 import { SelectorView } from './components/selector/selector-view.js';
 import { SelectorModel } from './components/selector/selector-model.js';
 import { SelectorPresenter } from './components/selector/selector-presenter.js';
+
 import { RoadmapView } from './components/roadmap/roadmap-view.js';
+import { RoadmapPresenter } from './components/roadmap/roadmap-presenter.js';
+import { RoadmapModel } from './components/roadmap/roadmap-model.js';
+
 export class TodoApp {
   constructor(user, viewManager) {
     this.user = user;
@@ -154,12 +160,6 @@ export class TodoApp {
       this.listController?.init();
     }
   }
-  teardownList() {
-    this.listController?.destroy();
-  }
-  teardownSelector() {
-    this.selectorPresenter?.destroy();
-  }
 
   setupSelector(sectionId) {
     if (this.selectorPresenter) {
@@ -191,12 +191,30 @@ export class TodoApp {
   }
   setupRoadmap(sectionId, roadmapID) {
     if (this.state.activeRoadmapID && this.state.view === 'roadmap') {
+      this.roadmapModel = new RoadmapModel(this.firestoreService);
+
       this.roadmapView = new RoadmapView(sectionId, roadmapID, {
         animationManager: this.AnimationManager,
       });
+
+      this.roadmapPresenter = new RoadmapPresenter(
+        this.roadmapModel,
+        this.roadmapView,
+        {
+          onQuitRequest: async () => {
+            if (this.state.activeRoadmapID === null) return;
+            await this.roadmapView.handleQuitAnimation(
+              this.state.activeRoadmapID
+            );
+            this.state.activeRoadmapID = null;
+            this.teardownRoadmap();
+          },
+        }
+      );
     }
-    this.roadmapView?.activate();
+    this.roadmapPresenter?.init();
   }
+
   repairPlumb(roadmapID) {
     const interval = setInterval(() => {
       this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(roadmapID);
@@ -206,6 +224,16 @@ export class TodoApp {
     setTimeout(() => {
       clearInterval(interval);
     }, 1500);
+  }
+
+  teardownList() {
+    this.listController?.destroy();
+  }
+  teardownSelector() {
+    this.selectorPresenter?.destroy();
+  }
+  teardownRoadmap() {
+    this.roadmapPresenter?.destroy();
   }
 }
 

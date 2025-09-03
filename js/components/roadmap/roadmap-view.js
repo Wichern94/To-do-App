@@ -16,6 +16,13 @@ export class RoadmapView {
     }
     /**
      * ========================================
+     * ROADMAP ID
+     * ========================================
+     */
+    this.currentRoadmapID = roadmapRoot;
+
+    /**
+     * ========================================
      * ROOT + QUERYHELPER
      * ========================================
      */
@@ -44,6 +51,8 @@ export class RoadmapView {
      */
     this.ui.roadmap = {
       backBtn: this._q('.roadmap__btn--back'),
+      content: this._q('.roadmap__content'),
+      addBtnContainer: this._q('#add-node-btn-cont'),
     };
 
     /**
@@ -78,7 +87,8 @@ export class RoadmapView {
       manualSubmitBtn: this._q('#form--manual-submit-btn'),
       cancelBtn: this._q('.selector-modal__btn--cancel'),
       openModalBtn: this._q('#roadmap-open-modal-ID'),
-      promtBtN: this._q('#form--import-promt-btn'),
+      promtBtn: this._q('#form--import-promt-btn'),
+      subtaskBtn: this._q('#subtask-add-btn'),
     };
 
     /**
@@ -98,11 +108,12 @@ export class RoadmapView {
      * ========================================
      */
     this.handlers = {
-      onBack: null,
+      onQuitRoadmap: null,
       onModalOpen: null,
       onModalClose: null,
       onManualSubmit: null,
       onImportSubmit: null,
+      onAddSubtask: null,
     };
     /**
      * ========================================
@@ -120,15 +131,20 @@ export class RoadmapView {
         handler: this.setupModal.bind(this),
       },
       {
+        el: this.ui.modal.subtaskBtn,
+        event: 'click',
+        handler: this.handleAddSubtask.bind(this),
+      },
+      {
         el: this.ui.modal.openModalBtn,
         event: 'click',
-        handler: this.handleOpenModal.bind(this),
+        handler: this.sendOnModalOpen.bind(this),
       },
-      // {
-      //   el: this.ui.modal.cancelBtn,
-      //   event: 'click',
-      //   handler: this.handleCloseModal.bind(this),
-      // },
+      {
+        el: this.ui.roadmap.backBtn,
+        event: 'click',
+        handler: this.sendGoBack.bind(this),
+      },
       {
         el: this.ui.modal.manualForm,
         event: 'submit',
@@ -141,6 +157,9 @@ export class RoadmapView {
       },
     ];
     this.bouncingBtn();
+  }
+  get takeRoadmapID() {
+    return this.currentRoadmapID;
   }
   /**
    * ========================================
@@ -236,15 +255,43 @@ export class RoadmapView {
         this.handleImportSwitch(modeBtn);
         break;
     }
-    const cancelbtn = e.target.closest('[data-action="cancel"]');
-    if (!cancelbtn) return;
 
+    this.setModalClickButtons(e);
+  }
+  setModalClickButtons(e) {
+    const btn = e.target.closest('[data-action]');
+
+    if (!btn || btn.disabled || btn.getAttribute('aria-disabled') === 'true')
+      return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    switch (action) {
+      case 'cancel':
+        this.sendOnModalClose(e);
+        break;
+    }
+  }
+
+  sendOnModalClose(e) {
     if (typeof this.handlers.onModalClose === 'function') {
       this.handlers.onModalClose(e);
     }
   }
 
-  async setupQuitAnimation(roadmapID) {
+  sendOnModalOpen(e) {
+    if (typeof this.handlers.onModalOpen === 'function') {
+      this.handlers.onModalOpen(e);
+    }
+  }
+  sendGoBack() {
+    if (typeof this.handlers.onQuitRoadmap === 'function') {
+      this.handlers.onQuitRoadmap();
+    }
+  }
+
+  async handleQuitAnimation(roadmapID) {
     const { panel } = this.ui.selector;
     const { content, addBtnContainer } = this.ui.roadmap;
     // preparing elements:
@@ -274,12 +321,6 @@ export class RoadmapView {
    * HANDLER METHODS
    * ========================================
    */
-
-  // handleGoBack() {
-  //   if (typeof this.handlers.onQuitRoadmap === 'function') {
-  //     this.handlers.onQuitRoadmap();
-  //   }
-  // }
 
   setupCharacterCounter() {
     const formElements = this._qa('input[maxlength], textarea[maxlength]');
@@ -319,7 +360,6 @@ export class RoadmapView {
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.blurInElement(bluredOne);
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
-    this.setupCharacterCounter();
   }
 
   async handleCloseModal(e) {
@@ -330,16 +370,8 @@ export class RoadmapView {
 
     await this.animationManager?.hideAnimation(fieldset, 'bounceOutDown', '1s');
     await this.animationManager?.blurOutElement(bluredOne);
-
-    this.importFormErrors.clearAllErrors();
-    this.manualFormErrors.clearAllErrors();
-
-    this.ui.modal.titleInput.value = '';
-    this.ui.modal.subtaskInput.value = '';
-    this.ui.modal.textArea.value = '';
-
-    this.handlerClearCounters();
   }
+
   /**
    * ========================================
    * MODAL UI METHODS
@@ -385,7 +417,6 @@ export class RoadmapView {
   async handleImportSubmit(e) {
     e.preventDefault();
     try {
-      console.log('import submit');
     } catch (err) {
       console.error('import Submit Error:');
     }
@@ -393,18 +424,24 @@ export class RoadmapView {
   async handleManualSubmit(e) {
     e.preventDefault();
     try {
-      // const nameInputData = this.ui.modal.titleInput.value.trim() || '';
-      console.log('manual submit');
+      const rawInputData = this.ui.modal.titleInput.value.trim() || '';
 
-      // const roadmapData = {
-      //   title: nameInputData,
-      // };
+      const roadmapData = {
+        title: rawInputData,
+      };
 
-      // if (typeof this.handlers.onAdd === 'function') {
-      //   this.handlers.onAdd(roadmapData);
-      // }
+      if (typeof this.handlers.onAdd === 'function') {
+        this.handlers.onAdd(roadmapData);
+      }
     } catch (err) {
       console.error('Form sending error:', err);
+    }
+  }
+  async handleAddSubtask() {
+    const rawInputValue = this.ui.modal.subtaskInput?.value;
+
+    if (typeof this.handlers.onAddSubtask === 'function') {
+      this.handlers.onAddSubtask(rawInputValue);
     }
   }
 
@@ -413,16 +450,6 @@ export class RoadmapView {
    * RENDER ROADMAP CAONTAINER METHOD
    * ========================================
    */
-
-  createNodeUl(data) {
-    const ul = document.createElement('ul');
-    ul.classList.add('hidden', 'roadmap__list');
-    if (data.id) {
-      ul.id = `ul-${data.id}`;
-    }
-
-    this.ui.roadmap.content.appendChild(ul);
-  }
 
   /**
    * ========================================
@@ -441,16 +468,7 @@ export class RoadmapView {
       span.textContent = '';
     });
   }
-  async onDeleteAnimation(oldEl) {
-    await this.animationManager?.hideAnimation(oldEl, 'flipOutX', '1s');
-    oldEl.remove();
-  }
 
-  findItemEl(roadmapID) {
-    return (
-      this.ui.selector.list.querySelector(`[data-id="${roadmapID}"]`) || null
-    );
-  }
   bouncingBtn() {
     const btn = this.ui.modal.openModalBtn;
     if (btn) {
@@ -458,12 +476,16 @@ export class RoadmapView {
     }
   }
 
-  // activeBackButton() {
-  //   const backBtn = document.getElementById('btn-back');
-  //   if (backBtn) {
-  //     backBtn.removeEventListener('click', this.handleGoBack);
-  //     backBtn.addEventListener('click', this.handleGoBack.bind(this));
-  //     console.log('kliknieto w back');
-  //   }
-  // }
+  clearManualForm() {
+    this.manualFormErrors.clearAllErrors();
+
+    this.ui.modal.titleInput.value = '';
+    this.ui.modal.subtaskInput.value = '';
+  }
+
+  clearImportForm() {
+    this.importFormErrors.clearAllErrors();
+
+    this.ui.modal.textArea.value = '';
+  }
 }
