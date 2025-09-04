@@ -76,6 +76,14 @@
       top: 30%;
     }
   }
+  &__error {
+    color: var.$formError;
+    font-size: 10px;
+    font-weight: 500;
+    position: absolute;
+
+    top: 30%;
+  }
 
   &__subtask {
     &-label-wrap {
@@ -112,7 +120,7 @@
       top: 55%;
       @include mixins.glass-input-label($width: 58%);
       p {
-        left: 50%;
+        left: 45%;
       }
     }
   }

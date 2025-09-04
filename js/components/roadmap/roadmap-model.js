@@ -2,6 +2,22 @@ export class RoadmapModel {
   constructor(firestoreService) {
     this.FsS = firestoreService;
     this.COL = 'roadmaps';
+    this._draft = { title: '', subtasks: [] };
+  }
+  resetDraft() {
+    this._draft = {
+      title: '',
+      subtasks: [],
+    };
+  }
+  addDraftSubtask(value) {
+    this._draft.subtasks.push(value);
+  }
+  setDraftTitle(value) {
+    this._draft.title = value;
+  }
+  getDraft() {
+    return this._draft;
   }
   //   async loadAll() {
   //     const rows = await this.FsS.loadUserCollection(this.COL);

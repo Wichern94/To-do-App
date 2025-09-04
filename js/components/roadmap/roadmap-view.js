@@ -76,6 +76,7 @@ export class RoadmapView {
       subtaskInput: this._q('#form--manual-input-subelements'),
       importForm: this._q('#add-node-form--import'),
       textArea: this._q('#form--import-textarea'),
+      subtaskContainer: this._q('#subtask-list'),
 
       /**
        * ========================================
@@ -149,6 +150,11 @@ export class RoadmapView {
         el: this.ui.modal.manualForm,
         event: 'submit',
         handler: this.handleManualSubmit.bind(this),
+      },
+      {
+        el: this.ui.modal.manualForm,
+        event: 'click',
+        handler: this.handleClearManualError.bind(this),
       },
       {
         el: this.ui.modal.importForm,
@@ -424,14 +430,14 @@ export class RoadmapView {
   async handleManualSubmit(e) {
     e.preventDefault();
     try {
-      const rawInputData = this.ui.modal.titleInput.value.trim() || '';
+      const rawInputData = this.ui.modal.titleInput.value || '';
 
-      const roadmapData = {
+      const rawFormData = {
         title: rawInputData,
       };
 
-      if (typeof this.handlers.onAdd === 'function') {
-        this.handlers.onAdd(roadmapData);
+      if (typeof this.handlers.onManualSubmit === 'function') {
+        this.handlers.onManualSubmit(rawFormData);
       }
     } catch (err) {
       console.error('Form sending error:', err);
@@ -456,9 +462,9 @@ export class RoadmapView {
    * HELPER METHODS
    * ========================================
    */
-  handleClearError(e) {
+  handleClearManualError(e) {
     if (e.target.tagName === 'INPUT') {
-      this.formErrors.clearError(e.target.name);
+      this.manualFormErrors.clearError(e.target.name);
     } else return;
   }
 
@@ -481,11 +487,33 @@ export class RoadmapView {
 
     this.ui.modal.titleInput.value = '';
     this.ui.modal.subtaskInput.value = '';
+    this.ui.modal.subtaskContainer.innerHTML = '';
   }
 
   clearImportForm() {
     this.importFormErrors.clearAllErrors();
 
     this.ui.modal.textArea.value = '';
+  }
+  animateInvalidBtn() {
+    this.animationManager.addElementAnimation(
+      this.ui.modal.subtaskBtn,
+      'shakeX',
+      '1s'
+    );
+  }
+  clearSubtaskInputAndContainer() {
+    this.ui.modal.subtaskInput.value = '';
+
+    this.ui.modal.subtaskContainer.innerHTML = '';
+  }
+  renderSubtasks(subtasks) {
+    subtasks.forEach(async (value) => {
+      const li = document.createElement('li');
+      li.textContent = value;
+      li.classList.add('selector-modal__subtask-item');
+      this.ui.modal.subtaskContainer.appendChild(li);
+      await this.animationManager.showAnimation(li, 'fadeIn', '.5s');
+    });
   }
 }

@@ -21,8 +21,11 @@ export class RoadmapPresenter {
 
       onModalOpen: async (e) => {
         try {
+          this.model.resetDraft();
+
           this.view.clearManualForm();
           this.view.clearImportForm();
+
           await this.view.handleOpenModal(e);
         } catch (err) {
           console.error('Open Modal failed:', err);
@@ -44,8 +47,50 @@ export class RoadmapPresenter {
           this.onQuitRequest();
         }
       },
-      onAddSubtask: (rawData) => {
-        console.log(rawData);
+      onAddSubtask: async (rawData) => {
+        try {
+          const normalizedData = this.normalizeInput(rawData);
+          const isValid = FormValidator.validateOneInput(
+            normalizedData,
+            'roadmap-subelements',
+            this.view.manualFormErrors
+          );
+
+          if (!isValid) {
+            this.view.animateInvalidBtn();
+            return;
+          }
+          this.model.addDraftSubtask(normalizedData);
+
+          this.view.clearSubtaskInputAndContainer();
+          this.view.renderSubtasks(this.model.getDraft().subtasks);
+        } catch (err) {
+          console.error('onAddSubtask Error:', err);
+        }
+      },
+      onManualSubmit: async (rawFormData) => {
+        try {
+          const normalizedTitle = this.normalizeInput(rawFormData.title);
+
+          const isValid = FormValidator.validateOneInput(
+            normalizedTitle,
+            'create-map-title',
+            this.view.manualFormErrors
+          );
+
+          if (!isValid) return;
+          this.model.setDraftTitle(normalizedTitle);
+          const draft = this.model.getDraft();
+
+          const nodeData = {
+            title: draft.title,
+            subtasks: draft.subtasks,
+            roadmapID: this.view.takeRoadmapID,
+          };
+          console.log('obiekt nodeData:', nodeData);
+        } catch (err) {
+          console.error('onManualSubmit Error:');
+        }
       },
 
       //       onEnterRoadmap: async (roadmapId) => {
@@ -131,6 +176,19 @@ export class RoadmapPresenter {
 
     //     if (existingUl) return;
     //     this.view.createNodeUl(roadmap);
+  }
+  normalizeInput(raw) {
+    if (typeof raw !== 'string') return '';
+
+    let value = raw.trim();
+
+    value = value.replace(/\s+/g, ' ');
+
+    value = value.replace(/[\u200B-\u200D\uFEFF\u00AD]/g, '');
+
+    value = value.replace(/[^\p{L}\p{N}\p{P}\p{Zs}]/gu, '');
+
+    return value;
   }
 
   destroy() {
