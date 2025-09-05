@@ -1,7 +1,7 @@
 export class RoadmapModel {
   constructor(firestoreService) {
     this.FsS = firestoreService;
-    this.COL = 'roadmaps';
+    this.refObj = { COL: 'roadmaps', SUBCOL: 'nodes' };
     this._draft = { title: '', subtasks: [] };
   }
   resetDraft() {
@@ -19,23 +19,34 @@ export class RoadmapModel {
   getDraft() {
     return this._draft;
   }
+  async getExistedNodes(roadmapID) {
+    try {
+      if (!roadmapID.startsWith('ul-'))
+        throw new Error('roadmapID is not in the correct format!');
+      const existingNodes = await this.FsS.getElementsfromSubCollection(
+        roadmapID,
+        this.refObj.COL,
+        this.refObj.SUBCOL
+      );
+      return existingNodes;
+    } catch (err) {
+      console.error('getExistedNodes Error:', err);
+    }
+  }
   //   async loadAll() {
   //     const rows = await this.FsS.loadUserCollection(this.COL);
   //     const sortedRows = rows.sort((a, b) => a.createdAt - b.createdAt);
   //     return sortedRows.map(this._normalize);
   //   }
-  //   async createRoadmap({ title }) {
-  //     const id = await this.FsS.addCollection(
-  //       { title, done: false, createdAt: Date.now() },
-  //       this.COL
-  //     );
-  //     if (!id) return await this.loadAll();
+  async createNode(DataObj) {
+    const nodeID = await this.FsS.addCollectionElement(
+      DataObj,
+      this.refObj.COL,
+      this.refObj.SUBCOL
+    );
 
-  //     const a11yId = 'a11y-' + String(id).slice(0, 8);
-  //     await this.FsS.updateCollection({ a11yId }, this.COL, id);
-
-  //     return await this.loadAll();
-  //   }
+    return nodeID;
+  }
 
   //   async finishRoadmap(roadmapID) {
   //     if (roadmapID.startsWith('ul-')) {

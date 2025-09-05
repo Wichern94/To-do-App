@@ -8,6 +8,7 @@ export class RoadmapPresenter {
     this.SEEN_KEY = 'seenRoadmapsIds';
 
     this.onQuitRequest = callbacks.onQuitRequest || null;
+    this.onSubmitSuccess = callbacks.onSubmitSuccess || null;
   }
   /**
    * ========================================
@@ -36,7 +37,7 @@ export class RoadmapPresenter {
         try {
           this.view.clearManualForm();
           this.view.clearImportForm();
-          await this.view.handleCloseModal(e);
+          await this.view.handleCloseModal();
         } catch (err) {
           console.error('Open Modal failed:', err);
         }
@@ -87,95 +88,34 @@ export class RoadmapPresenter {
             subtasks: draft.subtasks,
             roadmapID: this.view.takeRoadmapID,
           };
-          console.log('obiekt nodeData:', nodeData);
+          const existingNodes = await this.model.getExistedNodes(
+            this.view.takeRoadmapID
+          );
+
+          const maxOrder = Math.max(...existingNodes.map((n) => n.order ?? 0));
+          const newOrder = isFinite(maxOrder) ? maxOrder + 1 : 0;
+
+          const nodeDataWithOrder = {
+            ...nodeData,
+            order: newOrder,
+            wasActive: false,
+          };
+
+          const nodeID = this.model.createNode(nodeDataWithOrder);
+          if (!nodeID) throw new Error('Node ID not found!');
+
+          const fullData = { ...nodeDataWithOrder, id: nodeID };
+
+          if (typeof this.onSubmitSuccess === 'function') {
+            this.onSubmitSuccess(fullData);
+          }
+          this.view.clearManualForm();
+          await this.view.handleCloseModal();
         } catch (err) {
           console.error('onManualSubmit Error:');
         }
       },
-
-      //       onEnterRoadmap: async (roadmapId) => {
-      //         try {
-      //           if (typeof roadmapId !== 'string') {
-      //             throw new Error('RoadmapID is not a String!');
-      //           }
-
-      //           if (typeof this.onRenderRequest === 'function') {
-      //             this.onRenderRequest(roadmapId);
-      //           }
-      //         } catch (err) {
-      //           console.error('Pressenter error when entering the roadmap!');
-      //         }
-      //       },
-
-      //       onDelete: async (roadmapId) => {
-      //         try {
-      //           const oldEl = this.view.findItemEl(roadmapId);
-      //           const roadmaps = await this.model.finishRoadmap(roadmapId);
-
-      //           if (!oldEl) throw new Error('oldEl is not valid');
-      //           await this.view.onDeleteAnimation(oldEl);
-
-      //           this.renderedIds.delete(roadmapId);
-      //           sessionStorage.setItem(
-      //             this.SEEN_KEY,
-      //             JSON.stringify([...this.renderedIds])
-      //           );
-
-      //           this._renderRoadmaps(roadmaps);
-      //         } catch (err) {
-      //           console.error('finish failed');
-      //         }
-      //       },
     });
-
-    //     const roadmaps = await this.model.loadAll();
-    //     const seenFromSession = JSON.parse(
-    //       sessionStorage.getItem(this.SEEN_KEY) || '[]'
-    //     );
-    //     this.renderedIds = new Set(seenFromSession);
-
-    //     roadmaps.forEach((t) => this.renderedIds.add(t.id));
-
-    //     this._renderRoadmaps(roadmaps);
-    //     this.isInitialPaint = false;
-    //   }
-    //   /**
-    //    * ========================================
-    //    * RENDER METHODS
-    //    * ========================================
-    //    */
-    //   _renderRoadmaps(roadmaps) {
-    //     if (!Array.isArray(roadmaps)) return;
-    //     this.view.ui.selector.list.innerHTML = '';
-
-    //     const existingBackBtn =
-    //       this.view.ui.roadmap.content.querySelector('#btn-back');
-    //     if (!existingBackBtn) {
-    //       this.view.renderBackBtn();
-    //     }
-
-    //     const visible = roadmaps.filter((r) => !r.done);
-
-    //     visible.forEach((r, i) => {
-    //       const isNew = !this.renderedIds.has(r.id);
-    //       this.view.render(r, { isNew, isInitial: this.isInitialPaint, index: i });
-
-    //       this._renderULforNodes(r);
-    //       this.renderedIds.add(r.id);
-    //     });
-
-    //     sessionStorage.setItem(
-    //       this.SEEN_KEY,
-    //       JSON.stringify([...this.renderedIds])
-    //     );
-    //   }
-    //   _renderULforNodes(roadmap) {
-    //     const existingUl = this.view.ui.root.querySelector(
-    //       `ul[data-id="ul-${roadmap.id}"]`
-    //     );
-
-    //     if (existingUl) return;
-    //     this.view.createNodeUl(roadmap);
   }
   normalizeInput(raw) {
     if (typeof raw !== 'string') return '';

@@ -368,9 +368,7 @@ export class RoadmapView {
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
   }
 
-  async handleCloseModal(e) {
-    e.preventDefault();
-
+  async handleCloseModal() {
     const bluredOne = this.ui.modal.dialog;
     const fieldset = this.ui.modal.fieldset;
 

@@ -209,6 +209,10 @@ export class TodoApp {
             this.state.activeRoadmapID = null;
             this.teardownRoadmap();
           },
+          onSubmitSuccess: async (fullData) => {
+            await this.renderNodesForRoadmap(fullData.roadmapID, fullData.id);
+            ToastManager.success('👍 Dodanie pojedynczego Elmentu Udane!');
+          },
         }
       );
     }
