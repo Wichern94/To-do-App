@@ -479,7 +479,7 @@ export class RoadmapView {
       this.manualFormErrors.clearError(e.target.name);
     } else return;
   }
-  handleClearErrorImport(e) {
+  handleClearImportError(e) {
     if (e.target.tagName === 'TEXTAREA') {
       this.importFormErrors.clearError(e.target.name);
     } else return;

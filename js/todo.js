@@ -96,7 +96,6 @@ export class TodoApp {
               this.state.activeRoadmapID
             );
             this.state.view = 'roadmap';
-            this.repairPlumb(this.state.activeRoadmapID);
 
             this.setupRoadmap(sectionId);
           },
@@ -127,10 +126,13 @@ export class TodoApp {
             this.teardownRoadmap();
           },
           onSubmitSuccess: async () => {
-            ToastManager.success('👍 Dodanie pojedynczego Elmentu Udane!');
+            ToastManager.success('👍 Adding a single Element Successful!');
           },
-          onCopySucces: () => {
-            ToastManager.info(`Skopiowano do schowka!`);
+          onCopySuccess: () => {
+            ToastManager.info(`Copied to clipboard!`);
+          },
+          onImportSubmitSuccess: ({ length }) => {
+            ToastManager.success(`👍 ${length} Items added!`);
           },
         }
       );
@@ -138,16 +140,16 @@ export class TodoApp {
     this.roadmapPresenter?.init();
   }
 
-  repairPlumb(roadmapID) {
-    const interval = setInterval(() => {
-      this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(roadmapID);
-      this.plumbManagers[roadmapID]?.jsPlumbInstance?.repaintEverything();
-    }, 10);
+  // repairPlumb(roadmapID) {
+  //   const interval = setInterval(() => {
+  //     this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(roadmapID);
+  //     this.plumbManagers[roadmapID]?.jsPlumbInstance?.repaintEverything();
+  //   }, 10);
 
-    setTimeout(() => {
-      clearInterval(interval);
-    }, 1500);
-  }
+  //   setTimeout(() => {
+  //     clearInterval(interval);
+  //   }, 1500);
+  // }
 
   teardownList() {
     this.listController?.destroy();

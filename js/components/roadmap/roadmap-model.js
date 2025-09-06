@@ -34,19 +34,24 @@ export class RoadmapModel {
       console.error('getExistedNodes Error:', err);
     }
   }
-  //   async loadAll() {
-  //     const rows = await this.FsS.loadUserCollection(this.COL);
-  //     const sortedRows = rows.sort((a, b) => a.createdAt - b.createdAt);
-  //     return sortedRows.map(this._normalize);
-  //   }
-  async createNode(DataObj) {
+
+  async createNode(dataObj) {
     const nodeID = await this.FsS.addCollectionElement(
-      DataObj,
+      dataObj,
       this.refObj.COL,
       this.refObj.SUBCOL
     );
 
     return nodeID;
+  }
+  async batchNodes(roadmapID, dataObj) {
+    const allData = await this.FsS.batchAddNodes(
+      roadmapID,
+      dataObj,
+      this.refObj.COL,
+      this.refObj.SUBCOL
+    );
+    return allData;
   }
 
   //   async finishRoadmap(roadmapID) {

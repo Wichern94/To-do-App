@@ -12,8 +12,9 @@ export class RoadmapPresenter {
     this.nodes = [];
 
     this.onQuitRequest = callbacks.onQuitRequest || null;
-    this.onSubmitSuccess = callbacks.onSubmitSuccess || null;
-    this.onCopySucces = callbacks.onCopySucces || null;
+    this.onManualSubmitSuccess = callbacks.onManualSubmitSuccess || null;
+    this.onCopySuccess = callbacks.onCopySuccess || null;
+    this.onImportSubmitSuccess = callbacks.onImportSubmitSuccess || null;
   }
   /**
    * ========================================
@@ -82,7 +83,7 @@ export class RoadmapPresenter {
     }
   }
   _redrawConnections(node) {
-    node.drawConnectionLines();
+    node?.drawConnectionLines();
     const interval = setInterval(() => {
       this.plumb?.jsPlumbInstance?.revalidate(this.roadmapID);
       this.plumb?.jsPlumbInstance?.repaintEverything();
@@ -117,20 +118,24 @@ export class RoadmapPresenter {
     }
   }
 
-  addNode(fullNode) {
-    this._ensurePlumb();
-    const newNode = this._createNodeElement(fullNode, { isNew: true });
+  async addNode(fullNode) {
+    try {
+      this._ensurePlumb();
+      const newNode = this._createNodeElement(fullNode, { isNew: true });
 
-    this._mountNode(newNode);
-    const index = this.nodes.length - 1;
+      this._mountNode(newNode);
+      const index = this.nodes.length - 1;
 
-    if (index === 0) {
-      newNode.enableNode();
-    } else {
-      newNode.disableNode();
+      if (index === 0) {
+        newNode.enableNode();
+      } else {
+        newNode.disableNode();
+      }
+
+      this._redrawConnections?.(newNode);
+    } catch (err) {
+      console.Error('ADD NODE ERROR:', err);
     }
-
-    this._redrawConnections?.(newNode);
   }
 
   _findActiveNode() {
@@ -176,9 +181,9 @@ export class RoadmapPresenter {
    */
   _bindViewCallbacks() {
     this.view.bind({
-      onModalOpen: async (e) => this._handleOpenModal(e),
+      onModalOpen: async (e) => await this._handleOpenModal(e),
 
-      onModalClose: async (e) => this._handleCloseModal(),
+      onModalClose: async (e) => await this._handleCloseModal(),
 
       onQuitRoadmap: () => {
         if (typeof this.onQuitRequest === 'function') {
@@ -189,10 +194,11 @@ export class RoadmapPresenter {
       onAddSubtask: async (rawData) => this._handleAddSubtask(rawData),
 
       onManualSubmit: async (rawFormData) =>
-        this._handleManualSubmit(rawFormData),
+        await this._handleManualSubmit(rawFormData),
 
-      onPromtCopy: async () => this._handleCopyPromt(),
-      onImportSubmit: async (rawText) => this._handleImportSubmit(rawText),
+      onPromtCopy: async () => await this._handleCopyPromt(),
+      onImportSubmit: async (rawText) =>
+        await this._handleImportSubmit(rawText),
     });
   }
   _unbindViewCallbacks() {
@@ -262,14 +268,14 @@ export class RoadmapPresenter {
       const id = await this.model.createNode(nodeData);
       if (!id) throw new Error('Node ID not found!');
 
-      this.addNode({ ...nodeData, id });
+      await this.addNode({ ...nodeData, id });
 
       this.model.resetDraft();
       this.view.clearManualForm();
       await this.view.closeModal();
 
-      if (typeof this.onSubmitSuccess === 'function') {
-        this.onSubmitSuccess({ ...nodeData, id });
+      if (typeof this.onManualSubmitSuccess === 'function') {
+        this.onManualSubmitSuccess({ ...nodeData, id });
       }
     } catch (err) {
       console.error('onManualSubmit Error:', err);
@@ -325,8 +331,8 @@ Example structure:
     navigator.clipboard
       .writeText(promtText)
       .then(() => {
-        if (typeof this.onCopySucces === 'function') {
-          this.onCopySucces();
+        if (typeof this.onCopySuccess === 'function') {
+          this.onCopySuccess();
         }
       })
       .catch((err) => {
@@ -334,7 +340,49 @@ Example structure:
       });
   }
   async _handleImportSubmit(rawText) {
-    console.log(rawText);
+    if (this.model.isSubmitting) return;
+    try {
+      const value = String(rawText ?? '').trim();
+      if (!value) {
+        this.view?.importFormErrors?.showError?.(
+          'import',
+          'This field cannot be empty!'
+        );
+        throw new Error('The submitted data is empty!');
+      }
+      const parsedData = this._parseImportText(value);
+
+      this.model.isSubmitting = true;
+      this.view.setPending?.(true);
+
+      const list = await this._fetchNodes();
+      const order = this._computeNextOrder(list);
+
+      const nodesData = parsedData.map((node, i) => {
+        return {
+          ...node,
+          order: order + i,
+          wasActive: false,
+          roadmapID: this.roadmapID,
+        };
+      });
+      const allData = await this.model.batchNodes(this.roadmapID, nodesData);
+      const length = allData.length;
+
+      for (const node of allData) {
+        await this.addNode(node, node.id);
+      }
+      if (typeof this.onImportSubmitSuccess === 'function') {
+        this.onImportSubmitSuccess({ length });
+      }
+      this.view.clearImportForm();
+      await this.view.closeModal();
+    } catch (err) {
+      console.error('IMPORT SUBMIT ERROR:', err);
+    } finally {
+      this.model.isSubmitting = false;
+      this.view.setPending?.(false);
+    }
   }
   /**
    * ========================================
@@ -372,5 +420,29 @@ Example structure:
     value = value.replace(/[^\p{L}\p{N}\p{P}\p{Zs}]/gu, '');
 
     return value;
+  }
+  _parseImportText(jsonText) {
+    try {
+      const parsedData = JSON.parse(jsonText);
+
+      if (!Array.isArray(parsedData)) {
+        throw new Error('Data is not an Array');
+      }
+
+      parsedData.forEach((node, index) => {
+        if (!node.title) {
+          throw new Error(`Incorrect Title in [${index}]!`);
+        }
+        if (typeof node.title !== 'string') {
+          throw new Error(`Incorrect data-type of [${index}]!`);
+        }
+        if (!Array.isArray(node.subtasks)) {
+          throw new Error(`${node.subtasks} is not an Array in[${index}]`);
+        }
+      });
+      return parsedData;
+    } catch (err) {
+      console.error('PARSE ERROR:', err);
+    }
   }
 }
