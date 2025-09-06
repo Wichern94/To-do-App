@@ -3,6 +3,7 @@ export class RoadmapModel {
     this.FsS = firestoreService;
     this.refObj = { COL: 'roadmaps', SUBCOL: 'nodes' };
     this._draft = { title: '', subtasks: [] };
+    this.isSubmitting = null;
   }
   resetDraft() {
     this._draft = {
@@ -19,7 +20,7 @@ export class RoadmapModel {
   getDraft() {
     return this._draft;
   }
-  async getExistedNodes(roadmapID) {
+  async getExistingNodes(roadmapID) {
     try {
       if (!roadmapID.startsWith('ul-'))
         throw new Error('roadmapID is not in the correct format!');

@@ -2,14 +2,11 @@ import { FormErrors } from '../../uiErrorHandler.js';
 
 import { showElement, hideElement, toggleElement } from '../../utils/helper.js';
 export class RoadmapView {
-  constructor(root = 'roadmap-view', roadmapRoot, { animationManager } = {}) {
+  constructor(root = 'roadmap-view', { animationManager } = {}) {
     const rootEl =
       typeof root === 'string' ? document.getElementById(root) : root;
-    const rootRo =
-      typeof roadmapRoot === 'string'
-        ? document.getElementById(roadmapRoot)
-        : roadmapRoot;
-    if (!rootEl || !rootRo) {
+
+    if (!rootEl) {
       throw new Error(
         'Roadmap ID Section root not found (selector or element invalid)'
       );
@@ -19,17 +16,16 @@ export class RoadmapView {
      * ROADMAP ID
      * ========================================
      */
-    this.currentRoadmapID = roadmapRoot;
 
     /**
      * ========================================
      * ROOT + QUERYHELPER
      * ========================================
      */
-    this.ui = { root: rootEl, rootR: rootRo };
+    this.ui = { root: rootEl };
 
     this._q = (sel) => this.ui.root.querySelector(sel);
-    this._qr = (sel) => this.ui.rootR.querySelector(sel);
+
     this._qa = (sel) => this.ui.root.querySelectorAll(sel);
 
     /**
@@ -90,6 +86,7 @@ export class RoadmapView {
       openModalBtn: this._q('#roadmap-open-modal-ID'),
       promtBtn: this._q('#form--import-promt-btn'),
       subtaskBtn: this._q('#subtask-add-btn'),
+      allBtns: this._qa('.selector-modal__btn'),
     };
 
     /**
@@ -164,9 +161,7 @@ export class RoadmapView {
     ];
     this.bouncingBtn();
   }
-  get takeRoadmapID() {
-    return this.currentRoadmapID;
-  }
+
   /**
    * ========================================
    * INITIALIZATION METHODS
@@ -358,7 +353,7 @@ export class RoadmapView {
    * OPEN/CLOSE HANDLERS METHODS
    * ========================================
    */
-  async handleOpenModal(e) {
+  async openModal(e) {
     const btn = e.target;
     const bluredOne = this.ui.modal.dialog;
     const fieldset = this.ui.modal.fieldset;
@@ -368,7 +363,7 @@ export class RoadmapView {
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
   }
 
-  async handleCloseModal() {
+  async closeModal() {
     const bluredOne = this.ui.modal.dialog;
     const fieldset = this.ui.modal.fieldset;
 
@@ -513,5 +508,25 @@ export class RoadmapView {
       this.ui.modal.subtaskContainer.appendChild(li);
       await this.animationManager.showAnimation(li, 'fadeIn', '.5s');
     });
+  }
+  setPending(isPending) {
+    const inputs = [
+      this.ui.modal.titleInput,
+      this.ui.modal.subtaskInput,
+      this.ui.modal.textArea,
+    ];
+    const allBtns = this.ui.modal.allBtns;
+
+    allBtns.forEach((btn) => {
+      btn.disabled = isPending;
+    });
+
+    inputs.forEach((inpt) => {
+      inpt.disabled = isPending;
+    });
+  }
+  getRootUl(roadmapID) {
+    element = this._q(`#${roadmapID}`);
+    return element;
   }
 }

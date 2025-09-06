@@ -182,24 +182,25 @@ export class TodoApp {
             this.state.view = 'roadmap';
             this.repairPlumb(this.state.activeRoadmapID);
             await this.renderNodesForRoadmap(this.state.activeRoadmapID);
-            this.setupRoadmap(sectionId, this.state.activeRoadmapID);
+            this.setupRoadmap(sectionId);
           },
         }
       );
       this.selectorPresenter.init();
     }
   }
-  setupRoadmap(sectionId, roadmapID) {
+  setupRoadmap(sectionId) {
     if (this.state.activeRoadmapID && this.state.view === 'roadmap') {
       this.roadmapModel = new RoadmapModel(this.firestoreService);
 
-      this.roadmapView = new RoadmapView(sectionId, roadmapID, {
+      this.roadmapView = new RoadmapView(sectionId, {
         animationManager: this.AnimationManager,
       });
 
       this.roadmapPresenter = new RoadmapPresenter(
         this.roadmapModel,
         this.roadmapView,
+        this.state.activeRoadmapID,
         {
           onQuitRequest: async () => {
             if (this.state.activeRoadmapID === null) return;
