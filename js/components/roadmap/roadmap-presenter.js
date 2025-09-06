@@ -13,6 +13,7 @@ export class RoadmapPresenter {
 
     this.onQuitRequest = callbacks.onQuitRequest || null;
     this.onSubmitSuccess = callbacks.onSubmitSuccess || null;
+    this.onCopySucces = callbacks.onCopySucces || null;
   }
   /**
    * ========================================
@@ -22,12 +23,12 @@ export class RoadmapPresenter {
   async init() {
     try {
       this.view.activate();
-      this._bindViewCallbacks();
-
       this.rootUl = this.view.getRootUl(this.roadmapID);
       if (!this.rootUl) throw new Error('rootUL not found!');
 
       this._ensurePlumb();
+      this._bindViewCallbacks();
+
       const list = await this._fetchNodes();
       const sorted = this._sortByOrder(list);
 
@@ -80,7 +81,8 @@ export class RoadmapPresenter {
       this.plumb = new RoadmapPlumbManager(this.rootUl);
     }
   }
-  _redrawConnections() {
+  _redrawConnections(node) {
+    node.drawConnectionLines();
     const interval = setInterval(() => {
       this.plumb?.jsPlumbInstance?.revalidate(this.roadmapID);
       this.plumb?.jsPlumbInstance?.repaintEverything();
@@ -117,9 +119,18 @@ export class RoadmapPresenter {
 
   addNode(fullNode) {
     this._ensurePlumb();
-    const node = this._createNodeElement(fullNode, { isNew: true });
-    this._mountNode(node);
-    this._redrawConnections?.();
+    const newNode = this._createNodeElement(fullNode, { isNew: true });
+
+    this._mountNode(newNode);
+    const index = this.nodes.length - 1;
+
+    if (index === 0) {
+      newNode.enableNode();
+    } else {
+      newNode.disableNode();
+    }
+
+    this._redrawConnections?.(newNode);
   }
 
   _findActiveNode() {
@@ -179,10 +190,13 @@ export class RoadmapPresenter {
 
       onManualSubmit: async (rawFormData) =>
         this._handleManualSubmit(rawFormData),
+
+      onPromtCopy: async () => this._handleCopyPromt(),
+      onImportSubmit: async (rawText) => this._handleImportSubmit(rawText),
     });
   }
   _unbindViewCallbacks() {
-    this.view.deactivate();
+    this.view.unbind();
   }
   /**
    * ========================================
@@ -245,16 +259,20 @@ export class RoadmapPresenter {
         wasActive: false,
       };
 
-      const nodeID = await this.model.createNode(nodeData);
-      if (!nodeID) throw new Error('Node ID not found!');
+      const id = await this.model.createNode(nodeData);
+      if (!id) throw new Error('Node ID not found!');
 
-      this.addNode({ ...nodeData, nodeID });
+      this.addNode({ ...nodeData, id });
 
       this.model.resetDraft();
       this.view.clearManualForm();
       await this.view.closeModal();
+
+      if (typeof this.onSubmitSuccess === 'function') {
+        this.onSubmitSuccess({ ...nodeData, id });
+      }
     } catch (err) {
-      console.error('onManualSubmit Error:');
+      console.error('onManualSubmit Error:', err);
     } finally {
       this.model.isSubmitting = false;
       this.view.setPending?.(false);
@@ -280,6 +298,43 @@ export class RoadmapPresenter {
     } catch (err) {
       console.error('Open Modal failed:', err);
     }
+  }
+  async _handleCopyPromt() {
+    const promtText = `Generate a learning roadmap in JSON format for <HERE, WRITE WHAT THE ROADMAP SHOULD BE ABOUT!!>. The structure should be an array of objects, with each object having a "title" key and a "subtasks" array.
+
+Requirements:
+- The title should be concise, a maximum of 3-4 words, specific, and describe the learning stage.
+- Each "subtask" should be a maximum of 5 words.
+- Subtask names should also be concise but readable.
+- Do not limit the number of stages or the number of subtasks.
+- Omit any additional comments—the response should contain **only** pure JSON in the specified format.
+
+Example structure:
+
+[
+{
+"title": "SCSS and Sass Basics",
+"subtasks": ["Sass CSS differences", "Sass installation", "Variables and nesting"]
+},
+{
+"title": "Mixins and Functions",
+"subtasks": ["Defining mixins", "Mixin arguments", "Mixins with @content", "Creating functions", "Mixin vs function differences"]
+}
+]
+`;
+    navigator.clipboard
+      .writeText(promtText)
+      .then(() => {
+        if (typeof this.onCopySucces === 'function') {
+          this.onCopySucces();
+        }
+      })
+      .catch((err) => {
+        console.error('PROMT COPY ERROR:', err);
+      });
+  }
+  async _handleImportSubmit(rawText) {
+    console.log(rawText);
   }
   /**
    * ========================================

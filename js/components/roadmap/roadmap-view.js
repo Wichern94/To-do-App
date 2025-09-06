@@ -105,14 +105,16 @@ export class RoadmapView {
      * HANDLERS
      * ========================================
      */
-    this.handlers = {
+    this.initialHandlers = {
       onQuitRoadmap: null,
       onModalOpen: null,
       onModalClose: null,
       onManualSubmit: null,
       onImportSubmit: null,
       onAddSubtask: null,
+      onPromtCopy: null,
     };
+    this.handlers = null;
     /**
      * ========================================
      * SERVICES
@@ -149,14 +151,24 @@ export class RoadmapView {
         handler: this.handleManualSubmit.bind(this),
       },
       {
+        el: this.ui.modal.importForm,
+        event: 'submit',
+        handler: this.handleImportSubmit.bind(this),
+      },
+      {
         el: this.ui.modal.manualForm,
         event: 'click',
         handler: this.handleClearManualError.bind(this),
       },
       {
         el: this.ui.modal.importForm,
-        event: 'submit',
-        handler: this.handleImportSubmit.bind(this),
+        event: 'click',
+        handler: this.handleClearImportError.bind(this),
+      },
+      {
+        el: this.ui.modal.promtBtn,
+        event: 'click',
+        handler: this.sendOnPromtCopy.bind(this),
       },
     ];
     this.bouncingBtn();
@@ -216,7 +228,10 @@ export class RoadmapView {
   }
 
   bind(handlers = {}) {
-    this.handlers = { ...this.handlers, ...handlers };
+    this.handlers = { ...this.initialHandlers, ...handlers };
+  }
+  unbind() {
+    this.handlers = { ...this.initialHandlers };
   }
 
   deactivate() {
@@ -289,6 +304,11 @@ export class RoadmapView {
   sendGoBack() {
     if (typeof this.handlers.onQuitRoadmap === 'function') {
       this.handlers.onQuitRoadmap();
+    }
+  }
+  sendOnPromtCopy() {
+    if (typeof this.handlers.onPromtCopy === 'function') {
+      this.handlers.onPromtCopy();
     }
   }
 
@@ -416,6 +436,11 @@ export class RoadmapView {
   async handleImportSubmit(e) {
     e.preventDefault();
     try {
+      const rawAreaData = this.ui.modal.textArea.value || '';
+
+      if (typeof this.handlers.onImportSubmit === 'function') {
+        this.handlers.onImportSubmit(rawAreaData);
+      }
     } catch (err) {
       console.error('import Submit Error:');
     }
@@ -446,18 +471,17 @@ export class RoadmapView {
 
   /**
    * ========================================
-   * RENDER ROADMAP CAONTAINER METHOD
-   * ========================================
-   */
-
-  /**
-   * ========================================
    * HELPER METHODS
    * ========================================
    */
   handleClearManualError(e) {
     if (e.target.tagName === 'INPUT') {
       this.manualFormErrors.clearError(e.target.name);
+    } else return;
+  }
+  handleClearErrorImport(e) {
+    if (e.target.tagName === 'TEXTAREA') {
+      this.importFormErrors.clearError(e.target.name);
     } else return;
   }
 
@@ -526,7 +550,7 @@ export class RoadmapView {
     });
   }
   getRootUl(roadmapID) {
-    element = this._q(`#${roadmapID}`);
+    const element = this._q(`#${roadmapID}`);
     return element;
   }
 }
