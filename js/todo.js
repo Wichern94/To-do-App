@@ -140,24 +140,16 @@ export class TodoApp {
     this.roadmapPresenter?.init();
   }
 
-  // repairPlumb(roadmapID) {
-  //   const interval = setInterval(() => {
-  //     this.plumbManagers[roadmapID]?.jsPlumbInstance?.revalidate(roadmapID);
-  //     this.plumbManagers[roadmapID]?.jsPlumbInstance?.repaintEverything();
-  //   }, 10);
-
-  //   setTimeout(() => {
-  //     clearInterval(interval);
-  //   }, 1500);
-  // }
-
   teardownList() {
     this.listController?.destroy();
+    this.listView?.handlerClearCounters();
   }
   teardownSelector() {
     this.selectorPresenter?.destroy();
+    this.selectorView?.handlerClearCounters();
   }
   teardownRoadmap() {
+    this.roadmapView?.handlerClearCounters();
     this.roadmapPresenter?.destroy();
   }
 }

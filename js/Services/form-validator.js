@@ -14,6 +14,8 @@ const ERRORS = {
   E_SUBTASK_TYPE: 'Subtask has an invalid data type!',
   E_SUBTASK_EMPTY: 'Subtask is empty!',
   E_TOO_MANY_SUBTASKS: 'Too many subtasks!',
+  E_FETCH_NODES: 'Could not fetch existing nodes!',
+  E_INVALID_ROADMAP_ID: 'Invalid roadmap identifier!',
 };
 
 export default ERRORS;

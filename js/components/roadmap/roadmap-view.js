@@ -80,7 +80,7 @@ export class RoadmapView {
        * ========================================
        */
 
-      imporSubmitBtn: this._q('#form--import-submit-btn'),
+      importSubmitBtn: this._q('#form--import-submit-btn'),
       manualSubmitBtn: this._q('#form--manual-submit-btn'),
       cancelBtn: this._q('.selector-modal__btn--cancel'),
       openModalBtn: this._q('#roadmap-open-modal-ID'),
@@ -96,6 +96,7 @@ export class RoadmapView {
      */
     this.localStates = {
       modalCurrentMode: this.ui.modal.manualForm,
+      countersBound: false,
     };
 
     /**
@@ -296,12 +297,14 @@ export class RoadmapView {
   }
 
   setupCharacterCounter() {
+    if (this.localStates.countersBound) return;
     const formElements = this._qa('input[maxlength], textarea[maxlength]');
 
     formElements.forEach((element) => {
       const counterSpan = this._q(`.char-counter[data-for="${element.id}"]`);
 
       if (counterSpan) {
+        this.localStates.countersBound = true;
         element.addEventListener('input', () => {
           const currentLength = element.value.length;
           const maxlength = element.getAttribute('maxlength');
@@ -373,7 +376,6 @@ export class RoadmapView {
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.blurInElement(bluredOne);
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
-    this.setupCharacterCounter();
   }
 
   async closeModal() {
@@ -405,6 +407,12 @@ export class RoadmapView {
     importBtn.classList.remove('pressed');
     btn.classList.add('pressed');
 
+    if (btn.classList.contains('pressed')) {
+      btn.setAttribute('aria-pressed', 'true');
+    } else {
+      btn.setAttribute('aria-pressed', 'false');
+    }
+
     hideElement(importForm);
     await this.animationManager.showAnimation(manualForm, 'fadeIn', '.5s');
 
@@ -420,6 +428,12 @@ export class RoadmapView {
 
     manualBtn.classList.remove('pressed');
     btn.classList.add('pressed');
+
+    if (btn.classList.contains('pressed')) {
+      btn.setAttribute('aria-pressed', 'true');
+    } else {
+      btn.setAttribute('aria-pressed', 'false');
+    }
 
     hideElement(manualForm);
     await this.animationManager.showAnimation(importForm, 'fadeIn', '.5s');
@@ -438,6 +452,7 @@ export class RoadmapView {
    * ========================================
    */
   async handleImportSubmit(e) {
+    if (this.ui.modal.importSubmitBtn.disabled === true) return;
     e.preventDefault();
     try {
       const rawAreaData = this.ui.modal.textArea.value || '';
@@ -450,6 +465,7 @@ export class RoadmapView {
     }
   }
   async handleManualSubmit(e) {
+    if (this.ui.modal.manualSubmitBtn.disabled === true) return;
     e.preventDefault();
     try {
       const rawInputData = this.ui.modal.titleInput.value || '';
@@ -490,11 +506,13 @@ export class RoadmapView {
   }
 
   sendOnManualSwitch(btn) {
+    if (btn.disabled === true) return;
     if (typeof this.handlers.onManualSwitch === 'function') {
       this.handlers.onManualSwitch(btn);
     }
   }
   sendOnImportSwitch(btn) {
+    if (btn.disabled === true) return;
     if (typeof this.handlers.onImportSwitch === 'function') {
       this.handlers.onImportSwitch(btn);
     }
@@ -599,7 +617,7 @@ export class RoadmapView {
   }
 
   animateInvalidBtn() {
-    this.animationManager.addElementAnimation(
+    this.animationManager?.addElementAnimation(
       this.ui.modal.subtaskBtn,
       'shakeX',
       '1s'

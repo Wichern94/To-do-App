@@ -3,7 +3,7 @@ export class RoadmapModel {
     this.FsS = firestoreService;
     this.refObj = { COL: 'roadmaps', SUBCOL: 'nodes' };
     this._draft = { title: '', subtasks: [] };
-    this.isSubmitting = null;
+    this.isSubmitting = false;
   }
   resetDraft() {
     this._draft = {
@@ -21,17 +21,20 @@ export class RoadmapModel {
     return this._draft;
   }
   async getExistingNodes(roadmapID) {
+    if (typeof roadmapID !== 'string' || !roadmapID) {
+      const e = new Error('Invalid roadmapID');
+      e.code = 'E_INVALID_ROADMAP_ID';
+      throw e;
+    }
     try {
-      if (!roadmapID.startsWith('ul-'))
-        throw new Error('roadmapID is not in the correct format!');
-      const existingNodes = await this.FsS.getElementsfromSubCollection(
+      return await this.FsS.getElementsfromSubCollection(
         roadmapID,
         this.refObj.COL,
         this.refObj.SUBCOL
       );
-      return existingNodes;
     } catch (err) {
-      console.error('getExistedNodes Error:', err);
+      if (!err.code) err.code = 'E_FETCH_NODES';
+      throw err;
     }
   }
 
@@ -53,23 +56,4 @@ export class RoadmapModel {
     );
     return allData;
   }
-
-  //   async finishRoadmap(roadmapID) {
-  //     if (roadmapID.startsWith('ul-')) {
-  //       const slicedID = roadmapID.slice(3);
-  //       await this.FsS.deleteDocument(slicedID, this.COL);
-  //     } else {
-  //       await this.FsS.deleteDocument(roadmapID, this.COL);
-  //       return await this.loadAll();
-  //     }
-  //   }
-
-  //   _normalize = (raw) => ({
-  //     id: raw.id,
-  //     title: raw.title ?? '',
-  //     desc: raw.desc ?? '',
-  //     done: Boolean(raw.done),
-  //     createdAt: raw.createdAt ?? null,
-  //     a11yId: raw.a11yId ?? 'a11y-' + String(raw.id).slice(0, 8),
-  //   });
 }

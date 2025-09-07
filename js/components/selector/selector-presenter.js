@@ -16,6 +16,7 @@ export class SelectorPresenter {
    */
   async init() {
     this.view.activate();
+    this.view.setupCharacterCounter();
     this.view.bind({
       // taking all callbacks
 

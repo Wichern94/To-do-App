@@ -1,7 +1,6 @@
-import { FormValidator } from '../../Services/form-validator.js';
+import ERRORS, { FormValidator } from '../../Services/form-validator.js';
 import { RoadmapPlumbManager } from '../../Services/plumb-manager.js';
 import { NodeElement } from '../node-component.js';
-import ERRORS from '../../Services/form-validator.js';
 
 export class RoadmapPresenter {
   constructor(model, view, roadmapID, callbacks = {}) {
@@ -26,10 +25,12 @@ export class RoadmapPresenter {
     try {
       this.view.activate();
       this.rootUl = this.view.getRootUl(this.roadmapID);
-      if (!this.rootUl) throw new Error('rootUL not found!');
 
       this._ensurePlumb();
       this._bindViewCallbacks();
+
+      this.view.setupCharacterCounter();
+      if (!this.rootUl) throw new Error('rootUL not found!');
 
       const list = await this._fetchNodes();
       const sorted = this._sortByOrder(list);
@@ -86,7 +87,7 @@ export class RoadmapPresenter {
   _redrawConnections(node) {
     node?.drawConnectionLines();
     const interval = setInterval(() => {
-      this.plumb?.jsPlumbInstance?.revalidate(this.roadmapID);
+      this.plumb?.jsPlumbInstance?.revalidate(this.rootUl);
       this.plumb?.jsPlumbInstance?.repaintEverything();
     }, 10);
     setTimeout(() => {
@@ -135,7 +136,7 @@ export class RoadmapPresenter {
 
       this._redrawConnections?.(newNode);
     } catch (err) {
-      console.Error('ADD NODE ERROR:', err);
+      console.error('ADD NODE ERROR:', err);
     }
   }
 
@@ -232,12 +233,20 @@ export class RoadmapPresenter {
       this.view.clearSubtaskInputAndContainer();
       this.view.renderSubtasks(this.model.getDraft().subtasks);
     } catch (err) {
-      console.error('Add Subtask Error:', err);
+      console.error('ADD SUBBTASK ERROR:', err);
     }
   }
   async _handleManualSubmit(rawForm) {
     if (this.model.isSubmitting) return;
     try {
+      const raw = String(rawForm ?? '');
+      if (!raw.trim()) {
+        this.view?.manualFormErrors?.showError?.(
+          'create-map-title',
+          ERRORS.E_VALUE_EMPTY
+        );
+        return;
+      }
       const title = this.normalizeInput(rawForm.title);
 
       const ok = FormValidator.validateOneInput(
@@ -253,7 +262,18 @@ export class RoadmapPresenter {
       this.model.isSubmitting = true;
       this.view.setPending?.(true);
 
-      const list = await this._fetchNodes();
+      let list = [];
+      try {
+        list = await this._fetchNodes();
+      } catch (e) {
+        const msg = ERRORS[e.code] || 'Failed to load existing nodes.';
+        this.view?.manualFormErrors?.showError?.('create-map-title', msg);
+
+        this.view.setPending?.(false);
+        this.model.isSubmitting = false;
+        return;
+      }
+
       const order = this._computeNextOrder(list);
 
       const nodeData = {
@@ -277,7 +297,7 @@ export class RoadmapPresenter {
         this.onManualSubmitSuccess({ ...nodeData, id });
       }
     } catch (err) {
-      console.error('onManualSubmit Error:', err);
+      console.error('ONMANUAL SUBMIT ERROR:', err);
     } finally {
       this.model.isSubmitting = false;
       this.view.setPending?.(false);
@@ -292,7 +312,7 @@ export class RoadmapPresenter {
 
       await this.view.openModal(e);
     } catch (err) {
-      console.error('Open Modal failed:', err);
+      console.error('OPEN MODAL FAILED:', err);
     }
   }
   async _handleCloseModal() {
@@ -301,7 +321,7 @@ export class RoadmapPresenter {
       this.view.clearImportForm();
       await this.view.closeModal();
     } catch (err) {
-      console.error('Open Modal failed:', err);
+      console.error('CLOSE MODAL FAILED:', err);
     }
   }
   async _handleCopyPromt() {
@@ -335,9 +355,19 @@ Example structure:
         }
       })
       .catch((err) => {
-        console.error('PROMT COPY ERROR:', err);
+        console.error('PROMT COPY ERROR:', err, 'using fallback...');
+
+        const ta = document.createElement('textarea');
+        ta.value = promtText;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+
+        this.onCopySuccess?.();
       });
   }
+
   async _handleImportSubmit(rawText) {
     if (this.model.isSubmitting) return;
     try {
@@ -359,8 +389,18 @@ Example structure:
         title: this.normalizeInput(n.title),
         subtasks: n.subtasks.map((s) => this.normalizeInput(s)),
       }));
+      let list = [];
+      try {
+        list = await this._fetchNodes();
+      } catch (e) {
+        const msg = ERRORS[e.code] || 'Failed to load existing nodes.';
+        this.view?.importFormErrors?.showError?.('import', msg);
 
-      const list = await this._fetchNodes();
+        this.view.setPending?.(false);
+        this.model.isSubmitting = false;
+        return;
+      }
+
       const order = this._computeNextOrder(list);
 
       const nodesData = cleaned.map((node, i) => {
@@ -438,7 +478,7 @@ Example structure:
       }
       parsedData.forEach((node, index) => {
         switch (true) {
-          case typeof node !== 'object' || node === null:
+          case typeof node !== 'object' || node === null || Array.isArray(node):
             throw { code: 'E_ITEM_NOT_OBJECT', index };
           case !node.title:
             throw { code: 'E_TITLE_MISSING', index };

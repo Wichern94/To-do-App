@@ -77,6 +77,7 @@ export class SelectorView {
     this.localStates = {
       bound: false,
       isLoading: false,
+      countersBound: false,
     };
 
     /**
@@ -323,12 +324,14 @@ export class SelectorView {
   }
 
   setupCharacterCounter() {
+    if (this.localStates.countersBound) return;
     const formElements = this._qa('input[maxlength], textarea[maxlength]');
 
     formElements.forEach((element) => {
       const counterSpan = this._q(`.char-counter[data-for="${element.id}"]`);
 
       if (counterSpan) {
+        this.localStates.countersBound = true;
         element.addEventListener('input', () => {
           const currentLength = element.value.length;
           const maxlength = element.getAttribute('maxlength');
@@ -360,7 +363,6 @@ export class SelectorView {
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.blurInElement(bluredOne);
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
-    this.setupCharacterCounter();
   }
 
   async handleCloseModal(e) {
@@ -375,7 +377,6 @@ export class SelectorView {
 
     this.formErrors.clearAllErrors();
     this.ui.modal.titleInput.value = '';
-
     this.handlerClearCounters();
   }
   /**

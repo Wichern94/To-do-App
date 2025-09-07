@@ -737,12 +737,13 @@ body {
   position: absolute;
   margin-bottom: auto;
 }
-.selector-modal__form--manual span.char-counter:first-child, .selector-modal__form--create span.char-counter:first-child, .selector-modal__form--import span.char-counter:first-child {
-  left: 85%;
+.selector-modal__form--manual .char-counter[data-for=form--manual-input-title], .selector-modal__form--create .char-counter[data-for=form--manual-input-title], .selector-modal__form--import .char-counter[data-for=form--manual-input-title] {
+  left: 75%;
   top: 50%;
 }
-.selector-modal__form--manual span.char-counter:nth-of-type(2), .selector-modal__form--create span.char-counter:nth-of-type(2), .selector-modal__form--import span.char-counter:nth-of-type(2) {
+.selector-modal__form--manual .char-counter[data-for=form--manual-input-subelements], .selector-modal__form--create .char-counter[data-for=form--manual-input-subelements], .selector-modal__form--import .char-counter[data-for=form--manual-input-subelements] {
   left: 65%;
+  top: 50%;
 }
 .selector-modal__title-wrap {
   display: flex;
@@ -951,11 +952,15 @@ body {
   top: 0%;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 50%), rgba(20, 20, 20, 0.04);
 }
-.selector-modal__form--import span {
+.selector-modal__form--import .char-counter[data-for=form--import-textarea] {
+  top: 80%;
+  left: 75%;
+}
+.selector-modal__form--import .selector-modal__title-wrap {
   top: -15%;
   align-items: stretch;
 }
-.selector-modal__form--import span div {
+.selector-modal__form--import .selector-modal__title-wrap div {
   width: 90%;
   margin: 0 auto;
 }

@@ -53,12 +53,13 @@
     gap: 1rem;
     position: absolute;
     margin-bottom: auto;
-    span.char-counter:first-child {
-      left: 85%;
+    .char-counter[data-for='form--manual-input-title'] {
+      left: 75%;
       top: 50%;
     }
-    span.char-counter:nth-of-type(2) {
+    .char-counter[data-for='form--manual-input-subelements'] {
       left: 65%;
+      top: 50%;
     }
   }
   &__title-wrap {
@@ -167,7 +168,11 @@
         rgba(255, 255, 255, 0) 50%
       ),
       var.$tint;
-    span {
+    .char-counter[data-for='form--import-textarea'] {
+      top: 80%;
+      left: 75%;
+    }
+    .selector-modal__title-wrap {
       top: -15%;
       align-items: stretch;
 
