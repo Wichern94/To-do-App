@@ -53,6 +53,13 @@
     gap: 1rem;
     position: absolute;
     margin-bottom: auto;
+    span.char-counter:first-child {
+      left: 85%;
+      top: 50%;
+    }
+    span.char-counter:nth-of-type(2) {
+      left: 65%;
+    }
   }
   &__title-wrap {
     @include mixins.flex($width: 100%);
@@ -69,11 +76,6 @@
     @include mixins.glass-input-label;
     p {
       left: 45%;
-      color: var.$formError;
-      font-size: 10px;
-      font-weight: 500;
-      position: absolute;
-      top: 30%;
     }
   }
   &__error {
@@ -81,8 +83,12 @@
     font-size: 10px;
     font-weight: 500;
     position: absolute;
-
-    top: 30%;
+    top: -40%;
+    &--import {
+      @extend .selector-modal__error;
+      top: -15%;
+      left: 40%;
+    }
   }
 
   &__subtask {
@@ -175,9 +181,6 @@
       @include mixins.glass-input-label($is-textarea: true);
       position: absolute;
       top: 35%;
-      p {
-        left: 60%;
-      }
     }
     > div:nth-of-type(2) {
       top: 28%;

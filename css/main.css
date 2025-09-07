@@ -25,6 +25,24 @@ body {
   border: 0 !important;
 }
 
+.leader-line {
+  z-index: 999;
+  pointer-events: none;
+}
+
+.connection-glow {
+  filter: drop-shadow(2px 2px 6px #6bcdce);
+}
+
+.error-border {
+  border: 0.5px solid #ff5f5f !important;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
 /**
  * ========================================
  * LIST
@@ -312,7 +330,8 @@ body {
   font-size: 12px;
   font-weight: 500;
   position: absolute;
-  top: 30%;
+  top: 25%;
+  left: 45%;
 }
 .task-modal__input-title {
   width: 80%;
@@ -615,7 +634,7 @@ body {
 }
 
 .error-border {
-  border: 0.5px solid var(--btn-danger);
+  border: 0.5px solid var(--btn-danger) !important;
 }
 
 .visible {
@@ -718,6 +737,13 @@ body {
   position: absolute;
   margin-bottom: auto;
 }
+.selector-modal__form--manual span.char-counter:first-child, .selector-modal__form--create span.char-counter:first-child, .selector-modal__form--import span.char-counter:first-child {
+  left: 85%;
+  top: 50%;
+}
+.selector-modal__form--manual span.char-counter:nth-of-type(2), .selector-modal__form--create span.char-counter:nth-of-type(2), .selector-modal__form--import span.char-counter:nth-of-type(2) {
+  left: 65%;
+}
 .selector-modal__title-wrap {
   display: flex;
   flex-direction: column;
@@ -772,18 +798,17 @@ body {
 }
 .selector-modal__input-wrap p {
   left: 45%;
-  color: #ff5f5f;
-  font-size: 10px;
-  font-weight: 500;
-  position: absolute;
-  top: 30%;
 }
-.selector-modal__error {
+.selector-modal__error, .selector-modal__error--import {
   color: #ff5f5f;
   font-size: 10px;
   font-weight: 500;
   position: absolute;
-  top: 30%;
+  top: -40%;
+}
+.selector-modal__error--import {
+  top: -15%;
+  left: 40%;
 }
 .selector-modal__subtask-label-wrap {
   display: flex;
@@ -973,9 +998,6 @@ body {
   left: 4rem;
   background: transparent;
   padding: 0.1rem;
-}
-.selector-modal__form--import > div:first-of-type p {
-  left: 60%;
 }
 .selector-modal__form--import > div:nth-of-type(2) {
   top: 28%;

@@ -467,12 +467,13 @@
                        id="form--manual-input-title"
                        name="create-map-title"
                        autocomplete="off"
-                       placeholder=" ">
+                       placeholder=" "
+                       maxlength="25">
                 
                 <label class="selector-modal__input-label--title"
                        for="add-node-form--manual-input">Title</label>
                        
-
+                <span class="char-counter" data-for="form--manual-input-title"></span>
                 <p class="err-message  hidden selector-modal__error selector-modal__error--title"
                    data-for="create-map-title"></p>
             </div>
@@ -487,9 +488,10 @@
                        id="form--manual-input-subelements"
                        name="roadmap-subelements"
                        autocomplete="off"
-                       placeholder=" ">
+                       placeholder=" "
+                       maxlength="20">
                 <label class="selector-modal__input-label--subtask" for="form--manual-input-subelements">Subtask Title</label>
-
+                <span class="char-counter" data-for="form--manual-input-subelements"></span>
                 <p class="err-message  hidden selector-modal__error selector-modal__error--subtasks"
                    data-for="roadmap-subelements"></p>
 
@@ -573,12 +575,15 @@
             
             
                   <div class="selector-modal__form-import--textarea-wrap">
-                      <p class="err-message  hidden selector-modal__error selector-modal__error--import" data-for="import"></p>
+                      <p class="err-message  hidden  selector-modal__error--import" data-for="import"></p>
                       <textarea id="form--import-textarea"
                                 name="import"
                                 class="import-discription selector-modal__form-import-textarea"
-                                placeholder=" "></textarea>
+                                placeholder=" "
+                                maxlength="1000">
+                       </textarea>
                       <label class="selector-modal__form-import-label" for="form--import-textarea">Paste Here...</label>
+                      <span class="char-counter" data-for="form--import-textarea"></span>
                   </div>
             
                   <div class="selector-modal__actions selector-modal__actions--import"

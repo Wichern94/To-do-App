@@ -135,7 +135,7 @@
 }
 
 .error-border {
-  border: 0.5px solid var(--btn-danger);
+  border: 0.5px solid var(--btn-danger) !important;
 }
 .visible {
   opacity: 1;

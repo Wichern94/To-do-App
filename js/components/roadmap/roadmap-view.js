@@ -95,8 +95,6 @@ export class RoadmapView {
      * ========================================
      */
     this.localStates = {
-      bound: false,
-      isLoading: false,
       modalCurrentMode: this.ui.modal.manualForm,
     };
 
@@ -113,6 +111,8 @@ export class RoadmapView {
       onImportSubmit: null,
       onAddSubtask: null,
       onPromtCopy: null,
+      onManualSwitch: null,
+      onImportSwitch: null,
     };
     this.handlers = null;
     /**
@@ -243,6 +243,11 @@ export class RoadmapView {
     });
     this.localStates.bound = false;
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
 
   /**
    * ========================================
@@ -264,11 +269,11 @@ export class RoadmapView {
 
     switch (mode) {
       case 'manual':
-        this.handleManualSwitch(modeBtn);
+        this.sendOnManualSwitch(modeBtn);
         break;
 
       case 'import':
-        this.handleImportSwitch(modeBtn);
+        this.sendOnImportSwitch(modeBtn);
         break;
     }
 
@@ -289,59 +294,6 @@ export class RoadmapView {
         break;
     }
   }
-
-  sendOnModalClose(e) {
-    if (typeof this.handlers.onModalClose === 'function') {
-      this.handlers.onModalClose(e);
-    }
-  }
-
-  sendOnModalOpen(e) {
-    if (typeof this.handlers.onModalOpen === 'function') {
-      this.handlers.onModalOpen(e);
-    }
-  }
-  sendGoBack() {
-    if (typeof this.handlers.onQuitRoadmap === 'function') {
-      this.handlers.onQuitRoadmap();
-    }
-  }
-  sendOnPromtCopy() {
-    if (typeof this.handlers.onPromtCopy === 'function') {
-      this.handlers.onPromtCopy();
-    }
-  }
-
-  async handleQuitAnimation(roadmapID) {
-    const { panel } = this.ui.selector;
-    const { content, addBtnContainer } = this.ui.roadmap;
-    // preparing elements:
-    const targetUl = this._q(`ul[id="${roadmapID}"]`);
-    const backBtn = this._q('#btn-back');
-
-    //Animated Show/Hide Sequence
-    //1) Buttons:
-
-    //back
-    await this.animationManager?.hideBtns(backBtn, '.2s');
-
-    // I hide the global button for adding nodes
-    await this.animationManager?.hideBtns(addBtnContainer, '.2s');
-
-    //2) I hide the correct container according to the ID
-    await this.animationManager?.hideAnimation(targetUl, 'fadeOutLeft', '.5s');
-
-    //3) I'm hiding the  UL container  they're all hidden here!
-    await this.animationManager?.hideAnimation(content, 'fadeOutLeft', '.1s');
-    //4) I hide the container for selecting the roadmap:
-    await this.animationManager?.showAnimation(panel, 'fadeInLeft', '.5s');
-  }
-
-  /**?
-   * ========================================
-   * HANDLER METHODS
-   * ========================================
-   */
 
   setupCharacterCounter() {
     const formElements = this._qa('input[maxlength], textarea[maxlength]');
@@ -367,6 +319,46 @@ export class RoadmapView {
       }
     });
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
+
+  /**
+   * ========================================
+   * QUIT ANIMATION
+   * ========================================
+   */
+  async handleQuitAnimation(roadmapID) {
+    const { panel } = this.ui.selector;
+    const { content, addBtnContainer } = this.ui.roadmap;
+    // preparing elements:
+    const targetUl = this._q(`ul[id="${roadmapID}"]`);
+    const backBtn = this._q('#btn-back');
+
+    //Animated Show/Hide Sequence
+    //1) Buttons:
+
+    //back
+    await this.animationManager?.hideBtns(backBtn, '.2s');
+
+    // I hide the global button for adding nodes
+    await this.animationManager?.hideBtns(addBtnContainer, '.2s');
+
+    //2) I hide the correct container according to the ID
+    await this.animationManager?.hideAnimation(targetUl, 'fadeOutLeft', '.5s');
+
+    //3) I'm hiding the  UL container  they're all hidden here!
+    await this.animationManager?.hideAnimation(content, 'fadeOutLeft', '.1s');
+    //4) I hide the container for selecting the roadmap:
+    await this.animationManager?.showAnimation(panel, 'fadeInLeft', '.5s');
+  }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
 
   /**
    * ========================================
@@ -381,6 +373,7 @@ export class RoadmapView {
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.blurInElement(bluredOne);
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
+    this.setupCharacterCounter();
   }
 
   async closeModal() {
@@ -389,7 +382,13 @@ export class RoadmapView {
 
     await this.animationManager?.hideAnimation(fieldset, 'bounceOutDown', '1s');
     await this.animationManager?.blurOutElement(bluredOne);
+    this.handlerClearCounters();
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
 
   /**
    * ========================================
@@ -427,6 +426,11 @@ export class RoadmapView {
 
     this.localStates.modalCurrentMode = importForm;
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
 
   /**
    * ========================================
@@ -468,12 +472,60 @@ export class RoadmapView {
       this.handlers.onAddSubtask(rawInputValue);
     }
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
 
   /**
    * ========================================
-   * HELPER METHODS
+   * CALLBACK METHODS
    * ========================================
    */
+  sendOnModalClose(e) {
+    if (typeof this.handlers.onModalClose === 'function') {
+      this.handlers.onModalClose(e);
+    }
+  }
+
+  sendOnManualSwitch(btn) {
+    if (typeof this.handlers.onManualSwitch === 'function') {
+      this.handlers.onManualSwitch(btn);
+    }
+  }
+  sendOnImportSwitch(btn) {
+    if (typeof this.handlers.onImportSwitch === 'function') {
+      this.handlers.onImportSwitch(btn);
+    }
+  }
+
+  sendOnModalOpen(e) {
+    if (typeof this.handlers.onModalOpen === 'function') {
+      this.handlers.onModalOpen(e);
+    }
+  }
+  sendGoBack() {
+    if (typeof this.handlers.onQuitRoadmap === 'function') {
+      this.handlers.onQuitRoadmap();
+    }
+  }
+  sendOnPromtCopy() {
+    if (typeof this.handlers.onPromtCopy === 'function') {
+      this.handlers.onPromtCopy();
+    }
+  }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
+  /**
+   * ========================================
+   * CLAER METHODS
+   * ========================================
+   */
+
   handleClearManualError(e) {
     if (e.target.tagName === 'INPUT') {
       this.manualFormErrors.clearError(e.target.name);
@@ -491,14 +543,6 @@ export class RoadmapView {
       span.textContent = '';
     });
   }
-
-  bouncingBtn() {
-    const btn = this.ui.modal.openModalBtn;
-    if (btn) {
-      this.animationManager?.bounceBtn(btn);
-    }
-  }
-
   clearManualForm() {
     this.manualFormErrors.clearAllErrors();
 
@@ -506,24 +550,26 @@ export class RoadmapView {
     this.ui.modal.subtaskInput.value = '';
     this.ui.modal.subtaskContainer.innerHTML = '';
   }
-
   clearImportForm() {
     this.importFormErrors.clearAllErrors();
 
     this.ui.modal.textArea.value = '';
-  }
-  animateInvalidBtn() {
-    this.animationManager.addElementAnimation(
-      this.ui.modal.subtaskBtn,
-      'shakeX',
-      '1s'
-    );
   }
   clearSubtaskInputAndContainer() {
     this.ui.modal.subtaskInput.value = '';
 
     this.ui.modal.subtaskContainer.innerHTML = '';
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
+  /**
+   * ========================================
+   * RENDER METHOD
+   * ========================================
+   */
   renderSubtasks(subtasks) {
     subtasks.forEach(async (value) => {
       const li = document.createElement('li');
@@ -533,6 +579,33 @@ export class RoadmapView {
       await this.animationManager.showAnimation(li, 'fadeIn', '.5s');
     });
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
+
+  /**
+   * ========================================
+   * HELPER METHODS
+   * ========================================
+   */
+
+  bouncingBtn() {
+    const btn = this.ui.modal.openModalBtn;
+    if (btn) {
+      this.animationManager?.bounceBtn(btn);
+    }
+  }
+
+  animateInvalidBtn() {
+    this.animationManager.addElementAnimation(
+      this.ui.modal.subtaskBtn,
+      'shakeX',
+      '1s'
+    );
+  }
+
   setPending(isPending) {
     const inputs = [
       this.ui.modal.titleInput,

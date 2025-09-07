@@ -304,12 +304,6 @@ export class SelectorView {
     }
   }
 
-  // handleGoBack() {
-  //   if (typeof this.handlers.onQuitRoadmap === 'function') {
-  //     this.handlers.onQuitRoadmap();
-  //   }
-  // }
-
   async handleDeleteRoadmap(btn) {
     try {
       const li = btn.closest('.roadmap-selector__item');

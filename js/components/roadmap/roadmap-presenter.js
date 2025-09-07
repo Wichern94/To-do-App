@@ -1,6 +1,7 @@
 import { FormValidator } from '../../Services/form-validator.js';
 import { RoadmapPlumbManager } from '../../Services/plumb-manager.js';
 import { NodeElement } from '../node-component.js';
+import ERRORS from '../../Services/form-validator.js';
 
 export class RoadmapPresenter {
   constructor(model, view, roadmapID, callbacks = {}) {
@@ -182,25 +183,23 @@ export class RoadmapPresenter {
   _bindViewCallbacks() {
     this.view.bind({
       onModalOpen: async (e) => await this._handleOpenModal(e),
-
       onModalClose: async (e) => await this._handleCloseModal(),
-
       onQuitRoadmap: () => {
         if (typeof this.onQuitRequest === 'function') {
           this.onQuitRequest();
         }
       },
-
       onAddSubtask: async (rawData) => this._handleAddSubtask(rawData),
-
       onManualSubmit: async (rawFormData) =>
         await this._handleManualSubmit(rawFormData),
-
       onPromtCopy: async () => await this._handleCopyPromt(),
       onImportSubmit: async (rawText) =>
         await this._handleImportSubmit(rawText),
+      onManualSwitch: async (btn) => this.view.handleManualSwitch(btn),
+      onImportSwitch: async (btn) => this.view.handleImportSwitch(btn),
     });
   }
+
   _unbindViewCallbacks() {
     this.view.unbind();
   }
@@ -342,23 +341,29 @@ Example structure:
   async _handleImportSubmit(rawText) {
     if (this.model.isSubmitting) return;
     try {
-      const value = String(rawText ?? '').trim();
-      if (!value) {
+      const raw = String(rawText ?? '');
+      if (!raw.trim()) {
         this.view?.importFormErrors?.showError?.(
           'import',
-          'This field cannot be empty!'
+          ERRORS.E_VALUE_EMPTY
         );
-        throw new Error('The submitted data is empty!');
+        return;
       }
-      const parsedData = this._parseImportText(value);
+      const parsedData = this._parseImportText(rawText);
 
       this.model.isSubmitting = true;
       this.view.setPending?.(true);
 
+      const cleaned = parsedData.map((n) => ({
+        ...n,
+        title: this.normalizeInput(n.title),
+        subtasks: n.subtasks.map((s) => this.normalizeInput(s)),
+      }));
+
       const list = await this._fetchNodes();
       const order = this._computeNextOrder(list);
 
-      const nodesData = parsedData.map((node, i) => {
+      const nodesData = cleaned.map((node, i) => {
         return {
           ...node,
           order: order + i,
@@ -379,6 +384,9 @@ Example structure:
       await this.view.closeModal();
     } catch (err) {
       console.error('IMPORT SUBMIT ERROR:', err);
+      const message = ERRORS[err.code] || 'An unknown error occurred.';
+
+      this.view?.importFormErrors?.showError?.('import', message);
     } finally {
       this.model.isSubmitting = false;
       this.view.setPending?.(false);
@@ -426,23 +434,33 @@ Example structure:
       const parsedData = JSON.parse(jsonText);
 
       if (!Array.isArray(parsedData)) {
-        throw new Error('Data is not an Array');
+        throw { code: 'E_TOPLEVEL_NOT_ARRAY' };
       }
-
       parsedData.forEach((node, index) => {
-        if (!node.title) {
-          throw new Error(`Incorrect Title in [${index}]!`);
-        }
-        if (typeof node.title !== 'string') {
-          throw new Error(`Incorrect data-type of [${index}]!`);
-        }
-        if (!Array.isArray(node.subtasks)) {
-          throw new Error(`${node.subtasks} is not an Array in[${index}]`);
+        switch (true) {
+          case typeof node !== 'object' || node === null:
+            throw { code: 'E_ITEM_NOT_OBJECT', index };
+          case !node.title:
+            throw { code: 'E_TITLE_MISSING', index };
+          case typeof node.title !== 'string':
+            throw { code: 'E_TITLE_TYPE', index };
+          case node.title.trim() === '':
+            throw { code: 'E_TITLE_EMPTY', index };
+          case !Array.isArray(node.subtasks):
+            throw { code: 'E_SUBTASKS_NOT_ARRAY', index };
+          case node.subtasks.some((subtask) => typeof subtask !== 'string'):
+            throw { code: 'E_SUBTASK_TYPE', index };
+          case node.subtasks.some((subtask) => subtask.trim() === ''):
+            throw { code: 'E_SUBTASK_EMPTY', index };
         }
       });
+
       return parsedData;
     } catch (err) {
-      console.error('PARSE ERROR:', err);
+      if (typeof err === 'object' && err.code) {
+        throw err;
+      }
+      throw { code: 'E_JSON_PARSE', message: err.message };
     }
   }
 }
