@@ -47,12 +47,15 @@ export class NodePresenter {
   disableNode() {
     this.view.setEnabled(false);
     this.view.showButtons({});
-    this._stopUiTick();
+    // this._stopUiTick();
   }
   setActive() {
+    if (this.model.state.isActive) return;
     // jak dziś: border, timer visible, checkboxes enabled, plumb lines
+    this.view.setupActive();
     this.view.showTimer();
-    this.view.setCheckboxesEnabled(true);
+    this.view.setupCheckboxes(true);
+    this.view.showButtons({ pause });
     this.view.drawPlumbLines(this.plumb /* ul element jeżeli potrzebny */);
     // jeśli node był „paused”, pokaż continue; inaczej start
   }

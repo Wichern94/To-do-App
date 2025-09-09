@@ -130,7 +130,7 @@ export class NodeElement {
                         </svg>
                 </button>
 
-                <button class="hidden roadmap-node__btn roadmap-node__btn--continue"
+                <button class="continue-btn roud-btns hidden"
                         aria-label="Continue node"
                         type="button">Continue
 

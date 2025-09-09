@@ -7,6 +7,14 @@ export class NodeModel {
       startedAt: null,
       isRunning: !!fullNodeData.isRunning,
     };
+    this.state = {
+      isActive: false,
+      accumulatedMs: 0,
+      startedAt: null,
+      isRunning: false,
+      wasActive: false,
+      subtasks: [],
+    };
   }
 
   hydrate(partial) {
@@ -33,7 +41,13 @@ export class NodeModel {
   }
 
   snapshot() {
-    // payload do zapisu w bazie:
-    // timerSeconds, accumulatedMs, startedAt|null, isRunning, paused, checkedSubtasks, nodeCompleted, completedAt?
+    return {
+      accumulatedMs: this.state.accumulatedMs,
+      startedAt: this.state.startedAt,
+      isRunning: this.state.isRunning,
+      wasActive: this.state.wasActive,
+      isActive: this.state.isActive,
+      subtasks: this.state.subtasks.map((task) => task.snapshot()),
+    };
   }
 }
