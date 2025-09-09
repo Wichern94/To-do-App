@@ -2,27 +2,13 @@ import { FormErrors } from '../../uiErrorHandler.js';
 
 import { showElement, hideElement, toggleElement } from '../../utils/helper.js';
 export class NodeView {
-  constructor(root = 'roadmap-view', { animationManager } = {}) {
-    const rootEl =
-      typeof root === 'string' ? document.getElementById(root) : root;
-
-    if (!rootEl) {
-      throw new Error(
-        'Roadmap ID Section root not found (selector or element invalid)'
-      );
-    }
-    /**
-     * ========================================
-     * ROADMAP ID
-     * ========================================
-     */
-
+  constructor(root = null, { animationManager } = {}) {
     /**
      * ========================================
      * ROOT + QUERYHELPER
      * ========================================
      */
-    this.ui = { root: rootEl };
+    this.ui = { root: root };
 
     this._q = (sel) => this.ui.root.querySelector(sel);
 
@@ -30,63 +16,42 @@ export class NodeView {
 
     /**
      * ========================================
-     *  SELECTOR UI ELEMENTS
+     *  BUTTONS
      * ========================================
      */
 
-    this.ui.selector = {
-      list: this._q('.roadmap-selector__list'),
-      titleContainer: this._q('.roadmap-selector__empty'),
-      panel: this._q('.roadmap-selector__panel'),
+    this.ui.buttons = {
+      accordionBtn: this._q('.roadmap-node__accordion-btn'),
+      startBtn: this._q('.roadmap-node__btn--play'),
+      pauseBtn: this._q('.roadmap-node__btn--pause'),
+      continueBtn: this._q('.roadmap-node__btn--continue'),
+      stopBtn: this._q('.roadmap-node__btn--stop'),
     };
 
     /**
      * ========================================
-     *      ROADMAP CONTAINER
+     *      CONTAINERS
      * ========================================
      */
-    this.ui.roadmap = {
-      backBtn: this._q('.roadmap__btn--back'),
-      content: this._q('.roadmap__content'),
-      addBtnContainer: this._q('#add-node-btn-cont'),
+    this.ui.containers = {
+      progressBarCont: this._q('.roadmap-node__progress'),
+      butttonsCont: this._q('.roadmap-node__actions'),
+      subtaskCont: this._q('.roadmap-node__subtasks'), //subtaskList
+      checkBoxCont: this._qa('.subtask-item__checkbox--disabled'), //checkBoxList
     };
 
     /**
      * ========================================
-     *  MODAL WINDOWS
+     *  Elements
      * ========================================
      */
 
-    this.ui.modal = {
-      dialog: this._q('#add-node-element-dialog'),
-      fieldset: this._q('#add-node-element-fieldset'),
-
-      /**
-       * ========================================
-       *  MODAL FORM ELEMENTS
-       * ========================================
-       */
-
-      manualForm: this._q('#add-node-form--manual'),
-      titleInput: this._q('#form--manual-input-title'),
-      subtaskInput: this._q('#form--manual-input-subelements'),
-      importForm: this._q('#add-node-form--import'),
-      textArea: this._q('#form--import-textarea'),
-      subtaskContainer: this._q('#subtask-list'),
-
-      /**
-       * ========================================
-       * MODAL BUTTONS
-       * ========================================
-       */
-
-      importSubmitBtn: this._q('#form--import-submit-btn'),
-      manualSubmitBtn: this._q('#form--manual-submit-btn'),
-      cancelBtn: this._q('.selector-modal__btn--cancel'),
-      openModalBtn: this._q('#roadmap-open-modal-ID'),
-      promtBtn: this._q('#form--import-promt-btn'),
-      subtaskBtn: this._q('#subtask-add-btn'),
-      allBtns: this._qa('.selector-modal__btn'),
+    this.ui.elements = {
+      nodeContent: this._q('.roadmap-node__content'),
+      activeBorder: this._q('.roadmap-node__active-border'),
+      timer: this._q('.roadmap-node__time'),
+      progressText: this._q('.roadmap-node__progress-text'),
+      progressFill: this._q('.roadmap-node__progress-fill'),
     };
 
     /**
@@ -95,8 +60,7 @@ export class NodeView {
      * ========================================
      */
     this.localStates = {
-      modalCurrentMode: this.ui.modal.manualForm,
-      countersBound: false,
+      bound: false,
     };
 
     /**
@@ -122,8 +86,6 @@ export class NodeView {
      * ========================================
      */
     this.animationManager = animationManager || null;
-    this.importFormErrors = new FormErrors('add-node-form--import');
-    this.manualFormErrors = new FormErrors('add-node-form--manual');
 
     this.listeners = [
       {
@@ -131,11 +93,7 @@ export class NodeView {
         event: 'click',
         handler: this.setupModal.bind(this),
       },
-      {
-        el: this.ui.modal.subtaskBtn,
-        event: 'click',
-        handler: this.handleAddSubtask.bind(this),
-      },
+
       {
         el: this.ui.modal.openModalBtn,
         event: 'click',
@@ -146,16 +104,7 @@ export class NodeView {
         event: 'click',
         handler: this.sendGoBack.bind(this),
       },
-      {
-        el: this.ui.modal.manualForm,
-        event: 'submit',
-        handler: this.handleManualSubmit.bind(this),
-      },
-      {
-        el: this.ui.modal.importForm,
-        event: 'submit',
-        handler: this.handleImportSubmit.bind(this),
-      },
+
       {
         el: this.ui.modal.manualForm,
         event: 'click',
@@ -172,7 +121,6 @@ export class NodeView {
         handler: this.sendOnPromtCopy.bind(this),
       },
     ];
-    this.bouncingBtn();
   }
 
   /**
@@ -249,7 +197,201 @@ export class NodeView {
    *
    * ========================================
    */
+  //Metoda renderowania elementów roadmapy
+  render(dataObj) {
+    const rightUl = document.getElementById(dataObj.roadmapID);
+    const title = dataObj.title;
+    const subUlID = `sub-${dataObj.id}`; //<-tworze id dla pojemnika na subtaski
+    if
+    const li = document.createElement('li');
 
+    li.classList.add('roadmap-node', 'node');
+
+    if (this.nodeData.id) {
+      li.dataset.id = this.nodeData.id; //<-nadaje id takie jak ten z firebase
+      li.id = `node-${this.nodeData.id}`;
+      li.dataset.order = this.nodeData.order;
+    }
+    if (this.nodeData.order % 2 === 0) {
+      li.classList.add('left');
+    } else {
+      li.classList.add('right');
+    }
+
+    //tworze html noda
+    li.innerHTML = `
+        
+          <div class="active-border hidden roadmap-node__active-border"></div>
+            <div class="roadmap-node__content">
+                <div class="title-roudmap roadmap-node__header">
+
+                    <span class="node-text roadmap-node__title" data-role ="title">${title}</span>
+                    
+                    
+
+                    <button class="node-acc-btn roadmap-node__accordion-btn" 
+                      type="button"
+                      aria-expanded="false"
+                      aria-controls="${subUlID}"
+                      aria-label="Toggle subtasks">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                       fill="none"
+                       viewBox="0 0 24 24"
+                       stroke-width="1.5" 
+                       stroke="currentColor"
+                       class="size-6">
+                       <path stroke-linecap="round"
+                       stroke-linejoin="round"
+                       d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </button>
+            </div>
+                   
+            <div class="roadmap-node__header-divider">
+              <span class="node-time roadmap-node__time"></span>
+            </div>
+            <div class="node-btn-container roadmap-node__actions"
+                 role="group"
+                 aria-label="Node Controls">
+              
+            
+                 <button class="stop-btn roud-btns hidden roadmap-node__btn roadmap-node__btn--stop"
+                         aria-label="stop node"
+                         type="button">Stop
+
+                         <svg class="roud-btns-svg"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="2.5"
+                              stroke="currentColor"
+                              class="size-6">
+                              <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
+                        </svg>
+                </button>
+            
+                <button class="play-btn roud-btns hidden roadmap-node__btn roadmap-node__btn--play"
+                        aria-label="start node"
+                        type="button">Start
+              
+                        <svg  class="roud-btns-svg"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none" viewBox="0 0 24 24"
+                              stroke-width="2.5"
+                              stroke="currentColor"
+                              class="size-6">
+                              <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                        </svg>
+                </button>
+                 
+                <button class= "pause-btn roud-btns hidden roadmap-node__btn roadmap-node__btn--pause"
+                        aria-label="Pause node"
+                        type="button">Pause
+
+                        <svg class="roud-btns-svg"xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke-width="2.5"
+                             stroke="currentColor"
+                             class="size-6">
+                             <path stroke-linecap="round"
+                             stroke-linejoin="round"
+                             d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                        </svg>
+                </button>
+
+                <button class="roadmap-node__btn roadmap-node__btn--continue hidden"
+                        aria-label="Continue node"
+                        type="button">Continue
+
+                        <svg  class="roud-btns-svg"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none" viewBox="0 0 24 24"
+                              stroke-width="2.5"
+                              stroke="currentColor"
+                              class="size-6">
+                              <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                        </svg>
+                </button>
+            </div>
+
+            <div class="progress-container hidden roadmap-node__progress"
+                 aria-label="Progress">
+                
+                 <div class="progress-bar roadmap-node__progress-bar">
+                    <div class="progress-fill roadmap-node__progress-fill"></div>
+                    <span class="progress-text roadmap-node__progress-text"></span>
+                </div>
+            </div>
+                
+               
+
+                
+    
+            <ul id ="${subUlID}" class="subtask-list hidden roadmap-node__subtasks" role ="list">
+                    
+                </ul>
+                </div>
+            `;
+    this.ui.root = li;
+    this.ui.nodeContent = li.querySelector('.roadmap-node__content');
+    this.ui.activeBorder = li.querySelector('.active-border');
+    this.ui.timer = li.querySelector('.node-time');
+    this.ui.progressBarCont = li.querySelector('.progress-container');
+    this.ui.accordionBtn = li.querySelector('.node-acc-btn');
+    this.ui.startBtn = li.querySelector('.play-btn');
+    this.ui.pauseBtn = li.querySelector('.pause-btn');
+    this.ui.continueBtn = li.querySelector('.continue-btn');
+    this.ui.stopBtn = li.querySelector('.stop-btn');
+    this.ui.btnContainer = li.querySelector('.node-btn-container');
+    this.ui.subtaskList = li.querySelector('.subtask-list');
+    this.ui.progressText = li.querySelector('.progress-text');
+    this.ui.progressFill = li.querySelector('.progress-fill');
+    this.ui.timer = li.querySelector('.node-time');
+
+    rightUl?.appendChild(li); // <-dodaje do odpowiedniego UL
+
+    if (this.options?.isNew) {
+      this.animationManager.addElementAnimation(li, 'rollIn', '1s');
+    }
+
+    const subtasks = this.nodeData.subtasks;
+    if (!Array.isArray(subtasks) || subtasks.length === 0) {
+      // <- jesli subtask jest tablica, i nie jest pusta
+      return;
+    }
+
+    const getSubUL = document.getElementById(subUlID);
+    if (getSubUL) {
+      // jezeli mamy juz  odpowiedni ul
+
+      subtasks.forEach((subtask) => {
+        const subLi = document.createElement('li');
+        subLi.classList.add('subtask-item');
+        subLi.dataset.id = `subLi-${this.nodeData.id}`;
+        subLi.innerHTML = `
+                    <label class="subtask subtask-item__label">
+                            <input type="checkbox" class = "roud-disabld-checkbox subtask-item__checkbox--disabled" />
+                            <span class="custom-check subtask-item__checkbox--custom"></span>
+                            <span class="subtask-text subtask-item__checkbox--text">${subtask}</span>
+                    </label>`;
+
+        getSubUL.appendChild(subLi);
+        const checkbox = subLi.querySelector('input[type="checkbox"]');
+        const subtaskText = subtask;
+        if (this.nodeData.checkedSubtasks?.includes(subtaskText)) {
+          checkbox.checked = true;
+        }
+      });
+      this.ui.checkBoxList = li.querySelectorAll('.roud-disabld-checkbox');
+    }
+  }
   /**
    * ========================================
    * UI SETUP METHODS
@@ -296,198 +438,6 @@ export class NodeView {
     }
   }
 
-  setupCharacterCounter() {
-    if (this.localStates.countersBound) return;
-    const formElements = this._qa('input[maxlength], textarea[maxlength]');
-
-    formElements.forEach((element) => {
-      const counterSpan = this._q(`.char-counter[data-for="${element.id}"]`);
-
-      if (counterSpan) {
-        this.localStates.countersBound = true;
-        element.addEventListener('input', () => {
-          const currentLength = element.value.length;
-          const maxlength = element.getAttribute('maxlength');
-
-          counterSpan.textContent = `${currentLength}/${maxlength}`;
-
-          if (currentLength >= maxlength) {
-            counterSpan.classList.add('exceeded');
-            this.animationManager?.buttonOneAnimation(counterSpan, 'shakeX');
-          } else {
-            counterSpan.classList.remove('exceeded');
-            this.animationManager?.buttonOneAnimation(counterSpan, 'jello');
-          }
-        });
-      }
-    });
-  }
-  /**
-   * ========================================
-   *
-   * ========================================
-   */
-
-  /**
-   * ========================================
-   * QUIT ANIMATION
-   * ========================================
-   */
-  async handleQuitAnimation(roadmapID) {
-    const { panel } = this.ui.selector;
-    const { content, addBtnContainer } = this.ui.roadmap;
-    // preparing elements:
-    const targetUl = this._q(`ul[id="${roadmapID}"]`);
-    const backBtn = this._q('#btn-back');
-
-    //Animated Show/Hide Sequence
-    //1) Buttons:
-
-    //back
-    await this.animationManager?.hideBtns(backBtn, '.2s');
-
-    // I hide the global button for adding nodes
-    await this.animationManager?.hideBtns(addBtnContainer, '.2s');
-
-    //2) I hide the correct container according to the ID
-    await this.animationManager?.hideAnimation(targetUl, 'fadeOutLeft', '.5s');
-
-    //3) I'm hiding the  UL container  they're all hidden here!
-    await this.animationManager?.hideAnimation(content, 'fadeOutLeft', '.1s');
-    //4) I hide the container for selecting the roadmap:
-    await this.animationManager?.showAnimation(panel, 'fadeInLeft', '.5s');
-  }
-  /**
-   * ========================================
-   *
-   * ========================================
-   */
-
-  /**
-   * ========================================
-   * OPEN/CLOSE HANDLERS METHODS
-   * ========================================
-   */
-  async openModal(e) {
-    const btn = e.target;
-    const bluredOne = this.ui.modal.dialog;
-    const fieldset = this.ui.modal.fieldset;
-
-    this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
-    await this.animationManager?.blurInElement(bluredOne);
-    await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
-  }
-
-  async closeModal() {
-    const bluredOne = this.ui.modal.dialog;
-    const fieldset = this.ui.modal.fieldset;
-
-    await this.animationManager?.hideAnimation(fieldset, 'bounceOutDown', '1s');
-    await this.animationManager?.blurOutElement(bluredOne);
-    this.handlerClearCounters();
-  }
-  /**
-   * ========================================
-   *
-   * ========================================
-   */
-
-  /**
-   * ========================================
-   * MODAL UI METHODS
-   * ========================================
-   */
-  async handleManualSwitch(btn) {
-    const { importForm, manualForm } = this.ui.modal;
-    const importBtn = this._q('button[data-mode="import"]');
-
-    if (this.localStates.modalCurrentMode === manualForm) return;
-    if (!btn || !importBtn) throw new Error('cant find button!');
-
-    importBtn.classList.remove('pressed');
-    btn.classList.add('pressed');
-
-    if (btn.classList.contains('pressed')) {
-      btn.setAttribute('aria-pressed', 'true');
-    } else {
-      btn.setAttribute('aria-pressed', 'false');
-    }
-
-    hideElement(importForm);
-    await this.animationManager.showAnimation(manualForm, 'fadeIn', '.5s');
-
-    this.localStates.modalCurrentMode = manualForm;
-  }
-
-  async handleImportSwitch(btn) {
-    const { importForm, manualForm } = this.ui.modal;
-    const manualBtn = this._q('button[data-mode="manual"]');
-
-    if (this.localStates.modalCurrentMode === importForm) return;
-    if (!btn || !manualBtn) throw new Error('cant find button!');
-
-    manualBtn.classList.remove('pressed');
-    btn.classList.add('pressed');
-
-    if (btn.classList.contains('pressed')) {
-      btn.setAttribute('aria-pressed', 'true');
-    } else {
-      btn.setAttribute('aria-pressed', 'false');
-    }
-
-    hideElement(manualForm);
-    await this.animationManager.showAnimation(importForm, 'fadeIn', '.5s');
-
-    this.localStates.modalCurrentMode = importForm;
-  }
-  /**
-   * ========================================
-   *
-   * ========================================
-   */
-
-  /**
-   * ========================================
-   * FORM SUBMIT METHOD
-   * ========================================
-   */
-  async handleImportSubmit(e) {
-    if (this.ui.modal.importSubmitBtn.disabled === true) return;
-    e.preventDefault();
-    try {
-      const rawAreaData = this.ui.modal.textArea.value || '';
-
-      if (typeof this.handlers.onImportSubmit === 'function') {
-        this.handlers.onImportSubmit(rawAreaData);
-      }
-    } catch (err) {
-      console.error('import Submit Error:');
-    }
-  }
-  async handleManualSubmit(e) {
-    if (this.ui.modal.manualSubmitBtn.disabled === true) return;
-    e.preventDefault();
-    try {
-      const rawInputData = this.ui.modal.titleInput.value || '';
-
-      const rawFormData = {
-        title: rawInputData,
-      };
-
-      if (typeof this.handlers.onManualSubmit === 'function') {
-        this.handlers.onManualSubmit(rawFormData);
-      }
-    } catch (err) {
-      console.error('Form sending error:', err);
-    }
-  }
-  async handleAddSubtask() {
-    const rawInputValue = this.ui.modal.subtaskInput?.value;
-
-    if (typeof this.handlers.onAddSubtask === 'function') {
-      this.handlers.onAddSubtask(rawInputValue);
-    }
-  }
   /**
    * ========================================
    *
@@ -583,38 +533,12 @@ export class NodeView {
    *
    * ========================================
    */
-  /**
-   * ========================================
-   * RENDER METHOD
-   * ========================================
-   */
-  renderSubtasks(subtasks) {
-    subtasks.forEach(async (value) => {
-      const li = document.createElement('li');
-      li.textContent = value;
-      li.classList.add('selector-modal__subtask-item');
-      this.ui.modal.subtaskContainer.appendChild(li);
-      await this.animationManager.showAnimation(li, 'fadeIn', '.5s');
-    });
-  }
-  /**
-   * ========================================
-   *
-   * ========================================
-   */
 
   /**
    * ========================================
    * HELPER METHODS
    * ========================================
    */
-
-  bouncingBtn() {
-    const btn = this.ui.modal.openModalBtn;
-    if (btn) {
-      this.animationManager?.bounceBtn(btn);
-    }
-  }
 
   animateInvalidBtn() {
     this.animationManager?.addElementAnimation(
