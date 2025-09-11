@@ -1,6 +1,8 @@
 export class NodeModel {
-  constructor(fullNodeData = {}) {
+  constructor(fullNodeData = {}, firestoreService) {
     this.data = { ...fullNodeData };
+    this.FsS = firestoreService;
+    this.refObj = { COL: 'roadmaps', SUBCOL: 'nodes' };
     // timer state (mapuj z timerSeconds, jeśli trzeba)
     this.timer = {
       accumulatedMs: (Number(fullNodeData.timerSeconds) || 0) * 1000,

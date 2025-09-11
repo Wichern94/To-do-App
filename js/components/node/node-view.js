@@ -1,4 +1,4 @@
-import { showElement, hideElement, toggleElement } from '../../utils/helper.js';
+import { showElement, hideElement } from '../../utils/helper.js';
 export class NodeView {
   constructor(root = null, { animationManager } = {}) {
     /**
@@ -34,8 +34,6 @@ export class NodeView {
       bound: false,
       isRendered: false,
       isAnimating: false,
-      checboxesBound: false,
-      
     };
 
     /**
@@ -104,7 +102,7 @@ export class NodeView {
   }
 
   activate() {
-    if (this.localStates.bound || !localStates.isRendered) return;
+    if (this.localStates.bound || !this.localStates.isRendered) return;
     this._findAndValidateUiElements(this.ui);
 
     this.listeners.forEach(({ el, event, handler }) => {
@@ -174,7 +172,7 @@ export class NodeView {
        */
       this.ui.containers = {
         progressBarCont: this._q('.roadmap-node__progress'),
-        butttonsCont: this._q('.roadmap-node__actions'),
+        buttonsCont: this._q('.roadmap-node__actions'),
         subtaskCont: this._q('.roadmap-node__subtasks'), //subtaskList
       };
 
@@ -253,7 +251,8 @@ export class NodeView {
             </div>
                    
             <div class="roadmap-node__header-divider">
-              <span class="roadmap-node__time"></span>
+              <span class="roadmap-node__time"
+                    aria-live="polite"></span>
             </div>
             <div class="roadmap-node__actions"
                  role="group"
@@ -351,8 +350,8 @@ export class NodeView {
 
       rightUl?.appendChild(li); // <-dodaje do odpowiedniego UL
 
-      this.renderSubtask(dataObj, subUlID);
       this._setRefs();
+      this.renderSubtask(dataObj, subUlID);
       this._buildListeners();
       this.localStates.isRendered = true;
     }
@@ -368,7 +367,7 @@ export class NodeView {
     if (getSubUL) {
       // jezeli mamy juz  odpowiedni ul
 
-      subtasks.forEach((subtask,i) => {
+      subtasks.forEach((subtask, i) => {
         const subLi = document.createElement('li');
         subLi.classList.add('subtask-item');
         subLi.dataset.id = this.generateUniqueId();
@@ -431,37 +430,30 @@ export class NodeView {
         break;
     }
   }
-setProgress({ doneCount, total, percent }) {
-  this.ui.elements.progressText.textContent = `${percent}%`;
-  this.ui.elements.progressFill.style.width = `${percent}%`;
-  // a11y:
-  const bar = this.ui.containers.progressBarCont;
-  bar.setAttribute('role','progressbar');
-  bar.setAttribute('aria-valuemin','0');
-  bar.setAttribute('aria-valuemax', String(total));
-  bar.setAttribute('aria-valuenow', String(doneCount));
-}
-
-
-  setupCheckBoxes(disable) {
-    //pobieram checkboxy
-    const checkboxes = this.ui.containers.subtaskCont
-      .querySelectorAll('input[type="checkbox"]')
-      .checkboxes?.forEach((cb) => {
-        cb.disabled = disable;
-      });
-    if (disable) return;
-
-    const checkBoxLenght = checkboxes?.length || 0;
-    // obliczenia dotyczace checkboxów
-    if (checkBoxLenght === 0) {
-      hideElement(this.ui.containers.progressBarCont); // upewniam sie ze nie pokazuje progressbaru jesli nie ma subtaskow
-      showElement(this.ui.buttons.stopBtn);
-      return;
+  setProgress({ doneCount, total, percent }) {
+    this.ui.elements.progressText.textContent = `${percent}%`;
+    this.ui.elements.progressFill.style.width = `${percent}%`;
+    // a11y:
+    const bar = this.ui.containers.progressBarCont;
+    bar.setAttribute('role', 'progressbar');
+    bar.setAttribute('aria-valuemin', '0');
+    bar.setAttribute('aria-valuemax', String(total));
+    bar.setAttribute('aria-valuenow', String(doneCount));
+  }
+  showProgress(show) {
+    if (show) {
+      showElement(this.ui.containers.progressBarCont);
+    } else {
+      hideElement(this.ui.containers.progressBarCont);
     }
+  }
 
-    showElement(this.ui.containers.progressBarCont);
-    this.localStates.progressStep = 100 / checkBoxLenght;
+  setSubtasksDisabled(disabled) {
+    this.ui.containers.subtaskCont
+      ?.querySelectorAll('input[type="checkbox"]')
+      .forEach((cb) => {
+        cb.disabled = disabled;
+      });
   }
 
   getAccordionOpen() {
@@ -481,48 +473,50 @@ setProgress({ doneCount, total, percent }) {
     const node = this.ui.elements.nodeContent;
 
     try {
+      if (!this.localStates.isRendered) {
+        console.warn('Cannot use Accordion before render!');
+        return false;
+      }
       if (this.localStates.isAnimating || this.getAccordionOpen() === open)
-        return;
+        return false;
 
       if (!btn || !list || !node) {
         throw new Error('cannot animate Accordion - missing elements');
       }
-      if (!this.localStates.isRendered) {
-        console.warn('Cannot use Accordion before render!');
-        return;
-      }
       if (!this.animationManager) {
         this.setAccordion(open);
-        return;
+        return false;
       }
 
       this.localStates.isAnimating = true;
 
-      btn?.disabled = true;
-      btn?.setAttribute('aria-disabled', 'true');
+      btn.disabled = true;
+      btn.setAttribute('aria-disabled', 'true');
       await this.animationManager?.toggleAccordeon(btn, list, node);
       this.setAccordion(open);
+      return true;
     } catch (err) {
       console.error('ACCORDION ERROR:', err);
+      return false;
     } finally {
-      btn?.disabled = false;
-      btn?.removeAttribute('aria-disabled');
+      btn.disabled = false;
+      btn.removeAttribute('aria-disabled');
       this.localStates.isAnimating = false;
     }
   }
 
-  enableNode(isEnabled) {
+  setUnlockedUI(isUnlocked) {
     if (!this.ui.root) {
       console.warn('Cannot enable/disable a node that has not been rendered.');
       return;
     }
-    if (isEnabled) {
+    if (isUnlocked) {
       this.ui.root?.classList.remove('disabled-node');
-      this.animationManager?.showBtns(this.ui.containers.butttonsCont, '1.5s');
+      this.animationManager?.showBtns(this.ui.containers.buttonsCont, '1.5s');
     } else {
       this.ui.elements.nodeContent?.classList.add('disabled-node');
 
-      hideElement(this.ui.containers.butttonsCont);
+      hideElement(this.ui.containers.buttonsCont);
       hideElement(this.ui.elements.timer);
     }
   }
@@ -544,13 +538,22 @@ setProgress({ doneCount, total, percent }) {
     }
   }
 
-  showTimer() {
-    showElement(this.ui.elements.timer);
+  showTimer(show) {
+    if (show) {
+      showElement(this.ui.elements.timer);
+    } else {
+      hideElement(this.ui.elements.timer);
+    }
   }
 
-  setupActive() {
-    this.ui.elements.nodeContent.classList.remove('disabled-node');
-    showElement(this.ui.elements.activeBorder);
+  setActiveUI(isActive) {
+    if (isActive) {
+      this.ui.elements.nodeContent.classList.remove('disabled-node');
+      showElement(this.ui.elements.activeBorder);
+    } else {
+      this.ui.elements.nodeContent.classList.add('disabled-node');
+      hideElement(this.ui.elements.activeBorder);
+    }
   }
 
   /**
@@ -591,7 +594,7 @@ setProgress({ doneCount, total, percent }) {
   async sendOnToggleAccordion() {
     const next = !this.getAccordionOpen();
     const changed = await this.animateAccordion(next);
-    
+
     if (changed !== false) {
       this.handlers.onToggleAccordion?.(next);
     }
@@ -606,21 +609,14 @@ setProgress({ doneCount, total, percent }) {
           'input[type="checkbox"]'
         );
         const total = allCheckboxes.length;
-        const doneCount = [...allCheckboxes].filter(cb => cb.checked).length;
+        const doneCount = [...allCheckboxes].filter((cb) => cb.checked).length;
 
-        
-        
-            if (typeof this.handlers.onSubtaskChange === 'function') {
-          this.handlers.onSubtaskChange({doneCount,total});
+        if (typeof this.handlers.onSubtaskChange === 'function') {
+          this.handlers.onSubtaskChange({ doneCount, total });
         }
       }
     }
   }
-}
-        
-
-        
-        
 
   /**
    * ========================================
@@ -645,9 +641,9 @@ setProgress({ doneCount, total, percent }) {
    * ========================================
    */
   generateUniqueId() {
-  const timestamp = Date.now().toString(36); 
-  const randomPart = Math.random().toString(36).substring(2, 8); 
-  return `${timestamp}-${randomPart}`;
+    const timestamp = Date.now().toString(36);
+    const randomPart = Math.random().toString(36).substring(2, 8);
+    return `${timestamp}-${randomPart}`;
   }
 
   animateInvalidBtn() {

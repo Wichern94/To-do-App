@@ -1,6 +1,6 @@
 import ERRORS, { FormValidator } from '../../Services/form-validator.js';
 import { RoadmapPlumbManager } from '../../Services/plumb-manager.js';
-import { NodeElement } from '../node-component.js';
+import { NodeElement } from '../node/node-element.js';
 
 export class RoadmapPresenter {
   constructor(model, view, roadmapID, callbacks = {}) {

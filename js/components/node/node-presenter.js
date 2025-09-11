@@ -1,14 +1,16 @@
 import { NodeModel } from './node-model.js';
 import { NodeView } from './node-view.js';
+import { AnimationManager } from '../../Services/animation-manager.js';
 
 export class NodePresenter {
   constructor(fullNodeData, plumbManager, firestoreService, options = {}) {
-    this.model = new NodeModel(fullNodeData);
-    this.view = new NodeView();
     this.plumb = plumbManager;
-    this.fs = firestoreService;
-    this.options = options;
+    this.animationManager = new AnimationManager(this.plumb);
+    this.model = new NodeModel(fullNodeData, firestoreService);
+    this.view = new NodeView(null, { animationManager: this.animationManager });
 
+    this.options = options;
+    this.allNodeInstances = [];
     this._uiTick = null; // interval do odświeżania napisu (nie liczenia czasu!)
     this._suppressFsUpdate = false; // guard przed echo-loop realtime
   }
@@ -16,22 +18,17 @@ export class NodePresenter {
   // === API kompatybilne z RoadmapPresenter ===
   render() {
     this.view.render(this.model.data);
-
-    // bindy UI -> metody prezentera:
-    this.view.bindStart(() => this._onStart());
-    this.view.bindPause(() => this._onPause());
-    this.view.bindContinue(() => this._onStart());
-    this.view.bindStop(() => this._onStop());
-    this.view.bindAccordion(() => this._onToggleAccordion());
+    this._bindViewCallbacks();
+    this.view.activate();
 
     // początkowy stan UI:
-    this._refreshTimerUI(); // ustawi tekst zgodnie z model.getElapsedMs()
-    this._refreshButtonsUI(); // pokaże właściwe guziki (start/pause/cont/stop)
-    this._refreshCheckboxesUI(); // odblokuj/zablokuj, wpisz checkedSubtasks
+    // this._refreshTimerUI(); // ustawi tekst zgodnie z model.getElapsedMs()
+    // this._refreshButtonsUI(); // pokaże właściwe guziki (start/pause/cont/stop)
+    // this._refreshCheckboxesUI(); // odblokuj/zablokuj, wpisz checkedSubtasks
 
-    if (this.options?.isNew) {
-      // animacja pojawienia — możesz wywołać przez view/animation manager
-    }
+    // if (this.options?.isNew) {
+    //   // animacja pojawienia — możesz wywołać przez view/animation manager
+    // }
   }
 
   setNodeListForRoadmap(nodes, { current: plumbManager } = {}) {
@@ -41,140 +38,70 @@ export class NodePresenter {
   }
 
   enableNode() {
-    this.view.setEnabled(true);
-    this.view.showButtons({ start: true });
+    this.view.setUnlockedUI(true);
+    this.view.showButtons({ start: true, accordionBtn: true });
+    this.view.showProgress(false);
+    this.view.setSubtasksDisabled(true);
+    this.view.showTimer(false);
   }
   disableNode() {
-    this.view.setEnabled(false);
-    this.view.showButtons({});
-    // this._stopUiTick();
+    this.view.setUnlockedUI(false);
+    this.view.showProgress(false);
+    this.view.showButtons({ accordionBtn: true });
+    this.view.setSubtasksDisabled(true);
+    this.view.showTimer(false);
   }
   setActive() {
     if (this.model.state.isActive) return;
-    // jak dziś: border, timer visible, checkboxes enabled, plumb lines
-    this.view.setupActive();
-    this.view.showTimer();
-    this.view.setupCheckboxes(true);
-    this.view.showButtons({ pause });
-    this.view.drawPlumbLines(this.plumb /* ul element jeżeli potrzebny */);
+
+    this.view.setActiveUI(true);
+    this.view.showTimer(true);
+    this.view.showProgress(true);
+    this.view.showButtons({ pause: true, accordionBtn: true });
+    this.view.setSubtasksDisabled(false);
+    // this.view.drawPlumbLines(this.plumb /* ul element jeżeli potrzebny */);
     // jeśli node był „paused”, pokaż continue; inaczej start
   }
 
   drawConnectionLines() {
-    this.view.drawPlumbLines(this.plumb /* ul element */);
+    console.log('linie');
+
+    // this.view.drawPlumbLines(this.plumb /* ul element */);
   }
 
   destroy() {
-    this._stopUiTick();
-    this._unsubRealtime?.();
-    this.view.destroy();
+    // this._stopUiTick();
+    // this._unsubRealtime?.();
+    this.view.deactivate();
+    this.view.unbind();
   }
-
-  // === Handlery ===
-  _onStart() {
-    if (this.model.timer.isRunning) return;
-    this.model.start();
-    this._startUiTick();
-    this._refreshButtonsUI();
-    this.view.setCheckboxesEnabled(true);
-    this._updateFs({ silent: false }); // zapis snapshotu (isRunning:true)
-  }
-
-  _onPause() {
-    if (!this.model.timer.isRunning) return;
-    this.model.pause();
-    this._refreshTimerUI(); // od razu odśwież
-    this._stopUiTick();
-    this._refreshButtonsUI();
-    this.view.setCheckboxesEnabled(false);
-    this._updateFs({ silent: false }); // snapshot (isRunning:false, accumulatedMs)
-  }
-
-  _onStop() {
-    this.model.stop();
-    this._refreshTimerUI();
-    this._stopUiTick();
-    this._refreshButtonsUI();
-    this.view.setCheckboxesEnabled(false);
-    // tutaj wywołujesz przeniesienie do Finished tak jak dotąd
-    // this.fs.moveElementToFinished(...)
-  }
-
-  _onToggleAccordion() {
-    /* animacja/view toggle */
-  }
-
-  // === UI tick (tylko do WYŚWIETLANIA, nie do liczenia) ===
-  _startUiTick() {
-    if (this._uiTick) return;
-    this._uiTick = setInterval(() => this._refreshTimerUI(), 1000);
-  }
-  _stopUiTick() {
-    if (!this._uiTick) return;
-    clearInterval(this._uiTick);
-    this._uiTick = null;
-  }
-  _refreshTimerUI() {
-    const secs = Math.floor(this.model.getElapsedMs() / 1000);
-    this.view.setTimerText(this._formatTime(secs));
-  }
-  _refreshButtonsUI() {
-    const r = this.model.timer.isRunning;
-    this.view.showButtons({
-      start: !r,
-      pause: r,
-      continue: !r && this.model.timer.accumulatedMs > 0,
-      stop: false, // lub według Twojej logiki
+  _bindViewCallbacks() {
+    this.view.bind({
+      onStart: (btn) => this._handleOnStart(btn),
+      onPause: (btn) => this._handleOnPause(btn),
+      onStop: (btn) => this._handleOnStop(btn),
+      onContinue: (btn) => this._handleOnContinue(btn),
+      onToggleAccordion: (next) => this._handleOnAccordion(next),
+      onSubtaskChange: ({ doneCount, total }) =>
+        this._handleOnSubtaskChange({ doneCount, total }),
     });
   }
-  _refreshCheckboxesUI() {
-    this.view.writeCheckedSubtasks(this.model.data.checkedSubtasks || []);
-    this.view.setCheckboxesEnabled(this.model.timer.isRunning);
-    const percent = this.model.getProgressPercent?.() ?? 0;
-    this.view.setProgress(percent);
+  _handleOnStart(btn) {
+    console.log('start', btn);
   }
-
-  // === Realtime ===
-  realTimeListener() {
-    if (this._unsubRealtime) return;
-    this._unsubRealtime = this.fs.listenToElement(
-      this.model.data.roadmapID,
-      'roadmaps',
-      'nodes',
-      this.model.data.id,
-      {
-        onUpdate: (partial) => this._handleRealtimeUpdate(partial),
-        onDelete: () => this._handleRealtimeDelete(),
-      }
-    );
+  _handleOnPause(btn) {
+    console.log('pause', btn);
   }
-  _handleRealtimeUpdate(partial) {
-    this._suppressFsUpdate = true;
-    this.model.hydrate(partial); // zaktualizuj stan
-    this._refreshButtonsUI();
-    this._refreshTimerUI();
-    this.view.writeCheckedSubtasks(this.model.data.checkedSubtasks || []);
-    this._suppressFsUpdate = false;
+  _handleOnStop(btn) {
+    console.log('stop', btn);
   }
-  _handleRealtimeDelete() {
-    this.destroy();
-    this.options?.onDelete?.(this);
+  _handleOnContinue(btn) {
+    console.log('Continue', btn);
   }
-
-  // === FS update helper ===
-  _updateFs({ silent = false } = {}) {
-    if (this._suppressFsUpdate) return; // echo-guard
-    const payload = this.model.snapshot();
-    this.fs.updateElements(
-      this.model.data.roadmapID,
-      'roadmaps',
-      'nodes',
-      this.model.data.id,
-      payload
-    );
+  _handleOnAccordion(next) {
+    console.log('next:', next);
   }
-
-  _formatTime(totalSeconds) {
-    // użyj Twojej funkcji formatowania HH:MM:SS (bez gotowca)
+  _handleOnSubtaskChange({ doneCount, total }) {
+    console.log(`doneCount:${doneCount},total:${total}`);
   }
 }
