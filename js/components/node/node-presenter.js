@@ -14,10 +14,16 @@ export class NodePresenter {
     this._uiTick = null; // interval do odświeżania napisu (nie liczenia czasu!)
     this._suppressFsUpdate = false; // guard przed echo-loop realtime
   }
+  get nodeData() {
+    return this.model.data;
+  }
+  get ui() {
+    return this.view.ui;
+  }
 
   // === API kompatybilne z RoadmapPresenter ===
   render() {
-    this.view.render(this.model.data);
+    this.view.render(this.nodeData);
     this._bindViewCallbacks();
     this.view.activate();
 
@@ -52,7 +58,7 @@ export class NodePresenter {
     this.view.showTimer(false);
   }
   setActive() {
-    if (this.model.state.isActive) return;
+    if (this.nodeData.isActive) return;
 
     this.view.setActiveUI(true);
     this.view.showTimer(true);
