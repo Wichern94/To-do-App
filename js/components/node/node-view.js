@@ -25,51 +25,6 @@ export class NodeView {
       this.ui.root = null;
     }
 
-    if (this.ui.root) {
-      this._q = (sel) => this.ui.root.querySelector(sel);
-      this._qa = (sel) => this.ui.root.querySelectorAll(sel);
-
-      /**
-       * ========================================
-       *  BUTTONS
-       * ========================================
-       */
-
-      this.ui.buttons = {
-        accordionBtn: this._q('.roadmap-node__accordion-btn'),
-        start: this._q('.roadmap-node__btn--play'),
-        pause: this._q('.roadmap-node__btn--pause'),
-        continue: this._q('.roadmap-node__btn--continue'),
-        stop: this._q('.roadmap-node__btn--stop'),
-      };
-
-      /**
-       * ========================================
-       *      CONTAINERS
-       * ========================================
-       */
-      this.ui.containers = {
-        progressBarCont: this._q('.roadmap-node__progress'),
-        butttonsCont: this._q('.roadmap-node__actions'),
-        subtaskCont: this._q('.roadmap-node__subtasks'), //subtaskList
-        checkBoxCont: this._qa('.subtask-item__checkbox--disabled'), //checkBoxList
-      };
-
-      /**
-       * ========================================
-       *  Elements
-       * ========================================
-       */
-
-      this.ui.elements = {
-        nodeContent: this._q('.roadmap-node__content'),
-        activeBorder: this._q('.roadmap-node__active-border'),
-        timer: this._q('.roadmap-node__time'),
-        progressText: this._q('.roadmap-node__progress-text'),
-        progressFill: this._q('.roadmap-node__progress-fill'),
-      };
-    }
-
     /**
      * ========================================
      * LOCAL STATES
@@ -78,6 +33,9 @@ export class NodeView {
     this.localStates = {
       bound: false,
       isRendered: false,
+      isAnimating: false,
+      checboxesBound: false,
+      
     };
 
     /**
@@ -89,7 +47,9 @@ export class NodeView {
       onStart: null,
       onPause: null,
       onStop: null,
+      onContinue: null,
       onToggleAccordion: null,
+      onSubtaskChange: null,
     };
     this.handlers = null;
     /**
@@ -99,13 +59,7 @@ export class NodeView {
      */
     this.animationManager = animationManager || null;
 
-    this.listeners = [
-      // { tu bede podpinac listenery
-      //   el: this.ui.modal.fieldset,
-      //   event: 'click',
-      //   handler: this.setupModal.bind(this),
-      // },
-    ];
+    this.listeners = [];
   }
 
   /**
@@ -150,7 +104,7 @@ export class NodeView {
   }
 
   activate() {
-    if (this.localStates.bound) return;
+    if (this.localStates.bound || !localStates.isRendered) return;
     this._findAndValidateUiElements(this.ui);
 
     this.listeners.forEach(({ el, event, handler }) => {
@@ -162,7 +116,7 @@ export class NodeView {
   }
 
   bind(handlers = {}) {
-    if (!this.isRendered) {
+    if (!this.localStates.isRendered) {
       throw new Error('Cannot bind to unrendered component.');
     }
     this.handlers = { ...this.initialHandlers, ...handlers };
@@ -179,6 +133,65 @@ export class NodeView {
       }
     });
     this.localStates.bound = false;
+  }
+  _buildListeners() {
+    this.listeners = [
+      {
+        el: this.ui.elements.nodeContent,
+        event: 'click',
+        handler: this.handleSetUI.bind(this),
+      },
+      {
+        el: this.ui.containers.subtaskCont,
+        event: 'change',
+        handler: this.sendOnSubtaskChange.bind(this),
+      },
+    ];
+  }
+  _setRefs() {
+    if (this.ui.root) {
+      this._q = (sel) => this.ui.root.querySelector(sel);
+      this._qa = (sel) => this.ui.root.querySelectorAll(sel);
+
+      /**
+       * ========================================
+       *  BUTTONS
+       * ========================================
+       */
+
+      this.ui.buttons = {
+        accordionBtn: this._q('.roadmap-node__accordion-btn'),
+        start: this._q('.roadmap-node__btn--play'),
+        pause: this._q('.roadmap-node__btn--pause'),
+        continue: this._q('.roadmap-node__btn--continue'),
+        stop: this._q('.roadmap-node__btn--stop'),
+      };
+
+      /**
+       * ========================================
+       *      CONTAINERS
+       * ========================================
+       */
+      this.ui.containers = {
+        progressBarCont: this._q('.roadmap-node__progress'),
+        butttonsCont: this._q('.roadmap-node__actions'),
+        subtaskCont: this._q('.roadmap-node__subtasks'), //subtaskList
+      };
+
+      /**
+       * ========================================
+       *  Elements
+       * ========================================
+       */
+
+      this.ui.elements = {
+        nodeContent: this._q('.roadmap-node__content'),
+        activeBorder: this._q('.roadmap-node__active-border'),
+        timer: this._q('.roadmap-node__time'),
+        progressText: this._q('.roadmap-node__progress-text'),
+        progressFill: this._q('.roadmap-node__progress-fill'),
+      };
+    }
   }
   /**
    * ========================================
@@ -224,7 +237,8 @@ export class NodeView {
                       type="button"
                       aria-expanded="false"
                       aria-controls="${subUlID}"
-                      aria-label="Toggle subtasks">
+                      aria-label="Toggle subtasks"
+                      data-action="toggle-accordion">
                     <svg xmlns="http://www.w3.org/2000/svg"
                        fill="none"
                        viewBox="0 0 24 24"
@@ -248,7 +262,8 @@ export class NodeView {
             
                  <button class="hidden roadmap-node__btn roadmap-node__btn--stop"
                          aria-label="stop node"
-                         type="button">Stop
+                         type="button"
+                         data-action="stop">Stop
 
                          <svg class="roud-btns-svg"
                               xmlns="http://www.w3.org/2000/svg"
@@ -265,7 +280,8 @@ export class NodeView {
             
                 <button class="hidden roadmap-node__btn roadmap-node__btn--play"
                         aria-label="start node"
-                        type="button">Start
+                        type="button"
+                        data-action="start">Start
               
                         <svg  class="roud-btns-svg"
                               xmlns="http://www.w3.org/2000/svg"
@@ -281,7 +297,8 @@ export class NodeView {
                  
                 <button class= "hidden roadmap-node__btn roadmap-node__btn--pause"
                         aria-label="Pause node"
-                        type="button">Pause
+                        type="button"
+                        data-action="pause">Pause
 
                         <svg class="roud-btns-svg"xmlns="http://www.w3.org/2000/svg"
                              fill="none"
@@ -297,7 +314,8 @@ export class NodeView {
 
                 <button class="roadmap-node__btn roadmap-node__btn--continue hidden"
                         aria-label="Continue node"
-                        type="button">Continue
+                        type="button"
+                        data-action="continue">Continue
 
                         <svg  class="roud-btns-svg"
                               xmlns="http://www.w3.org/2000/svg"
@@ -334,6 +352,8 @@ export class NodeView {
       rightUl?.appendChild(li); // <-dodaje do odpowiedniego UL
 
       this.renderSubtask(dataObj, subUlID);
+      this._setRefs();
+      this._buildListeners();
       this.localStates.isRendered = true;
     }
   }
@@ -344,14 +364,14 @@ export class NodeView {
       return;
     }
 
-    const getSubUL = document.getElementById(subUlID);
+    const getSubUL = this._q(`#${subUlID}`);
     if (getSubUL) {
       // jezeli mamy juz  odpowiedni ul
 
-      subtasks.forEach((subtask) => {
+      subtasks.forEach((subtask,i) => {
         const subLi = document.createElement('li');
         subLi.classList.add('subtask-item');
-        subLi.dataset.id = `subLi-${dataObj.id}`;
+        subLi.dataset.id = this.generateUniqueId();
         subLi.innerHTML = `
                     <label class="subtask-item__label">
                             <input type="checkbox" class ="subtask-item__checkbox--disabled" />
@@ -379,6 +399,118 @@ export class NodeView {
    * UI SETUP METHODS
    * ========================================
    */
+
+  handleSetUI(e) {
+    const btn = e.target.closest('[data-action]');
+
+    if (!btn || btn.disabled || btn.getAttribute('aria-disabled') === 'true')
+      return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    switch (action) {
+      case 'start':
+        this.sendOnStart(btn);
+        break;
+
+      case 'stop':
+        this.sendOnStop(btn);
+        break;
+
+      case 'continue':
+        this.sendOnContinue(btn);
+        break;
+
+      case 'pause':
+        this.sendOnPause(btn);
+        break;
+
+      case 'toggle-accordion':
+        this.sendOnToggleAccordion(btn);
+        break;
+    }
+  }
+setProgress({ doneCount, total, percent }) {
+  this.ui.elements.progressText.textContent = `${percent}%`;
+  this.ui.elements.progressFill.style.width = `${percent}%`;
+  // a11y:
+  const bar = this.ui.containers.progressBarCont;
+  bar.setAttribute('role','progressbar');
+  bar.setAttribute('aria-valuemin','0');
+  bar.setAttribute('aria-valuemax', String(total));
+  bar.setAttribute('aria-valuenow', String(doneCount));
+}
+
+
+  setupCheckBoxes(disable) {
+    //pobieram checkboxy
+    const checkboxes = this.ui.containers.subtaskCont
+      .querySelectorAll('input[type="checkbox"]')
+      .checkboxes?.forEach((cb) => {
+        cb.disabled = disable;
+      });
+    if (disable) return;
+
+    const checkBoxLenght = checkboxes?.length || 0;
+    // obliczenia dotyczace checkboxów
+    if (checkBoxLenght === 0) {
+      hideElement(this.ui.containers.progressBarCont); // upewniam sie ze nie pokazuje progressbaru jesli nie ma subtaskow
+      showElement(this.ui.buttons.stopBtn);
+      return;
+    }
+
+    showElement(this.ui.containers.progressBarCont);
+    this.localStates.progressStep = 100 / checkBoxLenght;
+  }
+
+  getAccordionOpen() {
+    return (
+      this.ui.buttons.accordionBtn.getAttribute('aria-expanded') === 'true'
+    );
+  }
+  setAccordion(open) {
+    this.ui.buttons.accordionBtn.setAttribute(
+      'aria-expanded',
+      open ? 'true' : 'false'
+    );
+  }
+  async animateAccordion(open) {
+    const btn = this.ui.buttons.accordionBtn;
+    const list = this.ui.containers.subtaskCont;
+    const node = this.ui.elements.nodeContent;
+
+    try {
+      if (this.localStates.isAnimating || this.getAccordionOpen() === open)
+        return;
+
+      if (!btn || !list || !node) {
+        throw new Error('cannot animate Accordion - missing elements');
+      }
+      if (!this.localStates.isRendered) {
+        console.warn('Cannot use Accordion before render!');
+        return;
+      }
+      if (!this.animationManager) {
+        this.setAccordion(open);
+        return;
+      }
+
+      this.localStates.isAnimating = true;
+
+      btn?.disabled = true;
+      btn?.setAttribute('aria-disabled', 'true');
+      await this.animationManager?.toggleAccordeon(btn, list, node);
+      this.setAccordion(open);
+    } catch (err) {
+      console.error('ACCORDION ERROR:', err);
+    } finally {
+      btn?.disabled = false;
+      btn?.removeAttribute('aria-disabled');
+      this.localStates.isAnimating = false;
+    }
+  }
+
   enableNode(isEnabled) {
     if (!this.ui.root) {
       console.warn('Cannot enable/disable a node that has not been rendered.');
@@ -406,13 +538,12 @@ export class NodeView {
       }
     }
   }
-
-  setupCheckboxes(enable) {
-    const checkboxes = this.ui.root.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach((cb) => {
-      cb.disabled = enable;
-    });
+  setTimerText(text) {
+    if (typeof text === 'string') {
+      this.ui.elements.timer.textContent = text;
+    }
   }
+
   showTimer() {
     showElement(this.ui.elements.timer);
   }
@@ -433,40 +564,64 @@ export class NodeView {
    * CALLBACK METHODS
    * ========================================
    */
-  sendOnModalClose(e) {
-    if (typeof this.handlers.onModalClose === 'function') {
-      this.handlers.onModalClose(e);
+
+  sendOnStart(btn) {
+    if (typeof this.handlers.onStart === 'function') {
+      this.handlers.onStart(btn);
     }
   }
 
-  sendOnManualSwitch(btn) {
-    if (btn.disabled === true) return;
-    if (typeof this.handlers.onManualSwitch === 'function') {
-      this.handlers.onManualSwitch(btn);
-    }
-  }
-  sendOnImportSwitch(btn) {
-    if (btn.disabled === true) return;
-    if (typeof this.handlers.onImportSwitch === 'function') {
-      this.handlers.onImportSwitch(btn);
+  sendOnStop(btn) {
+    if (typeof this.handlers.onStop === 'function') {
+      this.handlers.onStop(btn);
     }
   }
 
-  sendOnModalOpen(e) {
-    if (typeof this.handlers.onModalOpen === 'function') {
-      this.handlers.onModalOpen(e);
+  sendOnContinue(btn) {
+    if (typeof this.handlers.onContinue === 'function') {
+      this.handlers.onContinue(btn);
     }
   }
-  sendGoBack() {
-    if (typeof this.handlers.onQuitRoadmap === 'function') {
-      this.handlers.onQuitRoadmap();
+
+  sendOnPause(btn) {
+    if (typeof this.handlers.onPause === 'function') {
+      this.handlers.onPause(btn);
     }
   }
-  sendOnPromtCopy() {
-    if (typeof this.handlers.onPromtCopy === 'function') {
-      this.handlers.onPromtCopy();
+  async sendOnToggleAccordion() {
+    const next = !this.getAccordionOpen();
+    const changed = await this.animateAccordion(next);
+    
+    if (changed !== false) {
+      this.handlers.onToggleAccordion?.(next);
     }
   }
+  sendOnSubtaskChange(e) {
+    const target = e.target;
+    if (target.matches('input[type="checkbox"]')) {
+      const subtask = target.closest('[data-id]');
+
+      if (subtask) {
+        const allCheckboxes = this.ui.containers.subtaskCont.querySelectorAll(
+          'input[type="checkbox"]'
+        );
+        const total = allCheckboxes.length;
+        const doneCount = [...allCheckboxes].filter(cb => cb.checked).length;
+
+        
+        
+            if (typeof this.handlers.onSubtaskChange === 'function') {
+          this.handlers.onSubtaskChange({doneCount,total});
+        }
+      }
+    }
+  }
+}
+        
+
+        
+        
+
   /**
    * ========================================
    *
@@ -478,40 +633,6 @@ export class NodeView {
    * ========================================
    */
 
-  handleClearManualError(e) {
-    if (e.target.tagName === 'INPUT') {
-      this.manualFormErrors.clearError(e.target.name);
-    } else return;
-  }
-  handleClearImportError(e) {
-    if (e.target.tagName === 'TEXTAREA') {
-      this.importFormErrors.clearError(e.target.name);
-    } else return;
-  }
-
-  handlerClearCounters() {
-    const counterSpans = this._qa('.char-counter');
-    counterSpans.forEach((span) => {
-      span.textContent = '';
-    });
-  }
-  clearManualForm() {
-    this.manualFormErrors.clearAllErrors();
-
-    this.ui.modal.titleInput.value = '';
-    this.ui.modal.subtaskInput.value = '';
-    this.ui.modal.subtaskContainer.innerHTML = '';
-  }
-  clearImportForm() {
-    this.importFormErrors.clearAllErrors();
-
-    this.ui.modal.textArea.value = '';
-  }
-  clearSubtaskInputAndContainer() {
-    this.ui.modal.subtaskInput.value = '';
-
-    this.ui.modal.subtaskContainer.innerHTML = '';
-  }
   /**
    * ========================================
    *
@@ -523,6 +644,11 @@ export class NodeView {
    * HELPER METHODS
    * ========================================
    */
+  generateUniqueId() {
+  const timestamp = Date.now().toString(36); 
+  const randomPart = Math.random().toString(36).substring(2, 8); 
+  return `${timestamp}-${randomPart}`;
+  }
 
   animateInvalidBtn() {
     this.animationManager?.addElementAnimation(
@@ -530,26 +656,5 @@ export class NodeView {
       'shakeX',
       '1s'
     );
-  }
-
-  setPending(isPending) {
-    const inputs = [
-      this.ui.modal.titleInput,
-      this.ui.modal.subtaskInput,
-      this.ui.modal.textArea,
-    ];
-    const allBtns = this.ui.modal.allBtns;
-
-    allBtns.forEach((btn) => {
-      btn.disabled = isPending;
-    });
-
-    inputs.forEach((inpt) => {
-      inpt.disabled = isPending;
-    });
-  }
-  getRootUl(roadmapID) {
-    const element = this._q(`#${roadmapID}`);
-    return element;
   }
 }
