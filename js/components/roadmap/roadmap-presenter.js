@@ -143,7 +143,7 @@ export class RoadmapPresenter {
 
   _findActiveNode() {
     return (
-      this.nodes.find((n) => n.nodeData.wasActive) ?? this.nodes[0] ?? null
+      this.nodes.find((n) => n.nodeData.wasActive) ?? null //this.nodes[0]
     );
   }
 

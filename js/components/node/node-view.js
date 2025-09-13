@@ -370,7 +370,7 @@ export class NodeView {
       subtasks.forEach((subtask, i) => {
         const subLi = document.createElement('li');
         subLi.classList.add('subtask-item');
-        subLi.dataset.id = this.generateUniqueId();
+        subLi.dataset.subtaskId = this.generateUniqueId();
         subLi.innerHTML = `
                     <label class="subtask-item__label">
                             <input type="checkbox" class ="subtask-item__checkbox--disabled" />
@@ -600,21 +600,27 @@ export class NodeView {
     }
   }
   sendOnSubtaskChange(e) {
-    const target = e.target;
-    if (target.matches('input[type="checkbox"]')) {
-      const subtask = target.closest('[data-id]');
+    const t = e.target;
+    if (!(t instanceof HTMLInputElement) || t.type !== 'checkbox') return;
+    const list = this.ui.containers.subtaskCont;
 
-      if (subtask) {
-        const allCheckboxes = this.ui.containers.subtaskCont.querySelectorAll(
-          'input[type="checkbox"]'
-        );
-        const total = allCheckboxes.length;
-        const doneCount = [...allCheckboxes].filter((cb) => cb.checked).length;
+    if (!list) return;
 
-        if (typeof this.handlers.onSubtaskChange === 'function') {
-          this.handlers.onSubtaskChange({ doneCount, total });
-        }
+    const allCheckboxes = list.querySelectorAll('input[type="checkbox"]');
+    let doneCount = 0;
+    const checkedIds = [];
+    allCheckboxes.forEach((cb) => {
+      if (cb.checked) {
+        doneCount++;
+        const li = cb.closest('[data-subtask-id]');
+        if (li) checkedIds.push(li.dataset.subtaskId);
       }
+    });
+
+    const total = allCheckboxes.length;
+
+    if (typeof this.handlers.onSubtaskChange === 'function') {
+      this.handlers.onSubtaskChange({ doneCount, total, checkedIds });
     }
   }
 

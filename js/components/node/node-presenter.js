@@ -11,8 +11,9 @@ export class NodePresenter {
 
     this.options = options;
     this.allNodeInstances = [];
-    this._uiTick = null; // interval do odświeżania napisu (nie liczenia czasu!)
-    this._suppressFsUpdate = false; // guard przed echo-loop realtime
+    this._uiTick = null;
+    this._suppressFsUpdate = false;
+    this.localState = { isActive: false };
   }
   get nodeData() {
     return this.model.data;
@@ -45,7 +46,11 @@ export class NodePresenter {
 
   enableNode() {
     this.view.setUnlockedUI(true);
-    this.view.showButtons({ start: true, accordionBtn: true });
+    this.view.showButtons(
+      this.nodeData.subtasks.length > 0
+        ? { start: true, accordionBtn: true }
+        : { start: true, accordionBtn: false }
+    );
     this.view.showProgress(false);
     this.view.setSubtasksDisabled(true);
     this.view.showTimer(false);
@@ -53,13 +58,17 @@ export class NodePresenter {
   disableNode() {
     this.view.setUnlockedUI(false);
     this.view.showProgress(false);
-    this.view.showButtons({ accordionBtn: true });
+    this.view.showButtons(
+      this.nodeData.subtasks.length > 0
+        ? { accordionBtn: true }
+        : { accordionBtn: false }
+    );
     this.view.setSubtasksDisabled(true);
     this.view.showTimer(false);
   }
   setActive() {
-    if (this.nodeData.isActive) return;
-
+    if (this.localState.isActive) return;
+    this.localState.isActive = true;
     this.view.setActiveUI(true);
     this.view.showTimer(true);
     this.view.showProgress(true);
@@ -88,12 +97,12 @@ export class NodePresenter {
       onStop: (btn) => this._handleOnStop(btn),
       onContinue: (btn) => this._handleOnContinue(btn),
       onToggleAccordion: (next) => this._handleOnAccordion(next),
-      onSubtaskChange: ({ doneCount, total }) =>
-        this._handleOnSubtaskChange({ doneCount, total }),
+      onSubtaskChange: ({ doneCount, total, checkedIds }) =>
+        this._handleOnSubtaskChange({ doneCount, total, checkedIds }),
     });
   }
   _handleOnStart(btn) {
-    console.log('start', btn);
+    console.log('start', this.model.snapshot());
   }
   _handleOnPause(btn) {
     console.log('pause', btn);
@@ -107,7 +116,22 @@ export class NodePresenter {
   _handleOnAccordion(next) {
     console.log('next:', next);
   }
-  _handleOnSubtaskChange({ doneCount, total }) {
-    console.log(`doneCount:${doneCount},total:${total}`);
+  _handleOnSubtaskChange({ doneCount, total, checkedIds }) {
+    this.model.setCheckedSubtasks(checkedIds);
+    this.model.setProgress(doneCount, total);
+    const percent = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+    this.view.setProgress({ doneCount, total, percent });
+    this._applySubtaskRules(doneCount, total);
+  }
+  _applySubtaskRules(doneCount, total) {
+    if (total === 0 || doneCount === total) {
+      this.view.showButtons({ stop: true });
+      this.view.setSubtasksDisabled(true);
+    } else {
+      this.view.setSubtasksDisabled(false);
+      this.view.showButtons(
+        this.nodeData.isRunning ? { pause: true } : { continue: true }
+      );
+    }
   }
 }
