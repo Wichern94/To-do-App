@@ -22,7 +22,6 @@ export class NodePresenter {
     return this.view.ui;
   }
 
-  // === API kompatybilne z RoadmapPresenter ===
   render() {
     this.view.render(this.nodeData);
     this._bindViewCallbacks();
@@ -70,22 +69,44 @@ export class NodePresenter {
     if (this.localState.isActive) return;
     this.localState.isActive = true;
     this.view.setActiveUI(true);
-    this.view.showTimer(true);
-    this.view.showProgress(true);
-    this.view.showButtons({ pause: true, accordionBtn: true });
-    this.view.setSubtasksDisabled(false);
-    // this.view.drawPlumbLines(this.plumb /* ul element jeżeli potrzebny */);
+    this._showTimerOnRender(true);
+
+    if (this.nodeData.subtasks.length > 0) {
+      this.view.showButtons({ pause: true, accordionBtn: true });
+      this.view.setSubtasksDisabled(false);
+      this.view.showProgress(true);
+    } else {
+      this.view.showButtons({ stop: true, accordionBtn: false });
+      this.view.setSubtasksDisabled(true);
+      this.view.showProgress(false);
+    }
+    this.drawConnectionLines();
     // jeśli node był „paused”, pokaż continue; inaczej start
   }
 
   drawConnectionLines() {
-    console.log('linie');
+    if (!this.plumb.jsPlumbInstance) return;
+    this.plumb.jsPlumbInstance.deleteEveryConnection();
 
-    // this.view.drawPlumbLines(this.plumb /* ul element */);
+    const sortedNodes = this.view.findAndSortNodes(this.nodeData.roadmapID);
+
+    const anchorsLeftRight = ['Right', 'Left'];
+    const anchorsTopBottom = ['Bottom', 'Top'];
+
+    sortedNodes.forEach((currentNode, index) => {
+      const nextNode = sortedNodes[index + 1];
+      if (!nextNode) return;
+      const order = Number(currentNode.dataset.order);
+
+      const anchors = order % 2 === 0 ? anchorsTopBottom : anchorsLeftRight; // jesli parzysta to top-bottom, jesli nie to left-right
+
+      this.plumb?.connect(currentNode.id, nextNode.id, anchors);
+    });
+    this.view.repaintLoop(this.plumb, { duration: 200 });
   }
 
   destroy() {
-    // this._stopUiTick();
+    this._stopUiTick();
     // this._unsubRealtime?.();
     this.view.deactivate();
     this.view.unbind();
@@ -101,17 +122,40 @@ export class NodePresenter {
         this._handleOnSubtaskChange({ doneCount, total, checkedIds }),
     });
   }
-  _handleOnStart(btn) {
-    console.log('start', this.model.snapshot());
+
+  async _handleOnStart() {
+    await this.model.start();
+    this.setActive();
+    this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
+    this._startUiTick();
   }
-  _handleOnPause(btn) {
-    console.log('pause', btn);
+
+  async _handleOnPause() {
+    await this.model.pause();
+    if (this.nodeData.subtasks.length > 0) {
+      this.view.showButtons({ continue: true, accordionBtn: true });
+      this.view.setSubtasksDisabled(true);
+    }
+    this._stopUiTick();
+    this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
   }
-  _handleOnStop(btn) {
-    console.log('stop', btn);
+
+  async _handleOnStop(btn) {
+    await this.model.stop();
+    this.view.showButtons({});
+    this.view.setSubtasksDisabled(true);
+    this._stopUiTick();
   }
-  _handleOnContinue(btn) {
-    console.log('Continue', btn);
+
+  async _handleOnContinue(btn) {
+    await this.model.start();
+    if (this.nodeData.subtasks.length > 0) {
+      this.view.showButtons({ pause: true, accordionBtn: true });
+      this.view.setSubtasksDisabled(false);
+    }
+    this._showTimerOnRender(true);
+
+    this._startUiTick();
   }
   _handleOnAccordion(next) {
     console.log('next:', next);
@@ -130,8 +174,43 @@ export class NodePresenter {
     } else {
       this.view.setSubtasksDisabled(false);
       this.view.showButtons(
-        this.nodeData.isRunning ? { pause: true } : { continue: true }
+        this.nodeData.isRunning
+          ? { pause: true, accordionBtn: true }
+          : { continue: true, accordionBtn: true }
       );
     }
+  }
+  formatHHMMSS(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    //divide the whole seconds by 3600 (the number of seconds in an hour) and round down to access whole hours.
+    const hours = Math.floor(totalSeconds / 3600);
+
+    const mins = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+
+    const h = hours.toString().padStart(2, '0');
+    const m = mins.toString().padStart(2, '0');
+    const s = secs.toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
+  }
+  _startUiTick() {
+    if (this._uiTick) {
+      return;
+    }
+    this._uiTick = setInterval(() => {
+      const elapsedMs = this.model.getElapsedMs();
+      const formattedTime = this.formatHHMMSS(elapsedMs);
+      this.view.setTimerText(formattedTime);
+    }, 500);
+  }
+  _stopUiTick() {
+    if (this._uiTick) {
+      clearInterval(this._uiTick);
+      this._uiTick = null;
+    }
+  }
+  _showTimerOnRender(value) {
+    this.view.showTimer(value);
+    this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
   }
 }

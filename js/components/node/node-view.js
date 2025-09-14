@@ -659,4 +659,31 @@ export class NodeView {
       '1s'
     );
   }
+
+  findAndSortNodes(ulID) {
+    const roadmap = document.getElementById(ulID);
+    if (!roadmap) {
+      return [];
+    }
+    const allNodes = Array.from(roadmap.querySelectorAll('.roadmap-node'));
+    const sortedNodes = [...allNodes].sort((a, b) => {
+      const orderA = Number(a.dataset.order);
+      const orderB = Number(b.dataset.order);
+      return orderA - orderB;
+    });
+    return sortedNodes;
+  }
+  repaintLoop(plumb, options = {}) {
+    const { interval = 10, duration = 600 } = options;
+    let elapsed = 0;
+
+    const timer = setInterval(() => {
+      plumb.jsPlumbInstance?.repaintEverything();
+      elapsed += interval;
+
+      if (elapsed >= duration) {
+        clearInterval(timer);
+      }
+    }, interval);
+  }
 }
