@@ -662,7 +662,6 @@ export class NodeElement {
     const relX = (centerX - contRect.left) / contRect.width;
     const relY = (centerY - contRect.top) / contRect.height;
 
-    console.log('dane z recta:', relX, relY);
     this.animationManager.launchConfetti(container, relX, relY);
   }
 

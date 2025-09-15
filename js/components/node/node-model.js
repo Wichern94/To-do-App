@@ -161,6 +161,19 @@ export class NodeModel {
       this._pendingPatch = {};
     }, delay);
   }
+  async moveToFinished() {
+    const payload = this.getCompletedata();
+    const refObj = {
+      collection: 'roadmaps',
+      subCollection: 'nodes',
+    };
+
+    const copyRefObj = {
+      collection: 'Finished_Roadmaps',
+      subCollection: 'Finished_Nodes',
+    };
+    await this.FsS.moveElementToFinished(payload, refObj, copyRefObj);
+  }
 
   snapshot() {
     return {
@@ -177,6 +190,20 @@ export class NodeModel {
       completedAt: this.data.completedAt,
       progress: this.data.progress,
       checkedSubtasks: this.data.checkedSubtasks,
+    };
+  }
+  getCompletedata() {
+    return {
+      id: this.data.id,
+      roadmapID: this.data.roadmapID,
+      title: this.data.title,
+      order: this.data.order,
+      subtasks: this.data.subtasks,
+      checkedSubtasks: this.data.checkedSubtasks,
+      progress: this.data.progress,
+      accumulatedMs: this.data.accumulatedMs,
+      completedAt: this.data.completedAt ?? Date.now(),
+      nodeCompleted: this.data.nodeCompleted ?? true,
     };
   }
 }

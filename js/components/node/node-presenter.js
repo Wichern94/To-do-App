@@ -21,16 +21,57 @@ export class NodePresenter {
   get ui() {
     return this.view.ui;
   }
+  get hasSubtasks() {
+    return (
+      Array.isArray(this.nodeData.subtasks) && this.nodeData.subtasks.length > 0
+    );
+  }
+  get isRunning() {
+    return this.nodeData.isRunning;
+  }
+  get wasActive() {
+    return this.nodeData.wasActive;
+  }
+  get subtasksStatus() {
+    const total =
+      this.nodeData?.progress?.total ?? this.nodeData?.subtasks?.length ?? 0;
+
+    const done =
+      this.nodeData?.progress?.doneCount ??
+      this.nodeData?.checkedSubtasks?.length ??
+      0;
+
+    const allDone = total > 0 && done === total;
+
+    return {
+      done,
+      total,
+      allDone,
+      percent: total > 0 ? Math.round((done / total) * 100) : 0,
+    };
+  }
 
   render() {
     this.view.render(this.nodeData);
     this._bindViewCallbacks();
     this.view.activate();
+    this._renderControls();
+    if (this.isRunning) this._startUiTick();
+    // this._restoreButtonsState();
 
-    // początkowy stan UI:
-    // this._refreshTimerUI(); // ustawi tekst zgodnie z model.getElapsedMs()
-    // this._refreshButtonsUI(); // pokaże właściwe guziki (start/pause/cont/stop)
-    // this._refreshCheckboxesUI(); // odblokuj/zablokuj, wpisz checkedSubtasks
+    // this.view.showProgress(this.hasSubtasks);
+
+    // if (this.isRunning) {
+    //   this.view.showButtons({ pause: true, accordionBtn: this.hasSubtasks });
+    //   this._showTimerOnRender(true);
+    //   this._startUiTick();
+    // } else if (this.nodeData.accumulatedMs > 0) {
+    //   this.view.showButtons({ continue: true, accordionBtn: this.hasSubtasks });
+    //   this._showTimerOnRender(true);
+    // } else {
+    //   this.view.showButtons({ start: true, accordionBtn: this.hasSubtasks });
+    //   this.view.showTimer(false);
+    // }
 
     // if (this.options?.isNew) {
     //   // animacja pojawienia — możesz wywołać przez view/animation manager
@@ -45,11 +86,8 @@ export class NodePresenter {
 
   enableNode() {
     this.view.setUnlockedUI(true);
-    this.view.showButtons(
-      this.nodeData.subtasks.length > 0
-        ? { start: true, accordionBtn: true }
-        : { start: true, accordionBtn: false }
-    );
+    this.view.showButtons({ start: true, accordionBtn: this.hasSubtasks });
+
     this.view.showProgress(false);
     this.view.setSubtasksDisabled(true);
     this.view.showTimer(false);
@@ -57,11 +95,8 @@ export class NodePresenter {
   disableNode() {
     this.view.setUnlockedUI(false);
     this.view.showProgress(false);
-    this.view.showButtons(
-      this.nodeData.subtasks.length > 0
-        ? { accordionBtn: true }
-        : { accordionBtn: false }
-    );
+    this.view.showButtons({ accordionBtn: this.hasSubtasks });
+
     this.view.setSubtasksDisabled(true);
     this.view.showTimer(false);
   }
@@ -69,17 +104,18 @@ export class NodePresenter {
     if (this.localState.isActive) return;
     this.localState.isActive = true;
     this.view.setActiveUI(true);
-    this._showTimerOnRender(true);
+    this._renderControls();
+    // this._showTimerOnRender(true);
 
-    if (this.nodeData.subtasks.length > 0) {
-      this.view.showButtons({ pause: true, accordionBtn: true });
-      this.view.setSubtasksDisabled(false);
-      this.view.showProgress(true);
-    } else {
-      this.view.showButtons({ stop: true, accordionBtn: false });
-      this.view.setSubtasksDisabled(true);
-      this.view.showProgress(false);
-    }
+    // if (this.nodeData.subtasks.length > 0) {
+    //   this.view.showButtons({ pause: true, accordionBtn: this.hasSubtasks });
+    //   this.view.setSubtasksDisabled(false);
+    //   this.view.showProgress(true);
+    // } else {
+    //   this.view.showButtons({ stop: true, accordionBtn: this.hasSubtasks });
+    //   this.view.setSubtasksDisabled(true);
+    //   this.view.showProgress(false);
+    // }
     this.drawConnectionLines();
     // jeśli node był „paused”, pokaż continue; inaczej start
   }
@@ -126,57 +162,68 @@ export class NodePresenter {
   async _handleOnStart() {
     await this.model.start();
     this.setActive();
-    this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
+    // this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
     this._startUiTick();
+    this._renderControls();
   }
 
   async _handleOnPause() {
     await this.model.pause();
-    if (this.nodeData.subtasks.length > 0) {
-      this.view.showButtons({ continue: true, accordionBtn: true });
-      this.view.setSubtasksDisabled(true);
-    }
+    // if (this.nodeData.subtasks.length > 0) {
+    //   this.view.showButtons({ continue: true, accordionBtn: true });
+    //   this.view.setSubtasksDisabled(true);
     this._stopUiTick();
-    this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
+    this._renderControls();
+    // this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
   }
 
-  async _handleOnStop(btn) {
+  async _handleOnStop() {
     await this.model.stop();
-    this.view.showButtons({});
-    this.view.setSubtasksDisabled(true);
+    this.localState.isActive = false;
     this._stopUiTick();
+    this.view.setAndLaunchCofetti();
+
+    this._renderControls();
   }
 
   async _handleOnContinue(btn) {
     await this.model.start();
-    if (this.nodeData.subtasks.length > 0) {
-      this.view.showButtons({ pause: true, accordionBtn: true });
-      this.view.setSubtasksDisabled(false);
-    }
-    this._showTimerOnRender(true);
+    // if (this.nodeData.subtasks.length > 0) {
+    //   this.view.showButtons({ pause: true, accordionBtn: true });
+    //   this.view.setSubtasksDisabled(false);
+    // }
+    // this._showTimerOnRender(true);
 
     this._startUiTick();
+    this._renderControls();
   }
-  _handleOnAccordion(next) {
-    console.log('next:', next);
+  _handleOnAccordion() {
+    console.log('snapshot', this.model.snapshot());
+    console.log('allNodeInstances', this.allNodeInstances);
+    this.finishNode();
   }
   _handleOnSubtaskChange({ doneCount, total, checkedIds }) {
     this.model.setCheckedSubtasks(checkedIds);
     this.model.setProgress(doneCount, total);
-    const percent = total > 0 ? Math.round((doneCount / total) * 100) : 0;
-    this.view.setProgress({ doneCount, total, percent });
-    this._applySubtaskRules(doneCount, total);
+
+    // const percent = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+    // this.view.setProgress({ doneCount, total, percent });
+    // this._applySubtaskRules(doneCount, total);
+    const { done, total: t, percent } = this.subtasksStatus;
+    this.view.setProgress({ doneCount: done, total: t, percent });
+
+    this._renderControls();
   }
   _applySubtaskRules(doneCount, total) {
     if (total === 0 || doneCount === total) {
-      this.view.showButtons({ stop: true });
+      this.view.showButtons({ stop: true, accordionBtn: this.hasSubtasks });
       this.view.setSubtasksDisabled(true);
     } else {
       this.view.setSubtasksDisabled(false);
       this.view.showButtons(
-        this.nodeData.isRunning
-          ? { pause: true, accordionBtn: true }
-          : { continue: true, accordionBtn: true }
+        this.isRunning
+          ? { pause: true, accordionBtn: this.hasSubtasks }
+          : { continue: true, accordionBtn: this.hasSubtasks }
       );
     }
   }
@@ -212,5 +259,87 @@ export class NodePresenter {
   _showTimerOnRender(value) {
     this.view.showTimer(value);
     this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
+  }
+
+  _renderControls() {
+    const hasSubtasks = this.hasSubtasks; // getter: subtasks.length > 0
+    const isRunning = this.isRunning; // getter: nodeData.isRunning
+    const wasActive = this.wasActive; // getter: nodeData.wasActive
+    const allDone = this.subtasksStatus.allDone;
+    const isCompleted = !!this.nodeData?.nodeCompleted;
+
+    let buttons;
+
+    if (isCompleted) {
+      buttons = { accordionBtn: false }; // nic do klikania; ewentualnie "restart" w przyszłości
+    } else if (hasSubtasks && allDone) {
+      buttons = { stop: true, accordionBtn: true };
+    } else if (!hasSubtasks) {
+      // brak subtasków
+      if (isRunning || wasActive) {
+        buttons = { stop: true, accordionBtn: false };
+      } else {
+        buttons = { start: true, accordionBtn: false };
+      }
+    } else if (isRunning) {
+      buttons = { pause: true, accordionBtn: true };
+    } else if (wasActive) {
+      buttons = { continue: true, accordionBtn: true };
+    } else {
+      buttons = { start: true, accordionBtn: true };
+    }
+
+    // subtasks edytowalne tylko gdy:
+    // - są i
+    // - task jest w trakcie (isRunning) i
+    // - nie jesteśmy w trybie STOP
+    const subtasksDisabled = !hasSubtasks || buttons.stop || !isRunning;
+
+    // progress pokazuj tylko gdy są subtasks
+    const showProgress = hasSubtasks;
+
+    // timer pokazuj gdy:
+    // - leci (isRunning) lub
+    // - coś już naliczyliśmy (accumulatedMs > 0) lub
+    // - był aktywny (wasActive)
+    const showTimer =
+      isRunning || (this.nodeData?.accumulatedMs ?? 0) > 0 || wasActive;
+
+    // Render UI
+    this.view.showButtons(buttons);
+    this.view.setSubtasksDisabled(subtasksDisabled);
+    this.view.showProgress(showProgress);
+    this.view.showTimer(showTimer);
+
+    if (!isRunning) {
+      this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
+    }
+  }
+  getNextPresenter() {
+    const sorted = [...this.allNodeInstances].sort(
+      (a, b) => a.nodeData.order - b.nodeData.order
+    );
+    const idx = sorted.findIndex((p) => p.nodeData.id === this.nodeData.id);
+    return idx >= 0 ? sorted[idx + 1] ?? null : null;
+  }
+  async finishNode() {
+    try {
+      const nextNode = this.getNextPresenter();
+      const currentBorder = this.view.getNodeBorder();
+      if (!nextNode) {
+        this.view.fadeOutAnimation();
+        this.model.moveToFinished();
+        this.view.hide(currentBorder);
+
+        this.plumb.jsPlumbInstance.deleteEveryConnection();
+        this.plumb.jsPlumbInstance.deleteEveryEndpoint();
+      } else {
+        const currentRoot = this.view.getRoot();
+        const nextRoot = nextNode.view.getRoot();
+        await this.view.lineAnimation(currentRoot, nextRoot);
+      }
+    } catch (err) {
+      console.error('FINISH NODE ERROR:', err);
+    }
   }
 }

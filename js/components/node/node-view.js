@@ -686,4 +686,37 @@ export class NodeView {
       }
     }, interval);
   }
+  setAndLaunchCofetti() {
+    const container = document.getElementById('view-standard');
+
+    const rect = this.ui.buttons.stop.getBoundingClientRect();
+    const contRect = container.getBoundingClientRect();
+
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const relX = (centerX - contRect.left) / contRect.width;
+    const relY = (centerY - contRect.top) / contRect.height;
+
+    this.animationManager.launchConfetti(container, relX, relY);
+  }
+  getNodeBorder() {
+    return this.ui.elements.activeBorder;
+  }
+  isHidden(element) {
+    return element.classList.contains('hidden');
+  }
+  async fadeOutAnimation() {
+    await this.animationManager.hideAnimation(this.ui.root, 'fadeOut');
+  }
+  hide(element) {
+    if (element.classList.contains('hidden')) return;
+    hideElement(element);
+  }
+  async lineAnimation(currentNode, nextNode) {
+    await this.animationManager.plumbLineAnimation(currentNode.id, nextNode.id);
+  }
+  getRoot() {
+    return this.ui.root;
+  }
 }
