@@ -134,17 +134,16 @@ export class RoadmapPresenter {
       } else {
         newNode.disableNode();
       }
-
-      this._redrawConnections?.(newNode);
+      if (newNode.wasActive) {
+        this._redrawConnections?.(newNode);
+      }
     } catch (err) {
       console.error('ADD NODE ERROR:', err);
     }
   }
 
   _findActiveNode() {
-    return (
-      this.nodes.find((n) => n.nodeData.wasActive) ?? null //this.nodes[0]
-    );
+    return this.nodes.find((n) => n.nodeData.wasActive); //?? null this.nodes[0]
   }
 
   _applyActive(node) {

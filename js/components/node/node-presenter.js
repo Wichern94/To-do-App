@@ -55,27 +55,9 @@ export class NodePresenter {
     this.view.render(this.nodeData);
     this._bindViewCallbacks();
     this.view.activate();
+    // this.view.renderSubtask(this.nodeData, this.nodeData.roadmapID);
     this._renderControls();
     if (this.isRunning) this._startUiTick();
-    // this._restoreButtonsState();
-
-    // this.view.showProgress(this.hasSubtasks);
-
-    // if (this.isRunning) {
-    //   this.view.showButtons({ pause: true, accordionBtn: this.hasSubtasks });
-    //   this._showTimerOnRender(true);
-    //   this._startUiTick();
-    // } else if (this.nodeData.accumulatedMs > 0) {
-    //   this.view.showButtons({ continue: true, accordionBtn: this.hasSubtasks });
-    //   this._showTimerOnRender(true);
-    // } else {
-    //   this.view.showButtons({ start: true, accordionBtn: this.hasSubtasks });
-    //   this.view.showTimer(false);
-    // }
-
-    // if (this.options?.isNew) {
-    //   // animacja pojawienia — możesz wywołać przez view/animation manager
-    // }
   }
 
   setNodeListForRoadmap(nodes, { current: plumbManager } = {}) {
@@ -105,19 +87,8 @@ export class NodePresenter {
     this.localState.isActive = true;
     this.view.setActiveUI(true);
     this._renderControls();
-    // this._showTimerOnRender(true);
 
-    // if (this.nodeData.subtasks.length > 0) {
-    //   this.view.showButtons({ pause: true, accordionBtn: this.hasSubtasks });
-    //   this.view.setSubtasksDisabled(false);
-    //   this.view.showProgress(true);
-    // } else {
-    //   this.view.showButtons({ stop: true, accordionBtn: this.hasSubtasks });
-    //   this.view.setSubtasksDisabled(true);
-    //   this.view.showProgress(false);
-    // }
     this.drawConnectionLines();
-    // jeśli node był „paused”, pokaż continue; inaczej start
   }
 
   drawConnectionLines() {
@@ -138,7 +109,7 @@ export class NodePresenter {
 
       this.plumb?.connect(currentNode.id, nextNode.id, anchors);
     });
-    this.view.repaintLoop(this.plumb, { duration: 200 });
+    this.view.repaintLoop(this.plumb, this, { duration: 200 });
   }
 
   destroy() {
@@ -162,37 +133,29 @@ export class NodePresenter {
   async _handleOnStart() {
     await this.model.start();
     this.setActive();
-    // this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
+
     this._startUiTick();
     this._renderControls();
   }
 
   async _handleOnPause() {
     await this.model.pause();
-    // if (this.nodeData.subtasks.length > 0) {
-    //   this.view.showButtons({ continue: true, accordionBtn: true });
-    //   this.view.setSubtasksDisabled(true);
+
     this._stopUiTick();
     this._renderControls();
-    // this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
   }
 
   async _handleOnStop() {
     await this.model.stop();
     this.localState.isActive = false;
-    this._stopUiTick();
     this.view.setAndLaunchCofetti();
-
+    this._stopUiTick();
     this._renderControls();
+    await this.finishNode();
   }
 
   async _handleOnContinue(btn) {
     await this.model.start();
-    // if (this.nodeData.subtasks.length > 0) {
-    //   this.view.showButtons({ pause: true, accordionBtn: true });
-    //   this.view.setSubtasksDisabled(false);
-    // }
-    // this._showTimerOnRender(true);
 
     this._startUiTick();
     this._renderControls();
@@ -200,15 +163,11 @@ export class NodePresenter {
   _handleOnAccordion() {
     console.log('snapshot', this.model.snapshot());
     console.log('allNodeInstances', this.allNodeInstances);
-    this.finishNode();
   }
   _handleOnSubtaskChange({ doneCount, total, checkedIds }) {
     this.model.setCheckedSubtasks(checkedIds);
     this.model.setProgress(doneCount, total);
 
-    // const percent = total > 0 ? Math.round((doneCount / total) * 100) : 0;
-    // this.view.setProgress({ doneCount, total, percent });
-    // this._applySubtaskRules(doneCount, total);
     const { done, total: t, percent } = this.subtasksStatus;
     this.view.setProgress({ doneCount: done, total: t, percent });
 
@@ -271,7 +230,7 @@ export class NodePresenter {
     let buttons;
 
     if (isCompleted) {
-      buttons = { accordionBtn: false }; // nic do klikania; ewentualnie "restart" w przyszłości
+      buttons = { stop: true, accordionBtn: false }; // nic do klikania; ewentualnie "restart" w przyszłości
     } else if (hasSubtasks && allDone) {
       buttons = { stop: true, accordionBtn: true };
     } else if (!hasSubtasks) {
@@ -289,19 +248,10 @@ export class NodePresenter {
       buttons = { start: true, accordionBtn: true };
     }
 
-    // subtasks edytowalne tylko gdy:
-    // - są i
-    // - task jest w trakcie (isRunning) i
-    // - nie jesteśmy w trybie STOP
     const subtasksDisabled = !hasSubtasks || buttons.stop || !isRunning;
 
-    // progress pokazuj tylko gdy są subtasks
     const showProgress = hasSubtasks;
 
-    // timer pokazuj gdy:
-    // - leci (isRunning) lub
-    // - coś już naliczyliśmy (accumulatedMs > 0) lub
-    // - był aktywny (wasActive)
     const showTimer =
       isRunning || (this.nodeData?.accumulatedMs ?? 0) > 0 || wasActive;
 
@@ -331,15 +281,38 @@ export class NodePresenter {
         this.model.moveToFinished();
         this.view.hide(currentBorder);
 
-        this.plumb.jsPlumbInstance.deleteEveryConnection();
-        this.plumb.jsPlumbInstance.deleteEveryEndpoint();
+        this.plumb.destroy();
       } else {
         const currentRoot = this.view.getRoot();
         const nextRoot = nextNode.view.getRoot();
+
         await this.view.lineAnimation(currentRoot, nextRoot);
+
+        this.view.hide(currentBorder);
+        await this.view.hideCurrentNodeSequence(currentRoot);
+        this.model.moveToFinished();
+        this.allNodeInstances = this.allNodeInstances.filter((p) => p !== this);
+        this.clearLines(currentRoot);
+
+        await this.activateNextNode(nextNode);
       }
     } catch (err) {
       console.error('FINISH NODE ERROR:', err);
     }
+  }
+  async activateNextNode(next) {
+    if (!next) return;
+    await next.model.start();
+    next.enableNode();
+    next.setActive();
+    next._startUiTick();
+    next._renderControls();
+    next.view.repaintLoop(next.plumb, next, { duration: 200 });
+    await next.view.enterSequenceAnimation();
+  }
+  clearLines(root) {
+    this.plumb.jsPlumbInstance.deleteConnectionsForElement(root);
+    this.plumb.jsPlumbInstance.removeAllEndpoints(root);
+    this.plumb.jsPlumbInstance.remove(root);
   }
 }

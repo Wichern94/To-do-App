@@ -40,7 +40,7 @@
     border: 0.5px solid var.$borderTwo;
     overflow: visible;
     max-width: 18rem;
-    width: auto;
+    min-width: 8rem;
     max-height: initial;
     height: auto;
     transition: transform 0.4s ease;
