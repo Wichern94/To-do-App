@@ -87,92 +87,101 @@ export class AnimationManager {
     if (!btn || !contentBox || !li) {
       return;
     }
+
     const wasHidden = contentBox.classList.contains('hidden');
 
-    if (wasHidden) {
-      const heightStart = li.offsetHeight;
-      const widthStart = li.offsetWidth;
+    // Pobierz wartości startowe PRZED zmianami w widoku
+    const widthStart = li.offsetWidth;
+    const heightStart = li.offsetHeight;
 
+    // Wyczyść ewentualne style
+    li.style.width = '';
+    li.style.height = '';
+
+    if (wasHidden) {
+      // Faza 1: Pokazanie zawartości
       showElement(contentBox);
       this._replumb(li);
 
-      requestAnimationFrame(() => {
-        const widthEnd = li.scrollWidth;
-        const heightEnd = li.scrollHeight;
+      // Faza 2: Pomiar i animacja
+      const widthEnd = li.offsetWidth; // Mierz po włączeniu, ale przed animacją
+      const heightEnd = li.offsetHeight;
 
-        li.style.transition = 'width .3s ,height .3s ';
-        li.style.width = `${widthStart}px`;
-        li.style.height = `${heightStart}px`;
+      // Ustaw początkową szerokość i wysokość, a potem natychmiast animuj
+      li.style.width = `${widthStart}px`;
+      li.style.height = `${heightStart}px`;
+      void li.offsetWidth; // Wymuś reflow
+      li.style.transition = 'width .3s, height .3s';
 
-        requestAnimationFrame(() => {
-          btn.setAttribute('aria-expanded', 'true');
-          li.style.width = `${widthEnd}px`;
-          li.style.height = `${heightEnd}px`;
+      li.style.width = `${widthEnd}px`;
+      li.style.height = `${heightEnd}px`;
 
-          if (jsPlumbInstance) {
-            const interval = setInterval(() => this._replumb(li), 10); // co 10ms przez 300ms
-            setTimeout(() => {
-              clearInterval(interval);
-            }, 300); // zatrzymaj po 300ms
-          }
+      // Uruchom pętlę do jsPlumb
+      if (jsPlumbInstance) {
+        const interval = setInterval(() => this._replumb(li), 10);
+        setTimeout(() => clearInterval(interval), 300);
+      }
 
-          const cleanHeight = () => {
-            li.style.height = '';
-            li.style.width = '';
-            li.style.transition = '';
-            li.removeEventListener('transitionend', cleanHeight);
-          };
+      // Ustaw atrybut i posprzątaj po animacji
+      li.addEventListener(
+        'transitionend',
+        () => {
+          li.style.width = '';
+          li.style.height = '';
+          li.style.transition = '';
+        },
+        { once: true }
+      );
 
-          li.addEventListener('transitionend', cleanHeight);
-        });
-      });
+      btn.setAttribute('aria-expanded', 'true');
+      btn.classList.add('animate__animated', 'animate__flip');
+      contentBox.classList.add('animate__animated', 'animate__fadeIn');
     } else {
-      const widthStart = li.offsetWidth;
-      const heightStart = li.offsetHeight;
+      // Faza 1: Przygotowanie do ukrycia
       await this.hideAnimation(contentBox, 'fadeOut', '.2s');
 
-      requestAnimationFrame(() => {
-        const widthEnd = li.scrollWidth;
-        const heightEnd = li.scrollHeight;
+      // Faza 2: Pomiar i animacja
+      const widthEnd = li.offsetWidth;
+      const heightEnd = li.offsetHeight;
 
-        li.style.transition = 'width .3s ,height .3s ';
-        li.style.height = `${heightStart}px`;
-        li.style.width = `${widthStart}px`;
-        requestAnimationFrame(() => {
-          btn.setAttribute('aria-expanded', 'false');
-          li.style.width = `${widthEnd}px`;
-          li.style.height = `${heightEnd}px`;
+      li.style.width = `${widthStart}px`;
+      li.style.height = `${heightStart}px`;
+      void li.offsetWidth; // Wymuś reflow
+      li.style.transition = 'width .3s, height .3s';
 
-          const interval = setInterval(() => this._replumb(li), 10); // co 10ms przez 300ms
+      li.style.width = `${widthEnd}px`;
+      li.style.height = `${heightEnd}px`;
 
-          setTimeout(() => {
-            clearInterval(interval);
-          }, 300); // zatrzymaj po 300ms
+      // Uruchom pętlę do jsPlumb
+      const interval = setInterval(() => this._replumb(li), 10);
+      setTimeout(() => clearInterval(interval), 300);
 
-          const clean = () => {
-            li.style.width = '';
-            li.style.height = '';
-            li.style.transition = '';
-            li.removeEventListener('transitionend', clean);
-          };
-          li.addEventListener('transitionend', clean);
-        });
-      });
+      // Ustaw atrybut i posprzątaj po animacji
+      li.addEventListener(
+        'transitionend',
+        () => {
+          hideElement(contentBox);
+          li.style.width = '';
+          li.style.height = '';
+          li.style.transition = '';
+        },
+        { once: true }
+      );
+
+      btn.setAttribute('aria-expanded', 'false');
+      btn.classList.add('animate__animated', 'animate__flip');
+      contentBox.classList.add('animate__animated', 'animate__fadeIn');
     }
 
-    void btn.offsetWidth;
-    void contentBox.offsetWidth;
-
-    btn?.classList.add('animate__animated', 'animate__flip');
-    contentBox?.classList.add('animate__animated', 'animate__fadeIn');
-
-    const cleanClasses = () => {
-      this._replumb(li);
-      btn.classList.remove('animate__flip', 'animate__animated');
-      contentBox.classList.remove('animate__fadeIn', 'animate__animated');
-      btn.removeEventListener('animationend', cleanClasses);
-    };
-    btn.addEventListener('animationend', cleanClasses);
+    // Wyczyść klasy animacji po zakończeniu
+    btn.addEventListener(
+      'animationend',
+      () => {
+        btn.classList.remove('animate__flip', 'animate__animated');
+        contentBox.classList.remove('animate__fadeIn', 'animate__animated');
+      },
+      { once: true }
+    );
   }
 
   async elementToggle(elOne, elSecond) {

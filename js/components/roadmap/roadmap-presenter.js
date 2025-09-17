@@ -128,13 +128,15 @@ export class RoadmapPresenter {
 
       this._mountNode(newNode);
       const index = this.nodes.length - 1;
-
+      const activeNode = this.nodes.find(
+        (node) => node.nodeData.wasActive === true
+      );
       if (index === 0) {
         newNode.enableNode();
       } else {
         newNode.disableNode();
       }
-      if (newNode.wasActive) {
+      if (activeNode) {
         this._redrawConnections?.(newNode);
       }
     } catch (err) {
@@ -170,6 +172,9 @@ export class RoadmapPresenter {
       else node.disableNode();
     });
   }
+  closeAllAccordeon() {
+    this.nodes.forEach((n) => n.closeAccordeon?.());
+  }
   /**
    * ========================================
    *
@@ -186,6 +191,7 @@ export class RoadmapPresenter {
       onModalOpen: async (e) => await this._handleOpenModal(e),
       onModalClose: async (e) => await this._handleCloseModal(),
       onQuitRoadmap: () => {
+        this.closeAllAccordeon();
         if (typeof this.onQuitRequest === 'function') {
           this.onQuitRequest();
         }

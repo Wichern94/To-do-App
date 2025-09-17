@@ -330,25 +330,22 @@ export class NodeView {
     if (getSubUL) {
       // jezeli mamy juz  odpowiedni ul
 
-      subtasks.forEach((subtask, index) => {
+      subtasks.forEach(({ id, title }) => {
         const subLi = document.createElement('li');
         subLi.classList.add('subtask-item');
-        const shortId = dataObj.id.slice(0, 8);
-        const subtaskId = `${shortId}-${index}`;
-        subLi.dataset.subtaskId = subtaskId;
+
+        subLi.dataset.subtaskId = id;
         subLi.innerHTML = `
                     <label class="subtask-item__label">
-                            <input type="checkbox" class ="subtask-item__checkbox--disabled" />
+                            <input type="checkbox" class ="subtask-item__checkbox--disabled" value="${id}"/>
                             <span class="subtask-item__checkbox--custom"></span>
-                            <span class="subtask-item__checkbox--text">${subtask}</span>
+                            <span class="subtask-item__checkbox--text">${title}</span>
                     </label>`;
 
         getSubUL.appendChild(subLi);
-        const input = subLi.querySelector('input[type="checkbox"]');
-        const idsArray = dataObj.checkedSubtasks;
-        console.log(subtask);
+        const checkbox = subLi.querySelector('input[type="checkbox"]');
 
-        if (dataObj.checkedSubtasks?.includes(subtasks.id)) {
+        if (dataObj.checkedSubtasks?.includes(id)) {
           checkbox.checked = true;
         }
       });
@@ -616,11 +613,6 @@ export class NodeView {
    * HELPER METHODS
    * ========================================
    */
-  generateUniqueId() {
-    const timestamp = Date.now().toString(36);
-    const randomPart = Math.random().toString(36).substring(2, 8);
-    return `${timestamp}-${randomPart}`;
-  }
 
   animateInvalidBtn() {
     this.animationManager?.addElementAnimation(

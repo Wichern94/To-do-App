@@ -55,7 +55,7 @@ export class NodePresenter {
     this.view.render(this.nodeData);
     this._bindViewCallbacks();
     this.view.activate();
-    // this.view.renderSubtask(this.nodeData, this.nodeData.roadmapID);
+
     this._renderControls();
     if (this.isRunning) this._startUiTick();
   }
@@ -113,8 +113,8 @@ export class NodePresenter {
   }
 
   destroy() {
+    this.closeAccordeon();
     this._stopUiTick();
-    // this._unsubRealtime?.();
     this.view.deactivate();
     this.view.unbind();
   }
@@ -148,22 +148,20 @@ export class NodePresenter {
   async _handleOnStop() {
     await this.model.stop();
     this.localState.isActive = false;
+    this.closeAccordeon();
     this.view.setAndLaunchCofetti();
     this._stopUiTick();
     this._renderControls();
     await this.finishNode();
   }
 
-  async _handleOnContinue(btn) {
+  async _handleOnContinue() {
     await this.model.start();
 
     this._startUiTick();
     this._renderControls();
   }
-  _handleOnAccordion() {
-    console.log('snapshot', this.model.snapshot());
-    console.log('allNodeInstances', this.allNodeInstances);
-  }
+  _handleOnAccordion() {}
   _handleOnSubtaskChange({ doneCount, total, checkedIds }) {
     this.model.setCheckedSubtasks(checkedIds);
     this.model.setProgress(doneCount, total);
@@ -260,6 +258,8 @@ export class NodePresenter {
     this.view.setSubtasksDisabled(subtasksDisabled);
     this.view.showProgress(showProgress);
     this.view.showTimer(showTimer);
+    const { done, total: t, percent } = this.subtasksStatus;
+    this.view.setProgress({ doneCount: done, total: t, percent });
 
     if (!isRunning) {
       this.view.setTimerText(this.formatHHMMSS(this.model.getElapsedMs()));
@@ -314,5 +314,10 @@ export class NodePresenter {
     this.plumb.jsPlumbInstance.deleteConnectionsForElement(root);
     this.plumb.jsPlumbInstance.removeAllEndpoints(root);
     this.plumb.jsPlumbInstance.remove(root);
+  }
+  closeAccordeon() {
+    if (this.view.getAccordionOpen()) {
+      this.view.animateAccordion(false);
+    }
   }
 }

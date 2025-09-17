@@ -39,8 +39,17 @@ export class RoadmapModel {
   }
 
   async createNode(dataObj) {
+    const subtasks = this._normalizeSubtasks(dataObj.subtasks);
+    const payload = {
+      ...dataObj,
+      subtasks,
+      checkedSubtasks: Array.isArray(dataObj.checkedSubtasks)
+        ? dataObj.checkedSubtasks
+        : [],
+    };
+
     const nodeID = await this.FsS.addCollectionElement(
-      dataObj,
+      payload,
       this.refObj.COL,
       this.refObj.SUBCOL
     );
@@ -48,12 +57,34 @@ export class RoadmapModel {
     return nodeID;
   }
   async batchNodes(roadmapID, dataObj) {
+    const normalizeNodes = dataObj.map((n) => ({
+      ...n,
+      subtasks: this._normalizeSubtasks(n.subtasks),
+      checkedSubtasks: Array.isArray(n.checkedSubtasks)
+        ? n.checkedSubtasks
+        : [],
+    }));
     const allData = await this.FsS.batchAddNodes(
       roadmapID,
-      dataObj,
+      normalizeNodes,
       this.refObj.COL,
       this.refObj.SUBCOL
     );
     return allData;
+  }
+  _generateUniqueId() {
+    const timestamp = Date.now().toString(36);
+    const randomPart = Math.random().toString(36).substring(2, 8);
+    return `${timestamp}-${randomPart}`;
+  }
+  _normalizeSubtasks(input = []) {
+    return input.map((item, i) => {
+      if (typeof item === 'string') {
+        return { id: this._generateUniqueId(), title: item };
+      }
+      const title = item.title ?? '';
+      const id = item.id ?? this._generateUniqueId();
+      return { id, title };
+    });
   }
 }
