@@ -192,16 +192,12 @@ export class AnimationManager {
     if (isHidden) {
       void elOne.offsetWidth;
       void elSecond.offsetWidth;
-      // showElement(elOne);
-      // showElement(elSecond);
 
       await this.showAnimation(elOne, 'fadeIn', '.4s');
       await this.showAnimation(elSecond, 'fadeIn', '.1s');
     } else {
       void elOne.offsetWidth;
       void elSecond.offsetWidth;
-      // hideElement(elSecond)
-      // hideElement(elSecond)
 
       await this.hideAnimation(elSecond, 'fadeOut', '.1s');
       await this.hideAnimation(elOne, 'fadeOut', '.4s');

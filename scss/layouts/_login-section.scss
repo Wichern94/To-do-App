@@ -1,0 +1,28 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+
+.auth {
+  @include mixins.flex($width: 90%);
+  border-radius: 12px;
+  background-color: var.$borderTwo;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: center;
+  border: solid 0.5px var.$borderTwo;
+  padding: 1rem 0;
+  &__main {
+    @include mixins.flex($width: 100%, $height: 100%);
+  }
+  &__brand {
+    position: absolute;
+    @include mixins.set-text(main, bold, xl);
+    top: -60%;
+  }
+  &__pane {
+    @include mixins.flex($width: 90%);
+    overflow: hidden;
+  }
+  &__form {
+    @include mixins.flex($width: 90%);
+  }
+}

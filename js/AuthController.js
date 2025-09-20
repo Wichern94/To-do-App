@@ -136,7 +136,7 @@ export class AuthController {
   async handleLogout() {
     try {
       await this.authService.logOut();
-      alert('Wylogowano!');
+
       this.authUI.logout();
     } catch (error) {
       console.error('błąd wylogowania', error.code, error.message);

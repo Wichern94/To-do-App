@@ -16,12 +16,18 @@ import { RoadmapView } from './components/roadmap/roadmap-view.js';
 import { RoadmapPresenter } from './components/roadmap/roadmap-presenter.js';
 import { RoadmapModel } from './components/roadmap/roadmap-model.js';
 
+import { LogoutButtonHandler } from './components/logoutbtn/logout-btn.js';
+
 export class TodoApp {
   constructor(user, viewManager) {
     this.user = user;
     this.viewManger = viewManager;
-    this.carusel = new GetCaruselPosition('carousel-cont', '.carousel-item');
+    this.carusel = new GetCaruselPosition(
+      'carousel-cont',
+      '.auth-carousel__item'
+    );
     this.firestoreService = new FirestoreService(this.user.uid);
+    this.logoutButton = new LogoutButtonHandler();
 
     this.carusel.setCaruselToMiddle();
     this.initCarusel();
