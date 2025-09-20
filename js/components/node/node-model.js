@@ -24,12 +24,16 @@ export class NodeModel {
     };
     this.FsS = firestoreService;
     this.refObj = { COL: 'roadmaps', SUBCOL: 'nodes' };
-    // timer state (mapuj z timerSeconds, jeśli trzeba)
-
     this._suppressFsUpdate = false;
     this._pendingPatch = {};
     this._debounceTimer = null;
   }
+  /**
+   * ========================================
+   *  GETTERS
+   * ========================================
+   */
+
   get col() {
     return this.refObj.COL;
   }
@@ -42,6 +46,16 @@ export class NodeModel {
   get nodeID() {
     return this.data.id;
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
+  /**
+   * ========================================
+   *  TIME / NODE STATE
+   * ========================================
+   */
 
   async start() {
     if (this.data.isRunning) {
@@ -99,6 +113,17 @@ export class NodeModel {
         : 0)
     );
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
+  /**
+   * ========================================
+   *  SUBTASKS SETTERS
+   * ========================================
+   */
+
   setProgress(doneCount, total) {
     if (
       this.data.progress.doneCount === doneCount &&
@@ -117,16 +142,16 @@ export class NodeModel {
       checkedSubtasks: this.data.checkedSubtasks,
     });
   }
-
-  hydrate(raw) {
-    if (typeof raw !== 'object' || raw === null) {
-      console.error('Invalid data for hydration.');
-      return;
-    }
-    this.data = { ...this.data, ...raw };
-    return this.data;
-  }
-
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
+  /**
+   * ========================================
+   * FIREBASE METHODS
+   * ========================================
+   */
   async _save(patch) {
     try {
       if (this._suppressFsUpdate) {
@@ -153,6 +178,7 @@ export class NodeModel {
       this._suppressFsUpdate = false;
     }
   }
+
   queueSave(patch, delay = 500) {
     this._pendingPatch = { ...(this._pendingPatch || {}), ...patch };
     clearTimeout(this._debounceTimer);
@@ -161,6 +187,7 @@ export class NodeModel {
       this._pendingPatch = {};
     }, delay);
   }
+
   async moveToFinished() {
     const payload = this.getCompletedata();
     const refObj = {
@@ -174,6 +201,16 @@ export class NodeModel {
     };
     await this.FsS.moveElementToFinished(payload, refObj, copyRefObj);
   }
+  /**
+   * ========================================
+   *
+   * ========================================
+   */
+  /**
+   * ========================================
+   *  HELPERS
+   * ========================================
+   */
 
   snapshot() {
     return {
@@ -192,6 +229,7 @@ export class NodeModel {
       checkedSubtasks: this.data.checkedSubtasks,
     };
   }
+
   getCompletedata() {
     return {
       id: this.data.id,
@@ -206,4 +244,20 @@ export class NodeModel {
       nodeCompleted: this.data.nodeCompleted ?? true,
     };
   }
+
+  hydrate(raw) {
+    if (typeof raw !== 'object' || raw === null) {
+      console.error('Invalid data for hydration.');
+      return;
+    }
+    this.data = { ...this.data, ...raw };
+    return this.data;
+  }
 }
+// QUEUESAVE:
+
+// Debounce is used here to prevent spamming Firestore with multiple rapid updates.
+// For example, when a user checks several subtasks in quick succession, we want to
+// batch those changes and send only one PATCH request after a short delay.
+// This reduces network overhead, avoids hitting Firestore write limits,
+// and prevents unnecessary echo loops from realtime listeners.

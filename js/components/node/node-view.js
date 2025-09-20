@@ -84,7 +84,7 @@ export class NodeView {
         return;
       }
 
-      // We check if the given element is an object and not a DOM element
+      // I check if the given element is an object and not a DOM element
       if (
         el &&
         typeof el === 'object' &&
@@ -92,11 +92,11 @@ export class NodeView {
         !(el instanceof NodeList) &&
         !(el instanceof HTMLCollection)
       ) {
-        // If so, we call the function recursively on this nested object
+        // If so, I call the function recursively on this nested object
         this._findAndValidateUiElements(el, fullPath);
         return;
       }
-      // If it's not an object, we check if it's a DOM element
+      // If it's not an object, I check if it's a DOM element
       if (!el) console.warn(`Missing DOM element: ${fullPath}`);
     });
   }
@@ -173,7 +173,7 @@ export class NodeView {
       this.ui.containers = {
         progressBarCont: this._q('.roadmap-node__progress'),
         buttonsCont: this._q('.roadmap-node__actions'),
-        subtaskCont: this._q('.roadmap-node__subtasks'), //subtaskList
+        subtaskCont: this._q('.roadmap-node__subtasks'),
       };
 
       /**
@@ -196,13 +196,13 @@ export class NodeView {
    *  RENDER METHOD
    * ========================================
    */
-  //Metoda renderowania elementów roadmapy
+
   render(dataObj) {
     if (this.localStates.isRendered) return;
     if (!this.ui.root) {
       const rightUl = document.getElementById(dataObj.roadmapID);
       const title = dataObj.title;
-      const subUlID = `sub-${dataObj.id}`; //<-tworze id dla pojemnika na subtaski
+      const subUlID = `sub-${dataObj.id}`;
 
       this.ui.root = document.createElement('li');
       const li = this.ui.root;
@@ -210,7 +210,7 @@ export class NodeView {
       li.classList.add('roadmap-node', 'node');
 
       if (dataObj.id) {
-        li.dataset.id = dataObj.id; //<-nadaje id takie jak ten z firebase
+        li.dataset.id = dataObj.id;
         li.id = `node-${dataObj.id}`;
         li.dataset.order = dataObj.order;
       }
@@ -220,7 +220,6 @@ export class NodeView {
         li.classList.add('right');
       }
 
-      //tworze html noda
       li.innerHTML = `
         
           <div class=" hidden roadmap-node__active-border"></div>
@@ -311,7 +310,7 @@ export class NodeView {
                 </div>
             `;
 
-      rightUl?.appendChild(li); // <-dodaje do odpowiedniego UL
+      rightUl?.appendChild(li);
 
       this._setRefs();
       this.renderSubtask(dataObj, subUlID);
@@ -322,14 +321,11 @@ export class NodeView {
   renderSubtask(dataObj, subUlID) {
     const subtasks = dataObj.subtasks;
     if (!Array.isArray(subtasks) || subtasks.length === 0) {
-      // <- jesli subtask jest tablica, i nie jest pusta
       return;
     }
 
     const getSubUL = this._q(`#${subUlID}`);
     if (getSubUL) {
-      // jezeli mamy juz  odpowiedni ul
-
       subtasks.forEach(({ id, title }) => {
         const subLi = document.createElement('li');
         subLi.classList.add('subtask-item');
@@ -394,6 +390,7 @@ export class NodeView {
         break;
     }
   }
+
   setProgress({ doneCount, total, percent }) {
     this.ui.elements.progressText.textContent = `${percent}%`;
     this.ui.elements.progressFill.style.width = `${percent}%`;
@@ -418,55 +415,6 @@ export class NodeView {
       .forEach((cb) => {
         cb.disabled = disabled;
       });
-  }
-
-  getAccordionOpen() {
-    return (
-      this.ui.buttons.accordionBtn.getAttribute('aria-expanded') === 'true'
-    );
-  }
-  setAccordion(open) {
-    this.ui.buttons.accordionBtn.setAttribute(
-      'aria-expanded',
-      open ? 'true' : 'false'
-    );
-  }
-  async animateAccordion(open) {
-    const btn = this.ui.buttons.accordionBtn;
-    const list = this.ui.containers.subtaskCont;
-    const node = this.ui.elements.nodeContent;
-
-    try {
-      if (!this.localStates.isRendered) {
-        console.warn('Cannot use Accordion before render!');
-        return false;
-      }
-      if (this.localStates.isAnimating || this.getAccordionOpen() === open)
-        return false;
-
-      if (!btn || !list || !node) {
-        throw new Error('cannot animate Accordion - missing elements');
-      }
-      if (!this.animationManager) {
-        this.setAccordion(open);
-        return false;
-      }
-
-      this.localStates.isAnimating = true;
-
-      btn.disabled = true;
-      btn.setAttribute('aria-disabled', 'true');
-      await this.animationManager?.toggleAccordeon(btn, list, node);
-      this.setAccordion(open);
-      return true;
-    } catch (err) {
-      console.error('ACCORDION ERROR:', err);
-      return false;
-    } finally {
-      btn.disabled = false;
-      btn.removeAttribute('aria-disabled');
-      this.localStates.isAnimating = false;
-    }
   }
 
   setUnlockedUI(isUnlocked) {
@@ -521,6 +469,21 @@ export class NodeView {
       this.ui.elements.nodeContent.classList.add('disabled-node');
       hideElement(this.ui.elements.activeBorder);
     }
+  }
+
+  setAndLaunchCofetti() {
+    const container = document.getElementById('view-standard');
+
+    const rect = this.ui.buttons.stop.getBoundingClientRect();
+    const contRect = container.getBoundingClientRect();
+
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const relX = (centerX - contRect.left) / contRect.width;
+    const relY = (centerY - contRect.top) / contRect.height;
+
+    this.animationManager.launchConfetti(container, relX, relY);
   }
 
   /**
@@ -598,10 +561,71 @@ export class NodeView {
    */
   /**
    * ========================================
-   * CLAER METHODS
+   * ANIMATION METHODS
    * ========================================
    */
+  async fadeOutAnimation() {
+    await this.animationManager.hideAnimation(this.ui.root, 'fadeOut');
+  }
 
+  async lineAnimation(currentNode, nextNode) {
+    await this.animationManager.plumbLineAnimation(currentNode.id, nextNode.id);
+  }
+
+  async hideCurrentNodeSequence(currentNodeRoot) {
+    await this.animationManager.removeElementAnimation(
+      currentNodeRoot,
+      'fadeOut'
+    );
+
+    await this.animationManager.hideAnimation(
+      currentNodeRoot,
+      'flipOutX',
+      '1s'
+    );
+  }
+
+  async enterSequenceAnimation() {
+    this.animationManager.addElementAnimation(this.ui.root, 'flipInX', '1.2s');
+  }
+
+  async animateAccordion(open) {
+    const btn = this.ui.buttons.accordionBtn;
+    const list = this.ui.containers.subtaskCont;
+    const node = this.ui.elements.nodeContent;
+
+    try {
+      if (!this.localStates.isRendered) {
+        console.warn('Cannot use Accordion before render!');
+        return false;
+      }
+      if (this.localStates.isAnimating || this.getAccordionOpen() === open)
+        return false;
+
+      if (!btn || !list || !node) {
+        throw new Error('cannot animate Accordion - missing elements');
+      }
+      if (!this.animationManager) {
+        this.setAccordion(open);
+        return false;
+      }
+
+      this.localStates.isAnimating = true;
+
+      btn.disabled = true;
+      btn.setAttribute('aria-disabled', 'true');
+      await this.animationManager?.toggleAccordeon(btn, list, node);
+      this.setAccordion(open);
+      return true;
+    } catch (err) {
+      console.error('ACCORDION ERROR:', err);
+      return false;
+    } finally {
+      btn.disabled = false;
+      btn.removeAttribute('aria-disabled');
+      this.localStates.isAnimating = false;
+    }
+  }
   /**
    * ========================================
    *
@@ -650,52 +674,33 @@ export class NodeView {
       }
     }, interval);
   }
-  setAndLaunchCofetti() {
-    const container = document.getElementById('view-standard');
 
-    const rect = this.ui.buttons.stop.getBoundingClientRect();
-    const contRect = container.getBoundingClientRect();
-
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const relX = (centerX - contRect.left) / contRect.width;
-    const relY = (centerY - contRect.top) / contRect.height;
-
-    this.animationManager.launchConfetti(container, relX, relY);
-  }
   getNodeBorder() {
     return this.ui.elements.activeBorder;
   }
   isHidden(element) {
     return element.classList.contains('hidden');
   }
-  async fadeOutAnimation() {
-    await this.animationManager.hideAnimation(this.ui.root, 'fadeOut');
-  }
+
   hide(element) {
     if (element.classList.contains('hidden')) return;
     hideElement(element);
   }
-  async lineAnimation(currentNode, nextNode) {
-    await this.animationManager.plumbLineAnimation(currentNode.id, nextNode.id);
-  }
+
   getRoot() {
     return this.ui.root;
   }
-  async hideCurrentNodeSequence(currentNodeRoot) {
-    await this.animationManager.removeElementAnimation(
-      currentNodeRoot,
-      'fadeOut'
-    );
 
-    await this.animationManager.hideAnimation(
-      currentNodeRoot,
-      'flipOutX',
-      '1s'
+  getAccordionOpen() {
+    return (
+      this.ui.buttons.accordionBtn.getAttribute('aria-expanded') === 'true'
     );
   }
-  async enterSequenceAnimation() {
-    this.animationManager.addElementAnimation(this.ui.root, 'flipInX', '1.2s');
+
+  setAccordion(open) {
+    this.ui.buttons.accordionBtn.setAttribute(
+      'aria-expanded',
+      open ? 'true' : 'false'
+    );
   }
 }
