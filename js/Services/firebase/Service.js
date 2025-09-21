@@ -9,7 +9,7 @@ import {
   onSnapshot,
   writeBatch,
 } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
-import { db } from '../firebase-init.js';
+import { db } from './firebase-init.js';
 
 export class FirestoreService {
   constructor(uid) {

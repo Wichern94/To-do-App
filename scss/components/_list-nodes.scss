@@ -3,7 +3,7 @@
 .task {
   @include mixins.flex($justify: space-around);
   background: var.$bgSoft;
-  border: 0.5px solid var(--glass-border);
+  border: 0.5px solid var.$borderTwo;
   border-radius: 8px;
   width: 20rem;
   min-height: 2rem;

@@ -1,19 +1,11 @@
-import { LoginFormHandler } from './formHandlers.js';
-import { FormErrors } from './uiErrorHandler.js';
-import { AuthService } from './authFirebase.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js';
-import { fireApp } from './firebase-init.js';
-// import {LogoutButtonHandler} from './todo.js'
+import { ToastManager } from '../../Services/toastify-manger.js';
 
 export class AuthController {
   constructor(viewManger, authService, authUI) {
     this.viewManger = viewManger;
     this.authService = authService;
     this.authUI = authUI;
-
     this.init();
-
-    //inicjalizacja eventów formularzy
   }
   init() {
     document.addEventListener('auth:login', (e) => this.handleLogin(e.detail));
@@ -28,32 +20,31 @@ export class AuthController {
 
     document.addEventListener('auth:logout', (e) => this.handleLogout());
   }
-  //metoda odbierajaca event rejestracji uzytkownika
 
   async handleRegister(values) {
     try {
       const { email, password } = values;
-      const user = await this.authService.registerUser(email, password);
-      console.log('Zarejestrowano:', user);
-      //po rejestracji przechodzimy do login screena
+      await this.authService.registerUser(email, password);
+
       this.viewManger.showView('login-screen');
-      alert('Rejestracja udana. Możesz sie teraz zalogować.');
+      ToastManager.success('👍 Registration successful. You can log in now!');
     } catch (err) {
-      console.error('błąd rejestracji:', err.code);
+      console.error('Registration error:', err.code);
 
       //obsługa błedów w firebase
       if (err.code === 'auth/email-already-in-use') {
         this.authUI.regErrorHandler.showError(
           'email-reg',
-          'Ten email jest zajęty'
+          'This email is already taken'
         );
       } else if (err.code === 'auth/weak-password') {
         this.authUI.regErrorHandler.showError(
           'password-reg',
-          'Hasło jest za słabe'
+          'Password is too weak'
         );
       } else {
-        alert('Nie udało sie zarejestrowac. Spróbuj ponownie');
+        ToastManager.error();
+        alert('Registration failed. Please try again.');
       }
     }
   }
@@ -62,81 +53,92 @@ export class AuthController {
     try {
       const { email, password } = values;
       const user = await this.authService.loginUser(email, password);
-      console.log('zalogowano:', user);
+
       this.viewManger.showView('todo-screen');
 
-      alert('ZALOGOWANO!');
+      ToastManager.success('Logged in!');
     } catch (err) {
       switch (err.code) {
         case 'auth/user-not-found':
+          this.authUI.LoginErrorHandler.showError('email', 'User not found');
+          break;
+
+        case 'auth/wrong-password':
           this.authUI.LoginErrorHandler.showError(
-            'email',
-            'Nie znaleziono użytkownika'
+            'password',
+            'Invalid password!'
           );
           break;
-        case 'auth/wrong-password':
-          this.authUI.LoginErrorHandler.showError('password', 'Złe hasło!');
-          break;
+
         case 'auth/invalid-email':
           this.authUI.LoginErrorHandler.showError(
             'email',
-            'Nieprawidłowy Format email'
+            'Invalid email format'
           );
           break;
+
         case 'auth/user-disabled':
-          this.authUI.LoginErrorHandler.showError('email', 'Konto wyłączone!');
+          this.authUI.LoginErrorHandler.showError(
+            'email',
+            'Account deactivated!'
+          );
           break;
+
         case 'auth/too-many-requests':
           this.authUI.LoginErrorHandler.showError(
             'email',
-            'za duzo prób logowania'
+            'Too many login attempts!'
           );
           break;
+
         case 'auth/invalid-credential':
           this.authUI.LoginErrorHandler.showError(
             'email',
-            'Nieprawidłowe hasło lub email'
+            'Incorrect email or password'
           );
           break;
         default:
-          console.error('błąd logowania:', err.code);
+          console.error('Login error:', err.code);
       }
     }
   }
   //Metoda odbierajace event resetu hasła
   async handlePswrdReset({ email }) {
     try {
-      const resetPswrd = await this.authService.resetPassword(email);
-      alert('wysłano maila ', email);
+      await this.authService.resetPassword(email);
+      ToastManager.success('Email sent, please check your inbox!');
     } catch (err) {
       switch (err.code) {
         case 'auth/user-not-found':
           this.authUI.forgetErrorHandler.showError(
             'useremail',
-            'Nie znaleziono użytkownika'
+            'User not found'
           );
           break;
+
         case 'auth/invalid-email':
           this.authUI.forgetErrorHandler.showError(
             'useremail',
-            'Nieprawidłowy format'
+            'Invalid format.'
           );
           break;
+
         case 'auth/too-many-requests':
           this.authUI.forgetErrorHandler.showError(
             'useremail',
-            'Zbyt wiele prób'
+            'Too many attempts.'
           );
           break;
+
         default:
-          console.error('błąd logowania:', err.code);
+          console.error('Reset error:', err.code);
       }
     }
   }
   async handleLogout() {
     try {
       await this.authService.logOut();
-
+      ToastManager.success('You have been logged out');
       this.authUI.logout();
     } catch (error) {
       console.error('błąd wylogowania', error.code, error.message);

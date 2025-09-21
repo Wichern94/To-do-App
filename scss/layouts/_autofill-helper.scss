@@ -8,8 +8,8 @@
     -webkit-text-fill-color: #e6f7f8;
     caret-color: #e6f7f8;
 
-    -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.1) inset;
-    box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.1) inset;
+    -webkit-box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.1) inset;
+    box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.1) inset;
 
     outline: none;
   }
@@ -17,8 +17,8 @@
   &:-webkit-autofill:focus {
     border-bottom-color: #6bcdce;
 
-    -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.12) inset;
-    box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.12) inset;
+    -webkit-box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.12) inset;
+    box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.12) inset;
   }
   .auth-form__field > input:-moz-autofill {
     color: #e6f7f8;

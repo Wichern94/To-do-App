@@ -1,4 +1,4 @@
-import { FormErrors } from '../../uiErrorHandler.js';
+import { FormErrors } from '../../Services/validators/uiErrorHandler.js';
 
 import { showElement, hideElement, toggleElement } from '../../utils/helper.js';
 export class SelectorView {

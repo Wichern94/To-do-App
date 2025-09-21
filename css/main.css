@@ -456,12 +456,25 @@ body {
   width: 100%;
   height: 100%;
 }
+.auth__footer {
+  position: absolute;
+  color: #aaaaaa;
+  font-weight: 400;
+  font-size: 12px;
+  top: 150%;
+}
+.auth__icon svg {
+  width: 4rem;
+  height: 4rem;
+  color: #6bcdce;
+  filter: drop-shadow(1px 1px 5px rgb(39.7969543147, 119.3908629442, 120.2030456853));
+}
 .auth__brand {
   position: absolute;
   color: #ffffff;
   font-weight: 700;
   font-size: 18px;
-  top: -60%;
+  top: -50%;
 }
 .auth__pane {
   display: flex;
@@ -528,6 +541,12 @@ body {
   width: 90%;
   gap: 1.5rem;
 }
+.auth-form__title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
 .auth-form__field {
   display: flex;
   flex-direction: column;
@@ -582,6 +601,7 @@ body {
   align-items: center;
   position: relative;
   width: 100%;
+  gap: 0.5rem;
 }
 .auth-form__actions button {
   background: linear-gradient(135deg, #343a3f, #191e22);
@@ -617,14 +637,14 @@ body {
 .auth-form__field > input:-webkit-autofill, .auth-form__field > input:-webkit-autofill:hover, .auth-form__field > input:-webkit-autofill:focus {
   -webkit-text-fill-color: #e6f7f8;
   caret-color: #e6f7f8;
-  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.1) inset;
-  box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.1) inset;
+  -webkit-box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.1) inset;
+  box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.1) inset;
   outline: none;
 }
 .auth-form__field > input:-webkit-autofill:focus {
   border-bottom-color: #6bcdce;
-  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.12) inset;
-  box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.12) inset;
+  -webkit-box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.12) inset;
+  box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.12) inset;
 }
 .auth-form__field > input .auth-form__field > input:-moz-autofill {
   color: #e6f7f8;
@@ -854,7 +874,7 @@ body {
   align-items: center;
   position: relative;
   background: #1c1c1e;
-  border: 0.5px solid var(--glass-border);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   width: 20rem;
   min-height: 2rem;

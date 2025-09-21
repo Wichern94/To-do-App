@@ -1,20 +1,20 @@
 // importy:
 //firebase
-import { fireApp } from './firebase-init.js';
-import { AuthService } from './authFirebase.js';
+import { fireApp } from './Services/firebase/firebase-init.js';
+import { AuthService } from './Services/firebase/authFirebase.js';
 import {
   getAuth,
   onAuthStateChanged,
 } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js';
 // viewManager
-import { ViewManager } from './viewManager.js';
+import { ViewManager } from './Services/view-mangers/viewManager.js';
 // AuthControler
-import { AuthController } from './AuthController.js';
-import { AuthUIController } from './authUIController.js';
+import { AuthController } from './components/login-reg-forget/AuthController.js';
+import { AuthUIController } from './components/login-reg-forget/authUIController.js';
 //logowanie/ rejestracja/forget
-import { LoginFormHandler } from './formHandlers.js';
-import { RegisterFormHandler } from './formHandlers.js';
-import { ResetFormHandler } from './formHandlers.js';
+import { LoginFormHandler } from './components/login-reg-forget/formHandlers.js';
+import { RegisterFormHandler } from './components/login-reg-forget/formHandlers.js';
+import { ResetFormHandler } from './components/login-reg-forget/formHandlers.js';
 // przycisk wylogowania sie
 
 // Widokaplikacji

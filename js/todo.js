@@ -1,5 +1,5 @@
-import { GetCaruselPosition } from './components/carousel-settings.js';
-import { FirestoreService } from './Services/Service.js';
+import { GetCaruselPosition } from './Services/view-mangers/carousel-settings.js';
+import { FirestoreService } from './Services/firebase/Service.js';
 
 import { AnimationManager } from './Services/animation-manager.js';
 import { ToastManager } from './Services/toastify-manger.js';

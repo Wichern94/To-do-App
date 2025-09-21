@@ -1,4 +1,6 @@
-import ERRORS, { FormValidator } from '../../Services/form-validator.js';
+import ERRORS, {
+  FormValidator,
+} from '../../Services/validators/form-validator.js';
 import { RoadmapPlumbManager } from '../../Services/plumb-manager.js';
 import { NodeElement } from '../node/node-element.js';
 // import { NodeElement } from '../node-component.js';

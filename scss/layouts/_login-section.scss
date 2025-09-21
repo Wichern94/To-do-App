@@ -1,6 +1,7 @@
 @use '../variables/variables' as var;
 @use '../variables/mixins';
 @use '../components/-roadmap-modal.scss';
+@use 'sass:color';
 .auth {
   @include mixins.flex($width: 90%);
   border-radius: 12px;
@@ -13,10 +14,24 @@
   &__main {
     @include mixins.flex($width: 100%, $height: 100%);
   }
+  &__footer {
+    position: absolute;
+    @include mixins.set-text(secondary, regular, md);
+    top: 150%;
+  }
+  &__icon {
+    svg {
+      width: 4rem;
+      height: 4rem;
+      $color: var.$accent;
+      color: var.$accent;
+      filter: drop-shadow(1px 1px 5px color.adjust($color, $lightness: -30%));
+    }
+  }
   &__brand {
     position: absolute;
     @include mixins.set-text(main, bold, xl);
-    top: -60%;
+    top: -50%;
   }
   &__pane {
     @include mixins.flex($width: 90%);
@@ -59,6 +74,11 @@
   &-form {
     @include mixins.flex($width: 90%);
     gap: 1.5rem;
+    &__title {
+      @include mixins.set-text(main, semibold, xl);
+      margin-bottom: 1rem;
+    }
+
     &__field {
       @include mixins.flex($width: 100%);
       @include mixins.glass-slide-input($width: 100%);
@@ -68,6 +88,7 @@
     }
     &__actions {
       @include mixins.flex($width: 100%);
+      gap: 0.5rem;
       button {
         @include mixins.glass-button($from: #343a3f, $to: #191e22);
         box-shadow: inset -15px -15px 18px 0px rgba(0, 0, 0, 0.35),

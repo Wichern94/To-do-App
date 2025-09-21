@@ -268,7 +268,7 @@
 @mixin dividier(
   $mode: 'normal',
   $line: 1px,
-  $color: var(--glass-border),
+  $color: var.$borderTwo,
   $width: 100%
 ) {
   display: block;

@@ -1,4 +1,4 @@
-import { FormValidator } from '../../Services/form-validator.js';
+import { FormValidator } from '../../Services/validators/form-validator.js';
 export class SelectorPresenter {
   constructor(model, view, callbacks = {}) {
     this.model = model;

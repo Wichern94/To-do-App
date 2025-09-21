@@ -1,5 +1,5 @@
-import { FormErrors } from '../../uiErrorHandler.js';
-import { FormValidator } from '../../Services/form-validator.js';
+import { FormErrors } from '../../Services/validators/uiErrorHandler.js';
+import { FormValidator } from '../../Services/validators/form-validator.js';
 export class ListView {
   constructor(root = 'list-view', { animationManager } = {}) {
     const rootEl =
