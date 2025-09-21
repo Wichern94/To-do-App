@@ -257,6 +257,8 @@
 
   &:hover {
     filter: brightness(1.06);
+    transform: scaleX(1.07);
+    text-decoration: underline;
   }
   &:active {
     transform: translateY(1px);
@@ -356,4 +358,70 @@
   border: solid $color;
   transform: rotate(45deg);
   border-width: 0 2px 2px 0;
+}
+
+@mixin glass-slide-input(
+  $width: 70%,
+  $height: 1.5rem,
+  $text: #e6f7f8,
+  $label: #aaaaaa,
+
+  $border: #cccccc,
+
+  $accent: #6bcdce,
+  $bg: rgba(255, 255, 255, 0.1),
+  $blur: 10px,
+  $radius: 12px,
+  $label-font: 0.85rem,
+  $label-offset-x: 0.75rem,
+  $slide-x: 2rem,
+  $duration: 0.35s
+) {
+  position: relative;
+  width: $width;
+  padding: 0.5rem 0.75rem 0.35rem;
+  border-radius: $radius;
+  background: $bg;
+  -webkit-backdrop-filter: blur($blur);
+  backdrop-filter: blur($blur);
+
+  > input {
+    width: 100%;
+    height: $height;
+    color: $text;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid $border;
+    outline: none;
+    caret-color: $accent;
+    transition: border-color $duration ease, background-color $duration ease,
+      box-shadow $duration ease;
+
+    &:focus {
+      border-bottom-color: $accent;
+    }
+
+    &:focus + label,
+    &:not(:placeholder-shown) + label {
+      transform: translateX($slide-x);
+      opacity: 0;
+    }
+  }
+
+  > label {
+    position: absolute;
+    left: $label-offset-x;
+    top: 0.45rem;
+    font-size: $label-font;
+    color: $label;
+    pointer-events: none;
+    user-select: none;
+    transition: transform $duration ease, opacity $duration ease,
+      color $duration ease;
+  }
+
+  > input:focus-visible {
+    border-bottom: 1px solid $accent;
+    background: linear-gradient(to bottom, transparent, var.$activedayBG);
+  }
 }

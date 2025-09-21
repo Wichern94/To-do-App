@@ -62,12 +62,12 @@
             </h2>
 
             <form  id="lgn-form"
-                   class="auth__form"
+                   class="auth-form"
                    action="#"
                    method="POST"
                    novalidate>
                 <div class = "input-container auth-form__field">
-                    <p class="err-message  hidden auth-form__error"
+                    <p class="err-message auth-form__error hidden"
                        data-for="email"
                        role="alert"
                        aria-live="polite"></p>
@@ -102,28 +102,30 @@
         </section>
         
 
-        <section class="forget-password auth__pane" 
-                 aria-labelledby="forgot-password-section">
-            <p class ="log-q" id ="forgot-password-section">Forgot your password?</p>
-            <h5>
-                <button class="forget-link btn"
-                        type="button"
-                        data-action="open-forgot">
-                        <b>CLICK HERE</b>
-                </button>
-            </h5>
-        </section>
+        <section class="forget-password auth__pane-links" 
+                 aria-label="Login links and options">
+            <div class="auth__pane-links__group">
+                <p class ="log-q">Forgot your password?</p>
+                
+                    <button class="forget-link btn"
+                            type="button"
+                            data-action="open-forgot">
+                            <b>Click here</b>
+                    </button>
+                
+            </div>
 
-        <section class="register auth__pane"
-                 aria-labelledby="register-account-section">
-            <p class ="log-q" id ="register-account-section">Don't have an account? </p>
-            <h5>
-                <button class="register-link btn" 
-                        type="button"
-                        data-action="open-register">
-                        <b>Create account</b>
-                </button>
-            </h5>
+            <div class="auth__pane-links__group">
+                <p class ="log-q " >Don't have an account? </p>
+                
+                    <button class="register-link btn" 
+                            type="button"
+                            data-action="open-register">
+                            <b>Create account</b>
+                    </button>
+                
+            </div>  
+        
         </section>
     </main>
 

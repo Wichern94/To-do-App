@@ -51,7 +51,7 @@
   position: relative;
   color: var(--text-muted);
 } */
-input {
+/* input {
   position: relative;
   background: transparent;
   border: none;
@@ -92,9 +92,9 @@ input {
 }
 .pass-input {
   margin-bottom: 0.5rem;
-}
+} */
 
-.login-btn {
+/* .login-btn {
   margin: 0.5rem;
   padding: 0.5rem;
   width: 10.8rem;
@@ -107,12 +107,12 @@ input {
   outline: none;
   color: var(--text-primary);
   transition: all 0.5s ease;
-}
-.btn:hover {
+} */
+/* .btn:hover {
   transform: scaleX(1.07);
   text-decoration: underline;
-}
-.log-q {
+} */
+/* .log-q {
   font-size: 12px;
 }
 .forget-link {
@@ -130,7 +130,7 @@ input {
   outline: none;
   border: none;
   color: var(--background-dot);
-}
+} */
 .input-container {
   display: flex;
   flex-direction: column;
