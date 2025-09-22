@@ -53,19 +53,14 @@ export class GetCaruselPosition {
   }
   getViewKey() {
     const keyArr = Object.keys(this.modeMap);
-    console.log(' tablica kluczy', keyArr);
 
     const viewKey = keyArr.find(
       (key) => this.modeMap[key].index === this.currentIndex
     );
-    console.log('viewKey to:', viewKey);
 
     if (!viewKey) return null;
 
     const { sectionId, indicatorId } = this.modeMap[viewKey];
-
-    console.log('sectionID to:', sectionId);
-    console.log('indicatorID to:', indicatorId);
 
     return {
       viewKey,

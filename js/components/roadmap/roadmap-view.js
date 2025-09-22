@@ -1,6 +1,6 @@
 import { FormErrors } from '../../Services/validators/uiErrorHandler.js';
 
-import { showElement, hideElement, toggleElement } from '../../utils/helper.js';
+import { hideElement } from '../../utils/helper.js';
 export class RoadmapView {
   constructor(root = 'roadmap-view', { animationManager } = {}) {
     const rootEl =

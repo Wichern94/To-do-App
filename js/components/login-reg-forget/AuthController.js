@@ -31,7 +31,6 @@ export class AuthController {
     } catch (err) {
       console.error('Registration error:', err.code);
 
-      //obsługa błedów w firebase
       if (err.code === 'auth/email-already-in-use') {
         this.authUI.regErrorHandler.showError(
           'email-reg',
@@ -48,7 +47,7 @@ export class AuthController {
       }
     }
   }
-  //Metoda odbierajaca event Logowania
+
   async handleLogin(values) {
     try {
       const { email, password } = values;

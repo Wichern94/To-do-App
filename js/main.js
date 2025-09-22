@@ -1,25 +1,21 @@
-// importy:
-//firebase
 import { fireApp } from './Services/firebase/firebase-init.js';
 import { AuthService } from './Services/firebase/authFirebase.js';
 import {
   getAuth,
   onAuthStateChanged,
 } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js';
-// viewManager
+
 import { ViewManager } from './Services/view-mangers/viewManager.js';
-// AuthControler
+
 import { AuthController } from './components/login-reg-forget/AuthController.js';
 import { AuthUIController } from './components/login-reg-forget/authUIController.js';
-//logowanie/ rejestracja/forget
+
 import { LoginFormHandler } from './components/login-reg-forget/formHandlers.js';
 import { RegisterFormHandler } from './components/login-reg-forget/formHandlers.js';
 import { ResetFormHandler } from './components/login-reg-forget/formHandlers.js';
-// przycisk wylogowania sie
 
-// Widokaplikacji
 import { TodoApp } from './todo.js';
-// Powołuje Instacje klass
+
 class App {
   constructor() {
     this.viewManager = new ViewManager();
@@ -35,7 +31,7 @@ class App {
     this.initializeForm();
     this.formChecker();
   }
-  //metoda nasluchujaca na custom event zmiany widoku
+
   initializeForm() {
     document.addEventListener('view:changed', () => this.formChecker());
   }
@@ -58,19 +54,16 @@ class App {
     });
   }
 
-  //Metoda uruchamiająca odpowiedni formularz
   formChecker() {
-    // 1. Jeśli jest aktywny handler i ma metodę destroy – zniszcz go
     if (this.activeHandler?.destroy) {
       this.activeHandler.destroy();
     }
     this.activeHandler = null;
-    // 2. Sprawdź, jaki formularz jest aktualnie widoczny
+
     const activeView = this.authUi.getActiveView();
-    // 3. W zależności od widoku, uruchom odpowiedni handler
+
     switch (activeView) {
       case 'login':
-        console.log('Włączono logowanie!');
         this.loginHandler = new LoginFormHandler(
           this.authUi,
           'lgn-form',
@@ -82,7 +75,6 @@ class App {
         break;
 
       case 'register':
-        console.log('Włączono rejestracje!');
         this.registerHandler = new RegisterFormHandler(
           this.authUi,
           'register-form',
@@ -95,7 +87,6 @@ class App {
         break;
 
       case 'reset':
-        console.log('Włączono resetowanie!');
         this.resetHandler = new ResetFormHandler(
           this.authUi,
           'forget-form',
@@ -113,10 +104,9 @@ const auth = getAuth(fireApp);
 const app = new App();
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    console.log('Uzytkownik zalogowany:', user.email);
     const appBody = document.getElementById('app');
     appBody.classList.remove('hidden');
-    console.log(app.viewManager);
+
     app.viewManager.showView('todo-screen');
 
     const todoApp = new TodoApp(user, app.viewManager);

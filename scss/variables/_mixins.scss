@@ -425,3 +425,29 @@
     background: linear-gradient(to bottom, transparent, var.$activedayBG);
   }
 }
+@function bp($key) {
+  @if not map.has-key(var.$bp, $key) {
+    @error 'Unknown breakpoint: #{ $key }. Use one of: #{ map.keys(var.$bp) }';
+  }
+  @return map.get(var.$bp, $key);
+}
+// min-width: ≥ key
+@mixin up($key) {
+  @media (min-width: bp($key)) {
+    @content;
+  }
+}
+
+// max-width: < key  (bez „nakładek” – odcinamy o włos)
+@mixin down($key) {
+  @media (max-width: calc(bp($key) - 0.02px)) {
+    @content;
+  }
+}
+
+// zakres: from ≤ width < to
+@mixin between($from, $to) {
+  @media (min-width: bp($from)) and (max-width: calc(bp($to) - 0.02px)) {
+    @content;
+  }
+}

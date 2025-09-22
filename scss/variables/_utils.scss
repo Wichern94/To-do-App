@@ -37,3 +37,9 @@ body {
   opacity: 1;
   pointer-events: all;
 }
+.dot {
+  transition: fill 0.15s ease;
+}
+.dot.active {
+  fill: var.$accent;
+}

@@ -174,7 +174,6 @@ export class ListView {
       }
     });
     this.localStates.bound = false;
-    console.log('list deactivated!');
   }
 
   /**
@@ -203,8 +202,6 @@ export class ListView {
   }
 
   async setupAccordion(btn) {
-    console.log('klknieto w akordeon');
-
     const li = btn.closest('.task');
 
     const details = li.querySelector('[data-action="accordion-container"]');

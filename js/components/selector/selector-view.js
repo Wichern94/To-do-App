@@ -513,13 +513,4 @@ export class SelectorView {
       this.animationManager?.bounceBtn(btn);
     }
   }
-
-  // activeBackButton() {
-  //   const backBtn = document.getElementById('btn-back');
-  //   if (backBtn) {
-  //     backBtn.removeEventListener('click', this.handleGoBack);
-  //     backBtn.addEventListener('click', this.handleGoBack.bind(this));
-  //     console.log('kliknieto w back');
-  //   }
-  // }
 }

@@ -43,6 +43,14 @@ body {
   pointer-events: all;
 }
 
+.dot {
+  transition: fill 0.15s ease;
+}
+
+.dot.active {
+  fill: #6bcdce;
+}
+
 /**
  * ========================================
  * LOGIN SECTION
@@ -474,7 +482,7 @@ body {
   color: #ffffff;
   font-weight: 700;
   font-size: 18px;
-  top: -50%;
+  top: -8rem;
 }
 .auth__pane {
   display: flex;
@@ -625,6 +633,38 @@ body {
   transform: translateY(1px);
 }
 
+@media (min-width: 768px) {
+  .auth {
+    padding: 1rem;
+    max-width: 800px;
+    width: min(90%, 800px);
+    margin-inline: auto;
+  }
+  .auth__main {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+  }
+  .auth__main::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    inset-inline-start: 50%;
+    width: 50%;
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.32)), url("../assets/web-security.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border-radius: 12px;
+  }
+  .auth__pane-links {
+    grid-column: 1;
+  }
+}
 /**
  * ========================================
  * AUTOFILL HELPER

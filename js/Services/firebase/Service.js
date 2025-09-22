@@ -16,10 +16,9 @@ export class FirestoreService {
     this.uid = uid;
   }
 
-  // Metoda dodwania kolekcji do fire base
   async addCollection(data, collectionName) {
     if (!data || !collectionName) {
-      throw new Error('data i nazwa Kolekcji jest wymagana');
+      throw new Error('Collection name and data are required.');
     }
 
     try {
@@ -31,14 +30,14 @@ export class FirestoreService {
       });
       return docRef.id;
     } catch (error) {
-      console.error('błąd dodawania do firestore:', error);
+      console.error('ADD COLLECTION ERROR:', error);
       return null;
     }
   }
 
   async updateCollection(updateObj, collectionName, docId) {
     if (!collectionName || !updateObj) {
-      throw new Error('Nazwa Kolekcji, docid ,oraz obiekt zdanymi są wymagane');
+      throw new Error('Collection name, doc ID, and data object are required');
     }
 
     try {
@@ -48,13 +47,13 @@ export class FirestoreService {
       );
       const docQuery = await updateDoc(collectionRef, updateObj);
     } catch (err) {
-      console.error('bład podczas updatu:', err);
+      console.error('UPDATE ERROR:', err);
     }
   }
-  //Metoda odczytu Kolekcji
+
   async loadUserCollection(collectionName) {
     if (!collectionName) {
-      throw new Error('nazwa Kolekcji do odczytu danych jest wymagana');
+      throw new Error('A collection name must be provided to fetch data');
     }
     try {
       const collectionRef = collection(
@@ -72,14 +71,14 @@ export class FirestoreService {
 
       return collections;
     } catch (error) {
-      console.error('błąd przy odczycie  od firestore:', error);
+      console.error('COLLECTION  FETCH ERROR:', error);
       return [];
     }
   }
-  //metoda Kasująca kolekcje
+
   async deleteDocument(docId, collectionName) {
     if (!docId || !collectionName) {
-      throw new Error('ID i nazwa Kolekcji jest wymagana');
+      throw new Error('Collection name and ID are required.');
     }
 
     try {
@@ -88,15 +87,14 @@ export class FirestoreService {
 
       return true;
     } catch (error) {
-      console.error('bład przy usuwaniu zadania:', error);
+      console.error('DELETE DOCUMENT ERROR:', error);
       return false;
     }
   }
 
-  // metoda dodajca element do odpowiedniej kolekcji
   async addCollectionElement(data, collectionName, subCollection) {
     if (!data || !collectionName) {
-      throw new Error('Data i nazwa Kolekcji jest wymagana');
+      throw new Error('Missing required parameters: Collection name and data.');
     }
 
     try {
@@ -109,10 +107,10 @@ export class FirestoreService {
         ...data,
         createdAt: serverTimestamp(),
       });
-      console.log('dodano do fire base:', data);
+
       return docRef.id;
     } catch (error) {
-      console.error('błąd przy zapisie Elementow do Firestore:', error);
+      console.error('ADD COLLECTION ERROR:', error);
       return null;
     }
   }
@@ -124,7 +122,7 @@ export class FirestoreService {
       !collectionName ||
       !subCollection
     ) {
-      throw new Error('Brak Elementów do Batchowania!');
+      throw new Error('Missing items for batching!');
     }
     try {
       const roadmapID = roadmapId.replace('ul-', '');
@@ -145,7 +143,7 @@ export class FirestoreService {
           createdAt: serverTimestamp(),
         };
 
-        if (!fullData.id) throw new Error('Brak ID noda!');
+        if (!fullData.id) throw new Error('Invalid ID');
 
         allData.push(fullData);
         batch.set(docRef, fullData);
@@ -154,13 +152,13 @@ export class FirestoreService {
       await batch.commit();
       return allData;
     } catch (error) {
-      console.error('Błąd przy zapisie w Batchu:', error);
+      console.error('BATCH ERROR:', error);
     }
   }
   //metoda odczytująca elementy z danej kolekcji
   async getElementsfromSubCollection(roadmapID, collectionName, subCollection) {
     if (!collectionName || !subCollection) {
-      throw new Error('Nazwa Kolekcji i pod kolekcji jest wymagana');
+      throw new Error('Collection name and subcollection name are required.');
     }
     try {
       const roadmapId = roadmapID.replace('ul-', '');
@@ -177,15 +175,12 @@ export class FirestoreService {
         });
       });
 
-      console.log(`nody ${this.uid}: `, elements);
       return elements;
     } catch (error) {
-      console.error('błąd przy odczycie  od firestore:', error);
+      console.error('LOAD COLLECTION ERROR:', error);
       return [];
     }
   }
-
-  //metoda do nadpisywania progrsu nodow
 
   async updateElements(
     roadmapID,
@@ -196,7 +191,7 @@ export class FirestoreService {
   ) {
     if (!collectionName || !subCollection || !nodeID || !updateObj) {
       throw new Error(
-        'Nazwa Kolekcji,pod kolekcji, id noda,oraz obiekt zdanymi są wymagane'
+        'Collection name, subcollection, node ID, and data object are required.'
       );
     }
     try {
@@ -206,17 +201,14 @@ export class FirestoreService {
         `users/${this.uid}/${collectionName}/${roadmapId}/${subCollection}/${nodeID}`
       );
       const docQuery = await updateDoc(collectionRef, updateObj);
-      console.log('obiekt ktory był:!', updateObj);
     } catch (err) {
-      console.error('bład podczas updatu:', err);
+      console.error('UPDATE ERROR:', err);
     }
   }
   //metoda Kasująca element subkolekcji
   async deleteElement(docId, collectionName, subCollection, nodeID) {
     if (!docId || !collectionName || !subCollection || !nodeID) {
-      throw new Error(
-        'Brak odpowiednich danych do usuniecia elementu subkolekcji'
-      );
+      throw new Error('Missing required data to delete subcollection element.');
     }
     try {
       const roadmapId = docId.replace('ul-', '');
@@ -225,14 +217,14 @@ export class FirestoreService {
         `users/${this.uid}/${collectionName}/${roadmapId}/${subCollection}/${nodeID}`
       );
       await deleteDoc(docRef);
-      console.log(`Usunięto dokument ${nodeID} z podkolekcji ${subCollection}`);
+
       return true;
     } catch (error) {
-      console.error('bład przy usuwaniu zadania:', error);
+      console.error('DELETE DOC ERROR:', error);
       return false;
     }
   }
-  //metoda zapisu subkolekcji do firebase w czasie rzeczywistym
+
   listenToCollection(
     roadmapID,
     collectionName,
@@ -244,7 +236,7 @@ export class FirestoreService {
     }
   ) {
     if (!collectionName || !subCollection || !roadmapID) {
-      throw new Error('Brak Danych do Sluchania w czasie rzeczywistym!');
+      throw new Error('No data to listen to in real-time!');
     }
     try {
       const roadmapId = roadmapID.replace('ul-', '');
@@ -257,29 +249,26 @@ export class FirestoreService {
         (onData) => {
           onData.docChanges().forEach((change) => {
             if (change.type === 'added') {
-              console.log('Dodano:', change.doc.data());
               callbacks.onAdd(change.doc.data());
             }
             if (change.type === 'modified') {
-              console.log('Zmodyfikowano:', change.doc.data());
               callbacks.onModify(change.doc.data());
             }
             if (change.type === 'removed') {
-              console.log('Usunieto:', change.doc.data());
               callbacks.onRemove(change.doc.data());
             }
           });
         },
         (onError) => {
-          console.log('wykryto Bład!:', onError);
+          console.warn('ERROR!:', onError);
         }
       );
       return unsub;
     } catch (err) {
-      console.error('bład podczas nasłuchu!', err);
+      console.error('REAL-TIME ERROR:', err);
     }
   }
-  //metoda zapisu Elementu w czasie rzeczywistym
+
   listenToElement(
     roadmapID,
     collectionName,
@@ -292,7 +281,7 @@ export class FirestoreService {
   ) {
     if (!collectionName || !subCollection || !roadmapID || !nodeID) {
       throw new Error(
-        'Nazwa Kolekcji,pod kolekcji, id noda,oraz obiekt zdanymi są wymagane'
+        'Collection name, subcollection, node ID, and data object are required.'
       );
     }
 
@@ -306,14 +295,12 @@ export class FirestoreService {
         docRef,
         (snapshot) => {
           if (snapshot.exists() === true) {
-            console.log('dane z snapshota:', snapshot.data());
-
             if (typeof callbacks.onUpdate === 'function') {
               callbacks.onUpdate(snapshot.data());
             }
           }
           if (snapshot.exists() === false) {
-            console.log('brakdanych z snapshota,uruchomiono ondelete');
+            console.warn('No data from snapshot, ondelete initiated.');
 
             if (typeof callbacks.onDelete === 'function') {
               callbacks.onDelete();
@@ -321,12 +308,12 @@ export class FirestoreService {
           }
         },
         (onError) => {
-          console.error('Błąd podczas nasluchu Elementu!', onError);
+          console.error('Error listening to element!', onError);
         }
       );
       return unsub;
     } catch (err) {
-      console.error('bład try/catch podczas nasłuchu!', err);
+      console.error('REAL-TIME LISTENER ERROR:', err);
     }
   }
 
@@ -339,9 +326,7 @@ export class FirestoreService {
       );
 
       if (!newId) {
-        throw new Error(
-          'nie udało sie przeniesc noda - zapis nie powiódł się.'
-        );
+        throw new Error('Failed to move element - save operation failed.');
       }
       const deletedDoc = await this.deleteElement(
         dataObj.roadmapID,
@@ -350,15 +335,14 @@ export class FirestoreService {
         dataObj.id
       );
       if (!deletedDoc) {
-        throw new Error('Usuniecie orginalnego Noda nie powiodło się!');
+        throw new Error('Failed to delete the original element!');
       }
 
       if (newId && deletedDoc) {
-        console.log('✅ ukonczono przenoszenie!');
         return true;
       }
     } catch (error) {
-      console.error('❌błąd przy przenoszeniu Noda:', error);
+      console.error('FAILED TO MOVE ELEMENT:', error);
       return false;
     }
   }

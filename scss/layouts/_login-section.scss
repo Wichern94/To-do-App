@@ -31,7 +31,7 @@
   &__brand {
     position: absolute;
     @include mixins.set-text(main, bold, xl);
-    top: -50%;
+    top: -8rem;
   }
   &__pane {
     @include mixins.flex($width: 90%);
@@ -95,6 +95,45 @@
           7px -10px 11px 6px rgba(255, 255, 255, 0.08);
         width: 80%;
         height: 2rem;
+      }
+    }
+  }
+}
+@include mixins.up(md) {
+  .auth {
+    padding: 1rem;
+    max-width: 800px;
+    width: min(90%, 800px);
+    margin-inline: auto;
+    &__main {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 2rem;
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        inset-inline-start: 50%;
+        width: 50%;
+        pointer-events: none;
+        z-index: 0;
+        background: linear-gradient(
+            to bottom right,
+            rgba(0, 0, 0, 0.18),
+            rgba(0, 0, 0, 0.32)
+          ),
+          url('../assets/web-security.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        border-radius: 12px;
+      }
+    }
+    &__pane {
+      &-links {
+        grid-column: 1;
       }
     }
   }

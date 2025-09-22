@@ -1,7 +1,4 @@
-import { LoginFormHandler } from './formHandlers.js';
 import { FormErrors } from '../../Services/validators/uiErrorHandler.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js';
-import { fireApp } from '../../Services/firebase/firebase-init.js';
 
 export class AuthUIController {
   constructor(viewManager) {
@@ -14,9 +11,9 @@ export class AuthUIController {
   }
 
   bindScreenEvents() {
-    const logBackBtns = document.querySelectorAll('.log-back-btn'); //<- wraca do logowania
-    const forgetBtn = document.querySelector('.forget-link'); //<- idzie do sekcji odzyskaj haslo
-    const regstrBtn = document.querySelector('.register-link'); //<- idzie do sekcji rejestracji
+    const logBackBtns = document.querySelectorAll('.log-back-btn');
+    const forgetBtn = document.querySelector('.forget-link');
+    const regstrBtn = document.querySelector('.register-link');
 
     forgetBtn.addEventListener('click', (e) => this.showFrgt(e));
 

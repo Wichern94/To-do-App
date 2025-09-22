@@ -78,34 +78,34 @@
                    action="#"
                    method="POST"
                    novalidate>
-                <div class = "input-container auth-form__field">
+                <div class = "auth-form__field">
                     <p class="err-message auth-form__error hidden"
                        data-for="email"
                        role="alert"
                        aria-live="polite"></p>
 
-                    <input class="log-input auth-form__input"
+                    <input class="auth-form__input"
                            type="email"
                            id="email"
                            name="email"
                            autocomplete="email"
                            placeholder=" ">
-                    <label for="email" class="log-label labs auth-form__label"> E-mail:</label>
+                    <label for="email" class="auth-form__label"> E-mail:</label>
                 </div>
                     
-                <div class = "input-container auth-form__field">
+                <div class = "auth-form__field">
                     <p class="err-message  hidden auth-form__error"
                        data-for="password"
                        role="alert"
                        aria-live="polite"></p>
 
-                    <input class="pass-input auth-form__input"
+                    <input class="auth-form__input"
                            type ="password"
                            id = "password"
                            name = "password" 
                            autocomplete="current-password" 
                            placeholder=" ">
-                    <label for="password" class="pass-label labs auth-form__label">Password:</label>
+                    <label for="password" class=" auth-form__label">Password:</label>
                 </div>
                 <div class="auth-form__actions">
                     <button class="login-btn btn" type="submit">Sign in</button> 
@@ -114,7 +114,7 @@
         </section>
         
 
-        <section class="forget-password auth__pane-links" 
+        <section class="auth__pane-links" 
                  aria-label="Login links and options">
             <div class="auth__pane-links__group">
                 <p class ="log-q">Forgot your password?</p>
@@ -173,9 +173,9 @@
              class="auth-carousel"
              aria-label="View mode">
 
-            <ul  class=" auth-carousel__list"
+            <ul  class="auth-carousel__list"
                  role="tablist">
-                 <li class=" auth-carousel__item"
+                 <li class="auth-carousel__item"
                      role="presentation">
                 
                     <button class="carusel-btn auth-carousel__button" 
@@ -205,7 +205,7 @@
                     ROADMAP
                 </button>
             </li>
-            <li class="carousel-item auth-carousel__item"
+            <li class="auth-carousel__item"
                 role="presentation">
                 <button class="carusel-btn auth-carousel__button"
                         data-view="list"
@@ -777,7 +777,7 @@
     </header>
 
     <main class="auth__main">
-        <section class="register-form auth__pane"
+        <section class="auth__pane"
                  aria-labelledby="register-section">
 
             <span class="auth__icon" 
@@ -795,62 +795,62 @@
             </span>
 
             <h2 id = "register-section" 
-                class="reg-head auth-form__title">
+                class="auth-form__title">
                 Create your account
             </h2>
             <form id="register-form" 
-                  class="reg-form auth-form auth-form--register"
+                  class="auth-form auth-form--register"
                   action="#"
                   method="POST"
                   novalidate>
                
-                <div class="input-container reg-divs auth-form__field">
+                <div class="auth-form__field">
                     <p class="err-message hidden auth-form__error" 
                        data-for="email-reg"
                        role="alert"
                        aria-live="polite">
                     </p>
                     
-                    <input class ="reg-inputs auth-form__input" 
+                    <input class ="auth-form__input" 
                            type="email"
                            id="register-email" 
                            name="email-reg" 
                            autocomplete="email"
                            inputmode="email" 
                            placeholder=" ">
-                    <label for="register-email" class="reg-email labs auth-form__label"> E-mail</label>
+                    <label for="register-email" class="auth-form__label"> E-mail</label>
                 </div>
                     
-                <div class ="input-container reg-divs auth-form__field">
+                <div class ="auth-form__field">
                     <p class="err-message err-msg hidden auth-form__error hidden"
                        data-for="password-reg"
                        role="alert"
                        aria-live="polite">
                     </p>
 
-                    <input class ="reg-inputs auth-form__input"
+                    <input class ="auth-form__input"
                            type="password"
                            id="register-password"
                            name = "password-reg"
                            autocomplete="new-password"
                            placeholder=" ">
-                    <label for="register-password" class="reg-pass labs auth-form__label">Password</label>
+                    <label for="register-password" class="auth-form__label">Password</label>
                 </div>
                     
-                <div class="input-container reg-divs auth-form__field">
+                <div class="auth-form__field">
                     <p class="err-message hidden" 
                        data-for="confirm-password"
                        role="alert"
                        aria-live="polite">
                     </p>
 
-                    <input class ="reg-inputs auth-form__input"
+                    <input class ="auth-form__input"
                            type="password" 
                            id ="confirm-password" 
                            name="confirm-password"
                            autocomplete="new-password" 
                            placeholder=" ">
-                    <label for="confirm-password" class=" reg-pass labs auth-form__label">Confirm password</label>
+                    <label for="confirm-password" class="auth-form__label">Confirm password</label>
                 </div>
 
                 <div class="auth-form__actions">
@@ -879,7 +879,7 @@
     </header>
 
     <main class="auth__main">
-        <section class="forget-password-form auth__pane"
+        <section class="auth__pane"
                  aria-labelledby="forget-section">
            <span class="auth__icon" 
                   aria-hidden="true">
@@ -904,7 +904,7 @@
                 Reset your password
             </h2>
             
-            <form class="frgt-form auth-form auth-form--forgot"
+            <form class="auth-form auth-form--forgot"
                   id="forget-form"
                   action="#"
                   method="POST"
@@ -912,14 +912,14 @@
 
                 
 
-                <div class="input-container forget-container auth-form__field">
+                <div class="auth-form__field">
                     <p class="err-message hidden auth-form__error"
                        data-for="useremail"
                        role="alert"
                        aria-live="polite">
                     </p>
 
-                    <input class="forget-input auth-form__input"
+                    <input class="auth-form__input"
                            type="email"
                            id="forget-username"
                            name="useremail"
@@ -927,7 +927,7 @@
                            inputmode="email"
                            placeholder=" ">
 
-                    <label class="forget-label labs auth-form__label" for="forget-username">E-mail</label>
+                    <label class="auth-form__label" for="forget-username">E-mail</label>
                 </div>
 
                 <div class="auth-form__actions">

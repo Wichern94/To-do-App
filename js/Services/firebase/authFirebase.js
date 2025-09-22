@@ -21,7 +21,7 @@ export class AuthService {
 
       return user;
     } catch (error) {
-      console.error('błąd rejestracji:', error.code, error.message);
+      console.error('REGISTER ERROR:', error.code, error.message);
       throw error;
     }
   }
@@ -37,7 +37,7 @@ export class AuthService {
 
       return user;
     } catch (error) {
-      console.error('błąd rejestracji:', error.code, error.message);
+      console.error('REGISTER ERROR:', error.code, error.message);
       throw error;
     }
   }
@@ -48,7 +48,7 @@ export class AuthService {
 
       return;
     } catch (error) {
-      console.error('Błąd zapytania:', error.code, error.message);
+      console.error('QUERRY FAILED:', error.code, error.message);
       throw error;
     }
   }
@@ -56,7 +56,7 @@ export class AuthService {
     try {
       await this.auth.signOut();
     } catch (error) {
-      console.error('błąd wylogowania:', error.code, error.message);
+      console.error('LOGOUT ERROR:', error.code, error.message);
       throw error;
     }
   }

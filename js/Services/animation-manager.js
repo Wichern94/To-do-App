@@ -70,10 +70,9 @@ export class AnimationManager {
     if (!element) return;
 
     requestAnimationFrame(() => {
-      element.classList.remove(`animate__${animation}`); // reset
+      element.classList.remove(`animate__${animation}`);
 
-      //tzw. reflow – czyli przeglądarka musi natychmiast obliczyć i zaktualizować layout strony.
-      void element.offsetWidth; //void -„nie interesuje mnie wartość, chcę tylko efekt uboczny”
+      void element.offsetWidth;
       element.classList.add('animate__animated', `animate__${animation}`);
 
       const handleAnimationEnd = () => {
@@ -90,39 +89,32 @@ export class AnimationManager {
 
     const wasHidden = contentBox.classList.contains('hidden');
 
-    // Pobierz wartości startowe PRZED zmianami w widoku
     const widthStart = li.offsetWidth;
     const heightStart = li.offsetHeight;
 
-    // Wyczyść ewentualne style
     li.style.width = '';
     li.style.height = '';
 
     if (wasHidden) {
-      // Faza 1: Pokazanie zawartości
       showElement(contentBox);
       this._replumb(li);
 
-      // Faza 2: Pomiar i animacja
-      const widthEnd = li.offsetWidth; // Mierz po włączeniu, ale przed animacją
+      const widthEnd = li.offsetWidth;
       const heightEnd = li.offsetHeight;
 
-      // Ustaw początkową szerokość i wysokość, a potem natychmiast animuj
       li.style.width = `${widthStart}px`;
       li.style.height = `${heightStart}px`;
-      void li.offsetWidth; // Wymuś reflow
+      void li.offsetWidth;
       li.style.transition = 'width .3s, height .3s';
 
       li.style.width = `${widthEnd}px`;
       li.style.height = `${heightEnd}px`;
 
-      // Uruchom pętlę do jsPlumb
       if (jsPlumbInstance) {
         const interval = setInterval(() => this._replumb(li), 10);
         setTimeout(() => clearInterval(interval), 300);
       }
 
-      // Ustaw atrybut i posprzątaj po animacji
       li.addEventListener(
         'transitionend',
         () => {
@@ -137,26 +129,22 @@ export class AnimationManager {
       btn.classList.add('animate__animated', 'animate__flip');
       contentBox.classList.add('animate__animated', 'animate__fadeIn');
     } else {
-      // Faza 1: Przygotowanie do ukrycia
       await this.hideAnimation(contentBox, 'fadeOut', '.2s');
 
-      // Faza 2: Pomiar i animacja
       const widthEnd = li.offsetWidth;
       const heightEnd = li.offsetHeight;
 
       li.style.width = `${widthStart}px`;
       li.style.height = `${heightStart}px`;
-      void li.offsetWidth; // Wymuś reflow
+      void li.offsetWidth;
       li.style.transition = 'width .3s, height .3s';
 
       li.style.width = `${widthEnd}px`;
       li.style.height = `${heightEnd}px`;
 
-      // Uruchom pętlę do jsPlumb
       const interval = setInterval(() => this._replumb(li), 10);
       setTimeout(() => clearInterval(interval), 300);
 
-      // Ustaw atrybut i posprzątaj po animacji
       li.addEventListener(
         'transitionend',
         () => {
@@ -173,7 +161,6 @@ export class AnimationManager {
       contentBox.classList.add('animate__animated', 'animate__fadeIn');
     }
 
-    // Wyczyść klasy animacji po zakończeniu
     btn.addEventListener(
       'animationend',
       () => {
@@ -185,7 +172,7 @@ export class AnimationManager {
   }
 
   async elementToggle(elOne, elSecond) {
-    if (!elOne || !elSecond) throw new Error('Nie znaleziono Elementów!');
+    if (!elOne || !elSecond) throw new Error('No elements found!');
 
     const isHidden = elOne.classList.contains('hidden');
 
@@ -202,7 +189,7 @@ export class AnimationManager {
       await this.hideAnimation(elSecond, 'fadeOut', '.1s');
       await this.hideAnimation(elOne, 'fadeOut', '.4s');
     }
-    return 'Animacja zakonczona';
+    return;
   }
 
   plumbLineAnimation(sourceID, targetID) {
@@ -215,7 +202,7 @@ export class AnimationManager {
         );
 
         if (!targetConnection) {
-          throw new Error('nie znaleziono połączen!');
+          throw new Error('Connection not found!');
         }
 
         this.plumbManager?.jsPlumbInstance?.repaintEverything();
@@ -227,7 +214,7 @@ export class AnimationManager {
           'path[data-cloned="true"]'
         );
         if (existing) {
-          throw new Error('Animacja juz instnieje, nie mozna dodac drugiej!');
+          throw new Error('Animation already exists, cannot add another one!');
         }
 
         path.style.strokeDasharray = `${length}`;
@@ -274,7 +261,7 @@ export class AnimationManager {
             this.plumbManager.jsPlumbInstance.deleteConnection(
               targetConnection
             );
-            resolve('Animacja zakończona poprawnie');
+            resolve('Animation completed.');
             const connectionsAfter =
               this.plumbManager.jsPlumbInstance.getConnections();
           };
@@ -289,7 +276,7 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         if (!element) {
-          throw new Error('brakuje elementów! element jest:', element);
+          throw new Error('Element invalid!', element);
         }
 
         requestAnimationFrame(() => {
@@ -307,7 +294,7 @@ export class AnimationManager {
             );
             element.removeEventListener('animationend', handleAnimationEnd);
 
-            resolve('Animcja node ok');
+            resolve('Animation completed.');
           };
           element.addEventListener('animationend', handleAnimationEnd);
         });
@@ -321,10 +308,7 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         if (!element) {
-          throw new Error(
-            'brakuje elementów do animacji! element jest:',
-            element
-          );
+          throw new Error('Element invalid!', element);
         }
         const height = element.offsetHeight;
 
@@ -346,7 +330,7 @@ export class AnimationManager {
             translateY: `-${height}px`,
             duration: 1500,
             easing: 'easeInOutSine',
-            complete: () => resolve('Animation ok'),
+            complete: () => resolve('Animation completed.'),
           });
         });
       } catch (err) {
@@ -359,7 +343,7 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         if (!element) {
-          throw new Error('brakuje elementów! element jest:', element);
+          throw new Error('Element invalid', element);
         }
 
         requestAnimationFrame(() => {
@@ -378,63 +362,9 @@ export class AnimationManager {
             element.style.removeProperty('--animate-duration');
             element.removeEventListener('animationend', handleAnimationEnd);
 
-            resolve('Animcja node ok');
+            resolve('Animation completed.');
           };
           element.addEventListener('animationend', handleAnimationEnd);
-        });
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
-
-  widthAndHeight(element, referenceElement) {
-    return new Promise((resolve, reject) => {
-      try {
-        if (!element) {
-          throw new Error(
-            'brakuje elementów do animacji! element jest:',
-            element
-          );
-        }
-
-        if (element.classList.contains('hidden')) {
-          showElement(element);
-        }
-        const heightStart = element.offsetHeight;
-        const widthStart = element.offsetWidth;
-
-        const heightEnd = referenceElement.h;
-        const widthEnd = referenceElement.w;
-
-        element.style.width = `${widthStart}px`;
-        element.style.height = `${heightStart}px`;
-
-        requestAnimationFrame(() => {
-          const interval = setInterval(() => {
-            this.plumbManager?.jsPlumbInstance?.revalidate(element);
-            this.plumbManager?.jsPlumbInstance?.repaintEverything();
-          }, 10); // co 10ms przez 300ms
-
-          setTimeout(() => {
-            clearInterval(interval);
-          }, 1800); // zatrzymaj po 300ms
-          element.style.transition = 'width 1.5s, height 1.5s';
-
-          requestAnimationFrame(() => {
-            element.style.width = `${widthEnd}px`;
-            element.style.height = `${heightEnd}px`;
-
-            const clean = () => {
-              element.style.height = '';
-              element.style.width = '';
-              element.style.transition = '';
-              resolve('animation ok!');
-              element.removeEventListener('transitionend', clean);
-            };
-
-            element.addEventListener('transitionend', clean);
-          });
         });
       } catch (err) {
         reject(err);
@@ -446,7 +376,7 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         if (!element) {
-          throw new Error('brakuje elementów! element jest:', element);
+          throw new Error('Element invalid!', element);
         }
 
         requestAnimationFrame(() => {
@@ -464,7 +394,7 @@ export class AnimationManager {
             element.style.removeProperty('--animate-duration');
             element.removeEventListener('animationend', handleAnimationEnd);
 
-            resolve('Animcja node ok');
+            resolve('Animation completed.');
           };
           element.addEventListener('animationend', handleAnimationEnd);
         });
@@ -477,7 +407,7 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         if (!element) {
-          throw new Error('brakuje elementów! element jest:', element);
+          throw new Error('Element invalid!', element);
         }
 
         requestAnimationFrame(() => {
@@ -496,7 +426,7 @@ export class AnimationManager {
 
             element.removeEventListener('animationend', handleAnimationEnd);
 
-            resolve('Animcja node ok');
+            resolve('Animation completed.');
           };
           element.addEventListener('animationend', handleAnimationEnd);
         });
@@ -510,7 +440,7 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         if (!element) {
-          throw new Error('brakuje elementów! element jest:', element);
+          throw new Error('Element invalid!', element);
         }
 
         requestAnimationFrame(() => {
@@ -529,7 +459,7 @@ export class AnimationManager {
             element.style.removeProperty('--animate-duration');
             element.removeEventListener('animationend', handleAnimationEnd);
 
-            resolve('animacja ok!');
+            resolve('Animation completed.');
           };
           element.addEventListener('animationend', handleAnimationEnd);
         });
@@ -577,7 +507,7 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         if (!element) {
-          throw new Error('brakuje elementów! element jest:', element);
+          throw new Error('Element invalid!', element);
         }
         element.style.backdropFilter = 'blur(0px)';
         void element.offsetHeight;
@@ -594,7 +524,7 @@ export class AnimationManager {
               element.style.backdropFilter = `blur(${blurState.value}px)`;
               element.style.webkitbackdropFilter = `blur(${blurState.value}px)`;
             },
-            complete: () => resolve('Animation ok'),
+            complete: () => resolve('Animation completed.'),
           });
         });
       } catch (error) {
@@ -607,7 +537,7 @@ export class AnimationManager {
     return new Promise((resolve, reject) => {
       try {
         if (!element) {
-          throw new Error('brakuje elementów! element jest:', element);
+          throw new Error('Element invalid!', element);
         }
         element.style.backdropFilter = 'blur(10px)';
         void element.offsetHeight;
@@ -626,7 +556,7 @@ export class AnimationManager {
             },
             complete: () => {
               element.classList.add('hidden');
-              resolve('Animation ok');
+              resolve('Animation completed.');
             },
           });
         });

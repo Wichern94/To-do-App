@@ -18,15 +18,15 @@ export class ResetFormHandler {
   }
   setupForgetForm(e) {
     e.preventDefault();
-    this.formErrors.clearAllErrors(); //<- czyszcze błedy
+    this.formErrors.clearAllErrors();
 
     const email = this.emailInput.value.trim();
     let hasError = false;
     if (!email) {
-      this.formErrors.showError('useremail', 'Podaj email!');
+      this.formErrors.showError('useremail', 'Email is required');
       hasError = true;
     } else if (!this.isValidEmail(email)) {
-      this.formErrors.showError('useremail', ' Niepoprawny email!');
+      this.formErrors.showError('useremail', 'Invalid email!');
       hasError = true;
     }
     if (!hasError) {
@@ -36,17 +36,14 @@ export class ResetFormHandler {
     }
   }
   destroy() {
-    console.log('zniszczono ResetFormHandler');
-
     this.credentialsForm.removeEventListener('submit', this.handleSubmit);
-    console.log('usunieto event z:', this.credentialsForm);
   }
-  //metoda pomocnicza do sprawdzenia emaila
+
   isValidEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   }
-  // kasowanie błedów
+
   setupErrorClearing() {
     this.emailInput.addEventListener('focus', () => {
       this.formErrors.clearError(this.formEmailName);
@@ -59,10 +56,8 @@ export class ResetFormHandler {
   }
 }
 
-//Klasa obsługi Logowania
 export class LoginFormHandler extends ResetFormHandler {
   constructor(authUI, formID, formEmail, formPass) {
-    //authUI <- AuthUIControler, formID <- podajemy id własciwego formularza
     super(authUI, formID, formEmail);
     this.formPassName = formPass;
     this.passwordInput = this.credentialsForm.querySelector(
@@ -73,34 +68,31 @@ export class LoginFormHandler extends ResetFormHandler {
 
     this.setupErrorClearing();
   }
-  //logika logowania
+
   setupFormLogin(e) {
-    e.preventDefault(); //zapobiegam przeładowaniu strony
-    this.formErrors.clearAllErrors(); //<-najpierw usuwamy błedy
+    e.preventDefault();
+    this.formErrors.clearAllErrors();
     const email = this.emailInput.value.trim();
     const password = this.passwordInput.value.trim();
     let hasError = false;
     if (email === '') {
-      this.formErrors.showError('email', 'Uzupełnij pola!');
+      this.formErrors.showError('email', 'All fields are required!');
       hasError = true;
     }
     if (password === '') {
-      this.formErrors.showError('password', 'Uzupełnij pola!');
+      this.formErrors.showError('password', 'All fields are required!');
       hasError = true;
     }
     if (!hasError) {
-      const values = { email, password }; // przekazuje e mail i haslo do nowego eventu
+      const values = { email, password };
       document.dispatchEvent(new CustomEvent('auth:login', { detail: values }));
     }
   }
   destroy() {
-    console.log('Znieszczono LoginFormHandler');
-
     this.credentialsForm.removeEventListener('submit', this.handleSubmit);
     super.destroy();
   }
 
-  // kasowanie błedów
   setupErrorClearing() {
     super.setupErrorClearing();
     this.passwordInput.addEventListener('focus', () => {
@@ -109,7 +101,6 @@ export class LoginFormHandler extends ResetFormHandler {
   }
 }
 
-//klasa obsługi Rejestracji
 export class RegisterFormHandler extends ResetFormHandler {
   constructor(authUI, formID, formEmail, formPass, formConfirmPass) {
     super(authUI, formID, formEmail);
@@ -128,10 +119,9 @@ export class RegisterFormHandler extends ResetFormHandler {
     this.setupErrorClearing();
   }
 
-  //metoda wysylki rejstracji
   setupRegisterForm(e) {
     e.preventDefault();
-    this.formErrors.clearAllErrors(); //<- czyszcze błedy
+    this.formErrors.clearAllErrors();
 
     const email = this.emailInput.value.trim();
     const password = this.passwordInput.value.trim();
@@ -139,22 +129,22 @@ export class RegisterFormHandler extends ResetFormHandler {
     let hasError = false;
 
     if (password && confirmPassword && password !== confirmPassword) {
-      this.formErrors.showError('confirm-password', 'Hasła nie sa Takie same!');
+      this.formErrors.showError('confirm-password', 'Passwords do not match.');
       hasError = true;
     }
     if (!email) {
-      this.formErrors.showError('email-reg', 'Podaj email!');
+      this.formErrors.showError('email-reg', 'Email is required');
       hasError = true;
     }
     if (!password) {
-      this.formErrors.showError('password-reg', 'podaj hasło!');
+      this.formErrors.showError('password-reg', 'Password is required');
       hasError = true;
     } else if (password.length < 6) {
-      this.formErrors.showError('password-reg', 'hasło jest za krotkie');
+      this.formErrors.showError('password-reg', 'Password is too short');
       hasError = true;
     }
     if (!this.isValidEmail(email)) {
-      this.formErrors.showError('email-reg', ' Niepoprawny email!');
+      this.formErrors.showError('email-reg', 'Invalid email!');
       hasError = true;
     }
     if (!hasError) {
@@ -166,8 +156,6 @@ export class RegisterFormHandler extends ResetFormHandler {
   }
 
   destroy() {
-    console.log('Zniszczono RegisterFormHandler');
-
     this.credentialsForm.removeEventListener('submit', this.handleSubmit);
     super.destroy();
   }

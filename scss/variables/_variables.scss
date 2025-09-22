@@ -48,10 +48,11 @@ $spaceMd: 1rem;
 $spaceLg: 2rem;
 
 // Breakpoints
-$breakpointSm: 576px;
-$breakpointMd: 768px;
-$breakpointLg: 992px;
-$breakpointXl: 1200px;
+$bp: (
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+);
 //Fonts and weights
 $mainFont: 'Oxanium', sans-serif;
 
