@@ -66,6 +66,9 @@
           $size-h: 3rem,
           $color: var.$accent
         );
+        svg {
+          width: 2rem;
+        }
         border-radius: 10px;
         background: rgba(107, 205, 206, 0.1);
         font-size: 12px;
@@ -124,6 +127,12 @@
         @include mixins.set-text(secondary, regular, md);
       }
     }
+  }
+}
+.add-btn-container {
+  position: absolute;
+  button {
+    @include mixins.open-modal($color: var.$filterGreen);
   }
 }
 .leader-line {

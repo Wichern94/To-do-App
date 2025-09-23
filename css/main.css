@@ -633,38 +633,6 @@ body {
   transform: translateY(1px);
 }
 
-@media (min-width: 768px) {
-  .auth {
-    padding: 1rem;
-    max-width: 800px;
-    width: min(90%, 800px);
-    margin-inline: auto;
-  }
-  .auth__main {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 2rem;
-  }
-  .auth__main::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    inset-inline-start: 50%;
-    width: 50%;
-    pointer-events: none;
-    z-index: 0;
-    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.32)), url("../assets/web-security.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    border-radius: 12px;
-  }
-  .auth__pane-links {
-    grid-column: 1;
-  }
-}
 /**
  * ========================================
  * AUTOFILL HELPER
@@ -780,6 +748,9 @@ body {
   scrollbar-width: none;
 }
 .auth-carousel::-webkit-scrollbar {
+  display: none;
+}
+.auth-carousel__navigations {
   display: none;
 }
 .auth-carousel__actions {
@@ -1343,6 +1314,9 @@ body {
   font-size: 12px;
   box-shadow: inset 0px -5px 16px 19px rgba(0, 0, 0, 0.97), -1px -1px 6px 0px rgba(56, 248, 225, 0.18);
 }
+.roadmap-selector__actions button svg {
+  width: 2rem;
+}
 .roadmap-selector__item-actions {
   display: flex;
   flex-direction: column-reverse;
@@ -1423,6 +1397,23 @@ body {
   color: #aaaaaa;
   font-weight: 400;
   font-size: 12px;
+}
+
+.add-btn-container {
+  position: absolute;
+}
+.add-btn-container button {
+  outline: none;
+  border: none;
+  color: #62c76b;
+  cursor: pointer;
+  position: fixed;
+  bottom: 8rem;
+  right: 5rem;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  filter: drop-shadow(0 0 5px rgba(51.2676056338, 143.7323943662, 59.5070422535, 0.2)) drop-shadow(2px 2px 10px rgba(51.2676056338, 143.7323943662, 59.5070422535, 0.4));
 }
 
 .leader-line {
@@ -1812,6 +1803,122 @@ body {
   }
   to {
     --angle: 360deg;
+  }
+}
+/**
+ * ========================================
+ * MEDIA QUERRYS
+ * ========================================
+ */
+@media (min-width: 768px) {
+  .auth {
+    padding: 1rem;
+    max-width: 800px;
+    width: min(90%, 800px);
+    margin-inline: auto;
+  }
+  .auth__main {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+  }
+  .auth__main::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    inset-inline-start: 50%;
+    width: 50%;
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.32)), url("../assets/web-security.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border-radius: 12px;
+  }
+  .auth__pane-links {
+    grid-column: 1;
+  }
+}
+@media (min-width: 768px) {
+  body {
+    min-height: 100dvh;
+    min-width: 100dvw;
+    place-items: center;
+  }
+  .apk-screen {
+    display: grid;
+    grid-template-areas: "rail main";
+    gap: 0;
+    height: 100%;
+    overflow: hidden;
+    place-items: center;
+    justify-items: center;
+    position: relative;
+  }
+  .apk-screen > #view-header {
+    grid-area: rail;
+    position: sticky;
+    width: 17rem;
+    align-self: start;
+    height: 70%;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px 0 0 10px;
+    place-self: center;
+    z-index: 1;
+  }
+  .apk-screen > #view-header .separator {
+    display: none;
+  }
+  .apk-screen > #view-header .auth-carousel__actions {
+    left: 5%;
+  }
+  .apk-screen > #view-header .auth-carousel__navigations {
+    display: grid;
+    position: absolute;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+  }
+  .apk-screen > #view-header .auth-carousel__navigations button {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+    color: #6bcdce;
+    filter: drop-shadow(1px 1px 5px rgb(39.7969543147, 119.3908629442, 120.2030456853));
+    transition: all 0.3s ease-in-out;
+  }
+  .apk-screen > #view-header .auth-carousel__navigations button.inactive {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+    color: rgba(107, 106, 106, 0.1);
+    filter: drop-shadow(1px 1px 5px rgba(30.1408450704, 29.8591549296, 29.8591549296, 0.1));
+  }
+  .apk-screen > :not(#view-header) {
+    grid-area: main;
+    width: 40rem;
+    overflow: auto;
+    overscroll-behavior: contain;
+    margin: 0;
+    height: 70%;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(90deg, rgb(13, 13, 13) 44%, rgb(18, 27, 25) 100%);
+  }
+  .apk-screen > :not(#view-header) .roadmap__content-action-wrap {
+    position: relative;
+    top: 5%;
   }
 }
 

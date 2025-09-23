@@ -33,6 +33,9 @@
   &::-webkit-scrollbar {
     display: none;
   }
+  &__navigations {
+    display: none;
+  }
   &__actions {
     @include mixins.flex();
     left: 75%;
