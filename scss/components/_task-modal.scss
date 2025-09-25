@@ -52,6 +52,11 @@
     width: 100%;
     justify-content: space-evenly;
     flex-direction: row-reverse;
+    button {
+      @include mixins.flex($width: 5rem, $direction: row-reverse);
+      @include mixins.interactive();
+      cursor: pointer;
+    }
     > button:first-child {
       box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
       @include mixins.glass-button(
@@ -65,6 +70,8 @@
         var.$modal-btn-red-from,
         var.$modal-btn-red-to
       );
+      display: flex;
+      min-width: 5rem;
     }
   }
   & &__title-wrap {

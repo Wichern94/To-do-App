@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .input-error {
   border-bottom: 1px solid #ff5f5f !important;
 }
@@ -30,6 +31,13 @@ body {
   pointer-events: none;
 }
 
+.jtk-endpoint,
+.jtk-connector,
+.jtk-connector-outline,
+.jtk-overlay {
+  pointer-events: none !important;
+}
+
 .connection-glow {
   filter: drop-shadow(2px 2px 6px #6bcdce);
 }
@@ -49,6 +57,63 @@ body {
 
 .dot.active {
   fill: #6bcdce;
+}
+
+.confetti-canvas {
+  position: absolute;
+  width: 100vw;
+  height: 100dvh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Reset styli przeglądarki */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Usuwanie domyślnych stylów dla tekstu */
+body {
+  line-height: 1.5;
+}
+
+/* Usunięcie listy stylów */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Usunięcie domyślnych stylów linków */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Formularze i przyciski */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  border: none;
+  outline: none;
+  background: none;
+  line-height: 1.5;
+}
+
+/* Button jako pointer */
+button {
+  cursor: pointer;
+}
+
+/* Obrazki nie wychodzą poza kontener */
+img {
+  max-width: 100%;
+  display: block;
 }
 
 /**
@@ -79,6 +144,25 @@ body {
   color: #cccccc;
   font-weight: 500;
   font-size: 14px;
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .selector-modal__tab-btn:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+}
+.selector-modal__tab-btn:active {
+  transform: scale(0.985);
+}
+.selector-modal__tab-btn:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.selector-modal__tab-btn[aria-disabled=true], .selector-modal__tab-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .selector-modal__panel {
   display: flex;
@@ -174,6 +258,8 @@ body {
   top: -10%;
 }
 .selector-modal__input-wrap input {
+  outline: none;
+  border: 0;
   background: rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 7px;
@@ -238,7 +324,27 @@ body {
   margin: 0;
   color: #62c76b;
   filter: drop-shadow(1px 1px 5px rgb(37.8591549296, 106.1408450704, 43.9436619718));
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
   margin-left: 0.6rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .selector-modal__subtask-add-btn:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.selector-modal__subtask-add-btn:active {
+  transform: scale(0.985);
+}
+.selector-modal__subtask-add-btn:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.selector-modal__subtask-add-btn[aria-disabled=true], .selector-modal__subtask-add-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .selector-modal__subtask-list {
   position: absolute;
@@ -269,6 +375,8 @@ body {
   top: 55%;
 }
 .selector-modal__subtask-wrap input {
+  outline: none;
+  border: 0;
   background: rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 7px;
@@ -316,7 +424,27 @@ body {
   align-items: center;
   position: relative;
   width: 5rem;
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
   cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .selector-modal__actions button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.selector-modal__actions button:active {
+  transform: scale(0.985);
+}
+.selector-modal__actions button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.selector-modal__actions button[aria-disabled=true], .selector-modal__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .selector-modal__actions > button:first-child {
   box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
@@ -392,6 +520,8 @@ body {
   padding-left: 0.5rem;
   outline: none;
   border: none;
+  resize: none;
+  overflow: hidden;
 }
 .selector-modal__form--import > div:first-of-type textarea:focus {
   border-bottom: 1px solid #6bcdce;
@@ -426,6 +556,36 @@ body {
   font-weight: 300;
   font-size: 10px;
   top: 29%;
+}
+.selector-modal__footer button {
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+  background: transparent;
+  border: none;
+  color: #6bcdce;
+  transition: all 0.3s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .selector-modal__footer button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.selector-modal__footer button:active {
+  transform: scale(0.985);
+}
+.selector-modal__footer button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.selector-modal__footer button[aria-disabled=true], .selector-modal__footer button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.selector-modal__footer button:hover {
+  transform: scale(1.1);
+  text-decoration: underline;
 }
 .selector-modal__form--create {
   height: auto;
@@ -778,12 +938,33 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  background: transparent;
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+  background: #1c1c1e;
   gap: 0.4rem;
   padding: 1rem 1rem;
   border-radius: 10px;
   font-size: 11px;
   border: 1px solid #ff8c32;
+  box-shadow: inset 8px 12px 20px 4px rgba(0, 0, 0, 0.6);
+}
+@media (hover: hover) and (pointer: fine) {
+  .auth-carousel__actions button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.auth-carousel__actions button:active {
+  transform: scale(0.985);
+}
+.auth-carousel__actions button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.auth-carousel__actions button[aria-disabled=true], .auth-carousel__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .auth-carousel__list {
   display: flex;
@@ -799,6 +980,7 @@ body {
   height: auto;
   flex: 0 0 auto;
   scroll-snap-align: start;
+  transition: all 0.5s ease;
 }
 .auth-carousel__item button {
   outline: none;
@@ -863,14 +1045,40 @@ body {
   outline: none;
   border: none;
   color: #62c76b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   position: fixed;
+  width: 3.5rem;
+  height: 3.5rem;
   bottom: 8rem;
+  padding: 0;
   right: 5rem;
   background-color: transparent;
   backdrop-filter: blur(5px);
   border-radius: 5px;
   filter: drop-shadow(0 0 5px rgba(51.2676056338, 143.7323943662, 59.5070422535, 0.2)) drop-shadow(2px 2px 10px rgba(51.2676056338, 143.7323943662, 59.5070422535, 0.4));
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .todo__open-modal--btn:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.todo__open-modal--btn:active {
+  transform: scale(0.985);
+}
+.todo__open-modal--btn:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.todo__open-modal--btn[aria-disabled=true], .todo__open-modal--btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /**
@@ -920,8 +1128,30 @@ body {
   color: #62c76b;
   filter: drop-shadow(1px 1px 5px rgb(37.8591549296, 106.1408450704, 43.9436619718));
   padding: 0.2rem;
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .task__main--toggle:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.task__main--toggle:active {
+  transform: scale(0.985);
+}
+.task__main--toggle:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.task__main--toggle[aria-disabled=true], .task__main--toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .task__main--accordion-btn {
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
   border: none;
   outline: none;
   background: transparent;
@@ -931,6 +1161,24 @@ body {
   margin-right: 1rem;
   color: #aaaaaa;
   filter: drop-shadow(1px 1px 5px rgb(93.5, 93.5, 93.5));
+}
+@media (hover: hover) and (pointer: fine) {
+  .task__main--accordion-btn:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.task__main--accordion-btn:active {
+  transform: scale(0.985);
+}
+.task__main--accordion-btn:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.task__main--accordion-btn[aria-disabled=true], .task__main--accordion-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .task__divider {
   color: #44787c;
@@ -1028,6 +1276,8 @@ body {
   margin-top: 2rem;
 }
 .task-modal__form-title-wrap input {
+  outline: none;
+  border: 0;
   background: rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 7px;
@@ -1073,6 +1323,8 @@ body {
   padding-left: 0.5rem;
   outline: none;
   border: none;
+  resize: none;
+  overflow: hidden;
 }
 .task-modal__form-textarea-wrap textarea:focus {
   border-bottom: 1px solid #6bcdce;
@@ -1117,6 +1369,35 @@ body {
   justify-content: space-evenly;
   flex-direction: row-reverse;
 }
+.task-modal__actions button {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 5rem;
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .task-modal__actions button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.task-modal__actions button:active {
+  transform: scale(0.985);
+}
+.task-modal__actions button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.task-modal__actions button[aria-disabled=true], .task-modal__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .task-modal__actions > button:first-child {
   box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
   background: linear-gradient(135deg, rgba(30, 90, 80, 0.7), rgba(50, 160, 140, 0.7));
@@ -1146,6 +1427,8 @@ body {
   transition: transform 0.8s ease, filter 0.15s ease;
   backdrop-filter: saturate(1.1) blur(12px);
   -webkit-backdrop-filter: saturate(1.1) blur(12px);
+  display: flex;
+  min-width: 5rem;
 }
 .task-modal__actions > button:last-child:hover {
   filter: brightness(1.06);
@@ -1245,6 +1528,8 @@ body {
   z-index: 5;
 }
 .roadmap__content-action-wrap button {
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
   border: none;
   outline: none;
   background: transparent;
@@ -1253,6 +1538,24 @@ body {
   margin: 0;
   color: #ffffff;
   filter: drop-shadow(1px 1px 5px rgb(178.5, 178.5, 178.5));
+}
+@media (hover: hover) and (pointer: fine) {
+  .roadmap__content-action-wrap button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.roadmap__content-action-wrap button:active {
+  transform: scale(0.985);
+}
+.roadmap__content-action-wrap button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.roadmap__content-action-wrap button[aria-disabled=true], .roadmap__content-action-wrap button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .roadmap-selector {
   display: flex;
@@ -1296,6 +1599,8 @@ body {
   margin-top: 0.5rem;
 }
 .roadmap-selector__actions button {
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -1313,6 +1618,24 @@ body {
   background: rgba(107, 205, 206, 0.1);
   font-size: 12px;
   box-shadow: inset 0px -5px 16px 19px rgba(0, 0, 0, 0.97), -1px -1px 6px 0px rgba(56, 248, 225, 0.18);
+}
+@media (hover: hover) and (pointer: fine) {
+  .roadmap-selector__actions button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.roadmap-selector__actions button:active {
+  transform: scale(0.985);
+}
+.roadmap-selector__actions button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.roadmap-selector__actions button[aria-disabled=true], .roadmap-selector__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .roadmap-selector__actions button svg {
   width: 2rem;
@@ -1335,6 +1658,26 @@ body {
   width: 1.5rem;
   height: 1.5rem;
   margin: 0;
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .roadmap-selector__item-actions button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.roadmap-selector__item-actions button:active {
+  transform: scale(0.985);
+}
+.roadmap-selector__item-actions button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.roadmap-selector__item-actions button[aria-disabled=true], .roadmap-selector__item-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .roadmap-selector__list-wrap {
   display: flex;
@@ -1406,14 +1749,40 @@ body {
   outline: none;
   border: none;
   color: #62c76b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   position: fixed;
+  width: 3.5rem;
+  height: 3.5rem;
   bottom: 8rem;
+  padding: 0;
   right: 5rem;
   background-color: transparent;
   backdrop-filter: blur(5px);
   border-radius: 5px;
   filter: drop-shadow(0 0 5px rgba(51.2676056338, 143.7323943662, 59.5070422535, 0.2)) drop-shadow(2px 2px 10px rgba(51.2676056338, 143.7323943662, 59.5070422535, 0.4));
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .add-btn-container button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.add-btn-container button:active {
+  transform: scale(0.985);
+}
+.add-btn-container button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.add-btn-container button[aria-disabled=true], .add-btn-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .leader-line {
@@ -1486,6 +1855,8 @@ body {
   box-shadow: -4px -6px 14px 7px rgba(255, 255, 255, 0.05), 0 7px 11px 4px rgba(0, 0, 0, 0.6);
 }
 .roadmap-node__header button {
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
   border: none;
   outline: none;
   background: transparent;
@@ -1494,6 +1865,24 @@ body {
   margin: 0;
   color: #aaaaaa;
   filter: drop-shadow(1px 1px 5px rgb(93.5, 93.5, 93.5));
+}
+@media (hover: hover) and (pointer: fine) {
+  .roadmap-node__header button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.roadmap-node__header button:active {
+  transform: scale(0.985);
+}
+.roadmap-node__header button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.roadmap-node__header button[aria-disabled=true], .roadmap-node__header button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .roadmap-node__content {
   display: flex;
@@ -1539,6 +1928,28 @@ body {
   margin-top: 1.5rem;
   margin-bottom: 0.2rem;
   padding: 0.5rem 0 0.5rem 0;
+}
+.roadmap-node__actions button {
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .roadmap-node__actions button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.roadmap-node__actions button:active {
+  transform: scale(0.985);
+}
+.roadmap-node__actions button:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.roadmap-node__actions button[aria-disabled=true], .roadmap-node__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .roadmap-node__actions > button:first-of-type {
   display: flex;
@@ -1759,6 +2170,8 @@ body {
   pointer-events: none;
 }
 .subtask-item__checkbox--custom {
+  border-radius: 12px;
+  transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
   height: 0.8rem;
   width: 0.8rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1768,6 +2181,24 @@ body {
   min-height: 0.8rem;
   margin-right: 0.5rem;
   flex: 0 0 auto;
+}
+@media (hover: hover) and (pointer: fine) {
+  .subtask-item__checkbox--custom:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+.subtask-item__checkbox--custom:active {
+  transform: scale(0.985);
+}
+.subtask-item__checkbox--custom:focus-visible {
+  outline: 2px solid #6bcdce;
+  outline-offset: 2px;
+}
+.subtask-item__checkbox--custom[aria-disabled=true], .subtask-item__checkbox--custom:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .subtask-item__checkbox--text {
   color: #ffffff;
@@ -1884,6 +2315,8 @@ body {
     gap: 8rem;
   }
   .apk-screen > #view-header .auth-carousel__navigations button {
+    border-radius: 12px;
+    transition: transform 0.08s ease, background-color 0.12s ease, box-shadow 0.12s ease, outline-color 0.12s ease;
     border: none;
     outline: none;
     background: transparent;
@@ -1893,6 +2326,26 @@ body {
     color: #6bcdce;
     filter: drop-shadow(1px 1px 5px rgb(39.7969543147, 119.3908629442, 120.2030456853));
     transition: all 0.3s ease-in-out;
+  }
+}
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .apk-screen > #view-header .auth-carousel__navigations button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.1);
+  }
+}
+@media (min-width: 768px) {
+  .apk-screen > #view-header .auth-carousel__navigations button:active {
+    transform: scale(0.985);
+  }
+  .apk-screen > #view-header .auth-carousel__navigations button:focus-visible {
+    outline: 2px solid #6bcdce;
+    outline-offset: 2px;
+  }
+  .apk-screen > #view-header .auth-carousel__navigations button[aria-disabled=true], .apk-screen > #view-header .auth-carousel__navigations button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
   }
   .apk-screen > #view-header .auth-carousel__navigations button.inactive {
     border: none;
@@ -1919,6 +2372,12 @@ body {
   .apk-screen > :not(#view-header) .roadmap__content-action-wrap {
     position: relative;
     top: 5%;
+  }
+  .apk-screen > :not(#view-header) .task-modal__section {
+    width: 20rem;
+  }
+  .apk-screen > :not(#view-header) .selector-modal__panel {
+    width: 20rem;
   }
 }
 

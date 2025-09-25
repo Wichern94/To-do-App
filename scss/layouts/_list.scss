@@ -28,5 +28,6 @@
   }
   &__open-modal--btn {
     @include mixins.open-modal($color: var.$filterGreen);
+    @include mixins.interactive();
   }
 }

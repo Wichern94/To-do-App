@@ -29,7 +29,7 @@ export class TodoApp {
     this.firestoreService = new FirestoreService(this.user.uid);
     this.logoutButton = new LogoutButtonHandler();
 
-    this.carusel.setCaruselToMiddle();
+    this.carusel.setCaruselToLeft();
     this.initCarusel();
     this.state = {};
 

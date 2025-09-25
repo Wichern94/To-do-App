@@ -472,7 +472,7 @@ export class NodeView {
   }
 
   setAndLaunchCofetti() {
-    const container = document.getElementById('view-standard');
+    const container = document.getElementById('app');
 
     const rect = this.ui.buttons.stop.getBoundingClientRect();
     const contRect = container.getBoundingClientRect();

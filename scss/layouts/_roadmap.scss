@@ -27,6 +27,7 @@
       cursor: pointer;
       z-index: 5;
       button {
+        @include mixins.interactive();
         @include mixins.styled-button(
           $size-w: 1.5rem,
           $color: var.$textPrimary
@@ -60,6 +61,7 @@
       @include mixins.flex($direction: row, $width: 100%);
       margin-top: 0.5rem;
       button {
+        @include mixins.interactive();
         @include mixins.flex($direction: row, $justify: space-evenly);
         @include mixins.styled-button(
           $size-w: 6rem,
@@ -84,6 +86,7 @@
       button {
         color: var.$textSecondary;
         @include mixins.styled-button($size-w: 1.5rem);
+        @include mixins.interactive();
       }
     }
     &__list-wrap {
@@ -133,6 +136,7 @@
   position: absolute;
   button {
     @include mixins.open-modal($color: var.$filterGreen);
+    @include mixins.interactive();
   }
 }
 .leader-line {

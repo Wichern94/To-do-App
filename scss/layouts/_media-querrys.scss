@@ -85,6 +85,7 @@
           grid-template-columns: 1fr 1fr;
           gap: 8rem;
           button {
+            @include mixins.interactive();
             @include mixins.styled-button($size-w: 1.5rem, $color: var.$accent);
             transition: all 0.3s ease-in-out;
           }
@@ -118,6 +119,17 @@
       .roadmap__content-action-wrap {
         position: relative;
         top: 5%;
+      }
+
+      .task-modal {
+        &__section {
+          width: 20rem;
+        }
+      }
+      .selector-modal {
+        &__panel {
+          width: 20rem;
+        }
       }
     }
   }

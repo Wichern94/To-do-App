@@ -198,6 +198,8 @@
       padding-left: 0.5rem;
       outline: none;
       border: none;
+      resize: none;
+      overflow: hidden;
       &:focus {
         border-bottom: 1px solid $focus;
         background: linear-gradient(to bottom, transparent, var.$activedayBG);
@@ -211,6 +213,8 @@
     }
   } @else {
     input {
+      outline: none;
+      border: 0;
       background: $bg;
       border-bottom: 1px solid $border;
       border-radius: $radius;
@@ -314,9 +318,15 @@
   outline: none;
   border: none;
   color: $color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   position: fixed;
+  width: 3.5rem;
+  height: 3.5rem;
   bottom: 8rem;
+  padding: 0;
   right: 5rem;
   background-color: transparent;
   backdrop-filter: blur(5px);
@@ -449,5 +459,82 @@
 @mixin between($from, $to) {
   @media (min-width: bp($from)) and (max-width: calc(bp($to) - 0.02px)) {
     @content;
+  }
+}
+@mixin interactive(
+  $ring: var.$accent,
+  $hover: rgba(255, 255, 255, 0.06),
+  $noScale: false,
+  $press-scale: 0.985,
+  $up-scale: 1.1,
+  $radius: 12px,
+  $focus-scope: self,
+  // self | within  (ring na elemencie czy na wrapperze)
+  $only-fine-hover: true,
+  // hover tylko dla myszki
+  $ring-width: 2px,
+  $ring-offset: 2px,
+  $ring-mode: outline // outline | shadow (shadow nie utnie się na overflow)
+) {
+  border-radius: $radius;
+  transition: transform 0.08s ease, background-color 0.12s ease,
+    box-shadow 0.12s ease, outline-color 0.12s ease;
+
+  // hover
+  @if $only-fine-hover {
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: $hover;
+        @if not $noScale {
+          transform: scale($up-scale);
+        }
+      }
+    }
+  } @else {
+    &:hover {
+      background-color: $hover;
+    }
+  }
+
+  // active
+  &:active {
+    transform: scale($press-scale);
+  }
+
+  // focus
+  @if $focus-scope == self {
+    @if $ring-mode == outline {
+      &:focus-visible {
+        outline: $ring-width solid $ring;
+        outline-offset: $ring-offset;
+      }
+    } @else {
+      &:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 $ring-offset transparent,
+          0 0 0 calc(#{$ring-width + $ring-offset}) #{$ring};
+      }
+    }
+  } @else if $focus-scope == within {
+    @if $ring-mode == outline {
+      &:focus-within {
+        outline: $ring-width solid $ring;
+        outline-offset: $ring-offset;
+      }
+    } @else {
+      &:focus-within {
+        outline: 0;
+        box-shadow: 0 0 0 $ring-offset transparent,
+          0 0 0 calc(#{$ring-width + $ring-offset}) #{$ring};
+      }
+    }
+  }
+
+  // disabled
+  &[aria-disabled='true'],
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }

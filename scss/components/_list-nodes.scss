@@ -22,8 +22,10 @@
     &--toggle {
       @include mixins.styled-button($size-w: 1.5rem, $color: var.$filterGreen);
       padding: 0.2rem;
+      @include mixins.interactive();
     }
     &--accordion-btn {
+      @include mixins.interactive();
       @include mixins.styled-button(
         $size-w: 1rem,
         $color: var.$textSecondary,

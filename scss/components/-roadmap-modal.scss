@@ -13,6 +13,7 @@
     border: none;
     outline: none;
     @include mixins.set-text(muted, medium, reg);
+    @include mixins.interactive($noScale: true);
   }
   &__panel {
     @include mixins.flex($height: 35%, $width: 80%);
@@ -102,6 +103,7 @@
     }
     &-add-btn {
       @include mixins.styled-button($size-w: 1.5rem, $color: var.$filterGreen);
+      @include mixins.interactive();
       margin-left: 0.6rem;
     }
     &-list {
@@ -141,6 +143,7 @@
     top: 25%;
     button {
       @include mixins.flex($width: 5rem, $direction: row-reverse);
+      @include mixins.interactive();
       cursor: pointer;
     }
     > button:first-child {
@@ -195,6 +198,17 @@
     @include mixins.flex($width: 80%);
     @include mixins.set-text(muted, light, sm);
     top: 29%;
+    button {
+      @include mixins.interactive();
+      background: transparent;
+      border: none;
+      color: var.$accent;
+      transition: all 0.3s ease;
+      &:hover {
+        transform: scale(1.1);
+        text-decoration: underline;
+      }
+    }
   }
   &__form--create {
     @extend .selector-modal__form--manual;
