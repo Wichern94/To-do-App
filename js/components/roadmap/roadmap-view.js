@@ -1,6 +1,7 @@
 import { FormErrors } from '../../Services/validators/uiErrorHandler.js';
-
 import { hideElement } from '../../utils/helper.js';
+import { FocusManger } from '../../Services/view-mangers/focus-manger.js';
+
 export class RoadmapView {
   constructor(root = 'roadmap-view', { animationManager } = {}) {
     const rootEl =
@@ -140,6 +141,11 @@ export class RoadmapView {
         el: this.ui.modal.openModalBtn,
         event: 'click',
         handler: this.sendOnModalOpen.bind(this),
+      },
+      {
+        el: this.ui.modal.dialog,
+        event: 'keydown',
+        handler: this.setupESC.bind(this),
       },
       {
         el: this.ui.roadmap.backBtn,
@@ -376,6 +382,8 @@ export class RoadmapView {
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.blurInElement(bluredOne);
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
+
+    FocusManger.setModalFocus(this.ui.modal.dialog);
   }
 
   async closeModal() {
@@ -385,6 +393,13 @@ export class RoadmapView {
     await this.animationManager?.hideAnimation(fieldset, 'bounceOutDown', '1s');
     await this.animationManager?.blurOutElement(bluredOne);
     this.handlerClearCounters();
+
+    FocusManger.releaseModalFocus();
+  }
+  setupESC(e) {
+    if (e.key === 'Escape') {
+      this.closeModal(e);
+    }
   }
   /**
    * ========================================
@@ -417,6 +432,7 @@ export class RoadmapView {
     await this.animationManager.showAnimation(manualForm, 'fadeIn', '.5s');
 
     this.localStates.modalCurrentMode = manualForm;
+    FocusManger.setModalFocus(this.ui.modal.dialog);
   }
 
   async handleImportSwitch(btn) {
@@ -439,6 +455,7 @@ export class RoadmapView {
     await this.animationManager.showAnimation(importForm, 'fadeIn', '.5s');
 
     this.localStates.modalCurrentMode = importForm;
+    FocusManger.setModalFocus(this.ui.modal.dialog);
   }
   /**
    * ========================================

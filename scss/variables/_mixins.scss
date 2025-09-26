@@ -258,15 +258,6 @@
   transition: transform 0.8s ease, filter 0.15s ease;
   backdrop-filter: saturate(1.1) blur(12px);
   -webkit-backdrop-filter: saturate(1.1) blur(12px);
-
-  &:hover {
-    filter: brightness(1.06);
-    transform: scaleX(1.07);
-    text-decoration: underline;
-  }
-  &:active {
-    transform: translateY(1px);
-  }
 }
 
 @mixin dividier(

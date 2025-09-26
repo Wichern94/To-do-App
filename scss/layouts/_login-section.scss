@@ -3,7 +3,6 @@
 @use '../components/-roadmap-modal.scss';
 @use 'sass:color';
 .auth {
-  @include mixins.flex($width: 90%);
   border-radius: 12px;
   background-color: var.$borderTwo;
   backdrop-filter: blur(10px);
@@ -11,6 +10,7 @@
   text-align: center;
   border: solid 0.5px var.$borderTwo;
   padding: 1rem 0;
+  @include mixins.flex($width: 90%);
   &__main {
     @include mixins.flex($width: 100%, $height: 100%);
   }
@@ -87,14 +87,17 @@
       @extend .selector-modal__error;
     }
     &__actions {
-      @include mixins.flex($width: 100%);
+      padding: 0.2rem;
       gap: 0.5rem;
+      @include mixins.flex($width: 100%);
       button {
-        @include mixins.glass-button($from: #343a3f, $to: #191e22);
         box-shadow: inset -15px -15px 18px 0px rgba(0, 0, 0, 0.35),
           7px -10px 11px 6px rgba(255, 255, 255, 0.08);
         width: 80%;
         height: 2rem;
+        font-size: 13px;
+        @include mixins.interactive();
+        @include mixins.glass-button($from: #343a3f, $to: #191e22);
       }
     }
   }

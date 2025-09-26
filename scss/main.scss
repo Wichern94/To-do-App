@@ -1,6 +1,6 @@
+@use '../scss/variables/utils';
 @use '../scss/variables/variables' as var;
 @use '../scss/variables/mixins';
-@use '../scss/variables/utils';
 /**
  * ========================================
  * LOGIN SECTION
@@ -49,12 +49,7 @@
  * ========================================
  */
 @use 'layouts/roadmap';
-/**
- * ========================================
- *  SELECTOR MODAL
- * ========================================
- */
-@use '../scss/components/-roadmap-selector-modal.scss';
+
 /**
  * ========================================
  * ROADMAP MODAL

@@ -8,7 +8,10 @@ export class AuthController {
     this.init();
   }
   init() {
-    document.addEventListener('auth:login', (e) => this.handleLogin(e.detail));
+    document.addEventListener(
+      'auth:login',
+      async (e) => await this.handleLogin(e.detail)
+    );
 
     document.addEventListener('auth:register', (e) =>
       this.handleRegister(e.detail)
@@ -18,7 +21,10 @@ export class AuthController {
       this.handlePswrdReset(e.detail)
     );
 
-    document.addEventListener('auth:logout', (e) => this.handleLogout());
+    document.addEventListener(
+      'auth:logout',
+      async (e) => await this.handleLogout()
+    );
   }
 
   async handleRegister(values) {
@@ -137,8 +143,10 @@ export class AuthController {
   async handleLogout() {
     try {
       await this.authService.logOut();
-      ToastManager.success('You have been logged out');
-      this.authUI.logout();
+      setTimeout(() => {
+        ToastManager.success('You have been logged out');
+        this.authUI.logout();
+      }, 2000);
     } catch (error) {
       console.error('błąd wylogowania', error.code, error.message);
     }

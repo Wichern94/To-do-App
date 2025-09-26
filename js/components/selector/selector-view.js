@@ -1,6 +1,7 @@
 import { FormErrors } from '../../Services/validators/uiErrorHandler.js';
+import { hideElement } from '../../utils/helper.js';
+import { FocusManger } from '../../Services/view-mangers/focus-manger.js';
 
-import { showElement, hideElement, toggleElement } from '../../utils/helper.js';
 export class SelectorView {
   constructor(root = 'roadmap-view', { animationManager } = {}) {
     const rootEl =
@@ -111,6 +112,11 @@ export class SelectorView {
         handler: this.handleOpenModal.bind(this),
       },
       {
+        el: this.ui.modal.modalDialog,
+        event: 'keydown',
+        handler: this.setupESC.bind(this),
+      },
+      {
         el: this.ui.modal.cancelBtn,
         event: 'click',
         handler: this.handleCloseModal.bind(this),
@@ -122,7 +128,7 @@ export class SelectorView {
       },
       {
         el: this.ui.modal.form,
-        event: 'click',
+        event: 'focusin',
         handler: this.handleClearError.bind(this),
       },
     ];
@@ -193,7 +199,6 @@ export class SelectorView {
       }
     });
     this.localStates.bound = false;
-    console.log('roadmap selector destoryed!');
   }
 
   /**
@@ -363,6 +368,9 @@ export class SelectorView {
     this.animationManager?.buttonOneAnimation(btn, 'rubberBand');
     await this.animationManager?.blurInElement(bluredOne);
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
+
+    this.ui.modal.titleInput.focus();
+    FocusManger.setModalFocus(this.ui.modal.modalDialog);
   }
 
   async handleCloseModal(e) {
@@ -378,6 +386,13 @@ export class SelectorView {
     this.formErrors.clearAllErrors();
     this.ui.modal.titleInput.value = '';
     this.handlerClearCounters();
+
+    FocusManger.releaseModalFocus();
+  }
+  setupESC(e) {
+    if (e.key === 'Escape') {
+      this.handleCloseModal(e);
+    }
   }
   /**
    * ========================================

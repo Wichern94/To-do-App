@@ -1,4 +1,5 @@
 import { showElement, hideElement } from '../../utils/helper.js';
+import { FocusManger } from '../../Services/view-mangers/focus-manger.js';
 export class NodeView {
   constructor(root = null, { animationManager } = {}) {
     /**
@@ -261,6 +262,7 @@ export class NodeView {
                  <button class="hidden roadmap-node__btn roadmap-node__btn--stop"
                          aria-label="stop node"
                          type="button"
+                         tabindex="-1"
                          data-action="stop">Stop
 
                          
@@ -269,6 +271,7 @@ export class NodeView {
                 <button class="hidden roadmap-node__btn roadmap-node__btn--play"
                         aria-label="start node"
                         type="button"
+                        tabindex="-1"
                         data-action="start">Start
               
                        
@@ -277,6 +280,7 @@ export class NodeView {
                 <button class= "hidden roadmap-node__btn roadmap-node__btn--pause"
                         aria-label="Pause node"
                         type="button"
+                        tabindex="-1"
                         data-action="pause">Pause
 
                         
@@ -285,6 +289,7 @@ export class NodeView {
                 <button class="roadmap-node__btn roadmap-node__btn--continue hidden"
                         aria-label="Continue node"
                         type="button"
+                        tabindex="-1"
                         data-action="continue">Continue
 
                         
@@ -333,7 +338,7 @@ export class NodeView {
         subLi.dataset.subtaskId = id;
         subLi.innerHTML = `
                     <label class="subtask-item__label">
-                            <input type="checkbox" class ="subtask-item__checkbox--disabled" value="${id}"/>
+                            <input type="checkbox" class =" visually-hidden subtask-item__checkbox--disabled" value="${id}"/>
                             <span class="subtask-item__checkbox--custom"></span>
                             <span class="subtask-item__checkbox--text">${title}</span>
                     </label>`;
@@ -438,6 +443,8 @@ export class NodeView {
         const shouldShow = options[name] || false;
         if (shouldShow) {
           showElement(element);
+          element.focus();
+
           if (['start', 'continue', 'stop', 'pause'].includes(name)) {
             this.animationManager.buttonOneAnimation(element, 'rubberBand');
           }

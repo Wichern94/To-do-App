@@ -1,5 +1,6 @@
 import { FormErrors } from '../../Services/validators/uiErrorHandler.js';
 import { FormValidator } from '../../Services/validators/form-validator.js';
+import { FocusManger } from '../../Services/view-mangers/focus-manger.js';
 export class ListView {
   constructor(root = 'list-view', { animationManager } = {}) {
     const rootEl =
@@ -97,13 +98,18 @@ export class ListView {
         handler: this.handleCloseModal.bind(this),
       },
       {
+        el: this.ui.modal.modalDialog,
+        event: 'keydown',
+        handler: this.setupESC.bind(this),
+      },
+      {
         el: this.ui.modal.form,
         event: 'submit',
         handler: this.handleSubmit.bind(this),
       },
       {
         el: this.ui.modal.form,
-        event: 'click',
+        event: 'focusin',
         handler: this.handleClearError.bind(this),
       },
     ];
@@ -211,7 +217,7 @@ export class ListView {
     await this.animationManager?.toggleAccordeon(btn, details, li);
   }
   setupConfettti(item) {
-    const container = document.getElementById('view-standard');
+    const container = document.getElementById('app');
     if (!container) return;
 
     const rect = item.getBoundingClientRect();
@@ -265,6 +271,9 @@ export class ListView {
     await this.animationManager?.blurInElement(bluredOne);
     await this.animationManager?.showAnimation(fieldset, 'bounceInUp', '1s');
     this.setupCharacterCounter();
+
+    this.ui.modal.titleInput.focus();
+    FocusManger.setModalFocus(this.ui.modal.modalDialog);
   }
 
   async handleCloseModal(e) {
@@ -281,7 +290,15 @@ export class ListView {
     this.ui.modal.titleInput.value = '';
     this.ui.modal.detailsInput.value = '';
     this.handlerClearCounters();
+
+    FocusManger.releaseModalFocus();
   }
+  setupESC(e) {
+    if (e.key === 'Escape') {
+      this.handleCloseModal(e);
+    }
+  }
+
   /**
    * ========================================
    * FORM SUBMIT/DELETE METHODS
@@ -440,5 +457,16 @@ export class ListView {
     if (btn) {
       this.animationManager?.bounceBtn(btn);
     }
+  }
+  setModalFocus(enabled) {
+    this.ui.root.setAttribute('aria-hidden', enabled);
+    const isA11yHidden =
+      this.ui.root.getAttribute('aria-hidden') === 'true' ||
+      !!this.ui.root.closest('[aria-hidden ="true"],[hidden],[inert]');
+    if (!isA11yHidden) return;
+
+    const firstElement = this.ui.modal.titleInput;
+    const lastElement = this.ui.modal.cancelBtn;
+    firstElement.focus();
   }
 }

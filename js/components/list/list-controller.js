@@ -36,9 +36,10 @@ export class ListController {
           if (!oldEl) throw new Error('oldEl is not valid');
           await this.view.animateOldTask(oldEl);
 
-          if (!promoteDomId) throw new Error('promoteDomId is not valid');
-          const newEl = this.view.findItemEl(promoteDomId);
-          await this.view.animateNewTask(newEl);
+          if (promoteDomId) {
+            const newEl = this.view.findItemEl(promoteDomId);
+            if (newEl) await this.view.animateNewTask(newEl);
+          }
 
           this.renderedIds.delete(id);
           sessionStorage.setItem(
@@ -48,7 +49,7 @@ export class ListController {
 
           this._renderTasks(visible);
         } catch (err) {
-          console.error('finish failed');
+          console.error('finish failed', err);
         }
       },
     });
