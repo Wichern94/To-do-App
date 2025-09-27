@@ -158,4 +158,11 @@ export class TodoApp {
     this.roadmapView?.handlerClearCounters();
     this.roadmapPresenter?.destroy();
   }
+  destroy() {
+    this.logoutButton?.destroy();
+    this.listController?.destroy();
+    this.selectorPresenter?.destroy();
+    this.roadmapPresenter?.destroy();
+    this.carusel?.destroy();
+  }
 }

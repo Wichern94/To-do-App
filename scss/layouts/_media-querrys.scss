@@ -51,9 +51,10 @@
 
   .apk-screen {
     display: grid;
-
+    grid-template-columns: auto auto;
     grid-template-areas: 'rail main';
     gap: 0;
+    max-inline-size: 100%;
     height: 100%;
     overflow: hidden;
     place-items: center;
@@ -62,7 +63,7 @@
     > #view-header {
       grid-area: rail;
       position: sticky;
-      width: 17rem;
+      inline-size: clamp(12rem, 24vw, 17rem);
       align-self: start;
       height: 70%;
 
@@ -101,7 +102,7 @@
 
     > :not(#view-header) {
       grid-area: main;
-      width: 40rem;
+      inline-size: clamp(22rem, 70vw, 40rem);
       overflow: auto;
       overscroll-behavior: contain;
 
@@ -130,6 +131,12 @@
         &__panel {
           width: 20rem;
         }
+      }
+      .roadmap-node__content {
+        max-width: 25rem;
+        min-width: 12rem;
+        max-height: initial;
+        height: auto;
       }
     }
   }

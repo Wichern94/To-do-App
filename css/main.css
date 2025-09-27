@@ -2248,8 +2248,10 @@ body {
   }
   .apk-screen {
     display: grid;
+    grid-template-columns: auto auto;
     grid-template-areas: "rail main";
     gap: 0;
+    max-inline-size: 100%;
     height: 100%;
     overflow: hidden;
     place-items: center;
@@ -2259,7 +2261,7 @@ body {
   .apk-screen > #view-header {
     grid-area: rail;
     position: sticky;
-    width: 17rem;
+    inline-size: clamp(12rem, 24vw, 17rem);
     align-self: start;
     height: 70%;
     border-left: 2px solid rgba(255, 255, 255, 0.1);
@@ -2326,7 +2328,7 @@ body {
   }
   .apk-screen > :not(#view-header) {
     grid-area: main;
-    width: 40rem;
+    inline-size: clamp(22rem, 70vw, 40rem);
     overflow: auto;
     overscroll-behavior: contain;
     margin: 0;
@@ -2345,6 +2347,12 @@ body {
   }
   .apk-screen > :not(#view-header) .selector-modal__panel {
     width: 20rem;
+  }
+  .apk-screen > :not(#view-header) .roadmap-node__content {
+    max-width: 25rem;
+    min-width: 12rem;
+    max-height: initial;
+    height: auto;
   }
 }
 

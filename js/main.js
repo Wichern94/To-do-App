@@ -27,6 +27,7 @@ class App {
       this.authUi
     );
     this.activeHandler = null;
+    this.todoApp = null;
     this.cleanUpInactiveViews();
     this.initializeForm();
     this.formChecker();
@@ -108,7 +109,16 @@ onAuthStateChanged(auth, (user) => {
     appBody.classList.remove('hidden');
 
     app.viewManager.showView('todo-screen');
-
-    const todoApp = new TodoApp(user, app.viewManager);
+    if (app.todoApp === null) {
+      app.todoApp = new TodoApp(user, app.viewManager);
+    }
+  } else {
+    document.dispatchEvent(new CustomEvent('auth:signout:ended'));
+    app.authController.isSigningOut = false;
+    if (app.todoApp) {
+      app.todoApp.destroy();
+      app.todoApp = null;
+    }
+    app.viewManager.showView('login-screen');
   }
 });

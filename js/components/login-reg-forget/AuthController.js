@@ -6,6 +6,7 @@ export class AuthController {
     this.authService = authService;
     this.authUI = authUI;
     this.init();
+    this.isSigningOut = null;
   }
   init() {
     document.addEventListener(
@@ -59,8 +60,6 @@ export class AuthController {
       const { email, password } = values;
       const user = await this.authService.loginUser(email, password);
 
-      this.viewManger.showView('todo-screen');
-
       ToastManager.success('Logged in!');
     } catch (err) {
       switch (err.code) {
@@ -107,7 +106,7 @@ export class AuthController {
       }
     }
   }
-  //Metoda odbierajace event resetu hasła
+
   async handlePswrdReset({ email }) {
     try {
       await this.authService.resetPassword(email);
@@ -142,11 +141,12 @@ export class AuthController {
   }
   async handleLogout() {
     try {
+      if (this.isSigningOut) return;
+      this.isSigningOut = true;
+      document.dispatchEvent(new CustomEvent('auth:signout:started'));
       await this.authService.logOut();
-      setTimeout(() => {
-        ToastManager.success('You have been logged out');
-        this.authUI.logout();
-      }, 2000);
+
+      ToastManager.success('You have been logged out');
     } catch (error) {
       console.error('błąd wylogowania', error.code, error.message);
     }

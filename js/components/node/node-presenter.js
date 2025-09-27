@@ -155,6 +155,7 @@ export class NodePresenter {
       onToggleAccordion: (next) => this._handleOnAccordion(next),
       onSubtaskChange: ({ doneCount, total, checkedIds }) =>
         this._handleOnSubtaskChange({ doneCount, total, checkedIds }),
+      onMqChange: () => this._handleOnMqChange(),
     });
   }
 
@@ -196,6 +197,13 @@ export class NodePresenter {
     this.view.setProgress({ doneCount: done, total: t, percent });
     this._renderControls();
   }
+  _handleOnMqChange() {
+    if (this.view.mq.matches) {
+      this.view.repaintLoop(this.plumb, this, { duration: 500 });
+      this.closeAccordeon();
+    }
+  }
+
   /**
    * ========================================
    *

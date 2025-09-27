@@ -49,6 +49,7 @@ export class NodeView {
       onContinue: null,
       onToggleAccordion: null,
       onSubtaskChange: null,
+      onMqChange: null,
     };
     this.handlers = null;
     /**
@@ -59,6 +60,8 @@ export class NodeView {
     this.animationManager = animationManager || null;
 
     this.listeners = [];
+    this.mq = window.matchMedia('(min-width: 768px)');
+    this.mqTouch = window.matchMedia('(pointer: coarse)');
   }
 
   /**
@@ -144,6 +147,11 @@ export class NodeView {
         el: this.ui.containers.subtaskCont,
         event: 'change',
         handler: this.sendOnSubtaskChange.bind(this),
+      },
+      {
+        el: this.mq,
+        event: 'change',
+        handler: this.sendMqInfo.bind(this),
       },
     ];
   }
@@ -558,6 +566,11 @@ export class NodeView {
 
     if (typeof this.handlers.onSubtaskChange === 'function') {
       this.handlers.onSubtaskChange({ doneCount, total, checkedIds });
+    }
+  }
+  sendMqInfo() {
+    if (typeof this.handlers.onMqChange === 'function') {
+      this.handlers.onMqChange();
     }
   }
 
