@@ -2,6 +2,7 @@ export class ListController {
   constructor(model, view) {
     this.model = model;
     this.view = view;
+
     this.renderedIds = new Set();
     this.isInitialPaint = true;
     this.SEEN_KEY = 'seenTaskIds';

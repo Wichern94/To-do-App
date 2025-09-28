@@ -15,6 +15,7 @@ import { RegisterFormHandler } from './components/login-reg-forget/formHandlers.
 import { ResetFormHandler } from './components/login-reg-forget/formHandlers.js';
 
 import { TodoApp } from './todo.js';
+import { ToastManager } from './Services/toastify-manger.js';
 
 class App {
   constructor() {
@@ -103,22 +104,46 @@ class App {
 
 const auth = getAuth(fireApp);
 const app = new App();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    const appBody = document.getElementById('app');
-    appBody.classList.remove('hidden');
 
-    app.viewManager.showView('todo-screen');
-    if (app.todoApp === null) {
-      app.todoApp = new TodoApp(user, app.viewManager);
-    }
-  } else {
+let sessionGen = 0;
+function clearUI() {
+  document.querySelector('.todo__list')?.replaceChildren();
+  document.querySelector('#ul-container')?.replaceChildren();
+}
+
+onAuthStateChanged(auth, (user) => {
+  sessionGen++;
+  const myGen = sessionGen;
+  if (app.todoApp) {
+    app.todoApp.destroy();
+    app.todoApp = null;
+  }
+  clearUI();
+  if (!user) {
     document.dispatchEvent(new CustomEvent('auth:signout:ended'));
     app.authController.isSigningOut = false;
-    if (app.todoApp) {
-      app.todoApp.destroy();
-      app.todoApp = null;
-    }
     app.viewManager.showView('login-screen');
+
+    if (sessionStorage.getItem('postLogoutToast') === '1') {
+      sessionStorage.removeItem('postLogoutToast');
+      ToastManager?.success?.('You have been logged out');
+    }
+    return;
   }
+
+  app.viewManager.showView('todo-screen');
+
+  if (app.todoApp === null) {
+    app.todoApp = new TodoApp(user, app.viewManager, {
+      gen: myGen,
+      isFresh: (g) => g === sessionGen,
+    });
+  }
+
+  const appBody = document.getElementById('app');
+  appBody.classList.remove('hidden');
+
+  requestAnimationFrame(() => {
+    document.dispatchEvent(new CustomEvent('auth:signout:ended'));
+  });
 });

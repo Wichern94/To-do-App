@@ -19,8 +19,11 @@ import { RoadmapModel } from './components/roadmap/roadmap-model.js';
 import { LogoutButtonHandler } from './components/logoutbtn/logout-btn.js';
 
 export class TodoApp {
-  constructor(user, viewManager) {
+  constructor(user, viewManager, options = {}) {
+    this.isFresh = options.isFresh ?? (() => true);
+    this.gen = options.gen ?? 0;
     this.user = user;
+
     this.viewManger = viewManager;
     this.carusel = new GetCaruselPosition(
       'carousel-cont',
@@ -87,6 +90,7 @@ export class TodoApp {
         animationManager: this.AnimationManager,
       });
       this.listController = new ListController(this.listModel, this.listView);
+
       this.listController?.init();
     }
   }
@@ -171,6 +175,7 @@ export class TodoApp {
     this.listController?.destroy();
     this.selectorPresenter?.destroy();
     this.roadmapPresenter?.destroy();
+    this.carusel.setCaruselToLeft();
     this.carusel?.destroy();
   }
 }

@@ -146,7 +146,8 @@ export class AuthController {
       document.dispatchEvent(new CustomEvent('auth:signout:started'));
       await this.authService.logOut();
 
-      ToastManager.success('You have been logged out');
+      sessionStorage.setItem('postLogoutToast', '1');
+      location.replace(location.href);
     } catch (error) {
       console.error('błąd wylogowania', error.code, error.message);
     }
