@@ -39,19 +39,27 @@ export class TodoApp {
   }
   initCarusel() {
     this.carusel.onViewChange = (mode) => {
+      const roadmapBtn = document.querySelector('[data-view="roadmap"]');
+      const listBtn = document.querySelector('[data-view="list"]');
+
       this.viewManger.showMode(mode.sectionId, mode.indicatorId);
       if (mode.sectionId === 'roadmap-view') {
+        roadmapBtn?.setAttribute('aria-selected', 'true');
         this.setupSelector(mode.sectionId);
         this.state.view = 'selector';
       } else {
+        roadmapBtn?.setAttribute('aria-selected', 'false');
         this.teardownSelector();
         this.state.view = null;
       }
       if (mode.sectionId === 'list-view') {
+        listBtn?.setAttribute('aria-selected', 'true');
+
         this.setupList(mode.sectionId);
 
         this.state.view = 'list';
       } else {
+        listBtn?.setAttribute('aria-selected', 'false');
         this.teardownList();
         this.state.view = null;
       }

@@ -7,6 +7,15 @@ export class RoadmapPlumbManager {
     });
     this.jsPlumbInstance.setContainer(this.container);
     this.connections = [];
+    this._pending = null;
+
+    this._onResize = () => this.repaitSchedule();
+    this._onMqChange = () => this.repaitSchedule();
+
+    window.addEventListener('resize', this._onResize, { passive: true });
+
+    this._mq = window.matchMedia('(min-width: 768px)');
+    this._mq.addEventListener('change', this._onMqChange);
   }
 
   connect(sourceId, targetId, anchors) {
@@ -53,5 +62,19 @@ export class RoadmapPlumbManager {
     this.jsPlumbInstance.deleteEveryEndpoint();
     this.jsPlumbInstance.reset();
     this.connections = [];
+    window.removeEventListener('resize', this._onResize);
+    this._mq?.removeEventListener('change', this._onMqChange);
+    this._onResize = this._onMqChange = null;
+  }
+  repaitSchedule() {
+    if (this._pending) return;
+    this._pending = true;
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        this.jsPlumbInstance.repaintEverything();
+        this.jsPlumbInstance?.revalidate(this.container);
+        this._pending = false;
+      }, 80);
+    });
   }
 }
