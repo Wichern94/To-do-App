@@ -1,0 +1,143 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+
+@include mixins.up(md) {
+  .auth {
+    padding: 1rem;
+    max-width: 800px;
+    width: min(90%, 800px);
+    margin-inline: auto;
+    &__main {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 2rem;
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        inset-inline-start: 50%;
+        width: 50%;
+        pointer-events: none;
+        z-index: 0;
+        background: linear-gradient(
+            to bottom right,
+            rgba(0, 0, 0, 0.18),
+            rgba(0, 0, 0, 0.32)
+          ),
+          url('../assets/web-security.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        border-radius: 12px;
+      }
+    }
+    &__pane {
+      &-links {
+        grid-column: 1;
+      }
+    }
+  }
+}
+
+@include mixins.up(md) {
+  body {
+    min-height: 100dvh;
+    min-width: 100dvw;
+
+    place-items: center;
+  }
+
+  .apk-screen {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-areas: 'rail main';
+    gap: 0;
+    max-inline-size: 100%;
+    height: 100%;
+    overflow: hidden;
+    place-items: center;
+    justify-items: center;
+    position: relative;
+    > #view-header {
+      grid-area: rail;
+      position: sticky;
+      inline-size: clamp(12rem, 24vw, 17rem);
+      align-self: start;
+      height: 70%;
+
+      border-left: 2px solid var.$borderTwo;
+      border-top: 2px solid var.$borderTwo;
+      border-bottom: 2px solid var.$borderTwo;
+      border-radius: 10px 0 0 10px;
+      place-self: center;
+      z-index: 1;
+      .separator {
+        display: none;
+      }
+      .auth-carousel {
+        &__actions {
+          left: 5%;
+        }
+        &__navigations {
+          display: grid;
+          position: absolute;
+          grid-template-columns: 1fr 1fr;
+          gap: 8rem;
+          button {
+            @include mixins.interactive();
+            @include mixins.styled-button($size-w: 1.5rem, $color: var.$accent);
+            transition: all 0.3s ease-in-out;
+          }
+          button.inactive {
+            @include mixins.styled-button(
+              $size-w: 1.5rem,
+              $color: var.$borderOne
+            );
+          }
+        }
+      }
+    }
+
+    > :not(#view-header) {
+      grid-area: main;
+      inline-size: clamp(22rem, 70vw, 40rem);
+      overflow: auto;
+      overscroll-behavior: contain;
+
+      margin: 0;
+      height: 70%;
+
+      border-top: 2px solid var.$borderTwo;
+      border-right: 2px solid var.$borderTwo;
+      border-bottom: 2px solid var.$borderTwo;
+      background: linear-gradient(
+        90deg,
+        rgba(13, 13, 13, 1) 44%,
+        rgb(18, 27, 25) 100%
+      );
+      .roadmap__content-action-wrap {
+        position: relative;
+        top: 5%;
+      }
+
+      .task-modal {
+        &__section {
+          width: 20rem;
+        }
+      }
+      .selector-modal {
+        &__panel {
+          width: 20rem;
+        }
+      }
+      .roadmap-node__content {
+        max-width: 25rem;
+        min-width: 12rem;
+        max-height: initial;
+        height: auto;
+      }
+    }
+  }
+}

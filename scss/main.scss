@@ -1,9 +1,70 @@
-@use "variables/variables" as var;
-@use "variables/mixins";
-@use "components/buttons";
-@use "layouts/calendar";
-@use "layouts/list";
-@use "layouts/roadmap";
-@use "components/task-drawer";
-@use "components/calendar-days";
-@use "components/calendar-meta";
+@use '../scss/variables/utils';
+@use '../scss/variables/variables' as var;
+@use '../scss/variables/mixins';
+/**
+ * ========================================
+ * LOGIN SECTION
+ * ========================================
+ */
+@use 'layouts/login-section';
+/**
+ * ========================================
+ * AUTOFILL HELPER
+ * ========================================
+ */
+@use 'layouts/autofill-helper';
+/**
+ * ========================================
+ * MAIN APP SECTION
+ * ========================================
+ */
+@use 'layouts/main-screen';
+/**
+ * ========================================
+ * CAROUSEL SECTION
+ * ========================================
+ */
+@use 'layouts/carousel-section';
+/**
+ * ========================================
+ * LIST
+ * ========================================
+ */
+@use 'layouts/list';
+/**
+ * ========================================
+ * LIST NODES
+ * ========================================
+ */
+@use '../scss/components/list-nodes';
+/**
+ * ========================================
+ * LIST MODAL
+ * ========================================
+ */
+@use '../scss/components/task-modal';
+/**
+ * ========================================
+ * ROADMAP
+ * ========================================
+ */
+@use 'layouts/roadmap';
+
+/**
+ * ========================================
+ * ROADMAP MODAL
+ * ========================================
+ */
+@use '../scss/components/-roadmap-modal.scss';
+/**
+ * ========================================
+ * ROADMAP NODES
+ * ========================================
+ */
+@use '../scss/components/roadmap-nodes';
+/**
+ * ========================================
+ * MEDIA QUERRYS
+ * ========================================
+ */
+@use '../scss/layouts/media-querrys';

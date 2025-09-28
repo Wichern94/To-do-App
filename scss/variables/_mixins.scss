@@ -1,7 +1,7 @@
 // Mixins:
-@use "../variables/variables" as var;
-@use "sass:map";
-@use "sass:color";
+@use '../variables/variables' as var;
+@use 'sass:map';
+@use 'sass:color';
 
 @mixin flex(
   $direction: column,
@@ -55,7 +55,15 @@
   font-size: map.get(var.$fontSize, $sizeName);
 }
 
-@mixin styled-button($size-w, $size-h: null, $color: null, $margin: 0) {
+@mixin styled-button(
+  $size-w,
+  $size-h: null,
+  $color: null,
+  $margin: 0,
+  $margin-r: null,
+  $margin-l: null,
+  $mode: null
+) {
   border: none;
   outline: none;
   background: transparent;
@@ -68,18 +76,456 @@
     height: $size-h;
   }
   margin: $margin;
+  @if $margin-r != null {
+    margin-right: $margin-r;
+  }
+  @if $margin-l != null {
+    margin-left: $margin-l;
+  }
   @if $color != null {
     color: $color;
-    filter: drop-shadow(5px 8px 15px color.adjust($color, $lightness: -20%));
+    filter: drop-shadow(1px 1px 5px color.adjust($color, $lightness: -30%));
+  }
+  @if $mode == lux-btn {
+    gap: 0.2rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    font-size: 12px;
+    filter: none;
   }
 }
-@mixin glass-modal($minor: false) {
-  background: rgba(65, 65, 65, 0.089);
-  backdrop-filter: blur(20px) saturate(120%);
-  -webkit-backdrop-filter: blur(20px) saturate(120%) brightness(1.4);
-  box-shadow: var.$shadow-light;
+@mixin glass-BG() {
+  background: linear-gradient(60deg, #16273648 0%, #23313b8e 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+@mixin glass-panel(
+  $tint: rgba(20, 20, 20, 0.02),
+  $blur: 8px,
+  $radius: 14px,
+  $border: rgba(255, 255, 255, 0.08),
+  $shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
+  $top-glow: rgba(255, 255, 255, 0.06)
+) {
+  background: linear-gradient(180deg, $top-glow 0%, rgba(255, 255, 255, 0) 30%),
+    $tint;
 
-  @if $minor {
-    background: rgba(65, 65, 65, 0.164);
+  backdrop-filter: saturate(1.1) blur($blur);
+  -webkit-backdrop-filter: saturate(1.1) blur($blur);
+
+  border: 1px solid $border;
+  border-radius: $radius;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), $shadow;
+}
+@mixin glass-tab(
+  $variant: normal,
+  $blur: 8px,
+  $radius: 14px 14px 0 0,
+  $shadow: -2px 9px 18px 5px rgba(0, 0, 0, 0.3),
+  $border: rgba(255, 255, 255, 0.08)
+) {
+  $radius: 14px 0 0 0;
+  $tint: rgba(20, 20, 20, 0.04);
+  $top-glow: rgba(255, 255, 255, 0.08);
+
+  @if $variant == dark {
+    $radius: 0 14px 0 0;
+    $tint: rgba(10, 10, 10, 0.25);
+    $top-glow: rgba(255, 255, 255, 0.03);
+    background: linear-gradient(
+        180deg,
+        $top-glow 0%,
+        rgba(255, 255, 255, 0) 40%
+      ),
+      $tint;
+  }
+  @if $variant== normal {
+    background: transparent;
+  }
+
+  border: 1px solid $border;
+  border-bottom: none;
+  border-radius: $radius;
+  box-shadow: inset 3px 7px 14px 9px rgba(255, 255, 255, 0.04), $shadow;
+}
+@mixin glass-input(
+  $bg: rgba(255, 255, 255, 0.05),
+  $border: rgba(255, 255, 255, 0.1),
+  $radius: 7px,
+  $text: #ddd,
+  $placeholder: #777,
+  $focus: var.$accent
+) {
+  background: $bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  color: $text;
+  &::placeholder {
+    color: $placeholder;
+    transition: all 0.8s ease;
+  }
+  &:focus {
+    outline: 1px solid $focus;
+    box-shadow: 0 0 0 3px rgba($focus, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    &::placeholder {
+      transform: translateX(5rem);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin glass-input-label(
+  $bg: rgba(255, 255, 255, 0.05),
+  $border: rgba(255, 255, 255, 0.1),
+  $radius: 7px,
+  $text: #ddd,
+  $label: var.$textSecondary,
+  $focus: var.$accent,
+  $width: 70%,
+  $height: 2rem,
+  $fontSize: 0.8rem,
+  $is-textarea: false
+) {
+  @if $is-textarea {
+    textarea {
+      background: $bg;
+      border-bottom: 1px solid $border;
+      border-radius: $radius;
+      color: $text;
+      width: 80%;
+      height: calc($height + 4rem);
+      padding-left: 0.5rem;
+      outline: none;
+      border: none;
+      resize: none;
+      overflow: hidden;
+      &:focus {
+        border-bottom: 1px solid $focus;
+        background: linear-gradient(to bottom, transparent, var.$activedayBG);
+      }
+      &:focus + label,
+      &:not(:placeholder-shown) + label {
+        transform: translateY(-1rem);
+        font-size: 0.6rem;
+        color: $focus;
+      }
+    }
+  } @else {
+    input {
+      outline: none;
+      border: 0;
+      background: $bg;
+      border-bottom: 1px solid $border;
+      border-radius: $radius;
+      color: $text;
+      width: $width;
+      height: $height;
+      padding-left: 0.5rem;
+
+      &:focus {
+        border-bottom: 1px solid $focus;
+        background: linear-gradient(to bottom, transparent, var.$activedayBG);
+      }
+      &:focus + label,
+      &:not(:placeholder-shown) + label {
+        transform: translateY(-1rem);
+        font-size: 0.6rem;
+        color: $focus;
+      }
+    }
+  }
+  label {
+    position: absolute;
+    font-size: $fontSize;
+    color: $label;
+    pointer-events: none;
+    transition: 0.3s ease-in-out all;
+    left: 4rem;
+    background: transparent;
+
+    padding: 0.1rem;
+  }
+}
+
+@mixin glass-button($from, $to, $text: #fff, $ring: rgba(0, 0, 0, 0.35)) {
+  background: linear-gradient(135deg, $from, $to);
+  color: $text;
+  border: 1px solid rgba(255, 255, 255, 0.301);
+  border-radius: 5px;
+  box-shadow: 0 6px 18px $ring,
+    inset -3px -2px 6px 4px rgba(255, 255, 255, 0.08);
+  transition: transform 0.8s ease, filter 0.15s ease;
+  backdrop-filter: saturate(1.1) blur(12px);
+  -webkit-backdrop-filter: saturate(1.1) blur(12px);
+}
+
+@mixin dividier(
+  $mode: 'normal',
+  $line: 1px,
+  $color: var.$borderTwo,
+  $width: 100%
+) {
+  display: block;
+  width: $width;
+  height: $line;
+  border: 0;
+
+  @if $mode == 'none' {
+    height: 0;
+
+    background: none;
+  } @else if $mode == 'normal' {
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+
+      currentColor 50%,
+
+      transparent 100%
+    );
+  } @else if $mode == 'border' {
+    background: linear-gradient(90deg, currentColor, currentColor)
+      bottom
+      left /
+      100%
+      $line
+      no-repeat;
+  } @else if $mode == 'fancy' {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+
+      currentColor 20%,
+
+      currentColor 80%,
+
+      transparent 100%
+    );
+  }
+}
+@mixin open-modal($color, $drop: true) {
+  outline: none;
+  border: none;
+  color: $color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: fixed;
+  width: 3.5rem;
+  height: 3.5rem;
+  bottom: 8rem;
+  padding: 0;
+  right: 5rem;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  @if $drop {
+    $shadow-color: color.adjust($color, $lightness: -20%);
+
+    filter: drop-shadow(0 0 5px rgba($shadow-color, 0.2))
+      drop-shadow(2px 2px 10px rgba($shadow-color, 0.4));
+  }
+}
+@mixin checkbox(
+  $hiddenOrigin: true,
+  $size: 0.8rem,
+  $bg: transparent,
+  $bColor: var.$borderTwo
+) {
+  @if $hiddenOrigin {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  } @else {
+    height: $size;
+    width: $size;
+    border: 1px solid $bColor;
+    border-radius: 2px;
+    position: relative;
+    display: inline-block;
+    background: $bg;
+  }
+}
+@mixin checkbox-check($color: var.$filterGreen) {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0px;
+  width: 5px;
+  height: 12px;
+  border: solid $color;
+  transform: rotate(45deg);
+  border-width: 0 2px 2px 0;
+}
+
+@mixin glass-slide-input(
+  $width: 70%,
+  $height: 1.5rem,
+  $text: #e6f7f8,
+  $label: #aaaaaa,
+
+  $border: #cccccc,
+
+  $accent: #6bcdce,
+  $bg: rgba(255, 255, 255, 0.1),
+  $blur: 10px,
+  $radius: 12px,
+  $label-font: 0.85rem,
+  $label-offset-x: 0.75rem,
+  $slide-x: 2rem,
+  $duration: 0.35s
+) {
+  position: relative;
+  width: $width;
+  padding: 0.5rem 0.75rem 0.35rem;
+  border-radius: $radius;
+  background: $bg;
+  -webkit-backdrop-filter: blur($blur);
+  backdrop-filter: blur($blur);
+
+  > input {
+    width: 100%;
+    height: $height;
+    color: $text;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid $border;
+    outline: none;
+    caret-color: $accent;
+    transition: border-color $duration ease, background-color $duration ease,
+      box-shadow $duration ease;
+
+    &:focus {
+      border-bottom-color: $accent;
+    }
+
+    &:focus + label,
+    &:not(:placeholder-shown) + label {
+      transform: translateX($slide-x);
+      opacity: 0;
+    }
+  }
+
+  > label {
+    position: absolute;
+    left: $label-offset-x;
+    top: 0.45rem;
+    font-size: $label-font;
+    color: $label;
+    pointer-events: none;
+    user-select: none;
+    transition: transform $duration ease, opacity $duration ease,
+      color $duration ease;
+  }
+
+  > input:focus-visible {
+    border-bottom: 1px solid $accent;
+    background: linear-gradient(to bottom, transparent, var.$activedayBG);
+  }
+}
+@function bp($key) {
+  @if not map.has-key(var.$bp, $key) {
+    @error 'Unknown breakpoint: #{ $key }. Use one of: #{ map.keys(var.$bp) }';
+  }
+  @return map.get(var.$bp, $key);
+}
+// min-width: ≥ key
+@mixin up($key) {
+  @media (min-width: bp($key)) {
+    @content;
+  }
+}
+
+// max-width: < key  (bez „nakładek” – odcinamy o włos)
+@mixin down($key) {
+  @media (max-width: calc(bp($key) - 0.02px)) {
+    @content;
+  }
+}
+
+// zakres: from ≤ width < to
+@mixin between($from, $to) {
+  @media (min-width: bp($from)) and (max-width: calc(bp($to) - 0.02px)) {
+    @content;
+  }
+}
+@mixin interactive(
+  $ring: var.$accent,
+  $hover: rgba(255, 255, 255, 0.06),
+  $noScale: false,
+  $press-scale: 0.985,
+  $up-scale: 1.1,
+  $radius: 12px,
+  $focus-scope: self,
+  // self | within  (ring na elemencie czy na wrapperze)
+  $only-fine-hover: true,
+  // hover tylko dla myszki
+  $ring-width: 2px,
+  $ring-offset: 2px,
+  $ring-mode: outline // outline | shadow (shadow nie utnie się na overflow)
+) {
+  border-radius: $radius;
+  transition: transform 0.08s ease, background-color 0.12s ease,
+    box-shadow 0.12s ease, outline-color 0.12s ease;
+
+  // hover
+  @if $only-fine-hover {
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: $hover;
+        @if not $noScale {
+          transform: scale($up-scale);
+        }
+      }
+    }
+  } @else {
+    &:hover {
+      background-color: $hover;
+    }
+  }
+
+  // active
+  &:active {
+    transform: scale($press-scale);
+  }
+
+  // focus
+  @if $focus-scope == self {
+    @if $ring-mode == outline {
+      &:focus-visible {
+        outline: $ring-width solid $ring;
+        outline-offset: $ring-offset;
+      }
+    } @else {
+      &:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 $ring-offset transparent,
+          0 0 0 calc(#{$ring-width + $ring-offset}) #{$ring};
+      }
+    }
+  } @else if $focus-scope == within {
+    @if $ring-mode == outline {
+      &:focus-within {
+        outline: $ring-width solid $ring;
+        outline-offset: $ring-offset;
+      }
+    } @else {
+      &:focus-within {
+        outline: 0;
+        box-shadow: 0 0 0 $ring-offset transparent,
+          0 0 0 calc(#{$ring-width + $ring-offset}) #{$ring};
+      }
+    }
+  }
+
+  // disabled
+  &[aria-disabled='true'],
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }

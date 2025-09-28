@@ -1,0 +1,225 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+
+.selector-modal {
+  @include mixins.flex($height: 100dvh, $width: 100dvw);
+  @include mixins.glass-BG();
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  &__tab-btn {
+    height: 2rem;
+    border: none;
+    outline: none;
+    @include mixins.set-text(muted, medium, reg);
+    @include mixins.interactive($noScale: true);
+  }
+  &__panel {
+    @include mixins.flex($height: 35%, $width: 80%);
+
+    border-radius: 14px;
+    border: none;
+
+    &-nav {
+      display: flex;
+      width: 100%;
+      height: 10%;
+      position: relative;
+      top: -45%;
+      z-index: 1;
+
+      button[data-mode='manual'] {
+        @include mixins.glass-tab();
+        width: 50%;
+        &.pressed {
+          box-shadow: none;
+        }
+      }
+      button[data-mode='import'] {
+        @include mixins.glass-tab($variant: dark);
+        width: 50%;
+        background: transparent;
+
+        &.pressed {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  &__form--manual {
+    @include mixins.glass-panel;
+    transition: opacity 1s ease;
+    @include mixins.flex($height: 100%, $width: 100%);
+    gap: 1rem;
+    position: absolute;
+    margin-bottom: auto;
+    .char-counter[data-for='form--manual-input-title'] {
+      left: 75%;
+      top: 50%;
+    }
+    .char-counter[data-for='form--manual-input-subelements'] {
+      left: 65%;
+      top: 50%;
+    }
+  }
+  &__title-wrap {
+    @include mixins.flex($width: 100%);
+    top: -15%;
+    left: 0;
+  }
+  &__title {
+    @include mixins.set-text(main, semibold, xl);
+  }
+
+  &__input-wrap {
+    @include mixins.flex($width: 100%);
+    top: -10%;
+    @include mixins.glass-input-label;
+    p {
+      left: 45%;
+    }
+  }
+  &__error {
+    color: var.$formError;
+    font-size: 10px;
+    font-weight: 500;
+    position: absolute;
+    top: -40%;
+    &--import {
+      @extend .selector-modal__error;
+      top: -15%;
+      left: 40%;
+    }
+  }
+
+  &__subtask {
+    &-label-wrap {
+      @include mixins.flex($width: 80%, $direction: row, $justify: flex-start);
+    }
+    &-label {
+      @include mixins.set-text(secondary, light, md);
+      margin-left: 1rem;
+    }
+    &-add-btn {
+      margin-left: 0.6rem;
+      @include mixins.styled-button($size-w: 1.5rem, $color: var.$filterGreen);
+      @include mixins.interactive();
+    }
+    &-list {
+      position: absolute;
+      @include mixins.set-text(secondary, light, sm);
+      display: grid;
+      justify-items: center;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.8rem 1rem;
+      width: 80%;
+      top: 70%;
+      height: 3rem;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      &li {
+        scroll-snap-align: center;
+      }
+    }
+
+    &-wrap {
+      @include mixins.flex($width: 100%, $direction: row);
+      position: absolute;
+      top: 55%;
+      @include mixins.glass-input-label($width: 58%);
+      p {
+        left: 45%;
+      }
+    }
+  }
+  &__actions {
+    position: fixed;
+    @include mixins.flex(
+      $width: 100%,
+      $direction: row-reverse,
+      $justify: space-evenly
+    );
+    top: 25%;
+    button {
+      cursor: pointer;
+      font-size: 13px;
+      @include mixins.flex($width: 5rem, $direction: row-reverse);
+      @include mixins.interactive();
+    }
+    > button:first-child {
+      box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+      @include mixins.glass-button(
+        var.$modal-btn-green-from,
+        var.$modal-btn-green-to
+      );
+    }
+    > button:last-child {
+      box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+      @include mixins.glass-button(
+        var.$modal-btn-red-from,
+        var.$modal-btn-red-to
+      );
+    }
+  }
+  &__form--import {
+    @extend .selector-modal__form--manual;
+    top: 0%;
+
+    background: linear-gradient(
+        180deg,
+        var.$top-glow 0%,
+        rgba(255, 255, 255, 0) 50%
+      ),
+      var.$tint;
+    .char-counter[data-for='form--import-textarea'] {
+      top: 80%;
+      left: 75%;
+    }
+    .selector-modal__title-wrap {
+      top: -15%;
+      align-items: stretch;
+
+      div {
+        width: 90%;
+        margin: 0 auto;
+      }
+    }
+    > div:first-of-type {
+      @include mixins.flex($width: 100%, $direction: row, $align: stretch);
+      @include mixins.glass-input-label($is-textarea: true);
+      position: absolute;
+      top: 35%;
+    }
+    > div:nth-of-type(2) {
+      top: 28%;
+    }
+  }
+  &__footer {
+    @include mixins.flex($width: 80%);
+    @include mixins.set-text(muted, light, sm);
+    top: 29%;
+    button {
+      background: transparent;
+      border: none;
+      color: var.$accent;
+      transition: all 0.3s ease;
+      @include mixins.interactive();
+      &:hover {
+        transform: scale(1.1);
+        text-decoration: underline;
+      }
+    }
+  }
+  &__form--create {
+    @extend .selector-modal__form--manual;
+    height: auto;
+    padding: 1rem 0;
+    h3 {
+      @include mixins.set-text(main, semibold, xl);
+    }
+    span[data-for='create-map-input'] {
+      left: 72%;
+    }
+  }
+}

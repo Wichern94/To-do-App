@@ -1,0 +1,115 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+.task-modal {
+  @include mixins.flex($height: 100dvh, $width: 100dvw);
+  @include mixins.glass-BG();
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  &__section {
+    @include mixins.flex($height: 35%, $width: 80%);
+    transition: opacity 1s ease;
+  }
+
+  &__form {
+    @include mixins.glass-panel;
+    @include mixins.flex($height: 100%, $width: 100%);
+    gap: 1rem;
+    margin-bottom: auto;
+    &-title-wrap {
+      @include mixins.flex($width: 100%);
+      margin-top: 2rem;
+      @include mixins.glass-input-label($width: 80%);
+    }
+    &-textarea-wrap {
+      @include mixins.flex($width: 100%, $justify: flex-start);
+
+      @include mixins.glass-input-label($is-textarea: true, $width: 80%);
+    }
+  }
+  &__error {
+    color: var.$formError;
+    font-size: 12px;
+    font-weight: 500;
+    position: absolute;
+    top: 25%;
+    left: 45%;
+  }
+
+  &__input-title {
+    width: 80%;
+    height: 2rem;
+  }
+  &__textarea {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  &__actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    flex-direction: row-reverse;
+    button {
+      cursor: pointer;
+      font-size: 13px;
+      @include mixins.flex($width: 5rem, $direction: row-reverse);
+      @include mixins.interactive();
+    }
+    > button:first-child {
+      box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+      @include mixins.glass-button(
+        var.$modal-btn-green-from,
+        var.$modal-btn-green-to
+      );
+    }
+    > button:last-child {
+      box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+      @include mixins.glass-button(
+        var.$modal-btn-red-from,
+        var.$modal-btn-red-to
+      );
+      display: flex;
+      min-width: 5rem;
+    }
+  }
+  & &__title-wrap {
+    @include mixins.flex($width: 100%);
+    top: 16%;
+    z-index: 1;
+    left: 0;
+  }
+
+  &__title {
+    @include mixins.set-text(main, semibold, xl);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+    &-divider {
+      color: var.$accent;
+      @include mixins.dividier('normal', 2px, $width: 90%);
+      margin-bottom: 0.2rem;
+
+      box-shadow: -4px -6px 14px 7px rgba(255, 255, 255, 5%),
+        0 7px 11px 4px rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+.char-counter {
+  @include mixins.set-text(muted, regular, md);
+  position: absolute;
+  &[data-for='list-input'] {
+    top: 32%;
+    left: 80%;
+  }
+  &[data-for='list-description'] {
+    top: 68%;
+    left: 78%;
+  }
+
+  &.exceeded {
+    color: var.$formError;
+    filter: drop-shadow(0px 1px 1px rgba(238, 94, 91, 0.1));
+  }
+}

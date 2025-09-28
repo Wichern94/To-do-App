@@ -3,739 +3,1024 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/theme.css">
-    <link rel="stylesheet" href="css/buttons.css">
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/register.css">
-    <link rel="stylesheet" href="css/forget.css">
-    <link rel="stylesheet" href="css/roudmap.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/utils.css">
-    <link rel="stylesheet" href="css/main.css">
-    <!-- biblioteki: -->
-        <!-- Animate.css: -->
-         <link
-         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-        />
 
-        <!-- JSPLUMb: -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <title>Power Task</title>
+    <meta name="description" content="Power Task is a learning companion app that helps you plan tasks, track study sessions, and measure time spent on different topics." />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300..700&display=swap&subset=latin-ext" rel="stylesheet">
+
+    <!-- LIBRARIES: -->
+    <!-- Animate.css: -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/></noscript>
+    
+    <!--  Toastify: -->
+    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/></noscript>  
+    
+        
+    <!-- JSPLUMb: -->
     <script defer src="https://cdn.jsdelivr.net/npm/jsplumb@2.15.6/dist/js/jsplumb.min.js" ></script>
-        <!-- anime.js: -->
+    <!-- anime.js: -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-        <!-- canvas Confetti: -->
+    <!-- canvas Confetti: -->
     <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-        <!--  Toastify: -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <!--  Toastify: -->
     <script defer src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    
+    <!--  JavaScript: -->
+    <script defer type="module" src="js/main.js" ></script>
+</head>
+         
+        
+        
+
 
 
     
-    <!-- MOj JavaScript: -->
-    <script defer type="module" src="js/main.js" ></script>
 
  
-</head>
 <body  id="app" class="dark-theme  ">
 
     
 
-    <!-- EKRAN LOGOWANIA: -->
+    <!-- LOGIN VIEW: -->
     
-    <section id = "login-screen" class="screen apk-look">
-    <header>
-        <h1>Witamy, w PowerTask</h1>
+    <section id = "login-screen" class="auth apk-look">
+    <header class="auth__brand">
+        <h1 class="auth__title">Welcome to PowerTask</h1>
     </header>
-    <main>
+    <main class ="auth__main">
          
-        <section class="login" aria-labelledby="login-section">
-            <img  src="assets/user-shield-alt-1-svgrepo-com.svg" class="user-image" alt="user icon"/>
-            <h2 id= "login-section"> Zaloguj się</h2>
-            <form  id="lgn-from" class="login-form" action="#" method="POST">
-                <div class = "input-container">
-                    <p class="err-message err-msg hidden" data-for="email"></p>
-                    <input class="log-input" type="text" id="username" name="email" autocomplete="off" placeholder=" " >
-                    <label for="email" class="log-label labs"> E-mail:</label>
+        <section class="login auth__pane" aria-labelledby="login-section">
+            <span class="auth__icon" 
+                  aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                       fill="none"
+                       viewBox="0 0 24 24"
+                       stroke-width="1.5"
+                       stroke="currentColor"
+                       
+                       focusable="false">
+                       <path stroke-linecap="round"
+                             stroke-linejoin="round"
+                             d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                       
+                    </svg>
+            </span>  
+                  
+
+           
+
+            <h2 id="login-section"
+                class="auth-form__title">Sign in
+            </h2>
+
+            <form  id="lgn-form"
+                   class="auth-form"
+                   action="#"
+                   method="POST"
+                   novalidate>
+                <div class = "auth-form__field">
+                    <p class="err-message auth-form__error hidden"
+                       data-for="email"
+                       role="alert"
+                       aria-live="polite"></p>
+
+                    <input class="auth-form__input"
+                           type="email"
+                           id="email"
+                           name="email"
+                           autocomplete="email"
+                           placeholder=" ">
+                    <label for="email" class="auth-form__label"> E-mail:</label>
+                </div>
                     
+                <div class = "auth-form__field">
+                    <p class="err-message  hidden auth-form__error"
+                       data-for="password"
+                       role="alert"
+                       aria-live="polite"></p>
+
+                    <input class="auth-form__input"
+                           type ="password"
+                           id = "password"
+                           name = "password" 
+                           autocomplete="current-password" 
+                           placeholder=" ">
+                    <label for="password" class=" auth-form__label">Password:</label>
                 </div>
-                <div class = "input-container">
-                    <p class="err-message err-msg hidden" data-for="password"></p>
-                    <input class="pass-input" type ="password" id = "password" name = "password" autocomplete="off" placeholder=" ">
-                    <label for="password" class="pass-label labs">Hasło:</label>
+                <div class="auth-form__actions">
+                    <button class="login-btn btn" type="submit">Sign in</button> 
                 </div>
-                <button class="login-btn btn" type="submit">Zaloguj się</button> 
             </form>
         </section>
         
 
-        <section class="forget-password" aria-labelledby="forgot-password-section">
-            <p class ="log-q" id ="forgot-password-section">Nie pamiętasz hasła ?</p>
-            <h5>
-                <button class="forget-link btn" ><b>Kliknij tutaj</b></button>
-            </h5>
-        </section>
-        <section class="register" aria-labelledby="register-account-section">
-            <p class ="log-q" id ="register-account-section">Nie masz konta ? </p>
-            <h5>
-                <button class="register-link btn" ><b>Kliknij tutaj</b></button>
-            </h5>
+        <section class="auth__pane-links" 
+                 aria-label="Login links and options">
+            <div class="auth__pane-links__group">
+                <p class ="log-q">Forgot your password?</p>
+                
+                    <button class="forget-link btn"
+                            type="button"
+                            data-action="open-forgot">
+                            <b>Click here</b>
+                    </button>
+                
+            </div>
+
+            <div class="auth__pane-links__group">
+                <p class ="log-q " >Don't have an account? </p>
+                
+                    <button class="register-link btn" 
+                            type="button"
+                            data-action="open-register">
+                            <b>Create account</b>
+                    </button>
+                
+            </div>  
+        
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Coded by Mateusz.Kabaja. Wszelkie prawa zastrzeżone</p>
+    <footer class="auth__footer">
+        <p>&copy; 2025 Coded by Mateusz Kabaja. All rights reserved.</p>
     </footer>
 
 </section>
-<!-- APLIKACJA WŁASCIWA -->
+<!-- MAIN APP -->
 <section id ="todo-screen" class="apk-screen hidden apk-look" aria-labelledby="Main-app-section">
-    <main  id ="main-app"class="app-screen">
-    <section  id="view-standard">
-         <aside id="main-burger-menu" class="burger-menu hidden"> <!-- główny hamburger -->
-            <div class="sidebar-container">
-                <div class= "exit-btn-container">
-                    <h4 class = "brgr-menu">Menu</h4>
-                    <button id="main-burger-exit" class="exit-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                        </svg>
-                    </button>
-
-                </div>
-                
-                <div class="search-bar">
-                    <button class="search-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
-                    </button>
-
-                    <input class="log-input" type="text" id="search" name="search" autocomplete="off" placeholder=" " >
-                    <label for="search" class="log-label labs "> Szukaj...</label>
-                </div>
-                <div class="divider"></div>
-
-            
-                <nav class="nav-section">
-                    <p class="section-label">Dzisiaj</p>
-                    <a href="#" class="nav-link"><span>🌞</span> Mój dzień</a>
-                    <a href="#" class="nav-link"><span>📅</span> Kalendarz</a>
-                </nav>
-
-                <div class="divider"></div>
-
-                <nav class="nav-section">
-                    <p class="section-label">Workspace</p>
-                    <a href="#" class="nav-link"><span>🔲</span> Wszystkie</a>
-                    <a href="#" class="nav-link"><span>📋</span> Zadania</a>
-                    <a href="#" class="nav-link"><span>📝</span> Notatki</a>
-                </nav>
-
-                <div class="divider"></div>
-
-                <nav class="nav-section">
-                    <p class="section-label">Projekty</p>
-                    <a href="#" class="nav-link"><span>#</span> Default</a>
-                    <a href="#" class="nav-link"><span>#</span> New-Design</a>
-                </nav>
-
-                <div class="bottom-action">
-                    <a href="#" class="new-list-btn">➕ Nowy Projekt</a>
-                </div>
-            </div>
-        </aside>
-       
-
-
-        <section  id="view-header" class="background" aria-labelledby="user-stuff-section">
-            
-            
-                <div class="user-menu">
-                    <button  id ="main-hamburger" class = "menu-toggle apk-ui-btn" aria-label="open menu">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-                        </svg>
-                    </button>
-                    
-                </div>
-                    
-
-                    
-            
-        
-        <nav id="carousel-cont" class="carousel-wrapper" aria-label="Tryb widoku">
-            <ul  class="carousel">
-                
-                <li class="carousel-item">
-                    <button class="carusel-btn" data-view="roadmap">
-                        <svg  class="svg-modes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="110" height="110" fill="#6BCDCE">
-                            <!-- Mapa -->
-                            <path d="M10 20 L10 50 L25 40 L39 50 L54 40 L54 10 L39 20 L25 10 Z" fill="none" stroke="#6BCDCE" stroke-width="2"/>
-                            <!-- Trasa -->
-                            <path d="M12 48 Q18 36 25 40 T35 42 T50 32" fill="none" stroke="#6BCDCE" stroke-width="2" stroke-dasharray="3,3"/>
-                            
-                            <!-- Bug -->
-                            
-  
-                                <!-- Pinezka -->
-                                <circle cx="16" cy="34" r="3" fill="#6BCDCE"/>
-                                <circle cx="16" cy="34" r="1.2" fill="white"/>
-                            </svg>
-
-                        Roadmapa</button>
-                </li>
-                 <li class="carousel-item">
-                    <button class="carusel-btn" data-view="list">
-                        <svg class="svg-modes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="110" height="110" fill="#6BCDCE">
-                        <!-- Rama -->
-                        <rect x="12" y="14" width="40" height="36" rx="2" ry="2" fill="none" stroke="#6BCDCE" stroke-width="2"/>
-                        
-                        <!-- Linie zadań -->
-                        <line x1="22" y1="22" x2="44" y2="22" stroke="#6BCDCE" stroke-width="2"/>
-                        <line x1="22" y1="30" x2="44" y2="30" stroke="#6BCDCE" stroke-width="2"/>
-                        <line x1="22" y1="38" x2="44" y2="38" stroke="#6BCDCE" stroke-width="2"/>
-
-                        <!-- Checkboxy -->
-                        <rect x="16" y="19" width="4" height="4" fill="#6BCDCE"/>
-                        <rect x="16" y="27" width="4" height="4" fill="#6BCDCE"/>
-                        <rect x="16" y="35" width="4" height="4" fill="#6BCDCE"/>
-                        </svg>
-
-                    Lista</button>
-                </li>
-                <li class="carousel-item">
-                    <button class="carusel-btn" data-view="calendar">
-                        <svg class="svg-modes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="110" height="110" fill="#6BCDCE">
-                            <!-- Kalendarz -->
-                            <rect x="10" y="16" width="44" height="36" rx="2" ry="2" fill="none" stroke="#6BCDCE" stroke-width="2"/>
-                            
-                            <!-- Siatka dni -->
-                            <g stroke="#6BCDCE" stroke-width="1.5">
-                                <line x1="10" y1="26" x2="54" y2="26"/>
-                                <line x1="20" y1="16" x2="20" y2="52"/>
-                                <line x1="30" y1="16" x2="30" y2="52"/>
-                                <line x1="40" y1="16" x2="40" y2="52"/>
-                            </g>
-                            </svg>
-                    Kalendarz</button>
-                </li>
-            </ul>
-        </nav>
-        <div class="user-settings">
-                
-            <button class="apk-ui-btn user-btn" id="user-menu-btn">
-                <svg class="user-portrait" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
+    <!-- CAROSUSEL SECTION -->
+    <section  id="view-header" class="background" aria-labelledby="user-stuff-section">
+        <div class="auth-carousel__actions ">
+            <button class="auth-carousel__actions--logout btn btn--ghost "
+                    type="button"
+                    aria-label="Sign out"
+                    data-action="logout">
+                    Sign out
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke-width="1.5"
+                         stroke="currentColor">
+                         <path stroke-linecap="round" 
+                               stroke-linejoin="round" 
+                               d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
+                    </svg>
+            </button>
+        </div>
+        <div class="auth-carousel__navigations hidden">
+            <button class="auth-carousel__navigations--left inactive "
+                    type="button"
+                    aria-label="left"
+                    data-action="left">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         height="24px"
+                         viewBox="0 -960 960 960"
+                         width="24px"
+                         fill="currentColor">
+                         <path d="M160-240H80v-480h80v480Zm320 0L240-480l240-240 56 56-143 144h487v80H393l144 144-57 56Z"/>
+                    </svg>
+            </button>
+            <button class="auth-carousel__navigations--right"
+                    type="button"
+                    aria-label="right"
+                    data-action="right">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         height="24px"
+                         viewBox="0 -960 960 960"
+                         width="24px"
+                         fill="currentColor">
+                         <path d="M800-240v-480h80v480h-80Zm-320 0-57-56 144-144H80v-80h487L424-664l56-56 240 240-240 240Z"/>
+                    </svg>
             </button>
 
-              <aside class="dropdown hidden" id="open-user-settings"> <!-- mini hamburger  ustawienia/wyloguj itd-->
-            <div class="dropdown-container">
-                 <div class= "goback-btn-container">
-                    <h4 class = "=user-brgr-menu">User</h4>
-                    <button class="exit-btn exit-btn2" id="user-menu-exit">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                        </svg>
-                    </button>
-                </div>
-                <nav class="user-nav-section">
-                    <button class="dropdown-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                        width="24" height="24" viewBox="0 0 24 24" 
-                        fill="none" stroke="currentColor" stroke-width="2" 
-                        stroke-linecap="round" stroke-linejoin="round" 
-                        class="lucide lucide-user-cog-icon lucide-user-cog">
-                        <path d="M10 15H6a4 4 0 0 0-4 4v2"/><path d="m14.305 16.53.923-.382"/><path d="m15.228 13.852-.923-.383"/><path d="m16.852 12.228-.383-.923"/><path d="m16.852 17.772-.383.924"/><path d="m19.148 12.228.383-.923"/><path d="m19.53 18.696-.382-.924"/><path d="m20.772 13.852.924-.383"/><path d="m20.772 16.148.924.383"/><circle cx="18" cy="15" r="3"/><circle cx="9" cy="7" r="4"/></svg>
-                    Ustawienia </button>
-                    
-                    <button  id="logout-btn" class="dropdown-btn" type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
-                    Wyloguj</button>
-                    
-                </nav>
-            </div>
-
-            
-
-        </aside>
-                    
-                    
-                    
-
-                
-            </div>
-            <div class="separator">
-                <svg width="310" height="30" viewBox="0 0 310 30" xmlns="http://www.w3.org/2000/svg">
-                <!-- Lewy schodkowy łuk (przesunięty bliżej środka) -->
-                <rect x="30"  y="20" width="6" height="6" fill="#333" />
-                <rect x="45"  y="18" width="6" height="6" fill="#333" />
-                <rect x="60"  y="16" width="6" height="6" fill="#333" />
-                <rect x="75"  y="14" width="6" height="6" fill="#333" />
-                <rect x="90"  y="12" width="6" height="6" fill="#333" />
-                <rect x="105" y="11" width="6" height="6" fill="#333" />
-
-                <!-- Prawy schodkowy łuk (symetrycznie) -->
-                <rect x="200" y="11" width="6" height="6" fill="#333" />
-                <rect x="215" y="12" width="6" height="6" fill="#333" />
-                <rect x="230" y="14" width="6" height="6" fill="#333" />
-                <rect x="245" y="16" width="6" height="6" fill="#333" />
-                <rect x="260" y="18" width="6" height="6" fill="#333" />
-                <rect x="275" y="20" width="6" height="6" fill="#333" />
-
-                <!-- Środkowe kwadraty nawigacyjne z odstępami -->
-                <rect x="130" y="13" width="6" height="6" fill="#444" class="dot"   id='sep-r'/>
-                <rect x="150" y="11" width="6" height="6" fill="#444" class="dot "   id="sep-l"/>
-                <rect x="170" y="13" width="6" height="6" fill="#444" class="dot"  id="sep-c"/>
-                </svg>
-            </div>
-            
-
-
-
-
-
-        </section>
-        
-            
-                
-
-            
-        <section  id="li-sctn" class=" modes list-section" aria-labelledby="tasks-section">
-                 <h4 id="tasks-section" class="tasks">Zadania:</h4>
-
-                <dialog  id="create-task-menu" class="task-modal hidden " >
-                    <form id="new-task-form" method="post" class=" task-modal-cont" aria-labbeledby ="modal-title">
-                        <span class="new-task-title">
-                            <h3 id="modal-title">Nowe zadanie</h2>
-                        </span>
-
-                        <section class="modal-section-form">
-                            <input class="task-title" type="text" id="title" name="tytuł" autocomplete="off" placeholder="Podaj Tytuł..." >
-                            <p class="err-message err-msg-new-task hidden" data-for="tytuł"></p>
-                             <fieldset class="element-carusel-container">
-                                    <div class="tag-container  "><span class="tag-lbl">Tagi</span>
-                                        
-                                        <button type="button" id="tag-toggle-btn" class="tag-btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-                                    </button>
-                                    <ul id="tag-body" class=" tag hidden">
-                                        
-                                        <li class="task-tag " >
-                                            <label for="tag-praca" class="label-tag-element label-fisrt"> 
-                                                <input type="radio" class="input-tag-element" id="tag-praca" name="tag-choice" value="#Praca">
-                                                <span class="checkmark"></span>
-                                                #Praca
-                                            </label>
-                                           </li>
-                                        <li class="task-tag">
-                                            <label for="tag-dom" class="label-tag-element"> 
-                                                <input type="radio" class="input-tag-element" id="tag-dom" name="tag-choice" value="#Dom">
-                                                <span class="checkmark"></span>
-                                                #Dom
-                                            </label>
-                                            </li>
-                                        <li class="task-tag">
-                                            <label for="tag-hobby" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="tag-hobby" name="tag-choice" value="#Hobby">
-                                                <span class="checkmark"></span>
-                                                #Hobby 
-                                            </label>
-                                            </li>
-                                        <li class="task-tag">
-                                            <label for="tag-nauka" class="label-tag-element"> 
-                                                <input type="radio" class="input-tag-element" id="tag-nauka" name="tag-choice" value ="#Nauka">
-                                                <span class="checkmark"></span>
-                                                #Nauka
-                                            </label>
-                                            </li>
-                                    </ul>
-                                </div>
-                                <div class="tag-container "><span class="tag-lbl">Dziś</span>
-                                    <button type="button" id="day-toggle-btn" class="tag-btn">
-                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-                                    </button>
-                                    <ul  id="day-body" class="task-tag tag hidden">
-                                        
-                                        <li class="task-tag " >
-                                            <label for="day-today" class="label-tag-element label-fisrt"> 
-                                                <input type="radio" class="input-tag-element" id="day-today" name="day-choice" value="Dzis" checked>
-                                                <span class="checkmark"></span>
-                                                Dziś
-                                            </label>
-                                           </li>
-                                        <li class="task-tag">
-                                            <label for="day-tommarow" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="day-tommarow" name="day-choice" value="Jutro">
-                                                <span class="checkmark"></span>
-                                                Jutro 
-                                            </label>
-                                            </li>
-                                        <li class="task-tag">
-                                            <label for="day-yesteday" class="label-tag-element"> 
-                                                <input type="radio" class="input-tag-element" id="day-yesteday" name="day-choice" value="Wczoraj">
-                                                <span class="checkmark"></span>
-                                                Wczoraj
-                                            </label>
-                                            </li>
-                                        <li class="task-tag">
-                                            <label for="this-week" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="this-week" name="day-choice" value="w tygodniu">
-                                                <span class="checkmark"></span>
-                                                W tygodniu 
-                                            </label>
-                                            </li>
-                                    </ul>
-                                </div>
-                                <div class="tag-container "><span class="tag-lbl">Priorytet</span>
-                                    <button type="button" id="prio-toggle-btn" class="tag-btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
-                                    </button>
-                                    <ul id="prio-body" class="task-tag tag hidden">
-                                        
-                                        <li class="task-tag " >
-                                            <label for="low" class="label-tag-element label-fisrt">
-                                                <input type="radio" class="input-tag-element" id="low" name="prio-choice" value="Maly">
-                                                <span class="checkmark"></span>
-                                                Mały
-                                            </label>
-                                        </li>
-                                        <li class="task-tag">
-                                            <label for="medium" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="medium" name="prio-choice" value="Sredni">
-                                                <span class="checkmark"></span>
-                                                Średni
-                                            </label>
-                                        </li>
-                                        <li class="task-tag">
-                                            <label for="hard" class="label-tag-element">
-                                                <input type="radio" class="input-tag-element" id="hard" name="prio-choice" value="Duzy">
-                                                <span class="checkmark"></span>
-                                                Duży
-                                            </label>
-                                        </li>
-                                        
-                                    </ul>
-                                </div>
-                                <div class="tag-errors">
-                                    <p class=" err-message error-msg  err1 hidden" data-for="tag-choice"></p>
-                                    
-                                    <p class=" err-message error-msg err2 hidden" data-for="prio-choice"></p>
-                                </div>
-                                
-                                    
-                            </fieldset>
-
-                            <textarea id="task-desc" name="desc" class="task-discription" placeholder="Napisz opis..."></textarea>
-                            <div class="task-btns">
-                                <button type="button" id="submit-task" class="task-handler-btn aprove">Dodaj
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                                </button>
-                                <button type="button" id="abandon-btn" class="task-handler-btn abandon">Anuluj
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                                </button>
-                            </div>
-                        </section>
-                           
-                        
-                    </form>
-                </dialog>
-
-
-                
-                   <div class="list-box">
-                    <ul  id="task-contener" class="task-list"></ul>
-                        
-                                
-
-                        <button id="ad-tsk" class="add-task">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-                            <!-- Ramka -->
-                            <rect x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#6BCDCE" stroke-width="2"/>
-                            
-                            <!-- Plus -->
-                            <line x1="24" y1="16" x2="24" y2="32" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
-                            <line x1="16" y1="24" x2="32" y2="24" stroke="#6BCDCE" stroke-width="3" stroke-linecap="round" />
-                            </svg>
-
-                        </button>
-                                
-
-                                
-                            
-                                
-                            
-                        
-                                
-
-                                
-
-                                
-                            
-                            
-                        
-                        
-                                
-
-                                
-
-                           
-
-                            
-                      
-                    
-                    
-                    
-                </div>
-        </section>
-        <!-- tryb Roadmapy -->
-        <section id="roadmap-view" class=" modes roadmap-section hidden" aria-labelledby="roadmap-section-title">
-  
-     <dialog  id="create-roud-menu" class="roud-modal  hidden" >
-        <fieldset  id="modal-ui-panel" class="modal-section hidden">
-        <div class="modal-tab-bar">
-            <button id="hand-button" class="tab-btn hand-btn" data-mode="manual">Dodaj Ręcznie</button>
-            <button id="import-button" class="tab-btn import-btn" data-mode="import">Importuj</button>
         </div>
-        <form id="manual-node-form" class="manual-content ">
-            <span class="new-roud-title">
-                <h3 id="modal-title">Dodaj Element</h3>
-            </span> 
-                <div class="roud-input-container">
-                    <input class="roudnode-title" type="text" id="r-title" name="roud-title" autocomplete="off" placeholder="Podaj Tytuł..." >
-                    <p class="err-message err-msg-new-task hidden" data-for="roud-title"></p>
-                </div>
-            <label class="modal-subtask">
-                <input type="checkbox" class = "roud-disabld-checkbox" id="roud-checkbox" />
-                <span class="modal-custom-check"></span>
-                <span class="modal-subtask-text">Chce dodać Sub-Element'y</span>
-            </label>
-            <div class = "sub-element-container  hidden" id="sub-container">
-                <input class="roudnode-title" type="text" id="r-sub" name="roud-sub" autocomplete="off" placeholder="Nazwa..." >
-                <p class="err-message err-msg-new-task hidden" data-for="roud-sub"></p>
-                <button class="modal-roud-btn" id="add-subtask-btn" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    
+
+        <nav id="carousel-cont"
+             class="auth-carousel"
+             aria-label="View mode">
+
+            <ul  class="auth-carousel__list"
+                 role="tablist">
+                 <li class="auth-carousel__item"
+                     role="presentation">
+                
+                    <button class="carusel-btn auth-carousel__button" 
+                            data-view="roadmap"
+                            role="tab"
+                            aria-selected="false"
+                            tabindex="-1">
+                        <svg  class="svg-modes" 
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 64 64"
+                              width="110"
+                              height="110"
+                              fill="#6BCDCE"
+                              aria-hidden="true"
+                              focusable="false">
+                              <path d="M10 20 L10 50 L25 40 L39 50 L54 40 L54 10 L39 20 L25 10 Z"
+                                    fill="none"
+                                    stroke="#6BCDCE"
+                                    stroke-width="2"/>
+                              <path d="M12 48 Q18 36 25 40 T35 42 T50 32"
+                                    fill="none"
+                                    stroke="#6BCDCE"
+                                    stroke-width="2"
+                                    stroke-dasharray="3,3"/>
+                              <circle cx="16" cy="34" r="3" fill="#6BCDCE"/>
+                              <circle cx="16" cy="34" r="1.2" fill="white"/>
+                        </svg>
+                    ROADMAP
+                </button>
+            </li>
+            <li class="auth-carousel__item"
+                role="presentation">
+                <button class="carusel-btn auth-carousel__button"
+                        data-view="list"
+                        role="tab"
+                        aria-selected="false"
+                        tabindex="-1">
+                    <svg class="svg-modes"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 64 64"
+                         width="110"
+                         height="110"
+                         fill="#6BCDCE"
+                         aria-hidden="true"
+                         focusable="false">
+                         <rect x="12"
+                               y="14"
+                               width="40"
+                               height="36"
+                               rx="2"
+                               ry="2"
+                               fill="none"
+                               stroke="#6BCDCE"
+                               stroke-width="2"/>
+                               <line x1="22" y1="22" x2="44" y2="22" stroke="#6BCDCE" stroke-width="2"/>
+                               <line x1="22" y1="30" x2="44" y2="30" stroke="#6BCDCE" stroke-width="2"/>
+                               <line x1="22" y1="38" x2="44" y2="38" stroke="#6BCDCE" stroke-width="2"/>
+                               <rect x="16" y="19" width="4" height="4" fill="#6BCDCE"/>
+                               <rect x="16" y="27" width="4" height="4" fill="#6BCDCE"/>
+                               <rect x="16" y="35" width="4" height="4" fill="#6BCDCE"/>
                     </svg>
+                    LIST
+                </button>
+            </li>
+        </ul>
+    </nav>
+    <div class="separator">
+        <svg width="310" height="30" viewBox="0 0 310 30" xmlns="http://www.w3.org/2000/svg">
+        
+        <rect x="30"  y="20" width="6" height="6" fill="#333" />
+        <rect x="45"  y="18" width="6" height="6" fill="#333" />
+        <rect x="60"  y="16" width="6" height="6" fill="#333" />
+        <rect x="75"  y="14" width="6" height="6" fill="#333" />
+        <rect x="90"  y="12" width="6" height="6" fill="#333" />
+        <rect x="105" y="11" width="6" height="6" fill="#333" />
+
+        
+        <rect x="200" y="11" width="6" height="6" fill="#333" />
+        <rect x="215" y="12" width="6" height="6" fill="#333" />
+        <rect x="230" y="14" width="6" height="6" fill="#333" />
+        <rect x="245" y="16" width="6" height="6" fill="#333" />
+        <rect x="260" y="18" width="6" height="6" fill="#333" />
+        <rect x="275" y="20" width="6" height="6" fill="#333" />
+
+        
+        <rect x="130" y="13" width="6" height="6" fill="#444" class="dot"   id='sep-r'/>
+        <rect x="150" y="11" width="6" height="6" fill="#444" class="dot"   id="sep-c"/>
+        <rect x="170" y="13" width="6" height="6" fill="#444" class="dot"  id="sep-l"/>
+        </svg>
+    </div>
+</section>
+                    
+                            
+                            
+                            
+                            
+                            
+  
+                                
+
+                        
+                        
+                        
+
+                        
+
+               
+      
+        
+        <!-- TODO LIST SECTION -->
+    <section id="list-view" class="todo modes" aria-labelledby="tasks-section-title">
+    <h2 id="tasks-section-title" class="todo__heading">Tasks</h2>
+    
+    <!-- TASK CREATION MODAL -->
+    <dialog id="create-task-menu"
+            class="task-modal hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title">
+        
+        
+    
+        <section class="task-modal__section hidden">
+            <!-- Title -->
+            <header class="task-modal__title-wrap">
+                <h3 id="modal-title" class="task-modal__title">Add new task</h3>
+                <div class="task-modal__title-divider"></div>
+            </header>
+            <form id="list-form" class="task-modal__form" method="post">
+            <div class="task-modal__form-title-wrap">  
+                <input class="task-modal__input-title task-title"
+                    type="text"
+                    id="list-input"
+                    name="title"
+                    autocomplete="off"
+                    maxlength="25"
+                    placeholder=" " />
+                <label  for="list-input">Subtask Title</label>
+            </div> 
+            <span class="char-counter" data-for="list-input"></span>
+            <p class="task-modal__error task-modal__error--title err-message  hidden"
+                data-for="title"
+                role="alert"
+                aria-live="polite"></p>
+            
+                <!-- Description -->
+            <div class="task-modal__form-textarea-wrap">   
+                <textarea id="list-description"
+                        name="desc"
+                        class="task-modal__textarea"
+                        maxlength="100"
+                        placeholder=" "></textarea>
+                <label  for="list-description">Description</label>         
+                <span class="char-counter" data-for="list-description"></span>
+            </div>
+                <!-- Modal actions -->
+                <div class="task-modal__actions ">
+                <button type="submit"
+                        id="submit-task"
+                        class="task-modal__btn task-modal__btn--submit task-handler-btn ">
+                    Add
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button"
+                        id="abandon-btn"
+                        class="task-modal__btn task-modal__btn--cancel task-handler-btn ">
+                    Cancel
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 </div>
-                <ul class="modal-sub-task-list hidden" id="subtask-list">
-                   
-                </ul>
-                <div class="task-btns">
-                    <button type="button" id="manual-submit-btn" class="task-handler-btn aprove">Dodaj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                    </button>
-                    <button type="button" id="manual-abandon-btn" class="task-handler-btn abandon">Anuluj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                    </button>
-                </div>
-
-            
-            
-            
-            
-                     
-                     
                 
-
-        </form>
-        <form id="import-node-form" class="import-content hidden">
-            <span class="new-import-title">
-                <h3 id="import-modal-title">Importuj RoadMapę!</h3>
-            </span> 
-            
-            <div class="import-text">
-                <p class="err-message err-msg-import hidden" data-for="import"></p>
-                <textarea id="import-desc" name="import" class="import-discription" placeholder="Wklej..."></textarea>
-            </div>
-            
-            <div class="task-btns">
-                    <button type="button" id="import-submit-node" class="task-handler-btn aprove">Dodaj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                    </button>
-                    <button type="button" id="import-abandon-btn" class="task-handler-btn abandon">Anuluj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                    </button>
-            </div>
-            <div class="helper-footer">
-                <p>Mozesz użyc chatGPT do wygenerowania roudmapy!<br><button type ="button" id="promt-btn"class="text-button">kliknij!</button> aby skopiowac promt.</p>
-            </div>
-        </form>
-            </fieldset>
-
-                    
-                        
-                        
-                           
+            </section>
+    </form>
     </dialog>
-  
-  <div class="roadmap-box">
-    <div id ="list-toggler-ID"class="list-toggler ">
-        <h4 id="roadmap-section-title" class="roud-title">Nie masz Roadmap!</h4>
-        <div class="roadmap-select-bar">
-            <button id="new-map-btn" class="add-roadmap-btn" type="button">Nowa
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    
+            
+    
+            
+    
+            
+            
+    
+    
+    <!-- LIST + ADD BUTTON -->
+    <div class="todo__box list-box">
+        <ul id="task-container" class="todo__list" aria-live="polite">
+        
+            </ul>
+        <button id="todo-open-modal-ID"
+                class="todo__open-modal--btn "
+                type="button"
+                aria-label="Add task">
+    
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    aria-hidden="true"
+                    viewBox="0 0 48 48">
+    
+                <rect x="4"
+                    y="4"
+                    width="40"
+                    height="40"
+                    rx="6"
+                    ry="6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"/>
+    
+                <line x1="24"
+                    y1="16"
+                    x2="24"
+                    y2="32"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"/>
+    
+                <line x1="16"
+                    y1="24"
+                    x2="32"
+                    y2="24"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"/>
                 </svg>
             </button>
         </div>
-        <div class="roadmap-list-container">
-            <ul id="ul-container" class="roadmap-list-selector">
-                <!-- <li  class="roadmap-list-item">
-                    <p class="roadmap-list-item-text">Javascrpit</p>
-                    <div class="list-bttns">
-                         <button  class="delete-road-btn roud-list-btns" aria-label="delete task">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
+    </section>
+                  
+ 
+         <!-- ROADMAP SECTION-->
+    <section id="roadmap-view"
+            class="modes roadmap-section hidden roadmap" 
+            aria-labelledby="roadmap-section-title"
+            data-roadmap-id="">
+        
+        <h2 id="roadmap-section-title" class="visually-hidden">Roadmaps</h2>
+    
+        <dialog id="add-node-element-dialog"
+                class="hidden selector-modal"
+                data-role="selector-modal" 
+                aria-labelledby="create-modal-title"
+                aria-modal="true">
+    
+            <fieldset id="add-node-element-fieldset"
+                    class="hidden selector-modal__panel">
+    
+                <div class="selector-modal__tabs selector-modal__panel-nav"
+                    role="tablist"
+                    aria-label="Selector modal modes">
+    
+                    <button id="manual-btn"
+                            class="selector-modal__tab-btn selector-modal__tab-btn--manual pressed"
+                            data-mode="manual"
+                            role="tab"
+                            aria-selected="true"
+                            aria-controls="manual-node-form">Add Manually
+                    </button>
+    
+                    <button id="import-btn"
+                            class="selector-modal__tab-btn selector-modal__tab-btn--import "
+                            data-mode="import"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="import-node-form">Import
+                    </button>
+                </div>
+    
+                <form id="add-node-form--manual"
+                    class="selector-modal__form selector-modal__form--manual"
+                    autocomplete="off"
+                    role="tabpanel"
+                    aria-labelledby="hand-button"
+                    data-mode="manual">
+                    
+                <span class="selector-modal__title-wrap">
+                    <h3 id="modal-title"
+                        class="selector-modal__title">Create Roadmap</h3>
+                        <div class="task-modal__title-divider"></div>
+                </span>
+    
+                <div class="selector-modal__input-wrap">
+                    <input class="selector-modal__input"
+                            type="text"
+                            id="form--manual-input-title"
+                            name="create-map-title"
+                            autocomplete="off"
+                            placeholder=" "
+                            maxlength="25">
+                    
+                    <label class="selector-modal__input-label--title"
+                            for="add-node-form--manual-input">Title</label>
+                            
+                    <span class="char-counter" data-for="form--manual-input-title"></span>
+                    <p class="err-message  hidden selector-modal__error selector-modal__error--title"
+                        data-for="create-map-title"></p>
+                </div>
+    
+                
+    
+                <div class ="selector-modal__subtask-wrap"
+                    id="sub-container">
+    
+                    <input class="selector-modal__subtask-input-title"
+                            type="text"
+                            id="form--manual-input-subelements"
+                            name="roadmap-subelements"
+                            autocomplete="off"
+                            placeholder=" "
+                            maxlength="20">
+                    <label class="selector-modal__input-label--subtask" for="form--manual-input-subelements">Subtask Title</label>
+                    <span class="char-counter " data-for="form--manual-input-subelements"></span>
+                    <p class="err-message  hidden selector-modal__error selector-modal__error--subtasks"
+                        data-for="roadmap-subelements"></p>
+    
+                    <button class="selector-modal__btn selector-modal__subtask-add-btn"
+                            id="subtask-add-btn"
+                            type="button"
+                            aria-label="add-sub-item"
+                            data-action="subtask">
+    
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-6" aria-hidden="true">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+                    </button>
+    
+    
+                    </div>
+                    <ul class="selector-modal__subtask-list "
+                        id="subtask-list"></ul>
+                        
+                    
+                    <div class="selector-modal__actions"
+                        role="group"
+                        aria-label="Create roadmap actions">
+    
+                        <button type="submit"
+                                id="form--manual-submit-btn"
+                                class="aprove  selector-modal__btn selector-modal__btn--confirm">Add
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-check-icon lucide-check">
+                                <path d="M20 6 9 17l-5-5"/></svg>
                         </button>
-                        <button class="enter-road-btn roud-list-btns">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                            </svg>
-
+    
+                        <button type="button"
+                                id="form--manual-cancel-btn"
+                                class="abandon selector-modal__btn selector-modal__btn--cancel"
+                                data-action="cancel"
+                                data-mode="manual">Cancel
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="lucide lucide-x-icon lucide-x">
+                                    <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                                </svg>
                         </button>
                     </div>
-                </li> -->
+                </form>
+    
+                <form id="add-node-form--import"
+                    class="hidden selector-modal__form selector-modal__form--import"
+                    role="tabpanel"
+                    aria-labelledby="import-button"
+                    data-mode="import">
+                    
+                    <span class="selector-modal__title-wrap">
+                        <h3 id="import-modal-title"
+                            class="selector-modal__title">Import Roadmap!
+                            <div class="task-modal__title-divider"></div>
+                        </h3>
+                    </span> 
                 
-            </ul>
+                
+                    <div class="selector-modal__form-import--textarea-wrap">
+                        <p class="err-message  hidden  selector-modal__error--import" data-for="import"></p>
+                        <textarea id="form--import-textarea"
+                                    name="import"
+                                    class="import-discription selector-modal__form-import-textarea"
+                                    placeholder=" "
+                                    maxlength="2000">
+                            </textarea>
+                        <label class="selector-modal__form-import-label" for="form--import-textarea">Paste Here...</label>
+                        <span class="char-counter char-counter-import" data-for="form--import-textarea"></span>
+                    </div>
+                
+                    <div class="selector-modal__actions selector-modal__actions--import"
+                            role="group"
+                            aria-label="Import actions">
+                        
+                        <button type="submit"
+                                id="form--import-submit-btn"
+                                class="aprove selector-modal__btn selector-modal__btn--confirm">Add
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="lucide lucide-check-icon lucide-check">
+                                        <path d="M20 6 9 17l-5-5"/>
+                                    </svg>
+                            </button>
+                        
+                            <button type="button"
+                                    id="form--import-cancel-btn"
+                                    class="abandon selector-modal__btn selector-modal__btn--cancel"
+                                    data-action="cancel"
+                                    data-mode="import">Cancel
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="lucide lucide-x-icon lucide-x">
+                                        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                                    </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="helper-footer selector-modal__footer">
+                            <p>You can use chatGPT to generate a roadmap!<br>
+                                <button type="button"
+                                        id="form--import-promt-btn"
+                                        class="text-button"
+                                        data-action="copy-promt">CLICK   
+                                </button> to copy the promt.</p>
+                        </div>
+                    </form>
+                </fieldset>
+            </dialog>
+                    
+        <div class="roadmap-box roadmap-selector">
+            <div id ="roadmap-toggler-ID"
+                class="roadmap-selector__panel">
+    
+                <h4 id="roadmap-section-title"
+                    class="roud-title roadmap-selector__empty">
+                </h4>
+            
+                <div class="roadmap-select-bar roadmap-selector__actions">
+                
+                    <button id="selector-open-modal-ID"
+                            class="add-roadmap-btn roadmap-selector__btn roadmap-selector__btn--create"
+                            type="button"
+                            data-action="create-raodmap">New
+    
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2.5"
+                            stroke="currentColor"
+                            class="size-6">
+                            <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                    </button>
+                </div>
+    
+                <div class="roadmap-list-container roadmap-selector__list-wrap">
+                    <ul id="ul-container"
+                        class="roadmap-list-selector roadmap-selector__list"
+                        role="list"
+                        aria-live="polite">
+                    </ul>
+                </div>
+            </div>
+            
+            <dialog id="add-roadmap-dialog"
+                    class="hidden selector-modal"
+                    aria-labelledby="create-modal-title"
+                    aria-modal="true">
+                        
+                <fieldset id="add-roadmap-fieldset"
+                        class="hidden selector-modal__panel">
+    
+                    <form  id="create-map-form"
+                            class="manual-content selector-modal__form--create"
+                            autocomplete="off">
+    
+                        <span class="new-roud-title selector-modal__title-wrap">
+                            <h3 id="modal-title selector-modal__title">Create Roadmap</h3>
+                            <div class="task-modal__title-divider"></div>
+                        </span>
+                            
+                        <div class="roud-input-container selector-modal__input-wrap">
+                            <input class="roudnode-title selector-modal__input"
+                                    type="text"
+                                    id="create-map-input"
+                                    name="create-map-title"
+                                    autocomplete="off"
+                                    placeholder=" "
+                                    maxlength="25"/>
+                            <label  for="create-map-input">Enter Title</label>
+                            <span class="char-counter" data-for="create-map-input"></span>
+                            <p class="err-message  hidden selector-modal__error"
+                                data-for="create-map-title"></p>
+                        </div>
+                    
+    
+                    <div class="task-btns selector-modal__actions"
+                        role="group"
+                        aria-label="Create roadmap actions">
+    
+                        <button type="submit"
+                                id="create-map-submit-btn"
+                                class=" aprove selector-modal__btn selector-modal__btn--confirm">Add
+    
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-check-icon lucide-check">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                        </button>
+    
+                        <button type="button"
+                                id="create-map-cancel-btn"
+                                class="selector-modal__btn selector-modal__btn--cancel">Cancel
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-x-icon lucide-x">
+                                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    </form>
+                </fieldset>
+            </dialog>
+    
+        
+        <div  id ="roadmap-content"class=" hidden roadmap__content"></div>
+        
+        <div id="add-node-btn-cont" class="add-btn-container hidden" >
+            <button id="roadmap-open-modal-ID"
+                    class="add-task roadmap__btn roadmap__btn--add-node"
+                    data-action="add-node"
+                    aria-label="Add new node">
+    
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 48 48">
+                        <rect  x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#4fa859" stroke-width="2"/>
+                        <line  x1="24" y1="16" x2="24" y2="32" stroke="#4fa859" stroke-width="3" stroke-linecap="round" />
+                        <line  x1="16" y1="24" x2="32" y2="24" stroke="#4fa859" stroke-width="3" stroke-linecap="round" />
+                    </svg>
+            </button>
         </div>
     </div>
-        <dialog id="add-main-roadmap" class="roud-modal hidden">
-            <fieldset id="creator-panel" class="modal-section create-modal hidden">
-                <form  id="create-map-form" class="manual-content ">
-            <span class="new-roud-title">
-                <h3 id="modal-title">Stwórz Roudmape</h3>
-            </span> 
-                <div class="roud-input-container">
-                    <input class="roudnode-title" type="text" id="create-title" name="create-map-title" autocomplete="off" placeholder="Podaj Tytuł..." >
-                    <p class="err-message err-msg-new-task hidden" data-for="create-map-title"></p>
-                </div>
-                </form>
-                <div class="task-btns">
-                    <button type="button" id="create-submit-btn" class="task-handler-btn aprove">Dodaj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
-                    </button>
-                    <button type="button" id="create-abandon-btn" class="task-handler-btn abandon">Anuluj
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                    </button>
-                </div>
-            </fieldset>
-        </dialog>
+    </section>
+</section>
+   
+  
 
-    
-    <div  id ="Ul-cont-div"class="roadmap-content-area hidden">
-        <!-- <div class="go-back-btn-container">
-            <button id="roadmaps-back-btn" class="roud-list-btns">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                </svg>
-            </button>
-        </div> -->
-    </div>
-        
+<!-- REGISTER VIEW -->
+ <section id ="register-screen" class = "screen apk-look hidden register-tab auth">
+    <header class="auth__brand">
+        <h1 class="auth__title">Create account</h1>
+    </header>
 
-        <div id="add-node-btn-cont" class="add-btn-container hidden">
-                <button id="add-roadmap-task" class="add-task">
-               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-                    <rect  x="4" y="4" width="40" height="40" rx="6" ry="6" fill="none" stroke="#4fa859" stroke-width="2"/>
-                    <line  x1="24" y1="16" x2="24" y2="32" stroke="#4fa859" stroke-width="3" stroke-linecap="round" />
-                    <line  x1="16" y1="24" x2="32" y2="24" stroke="#4fa859" stroke-width="3" stroke-linecap="round" />
-                </svg>
-                </button>
-            </div>
+    <main class="auth__main">
+        <section class="auth__pane"
+                 aria-labelledby="register-section">
+
+            <span class="auth__icon" 
+                  aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                       fill="none"
+                       viewBox="0 0 24 24"
+                       stroke-width="1.5"
+                       stroke="currentColor"
+                       class="size-6">
+                       <path stroke-linecap="round"
+                             stroke-linejoin="round"
+                             d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                    </svg>
+            </span>
+
+            <h2 id = "register-section" 
+                class="auth-form__title">
+                Create your account
+            </h2>
+            <form id="register-form" 
+                  class="auth-form auth-form--register"
+                  action="#"
+                  method="POST"
+                  novalidate>
+               
+                <div class="auth-form__field">
+                    <p class="err-message hidden auth-form__error" 
+                       data-for="email-reg"
+                       role="alert"
+                       aria-live="polite">
+                    </p>
+                    
+                    <input class ="auth-form__input" 
+                           type="email"
+                           id="register-email" 
+                           name="email-reg" 
+                           autocomplete="email"
+                           inputmode="email" 
+                           placeholder=" ">
+                    <label for="register-email" class="auth-form__label"> E-mail</label>
+                </div>
+                    
+                <div class ="auth-form__field">
+                    <p class="err-message err-msg hidden auth-form__error hidden"
+                       data-for="password-reg"
+                       role="alert"
+                       aria-live="polite">
+                    </p>
+
+                    <input class ="auth-form__input"
+                           type="password"
+                           id="register-password"
+                           name = "password-reg"
+                           autocomplete="new-password"
+                           placeholder=" ">
+                    <label for="register-password" class="auth-form__label">Password</label>
+                </div>
+                    
+                <div class="auth-form__field">
+                    <p class="err-message hidden" 
+                       data-for="confirm-password"
+                       role="alert"
+                       aria-live="polite">
+                    </p>
+
+                    <input class ="auth-form__input"
+                           type="password" 
+                           id ="confirm-password" 
+                           name="confirm-password"
+                           autocomplete="new-password" 
+                           placeholder=" ">
+                    <label for="confirm-password" class="auth-form__label">Confirm password</label>
+                </div>
+
+                <div class="auth-form__actions">
+                    <button class="btn reg-btn"
+                            type="submit">
+                            Sign up
+                    </button>
+                    
+                    <button class="btn log-back-btn reg-back-btn"
+                            type="button"
+                            data-action="back-to-login">
+                            Back to sign in
+                    </button>
+                </div>    
+            </form>
+        </section>
+    </main>
+</section>
+
+                
+
+ <!-- FORGET PASSWORD VIEW -->
+  <section id ="forget-screen" class = "screen hidden forget-tab auth">
+    <header class="auth__brand">
+        <h1 class="auth__title">Password reset</h1>
+    </header>
+
+    <main class="auth__main">
+        <section class="auth__pane"
+                 aria-labelledby="forget-section">
+           <span class="auth__icon" 
+                  aria-hidden="true">
+                  <svg fill="currentColor"
+                       focusable="false"
+                       viewBox="0 0 512 512"
+                       xmlns="http://www.w3.org/2000/svg">
+                       <g id="SVGRepo_bgCarrier"
+                          stroke-width="0"></g>
+                       <g id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round" 
+                          stroke-linejoin="round"></g>
+                       <g id="SVGRepo_iconCarrier">
+                       <g id="Change_password">
+                       <path d="M464.4326,147.54a9.8985,9.8985,0,0,0-17.56,9.1406,214.2638,214.2638,0,0,1-38.7686,251.42c-83.8564,83.8476-220.3154,83.874-304.207-.0088a9.8957,9.8957,0,0,0-16.8926,7.0049v56.9a9.8965,9.8965,0,0,0,19.793,0v-34.55A234.9509,234.9509,0,0,0,464.4326,147.54Z"></path>
+                       <path d="M103.8965,103.9022c83.8828-83.874,220.3418-83.8652,304.207-.0088a9.8906,9.8906,0,0,0,16.8926-6.9961v-56.9a9.8965,9.8965,0,0,0-19.793,0v34.55C313.0234-1.3556,176.0547,3.7509,89.9043,89.9012A233.9561,233.9561,0,0,0,47.5674,364.454a9.8985,9.8985,0,0,0,17.56-9.1406A214.2485,214.2485,0,0,1,103.8965,103.9022Z"></path>
+                       <path d="M126.4009,254.5555v109.44a27.08,27.08,0,0,0,27,27H358.5991a27.077,27.077,0,0,0,27-27v-109.44a27.0777,27.0777,0,0,0-27-27H153.4009A27.0805,27.0805,0,0,0,126.4009,254.5555ZM328,288.13a21.1465,21.1465,0,1,1-21.1465,21.1464A21.1667,21.1667,0,0,1,328,288.13Zm-72,0a21.1465,21.1465,0,1,1-21.1465,21.1464A21.1667,21.1667,0,0,1,256,288.13Zm-72,0a21.1465,21.1465,0,1,1-21.1465,21.1464A21.1667,21.1667,0,0,1,184,288.13Z"></path>
+                       <path d="M343.6533,207.756V171.7538a87.6533,87.6533,0,0,0-175.3066,0V207.756H188.14V171.7538a67.86,67.86,0,0,1,135.7208,0V207.756Z"></path> </g> </g></svg>
+            </span>
+            <h2 id="forget-section" 
+                class="auth-form__title">
+                Reset your password
+            </h2>
+            
+            <form class="auth-form auth-form--forgot"
+                  id="forget-form"
+                  action="#"
+                  method="POST"
+                  novalidate>
+
+                
+
+                <div class="auth-form__field">
+                    <p class="err-message hidden auth-form__error"
+                       data-for="useremail"
+                       role="alert"
+                       aria-live="polite">
+                    </p>
+
+                    <input class="auth-form__input"
+                           type="email"
+                           id="forget-username"
+                           name="useremail"
+                           autocomplete="email"
+                           inputmode="email"
+                           placeholder=" ">
+
+                    <label class="auth-form__label" for="forget-username">E-mail</label>
+                </div>
+
+                <div class="auth-form__actions">
+                    <button class="btn submit-btn"
+                            type="submit">
+                            Send password reset link
+                    </button>
+
+                    <button class="btn log-back-btn"
+                            type="button"
+                            data-action="back-to-login">
+                            Back to sign in
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+</section>
+</body>
+</html>
+
+
+         
        
-        <!-- <ul id="roadmap-container" class="roadmap-list hidden">
-    
-    
-      <li class="roadmap-node active-border">
-          
-          <div class="title-roudmap">
-              <span class="node-text">Nauka JavaScript</span>
-              <button class="node-acc-btn " id="roadmap-accordeon-btn">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                      stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                  </svg>
-              </button>
-              </div>
+
+            
+                
+                    
+
+                    
+            
         
             
-              
-            <div class="node-btn-container">
-                <button class="stop-btn roud-btns" aria-label="stop timer">Zatrzymaj
-                    <svg class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
-                    </svg>
-                </button>
-                  <div class="timer">Czas
-                    <small class="node-time">0:00</small>
-                </div>
-                  <button class="play-btn roud-btns" aria-label="start timer">Rozpocznij
-                    <svg  class="roud-btns-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                    </svg>
-                </button>
-            </div>
-                
-            <div class="progress-container">
-                <span class="progress-text">20%</span>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                
-            </div>
-    
-            <ul class="subtask-list hidden">
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Utworzyć formularz</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox" />
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Obsłużyć błędy</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check">
-                            
-                        </span>
-                        <span class="subtask-text">Dodać walidację</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Połączyć z backendem</span>
-                    </label>
-                    </li>
-                    <li class="subtask-item">
-                    <label class="subtask">
-                        <input type="checkbox" class = "roud-disabld-checkbox"/>
-                        <span class="custom-check"></span>
-                        <span class="subtask-text">Testy jednostkowe</span>
-                    </label>
-                    </li>
-                </ul>
-            </li>
-       
+
+
+
+
+
+        
             
-        </ul> -->
+                
+
+            
+            
+    
+        
+
+       
+       
 
     
-</div>
             
         
               
@@ -757,279 +1042,7 @@
 
       
      
-        </section>
-        <!-- Calendar mode using BEM methodology --> 
-        <section id ="calendar-view" class="modes hidden calendar__section" aria-labelledby="calendar-section-title" >
-            <main class="calendar">
-                <!--  Month Selector Nav -->
-                <h2 id="calendar-section-title" class="visually-hidden">Calendar view</h2>
-                <section class= "calendar__bar">
-                    <section class="calendar__months">
-                        <!-- Previous button -->
-                        <button  type="button" class="calendar__button calendar__months-nav calendar__months-nav--prev" aria-label="Previous month">
-                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                            </svg>
-                        </button>
-                        <!-- Month list -->
-
-                        <ul class="calendar__months-carousel">
-                            <li class="calendar__months-carousel-month" data-month="0">January</li>
-                            <li class="calendar__months-carousel-month" data-month="1">February</li>
-                            <li class="calendar__months-carousel-month" data-month="2">March</li>
-                            <li class="calendar__months-carousel-month" data-month="3">April</li>
-                            <li class="calendar__months-carousel-month" data-month="4">May</li>
-                            <li class="calendar__months-carousel-month" data-month="5">June</li>
-                            <li class="calendar__months-carousel-month calendar__months-carousel-month--active" data-month="6">July</li>
-                            <li class="calendar__months-carousel-month" data-month="7">August</li>
-                            <li class="calendar__months-carousel-month" data-month="8">September</li>
-                            <li class="calendar__months-carousel-month" data-month="9">October</li>
-                            <li class="calendar__months-carousel-month" data-month="10">November</li>
-                            <li class="calendar__months-carousel-month" data-month="11">December</li>
-                        </ul>
-                        <!-- Next button -->
-                        <button type="button" class="calendar__button calendar__months-nav calendar__months-nav--next" aria-label="Next month">
-                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                            </svg>
-                        </button>
-                    </section>
-                       <div class="calendar__meta" aria-label="Week and year">
-                        <!-- GROUP: Week -->
-                        <div class="calendar__meta-group calendar__meta-group--week" role="group" aria-label="ISO week">
-
-                            <button type="button" class="calendar__meta-nav calendar__meta-nav-week-prev" aria-label="Previous week">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                            </button>
-
-                            <ul class="calendar__meta-carousel calendar__meta-carousel--week">
-                                <li class="calendar__meta-item calendar__meta-item--active" data-week="32">
-                                    <span class="visually-hidden">ISO week</span>
-                                    <time datetime="2025-W32">Wk 32</time>
-                                </li>
-                                 <li class="calendar__meta-item calendar__meta-item--active" data-week="33">
-                                    <span class="visually-hidden">ISO week</span>
-                                    <time datetime="2025-W32">Wk 33</time>
-                                </li>
-                            
-                            </ul>
-
-                            <button type="button" class="calendar__meta-nav calendar__meta-nav-week-next" aria-label="Next week">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                            </button>
-
-                        </div>
-
-                        <!-- GROUP: Year -->
-                        <div class="calendar__meta-group calendar__meta-group--year" role="group" aria-label="Year">
-
-                            <button type="button" class="calendar__meta-nav calendar__meta-nav-year-prev" aria-label="Previous year">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                            </button>
-
-                            <ul class="calendar__meta-carousel calendar__meta-carousel--year">
-                                <li class="calendar__meta-item calendar__meta-item--active" data-year="2025">
-                                    <time datetime="2025">2025</time>
-                                </li>
-                                 <li class="calendar__meta-item calendar__meta-item--active" data-year="2026">
-                                    <time datetime="2026">2026</time>
-                                </li>
-                            </ul>
-
-                            <button type="button" class="calendar__meta-nav calendar__meta-nav-year-next" aria-label="Next year">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                            </button>
-
-                            </div>
-                        </div>
-
-                </section>
-
-               
-
-                
-                </div>
-                <!-- Day Section -->
-                <section class="calendar__days">
-                    <div class="calendar__days-selector">
-                        <button type="button" class="calendar__weekday-btn is-active" data-day="mon" data-iso="1" aria-pressed="true">Mon</button>
-                        <button type="button" class="calendar__weekday-btn" data-day="tue" data-iso="2" aria-pressed="false">Tue</button>
-                        <button type="button" class="calendar__weekday-btn" data-day="wed" data-iso="3" aria-pressed="false">Wed</button>
-                        <button type="button" class="calendar__weekday-btn" data-day="thu" data-iso="4" aria-pressed="false">Thu</button>
-                        <button type="button" class="calendar__weekday-btn" data-day="fri" data-iso="5" aria-pressed="false">Fri</button>
-                        <button type="button" class="calendar__weekday-btn" data-day="sat" data-iso="6" aria-pressed="false">Sat</button>
-                        <button type="button" class="calendar__weekday-btn" data-day="sun" data-iso="7" aria-pressed="false">Sun</button>
-                    </div>
-
-
-                </section>
-
-                <!-- Hour grid (6:00 AM to 10:00 PM) -->
-                <section class="calendar__grid" data-date="2025-11-07">
-                    <ul class="calendar__grid-list">
-                        <li class="calendar__grid-hour-slot" data-hour="6">
-                            <span class="calendar__grid-hour-label"><time datetime="06:00">06:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="7">
-                            <span class="calendar__grid-hour-label"><time datetime="07:00">07:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="8">
-                            <span class="calendar__grid-hour-label"><time datetime="08:00">08:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="9">
-                            <span class="calendar__grid-hour-label"><time datetime="09:00">09:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="10">
-                            <span class="calendar__grid-hour-label"><time datetime="10:00">10:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="11">
-                            <span class="calendar__grid-hour-label"><time datetime="11:00">11:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="12">
-                            <span class="calendar__grid-hour-label"><time datetime="12:00">12:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="13">
-                            <span class="calendar__grid-hour-label"><time datetime="13:00">13:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="14">
-                            <span class="calendar__grid-hour-label"><time datetime="14:00">14:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="15">
-                            <span class="calendar__grid-hour-label"><time datetime="15:00">15:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="16">
-                            <span class="calendar__grid-hour-label"><time datetime="16:00">16:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="17">
-                            <span class="calendar__grid-hour-label"><time datetime="17:00">17:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-
-                        <li class="calendar__grid-hour-slot" data-hour="18">
-                            <span class="calendar__grid-hour-label"><time datetime="18:00">18:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="19">
-                            <span class="calendar__grid-hour-label"><time datetime="19:00">19:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="20">
-                            <span class="calendar__grid-hour-label"><time datetime="20:00">20:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="21">
-                            <span class="calendar__grid-hour-label"><time datetime="21:00">21:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                        <li class="calendar__grid-hour-slot" data-hour="22">
-                            <span class="calendar__grid-hour-label"><time datetime="22:00">22:00</time></span>
-                            <ul class="calendar__grid-task-list hidden"></ul>
-                        </li>
-                    </ul>
-                </section>
-                    
-                <!-- Modal for adding a calendar task -->
-                
-                    <section class="task-drawer is-open">
-                        <div class="task-drawer__btn-container">
-                            <button type="button" class="task-drawer__btn" aria-label="Open task tray">
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="task-drawer__tooltip hidden">
-                                <p></p>
-                        </div>
-                        <ul class="task-drawer__task-list "  >
-                            <li class="task-drawer__task-list-item ">
-                                <div class="task-drawer__drag-handle prio-medium">
-                                    <div class="task-drawer__drag-title " >
-                                        <span>prioMedium</span>
-                                    </div>
-                                </div>
-                                <button type="button" class="task-drawer__task-info-btn prio-medium">
-                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                         <path d="M11 19H8V16H11V19Z" fill="#1F2328"></path>
-                                         <path d="M11 13.5H8V10.5H11V13.5Z" fill="#1F2328"></path>
-                                         <path d="M11 8H8V5H11V8Z" fill="#1F2328"></path>
-                                         <path d="M16 19H13V16H16V19Z" fill="#1F2328">
-                                        </path> <path d="M16 13.5H13V10.5H16V13.5Z" fill="#1F2328"></path>
-                                        <path d="M16 8H13V5H16V8Z" fill="#1F2328"></path> </g></svg>
-                                </button>
-                            </li>    
-                            
-
-                            
-                             <li class="task-drawer__task-list-item ">
-                                <div class="task-drawer__drag-handle ">
-                                    <div class="task-drawer__drag-title marquee" >
-                                        <span>Lorem ipsum dolor sit amet.</span>
-                                    </div>
-                                </div>
-                                 <button type="button" class="task-drawer__task-info-btn">
-                                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                         <path d="M11 19H8V16H11V19Z" fill="#1F2328"></path>
-                                         <path d="M11 13.5H8V10.5H11V13.5Z" fill="#1F2328"></path>
-                                         <path d="M11 8H8V5H11V8Z" fill="#1F2328"></path>
-                                         <path d="M16 19H13V16H16V19Z" fill="#1F2328">
-                                        </path> <path d="M16 13.5H13V10.5H16V13.5Z" fill="#1F2328"></path>
-                                        <path d="M16 8H13V5H16V8Z" fill="#1F2328"></path> </g></svg>
-                                </button>
-                            </li>
-                             <li class="task-drawer__task-list-item ">
-                                <div class="task-drawer__drag-handle prio-high">
-                                    <div class="task-drawer__drag-title " >
-                                        <span>prioMedium</span>
-                                    </div>
-                                </div>
-                                 <button type="button" class="task-drawer__task-info-btn prio-high">
-                                   <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                         <path d="M11 19H8V16H11V19Z" fill="#1F2328"></path>
-                                         <path d="M11 13.5H8V10.5H11V13.5Z" fill="#1F2328"></path>
-                                         <path d="M11 8H8V5H11V8Z" fill="#1F2328"></path>
-                                         <path d="M16 19H13V16H16V19Z" fill="#1F2328">
-                                        </path> <path d="M16 13.5H13V10.5H16V13.5Z" fill="#1F2328"></path>
-                                        <path d="M16 8H13V5H16V8Z" fill="#1F2328"></path> </g></svg>
-                                    </button>
-                                            
-
-                            </li>
-                           
-                        </ul>
-                    </section>
-                            
-                
-            </main>
-            </section>
+      
                
 
                
@@ -1051,69 +1064,3 @@
 
         
 
-  
-
-<!-- EKRAN REJSETRACJI -->
- <section id ="register-screen" class = "screen apk-look hidden register-tab">
-    <header>
-        <h1>Rejestracja</h1>
-    </header>
-    <main>
-        <section class="register-form" aria-labelledby="register-section">
-            <img  src="assets/user-plus-alt-1-svgrepo-com.svg" class="reg-book" alt="register icon"/>
-            <h2 id = "register-section" class="reg-head"> Załóż Konto</h2>
-            <form id="register-form" class = "reg-form"action="#" method="POST">
-               
-                    
-                <div class="input-container reg-divs">
-                    <p class="err-message err-msg hidden" data-for="email-reg"></p>
-                    <input class ="reg-inputs" type="text" id = "register-email" name = "email-reg" autocomplete="off" placeholder=" ">
-                    <label for="register-email" class=" reg-email labs "> E-mail</label>
-                </div>
-                    
-                <div class ="input-container reg-divs">
-                    <p class="err-message err-msg hidden" data-for="password-reg"></p>
-                    <input class ="reg-inputs" type="password" id="register-password" name = "password-reg" autocomplete="off" placeholder=" ">
-                    <label for="register-password" class="reg-pass labs">Hasło</label>
-                </div>
-                    
-                <div class="input-container reg-divs">
-                    <p class="err-message err-msg hidden" data-for="confirm-password"></p>
-                    <input class ="reg-inputs" type="password" id ="confirm-password" name="confirm-password"  autocomplete="off" placeholder=" ">
-                    <label for="confirm-password" class=" reg-pass labs">Potwierdź hasło</label>
-                </div>
-                    
-                <button class="btn reg-btn" type="submit"> Zarejestruj się</button>
-                <button class="btn log-back-btn reg-back-btn" >Wróć do logowania</button>
-            </form>
-                
-        </section>
-    </main>
- </section>
-
- <!-- EKRAN ODZYSKIWANIA HASŁA -->
-  <section id ="forget-screen" class = "screen hidden forget-tab">
-    <header>
-        <h1>Odzyskiwanie Hasła</h1>
-    </header>
-    <main>
-        <section class="forget-password-form" aria-labelledby="forget-section">
-            <img  src="assets/forgot-password.svg" class="frgt-image" alt="Forget Password icon"/>
-            <h2 id="forget-section">Odzyskaj hasło</h2>
-            
-            <form class="frgt-form" id="forget-form" action="#" method="POST">
-                <div class="input-container forget-container">
-                    <p class="err-message err-msg hidden" data-for="useremail"></p>
-                    <input  class ="forget-input" type="email" id = "forget-username" name = "useremail" autocomplete="off"  placeholder=" " >
-                    <label class="forget-label" for="forget-username">E-mail</label>
-                </div>
-                <button class="btn submit-btn" type="submit">Wyslij link do resetowania Hasła</button>
-                <button class="btn log-back-btn" >Wróć do logowania</button>
-            </form>
-        </section>
-    </main>
-  </section>
-
-
-</body>
-</html>

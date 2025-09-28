@@ -1,0 +1,302 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+.roadmap-node {
+  & {
+    position: relative;
+  }
+  &.right {
+    align-self: flex-start;
+  }
+  &.left {
+    align-self: flex-end;
+  }
+  &__header {
+    @include mixins.flex($height: 2rem, $direction: row, $width: 100%);
+    @include mixins.set-text(main, semibold, lg);
+    border-radius: 8px 8px 0 0;
+    padding: 0.2rem 0 0.5rem 0;
+    &-divider {
+      color: var.$accent;
+      display: flex;
+      position: relative;
+      @include mixins.dividier('fancy', 2px, $width: 90%);
+      margin-bottom: 0.2rem;
+      transition: transform all 0.3s ease-in-out;
+
+      box-shadow: -4px -6px 14px 7px rgba(255, 255, 255, 5%),
+        0 7px 11px 4px rgba(0, 0, 0, 0.6);
+    }
+    button {
+      @include mixins.interactive();
+      @include mixins.styled-button(
+        $size-h: 1.2rem,
+        $size-w: 1.2rem,
+        $color: var.$textSecondary
+      );
+    }
+  }
+  &__content {
+    @include mixins.flex($justify: space-around);
+    background: var.$bgSoft;
+    border: 0.5px solid var.$borderTwo;
+    overflow: visible;
+    max-width: 18rem;
+    min-width: 8rem;
+    max-height: initial;
+    height: auto;
+    transition: transform 0.4s ease;
+    scroll-snap-align: start;
+    border-radius: 8px;
+    padding: 0.5rem;
+  }
+  &__active-border {
+    box-sizing: content-box;
+    border-radius: 8px;
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(
+      from var(--angle),
+      transparent 80%,
+      var.$accent
+    );
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 2px;
+    animation: 2.5s spin linear infinite;
+  }
+  &__actions {
+    @include mixins.flex(
+      $width: 100%,
+      $justify: space-around,
+      $direction: row-reverse
+    );
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    margin-bottom: 0.2rem;
+    padding: 0.5rem 0 0.5rem 0;
+
+    > button:first-of-type {
+      @include mixins.flex();
+      @include mixins.styled-button(
+        $color: #db5656,
+        $size-w: 4rem,
+        $size-h: 2rem,
+        $mode: lux-btn
+      );
+      background: rgba(238, 94, 91, 0.1);
+      border: 1px solid #db5656;
+      box-shadow: inset 1px 8px 12px 4px rgba(255, 255, 255, 5%),
+        -2px -4px 20px 3px rgba(0, 0, 0, 0.6);
+      svg {
+        color: #db5656;
+      }
+    }
+    > button:nth-of-type(2) {
+      @include mixins.flex();
+      @include mixins.styled-button(
+        $color: #9be5ec,
+        $size-w: 4rem,
+        $size-h: 2rem,
+        $mode: lux-btn
+      );
+
+      background: rgba(107, 205, 206, 0.1);
+      border: 1px solid #9be5ec;
+      box-shadow: inset 1px 8px 12px 4px rgba(255, 255, 255, 5%),
+        -2px -4px 20px 3px rgba(0, 0, 0, 0.6);
+      svg {
+        color: #9be5ec;
+      }
+    }
+    > button:nth-of-type(3) {
+      @include mixins.flex();
+      @include mixins.styled-button(
+        $color: #e3b341,
+        $size-w: 4rem,
+        $size-h: 2rem,
+        $mode: lux-btn
+      );
+
+      background: rgba(227, 179, 65, 0.1);
+      border: 1px solid #e3b341;
+      box-shadow: inset 1px 8px 12px 4px rgba(255, 255, 255, 5%),
+        -2px -4px 20px 3px rgba(0, 0, 0, 0.6);
+
+      svg {
+        color: #e3b341;
+      }
+    }
+    > button:nth-of-type(4) {
+      @include mixins.flex();
+      @include mixins.styled-button(
+        $color: #62c76b,
+        $size-w: 4rem,
+        $size-h: 2rem,
+        $mode: lux-btn
+      );
+      background: rgba(98, 199, 107, 0.1);
+      border: 1px solid #62c76b;
+      box-shadow: inset 1px 8px 12px 4px rgba(255, 255, 255, 5%),
+        -2px -4px 20px 3px rgba(0, 0, 0, 0.6);
+      svg {
+        color: #62c76b;
+      }
+    }
+    button {
+      @include mixins.interactive($ring-mode: shadow);
+    }
+  }
+  &__time {
+    @include mixins.set-text(muted, regular, md);
+    background: transparent;
+    backdrop-filter: blur(20px);
+    font-weight: 500;
+    font-size: 9px;
+    border-radius: 5px;
+    border: 2px solid var.$accent;
+    z-index: 5;
+    letter-spacing: 1px;
+    padding: 0.3rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    pointer-events: none;
+  }
+  &__title {
+    display: flex;
+    position: relative;
+    width: 100%;
+    min-height: 2rem;
+    margin: 0.5rem 0 0 1rem;
+    padding: 0.1rem 0 0.1rem 0;
+    border-radius: 10px 10px 0 0;
+    @include mixins.set-text(main, semibold, reg);
+    line-height: 1.5;
+  }
+  &__progress {
+    @include mixins.flex($width: 100%);
+    margin-bottom: 0.2rem;
+
+    &-bar {
+      @include mixins.flex($width: 80%, $height: 12px, $direction: row);
+      background-color: var.$subBG;
+      border: 0.5px solid var.$borderTwo;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    &-text {
+      @include mixins.set-text(secondary, light, sm);
+
+      position: absolute;
+    }
+    &-fill {
+      height: 100%;
+      width: 0%;
+      background-color: var.$accent;
+      filter: blur(10px);
+
+      transition: width 1s ease-in-out;
+    }
+  }
+  &__subtasks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem 0.5rem;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    max-height: 15rem;
+    margin-top: 0.1rem;
+    padding: 0.5rem;
+  }
+}
+.disabled-node {
+  @extend .roadmap-node;
+  opacity: 0.5;
+  filter: grayscale(1);
+  pointer-events: none;
+  min-width: 6rem;
+  min-height: 3rem;
+  .roadmap-node__accordion-btn {
+    pointer-events: all;
+  }
+  .roadmap-node__title {
+    font-size: 12px;
+  }
+  .roadmap-node__header {
+    align-items: stretch;
+    padding: 0;
+  }
+  .roadmap-node__content {
+    justify-content: center;
+  }
+}
+
+.subtask-item {
+  display: flex;
+  padding: 0.2rem 0 0.2rem 0;
+  font-size: 11px;
+  font-weight: 500;
+  flex-wrap: wrap;
+  &__label {
+    display: flex;
+  }
+  &__checkbox--disabled {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+  &__checkbox--custom {
+    height: 0.8rem;
+    width: 0.8rem;
+    border: 1px solid var.$borderTwo;
+    border-radius: 2px;
+    position: relative;
+    min-width: 0.8rem;
+    min-height: 0.8rem;
+    margin-right: 0.5rem;
+    flex: 0 0 auto;
+  }
+  &__checkbox--text {
+    @include mixins.set-text(main, regular, sm);
+    flex-wrap: wrap;
+  }
+  &__checkbox--disabled:checked + .subtask-item__checkbox--custom::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0px;
+    width: 6px;
+    height: 12px;
+    border: solid var.$filterGreen;
+    transform: rotate(45deg);
+    border-width: 0 2px 2px 0;
+  }
+  &__checkbox--disabled:checked ~ .subtask-item__checkbox--text {
+    color: var.$filterGreen;
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+  &__checkbox--disabled:focus-visible + .subtask-item__checkbox--custom {
+    outline: 2px solid var.$accent;
+    outline-offset: 2px;
+  }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}

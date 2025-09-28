@@ -1,0 +1,104 @@
+@use '../variables/variables' as var;
+@use '../variables/mixins';
+@use '../components/-roadmap-modal.scss';
+@use 'sass:color';
+.auth {
+  border-radius: 12px;
+  background-color: var.$borderTwo;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: center;
+  border: solid 0.5px var.$borderTwo;
+  padding: 1rem 0;
+  @include mixins.flex($width: 90%);
+  &__main {
+    @include mixins.flex($width: 100%, $height: 100%);
+  }
+  &__footer {
+    position: absolute;
+    @include mixins.set-text(secondary, regular, md);
+    top: 150%;
+  }
+  &__icon {
+    svg {
+      width: 4rem;
+      height: 4rem;
+      $color: var.$accent;
+      color: var.$accent;
+      filter: drop-shadow(1px 1px 5px color.adjust($color, $lightness: -30%));
+    }
+  }
+  &__brand {
+    position: absolute;
+    @include mixins.set-text(main, bold, xl);
+    top: -8rem;
+  }
+  &__pane {
+    @include mixins.flex($width: 90%);
+    overflow: hidden;
+    &-links {
+      @include mixins.flex($width: 70%);
+      margin-top: 0.5rem;
+      gap: 0.5rem;
+
+      &__group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 0.5rem;
+        p {
+          @include mixins.set-text(muted, regular, sm);
+        }
+        button {
+          @include mixins.styled-button(
+            $size-w: 6rem,
+            $size-h: 1rem,
+            $color: var.$textPrimary,
+            $mode: lux-btn
+          );
+          transition: all 0.3s ease;
+          font-size: 12px;
+          padding: 0;
+          &:focus {
+            color: var.$accent;
+            text-decoration: underline;
+          }
+          &:hover {
+            transform: scaleX(1.07);
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+  &-form {
+    @include mixins.flex($width: 90%);
+    gap: 1.5rem;
+    &__title {
+      @include mixins.set-text(main, semibold, xl);
+      margin-bottom: 1rem;
+    }
+
+    &__field {
+      @include mixins.flex($width: 100%);
+      @include mixins.glass-slide-input($width: 100%);
+    }
+    &__error {
+      @extend .selector-modal__error;
+    }
+    &__actions {
+      padding: 0.2rem;
+      gap: 0.5rem;
+      @include mixins.flex($width: 100%);
+      button {
+        box-shadow: inset -15px -15px 18px 0px rgba(0, 0, 0, 0.35),
+          7px -10px 11px 6px rgba(255, 255, 255, 0.08);
+        width: 80%;
+        height: 2rem;
+        font-size: 13px;
+        @include mixins.interactive();
+        @include mixins.glass-button($from: #343a3f, $to: #191e22);
+      }
+    }
+  }
+}

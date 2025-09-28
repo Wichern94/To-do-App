@@ -1,25 +1,22 @@
-// importy:
-//firebase
-import { fireApp } from "./firebase-init.js";
-import { AuthService } from "./authFirebase.js";
+import { fireApp } from './Services/firebase/firebase-init.js';
+import { AuthService } from './Services/firebase/authFirebase.js';
 import {
   getAuth,
   onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-// viewManager
-import { ViewManager } from "./viewManager.js";
-// AuthControler
-import { AuthController } from "./AuthController.js";
-import { AuthUIController } from "./authUIController.js";
-//logowanie/ rejestracja/forget
-import { LoginFormHandler } from "./formHandlers.js";
-import { RegisterFormHandler } from "./formHandlers.js";
-import { ResetFormHandler } from "./formHandlers.js";
-// przycisk wylogowania sie
+} from 'https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js';
 
-// Widokaplikacji
-import { TodoApp } from "./todo.js";
-// Powołuje Instacje klass
+import { ViewManager } from './Services/view-mangers/viewManager.js';
+
+import { AuthController } from './components/login-reg-forget/AuthController.js';
+import { AuthUIController } from './components/login-reg-forget/authUIController.js';
+
+import { LoginFormHandler } from './components/login-reg-forget/formHandlers.js';
+import { RegisterFormHandler } from './components/login-reg-forget/formHandlers.js';
+import { ResetFormHandler } from './components/login-reg-forget/formHandlers.js';
+
+import { TodoApp } from './todo.js';
+import { ToastManager } from './Services/toastify-manger.js';
+
 class App {
   constructor() {
     this.viewManager = new ViewManager();
@@ -31,25 +28,26 @@ class App {
       this.authUi
     );
     this.activeHandler = null;
+    this.todoApp = null;
     this.cleanUpInactiveViews();
     this.initializeForm();
     this.formChecker();
   }
-  //metoda nasluchujaca na custom event zmiany widoku
+
   initializeForm() {
-    document.addEventListener("view:changed", () => this.formChecker());
+    document.addEventListener('view:changed', () => this.formChecker());
   }
 
   cleanUpInactiveViews() {
     const inactiveViews = [
       new RegisterFormHandler(
         this.authUi,
-        "register-form",
-        "email-reg",
-        "password-reg",
-        "confirm-password"
+        'register-form',
+        'email-reg',
+        'password-reg',
+        'confirm-password'
       ),
-      new ResetFormHandler(this.authUi, "forget-form", "useremail"),
+      new ResetFormHandler(this.authUi, 'forget-form', 'useremail'),
     ];
     inactiveViews.forEach((handler) => {
       if (handler.destroy) {
@@ -58,48 +56,43 @@ class App {
     });
   }
 
-  //Metoda uruchamiająca odpowiedni formularz
   formChecker() {
-    // 1. Jeśli jest aktywny handler i ma metodę destroy – zniszcz go
     if (this.activeHandler?.destroy) {
       this.activeHandler.destroy();
     }
     this.activeHandler = null;
-    // 2. Sprawdź, jaki formularz jest aktualnie widoczny
+
     const activeView = this.authUi.getActiveView();
-    // 3. W zależności od widoku, uruchom odpowiedni handler
+
     switch (activeView) {
-      case "login":
-        console.log("Włączono logowanie!");
+      case 'login':
         this.loginHandler = new LoginFormHandler(
           this.authUi,
-          "lgn-from",
-          "email",
-          "password"
+          'lgn-form',
+          'email',
+          'password'
         );
         this.activeHandler = this.loginHandler;
 
         break;
 
-      case "register":
-        console.log("Włączono rejestracje!");
+      case 'register':
         this.registerHandler = new RegisterFormHandler(
           this.authUi,
-          "register-form",
-          "email-reg",
-          "password-reg",
-          "confirm-password"
+          'register-form',
+          'email-reg',
+          'password-reg',
+          'confirm-password'
         );
         this.activeHandler = this.registerHandler;
 
         break;
 
-      case "reset":
-        console.log("Włączono resetowanie!");
+      case 'reset':
         this.resetHandler = new ResetFormHandler(
           this.authUi,
-          "forget-form",
-          "useremail"
+          'forget-form',
+          'useremail'
         );
         this.activeHandler = this.resetHandler;
         this.resetHandler.init();
@@ -111,14 +104,46 @@ class App {
 
 const auth = getAuth(fireApp);
 const app = new App();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("Uzytkownik zalogowany:", user.email);
-    const appBody = document.getElementById("app");
-    appBody.classList.remove("hidden");
-    console.log(app.viewManager);
-    app.viewManager.showView("todo-screen");
 
-    const todoApp = new TodoApp(user, app.viewManager);
+let sessionGen = 0;
+function clearUI() {
+  document.querySelector('.todo__list')?.replaceChildren();
+  document.querySelector('#ul-container')?.replaceChildren();
+}
+
+onAuthStateChanged(auth, (user) => {
+  sessionGen++;
+  const myGen = sessionGen;
+  if (app.todoApp) {
+    app.todoApp.destroy();
+    app.todoApp = null;
   }
+  clearUI();
+  if (!user) {
+    document.dispatchEvent(new CustomEvent('auth:signout:ended'));
+    app.authController.isSigningOut = false;
+    app.viewManager.showView('login-screen');
+
+    if (sessionStorage.getItem('postLogoutToast') === '1') {
+      sessionStorage.removeItem('postLogoutToast');
+      ToastManager?.success?.('You have been logged out');
+    }
+    return;
+  }
+
+  app.viewManager.showView('todo-screen');
+
+  if (app.todoApp === null) {
+    app.todoApp = new TodoApp(user, app.viewManager, {
+      gen: myGen,
+      isFresh: (g) => g === sessionGen,
+    });
+  }
+
+  const appBody = document.getElementById('app');
+  appBody.classList.remove('hidden');
+
+  requestAnimationFrame(() => {
+    document.dispatchEvent(new CustomEvent('auth:signout:ended'));
+  });
 });
