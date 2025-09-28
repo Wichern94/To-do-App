@@ -448,10 +448,7 @@ export class SelectorView {
 
                         </button>
                     </div>
-                    <div class="roadmap-selector__item-time">
-                      <span class="roadmap-selector__item-time--title">Total time:</span>
-                      <p class ="roadmap-selector__item-time--node">00:00:00</p>
-                    </div>`;
+                    `;
     this.ui.selector.list.appendChild(li);
     if (isNew) {
       await this.animationManager.addElementAnimation(li, 'bounceInLeft', '1s');

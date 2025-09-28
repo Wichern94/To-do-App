@@ -60,6 +60,7 @@ export class ListView {
     this.localStates = {
       bound: false,
       isLoading: false,
+      isSaving: false,
     };
 
     /**
@@ -306,8 +307,11 @@ export class ListView {
    */
   async handleSubmit(e) {
     e.preventDefault();
+    if (this.localStates.isSaving) return;
 
     try {
+      this.localStates.isSaving = true;
+      this.ui.modal.submitBtn.disabled = true;
       const nameInputData = this.ui.modal.titleInput.value.trim();
       const isValid = FormValidator.validateOneInput(
         nameInputData,
@@ -329,6 +333,9 @@ export class ListView {
       await this.handleCloseModal();
     } catch (err) {
       console.error('Form sending error:', err);
+    } finally {
+      this.localStates.isSaving = false;
+      this.ui.modal.submitBtn.disabled = false;
     }
   }
 
