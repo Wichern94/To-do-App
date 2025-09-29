@@ -4,7 +4,7 @@
 
 **Links**
 - 🔖 Latest release: [v0.9.0 – MVP](https://github.com/Wichern94/To-do-App/releases/tag/v0.9.0)
-- 🚀 Live demo: _(coming soon – Firebase Hosting)_
+- 🚀 Live demo: https://pwr-tsk.web.app
 
 ---
 
