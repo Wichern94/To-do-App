@@ -53,6 +53,9 @@ $bp: (
   lg: 1024px,
   xl: 1280px,
 );
+$headerHeight: 20dvh;
+$ovPad: clamp(12px, 4%, 24px);
+$headerGap: clamp(2rem, 5vh, 6rem);
 //Fonts and weights
 $mainFont: 'Oxanium', sans-serif;
 

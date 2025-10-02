@@ -2,8 +2,8 @@
 @use '../variables/mixins';
 .background {
   @include mixins.flex(
-    $width: 100vw,
-    $height: 13rem,
+    $width: 100%,
+    $height: var.$headerHeight,
     $direction: row-reverse,
     $justify: space-around
   );
@@ -16,7 +16,7 @@
 .separator {
   @include mixins.flex($width: 100%);
   position: absolute;
-  top: 11rem;
+  top: 10rem;
 }
 .auth-carousel {
   @include mixins.flex(

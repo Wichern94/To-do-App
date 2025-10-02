@@ -1,25 +1,30 @@
 @use '../variables/variables' as var;
 @use '../variables/mixins';
 .task-modal {
-  @include mixins.flex($height: 100dvh, $width: 100dvw);
+  @include mixins.flex($height: 100%, $width: 100%);
   @include mixins.glass-BG();
   z-index: 10;
   position: fixed;
   top: 0;
   left: 0;
   &__section {
-    @include mixins.flex($height: 35%, $width: 80%);
+    @include mixins.glass-panel;
+    @include mixins.flex($width: 80%, $height: auto);
+    gap: 1rem;
     transition: opacity 1s ease;
+    padding: 1rem 0;
   }
 
   &__form {
-    @include mixins.glass-panel;
-    @include mixins.flex($height: 100%, $width: 100%);
+    @include mixins.flex($width: 100%);
+    flex: 1 1 auto;
+
     gap: 1rem;
     margin-bottom: auto;
+    padding-top: 0.5rem;
     &-title-wrap {
       @include mixins.flex($width: 100%);
-      margin-top: 2rem;
+
       @include mixins.glass-input-label($width: 80%);
     }
     &-textarea-wrap {
@@ -75,9 +80,10 @@
       min-width: 5rem;
     }
   }
-  & &__title-wrap {
+  &__title-wrap {
     @include mixins.flex($width: 100%);
-    top: 16%;
+    flex: 0 0 auto;
+
     z-index: 1;
     left: 0;
   }

@@ -37,6 +37,7 @@ export class ResetFormHandler {
   }
   destroy() {
     this.credentialsForm.removeEventListener('submit', this.handleSubmit);
+    this.resetForms();
   }
 
   isValidEmail(email) {
@@ -53,6 +54,20 @@ export class ResetFormHandler {
     this.emailInput.addEventListener('focus', () => {
       this.formErrors.clearError(this.formEmailName);
     });
+  }
+  resetForms() {
+    const elements = this.credentialsForm.elements;
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      if (
+        element.tagName === 'INPUT' &&
+        (element.type === 'text' ||
+          element.type === 'password' ||
+          element.type === 'email')
+      ) {
+        element.value = '';
+      }
+    }
   }
 }
 

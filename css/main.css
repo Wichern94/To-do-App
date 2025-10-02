@@ -65,7 +65,7 @@ html {
 
 .confetti-canvas {
   position: absolute;
-  width: 100vw;
+  width: 100%;
   height: 100dvh;
   pointer-events: none;
   z-index: 9999;
@@ -131,8 +131,8 @@ img {
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 100dvw;
-  height: 100dvh;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(60deg, rgba(22, 39, 54, 0.2823529412) 0%, rgba(35, 49, 59, 0.5568627451) 100%);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -140,6 +140,8 @@ img {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
 }
 .selector-modal__tab-btn {
   height: 2rem;
@@ -175,7 +177,7 @@ img {
   align-items: center;
   position: relative;
   width: 80%;
-  height: 35%;
+  height: clamp(250px, 40%, 850px);
   border-radius: 14px;
   border: none;
 }
@@ -244,7 +246,6 @@ img {
   align-items: center;
   position: relative;
   width: 100%;
-  top: -15%;
   left: 0;
 }
 .selector-modal__title {
@@ -259,7 +260,6 @@ img {
   align-items: center;
   position: relative;
   width: 100%;
-  top: -10%;
 }
 .selector-modal__input-wrap input {
   outline: none;
@@ -375,8 +375,7 @@ img {
   align-items: center;
   position: relative;
   width: 100%;
-  position: absolute;
-  top: 55%;
+  gap: 0.5rem;
 }
 .selector-modal__subtask-wrap input {
   outline: none;
@@ -419,7 +418,7 @@ img {
   align-items: center;
   position: relative;
   width: 100%;
-  top: 25%;
+  top: 15%;
 }
 .selector-modal__actions button {
   cursor: pointer;
@@ -829,7 +828,7 @@ img {
  * ========================================
  */
 html {
-  height: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -838,13 +837,15 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100dvh;
   background-color: #000000;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%23000000' stroke-width='.5' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cuse fill='%23242424' href='%23s' y='2'/%3E%3Cuse fill='%23242424' href='%23s' x='1' y='2'/%3E%3Cuse fill='%23333333' href='%23s' x='2' y='2'/%3E%3Cuse fill='%23333333' href='%23s'/%3E%3Cuse fill='%233e3e3e' href='%23s' x='2'/%3E%3Cuse fill='%233e3e3e' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23484848'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23484848'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23515151'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23000000'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%23585858'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
-  background-attachment: fixed;
   background-size: cover;
   overflow: hidden;
+  overflow-x: clip;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .apk-screen {
@@ -854,10 +855,12 @@ body {
   align-items: stretch;
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   flex-wrap: nowrap;
   background: #0e0e0e;
   text-align: center;
+  touch-action: pan-y;
+  gap: clamp(2rem, 5vh, 6rem);
   scrollbar-width: none;
   -ms-overflow-style: none;
   z-index: 1;
@@ -877,8 +880,8 @@ body {
   justify-content: space-around;
   align-items: center;
   position: relative;
-  width: 100vw;
-  height: 13rem;
+  width: 100%;
+  height: 20dvh;
   background-color: #0d0d0d;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%230D0D0D' stroke-width='0.8' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cuse fill='%23262626' href='%23s' y='2'/%3E%3Cuse fill='%23262626' href='%23s' x='1' y='2'/%3E%3Cuse fill='%23353535' href='%23s' x='2' y='2'/%3E%3Cuse fill='%23353535' href='%23s'/%3E%3Cuse fill='%23404040' href='%23s' x='2'/%3E%3Cuse fill='%23404040' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23494949'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23494949'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%23525252'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%230D0D0D'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%23595959'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='scale(50) translate(-980 -735)'%3E%3Cg fill='%236BCDCE'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
   background-attachment: fixed;
@@ -894,7 +897,7 @@ body {
   position: relative;
   width: 100%;
   position: absolute;
-  top: 11rem;
+  top: 10rem;
 }
 
 .auth-carousel {
@@ -1007,10 +1010,10 @@ body {
   justify-content: flex-end;
   align-items: center;
   position: relative;
-  height: 100%;
+  height: 80dvh;
   color: #aaaaaa;
   flex-grow: 1;
-  margin-top: 5rem;
+  top: 5%;
 }
 .todo__box {
   display: flex;
@@ -1024,6 +1027,8 @@ body {
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  padding-top: 2rem;
+  padding-bottom: 5rem;
 }
 .todo__box::-webkit-scrollbar {
   display: none;
@@ -1232,8 +1237,8 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 100dvw;
-  height: 100dvh;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(60deg, rgba(22, 39, 54, 0.2823529412) 0%, rgba(35, 49, 59, 0.5568627451) 100%);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -1243,16 +1248,6 @@ body {
   left: 0;
 }
 .task-modal__section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  width: 80%;
-  height: 35%;
-  transition: opacity 1s ease;
-}
-.task-modal__form {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 30%), rgba(20, 20, 20, 0.02);
   backdrop-filter: saturate(1.1) blur(8px);
   -webkit-backdrop-filter: saturate(1.1) blur(8px);
@@ -1264,10 +1259,23 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
+  width: 80%;
+  height: auto;
+  gap: 1rem;
+  transition: opacity 1s ease;
+  padding: 1rem 0;
+}
+.task-modal__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
   gap: 1rem;
   margin-bottom: auto;
+  padding-top: 0.5rem;
 }
 .task-modal__form-title-wrap {
   display: flex;
@@ -1276,7 +1284,6 @@ body {
   align-items: center;
   position: relative;
   width: 100%;
-  margin-top: 2rem;
 }
 .task-modal__form-title-wrap input {
   outline: none;
@@ -1426,14 +1433,14 @@ body {
   display: flex;
   min-width: 5rem;
 }
-.task-modal .task-modal__title-wrap {
+.task-modal__title-wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
   width: 100%;
-  top: 16%;
+  flex: 0 0 auto;
   z-index: 1;
   left: 0;
 }
@@ -1481,13 +1488,13 @@ body {
  */
 .roadmap {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: stretch;
   position: relative;
-  height: 100%;
+  height: calc(100dvh - (20dvh + clamp(2rem, 5vh, 6rem)));
   flex-grow: 1;
-  margin-top: 5rem;
+  top: 5%;
 }
 .roadmap__list {
   display: flex;
@@ -1605,6 +1612,7 @@ body {
   border-radius: 10px;
   background: rgba(107, 205, 206, 0.1);
   font-size: 12px;
+  z-index: 1;
   box-shadow: inset 0px -5px 16px 19px rgba(0, 0, 0, 0.97), -1px -1px 6px 0px rgba(56, 248, 225, 0.18);
 }
 @media (hover: hover) and (pointer: fine) {
@@ -1674,7 +1682,9 @@ body {
   align-items: center;
   position: relative;
   width: 100%;
-  padding: 1rem 0;
+  padding-top: 2rem;
+  padding-bottom: 7rem;
+  scroll-padding-bottom: 7rem;
   overflow-y: auto;
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
@@ -2243,7 +2253,7 @@ body {
 @media (min-width: 768px) {
   body {
     min-height: 100dvh;
-    min-width: 100dvw;
+    min-width: 100%;
     place-items: center;
   }
   .apk-screen {
@@ -2329,10 +2339,12 @@ body {
   .apk-screen > :not(#view-header) {
     grid-area: main;
     inline-size: clamp(22rem, 70vw, 40rem);
-    overflow: auto;
+    place-self: center;
     overscroll-behavior: contain;
+    scrollbar-gutter: stable;
     margin: 0;
     height: 70%;
+    top: 0;
     border-top: 2px solid rgba(255, 255, 255, 0.1);
     border-right: 2px solid rgba(255, 255, 255, 0.1);
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);

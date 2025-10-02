@@ -31,10 +31,11 @@ export class AuthController {
   async handleRegister(values) {
     try {
       const { email, password } = values;
-      await this.authService.registerUser(email, password);
-
-      this.viewManger.showView('login-screen');
-      ToastManager.success('👍 Registration successful. You can log in now!');
+      const user = await this.authService.registerUser(email, password);
+      if (user) {
+        this.viewManger.showView('login-screen');
+        ToastManager.success('👍 Registration successful. You can log in now!');
+      }
     } catch (err) {
       console.error('Registration error:', err.code);
 
@@ -59,8 +60,10 @@ export class AuthController {
     try {
       const { email, password } = values;
       const user = await this.authService.loginUser(email, password);
-
-      ToastManager.success('Logged in!');
+      if (user) {
+        ToastManager.success('Logged in!');
+        this.viewManger.showView('todo-screen');
+      }
     } catch (err) {
       switch (err.code) {
         case 'auth/user-not-found':

@@ -87,4 +87,13 @@ export class RoadmapModel {
       return { id, title };
     });
   }
+  prepareSave(dataObj = {}) {
+    return {
+      ...dataObj,
+      subtasks: this._normalizeSubtasks(dataObj.subtasks ?? []),
+      checkedSubtasks: Array.isArray(dataObj.checkedSubtasks)
+        ? dataObj.checkedSubtasks
+        : [],
+    };
+  }
 }

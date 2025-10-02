@@ -44,7 +44,7 @@
 @include mixins.up(md) {
   body {
     min-height: 100dvh;
-    min-width: 100dvw;
+    min-width: 100%;
 
     place-items: center;
   }
@@ -103,11 +103,12 @@
     > :not(#view-header) {
       grid-area: main;
       inline-size: clamp(22rem, 70vw, 40rem);
-      overflow: auto;
+      place-self: center;
       overscroll-behavior: contain;
-
+      scrollbar-gutter: stable;
       margin: 0;
       height: 70%;
+      top: 0;
 
       border-top: 2px solid var.$borderTwo;
       border-right: 2px solid var.$borderTwo;

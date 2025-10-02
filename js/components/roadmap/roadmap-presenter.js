@@ -284,14 +284,14 @@ export class RoadmapPresenter {
 
       const order = this._computeNextOrder(list);
 
-      const nodeData = {
+      const data = {
         title: draft.title,
         subtasks: draft.subtasks,
         roadmapID: this.roadmapID,
         order: order,
         wasActive: false,
       };
-
+      const nodeData = this.model.prepareSave(data);
       const id = await this.model.createNode(nodeData);
       if (!id) throw new Error('Node ID not found!');
 

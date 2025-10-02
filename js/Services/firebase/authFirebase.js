@@ -54,7 +54,7 @@ export class AuthService {
   }
   async logOut() {
     try {
-      await this.auth.signOut();
+      await signOut(this.auth);
     } catch (error) {
       console.error('LOGOUT ERROR:', error.code, error.message);
       throw error;

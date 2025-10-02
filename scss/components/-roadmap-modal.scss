@@ -2,12 +2,14 @@
 @use '../variables/mixins';
 
 .selector-modal {
-  @include mixins.flex($height: 100dvh, $width: 100dvw);
+  @include mixins.flex($height: 100%, $width: 100%);
   @include mixins.glass-BG();
   z-index: 10;
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   &__tab-btn {
     height: 2rem;
     border: none;
@@ -16,7 +18,8 @@
     @include mixins.interactive($noScale: true);
   }
   &__panel {
-    @include mixins.flex($height: 35%, $width: 80%);
+    @include mixins.flex($width: 80%);
+    height: clamp(250px, 40%, 850px);
 
     border-radius: 14px;
     border: none;
@@ -65,7 +68,7 @@
   }
   &__title-wrap {
     @include mixins.flex($width: 100%);
-    top: -15%;
+
     left: 0;
   }
   &__title {
@@ -74,7 +77,7 @@
 
   &__input-wrap {
     @include mixins.flex($width: 100%);
-    top: -10%;
+
     @include mixins.glass-input-label;
     p {
       left: 45%;
@@ -125,8 +128,9 @@
 
     &-wrap {
       @include mixins.flex($width: 100%, $direction: row);
-      position: absolute;
-      top: 55%;
+
+      gap: 0.5rem;
+
       @include mixins.glass-input-label($width: 58%);
       p {
         left: 45%;
@@ -140,7 +144,8 @@
       $direction: row-reverse,
       $justify: space-evenly
     );
-    top: 25%;
+    top: 15%;
+
     button {
       cursor: pointer;
       font-size: 13px;
